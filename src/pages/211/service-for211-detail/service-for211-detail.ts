@@ -63,6 +63,8 @@ export class ServiceFor211DetailPage {
   driveTime: number = 0;
   bicycleTime: number = 0;
 
+  departureDateTime: string;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public oneClick: OneClickProvider,
@@ -115,6 +117,10 @@ export class ServiceFor211DetailPage {
           id: null,
           name: null
         });
+      }
+
+      if (this.navParams.data.departureDateTime) {
+        this.departureDateTime = this.navParams.data.departureDateTime;
       }
 
       // Plan a trip and store the result.
@@ -245,7 +251,11 @@ export class ServiceFor211DetailPage {
     tripRequest.trip.destination_attributes = this.destination.toOneClickPlace();
 
     // Set trip time to now by default, in ISO 8601 format
-    tripRequest.trip.trip_time = new Date().toISOString();
+    if (this.departureDateTime == undefined) {
+      tripRequest.trip.trip_time = new Date().toISOString();
+    } else {
+      tripRequest.trip.trip_time = this.departureDateTime;
+    }
 
     // Set arrive_by to true by default
     tripRequest.trip.arrive_by = false;

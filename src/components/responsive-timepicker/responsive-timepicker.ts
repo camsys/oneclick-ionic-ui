@@ -17,24 +17,25 @@ export class ResponsiveTimepickerComponent {
 
   // // Reference the the ionic datepicker element (only used in browsers)
   @ViewChild('browserTimepicker') browserTimepicker: any;
-  
+
   // Component accepts a date input to initialize it. Defaults to the current date and time.
   @Input() time: string = this.helpers.dateISOStringWithTimeZoneOffset(new Date());
-  
+  @Input() hideBool: boolean = true;
+
   // Emits output events whenever the date changes.
   @Output() change = new EventEmitter<string>();
-  
+
   times: any[] = []; // For holding list of available times.
 
   constructor(private nativeDatePicker: DatePicker,
               public platform: Platform,
               public helpers: HelpersProvider) { }
-  
+
   ngOnInit() {
-    // Set list of available times to 15-min increments.    
-    this.times = this.helpers.getTimesArray(new Date(this.time), 15); 
+    // Set list of available times to 15-min increments.
+    this.times = this.helpers.getTimesArray(new Date(this.helpers.dateISOStringWithTimeZoneOffset(new Date())), 15);
   }
-  
+
   open() {
     // Wait for platform to be ready...
     this.platform.ready()
@@ -48,11 +49,11 @@ export class ResponsiveTimepickerComponent {
       }
     })
   }
-  
+
   // Opens the time select menu
   openBrowserTimepicker() {
     this.browserTimepicker.open();
-    
+
     // Wait for the pop-up to show and then scroll to the selected element
     this.browserTimepicker._overlay.didEnter.subscribe(() => {
       setTimeout(() => { // The setTimeout is a hack to get it to skip a processing cycle so that the alert renders.
@@ -63,11 +64,11 @@ export class ResponsiveTimepickerComponent {
     })
 
   }
-  
+
   // Opens the native datepicker in ios or android, or defaults to the ionic datepicker in windows.
   openNativeTimepicker() {
     let oldTime = new Date(this.time);
-    
+
     if(this.platform.is('android') || this.platform.is('ios')) {
       this.nativeDatePicker.show({
         date: oldTime,
@@ -87,12 +88,12 @@ export class ResponsiveTimepickerComponent {
       this.openBrowserTimepicker();
     }
   }
-  
+
   // Whenever the time is changed, emit a change event with the new value.
   timeChange() {
     this.change.emit(this.time);
   }
-  
+
   // Compares date objects to minute-level precision. Assumes same month and year.
   compareTimes(t1, t2): boolean {
     t1 = new Date(t1); // Convert t1 to a date object (t2 already is one)

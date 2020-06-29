@@ -42,6 +42,7 @@ export class UserLocatorPage {
   selectedOriginItem: number = null;
   lastClicked: string; // used for the map clicking logic
   //myLatLng: google.maps.LatLng = null;
+  tripDate: string; // For storing the user-defined trip date (including time)
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -59,6 +60,7 @@ export class UserLocatorPage {
     this.lastClicked = null;
     this.userLocation = null; // The user's device location
     this.viewType = this.navParams.data.viewType; // Find services vs. transportation view
+    this.tripDate = new Date().toISOString();
 
     this.events.subscribe('place-search:change', () => {
       this.changeDetector.markForCheck();
@@ -100,7 +102,7 @@ export class UserLocatorPage {
     // (The Permissions API is not supported on IE11, so this check isn't that useful.)
     //if (navigator['permissions']) {
 
-      // Check if device has permission to geolocate.         
+      // Check if device has permission to geolocate.
       //navigator['permissions'].query({
       //  name: 'geolocation'
       //}).then(permission => {
@@ -166,7 +168,7 @@ export class UserLocatorPage {
     if (this.originMarker != undefined && this.originMarker.getMap() != null) {
       this.originMarker.setMap(null);
     }
-    
+
     this.originMarker = this.googleMapsHelpers.dropUserLocationPin(this.map, latLng);
     this.originMarker.setLabel('A');
     this.setMapCenter();
@@ -182,35 +184,37 @@ export class UserLocatorPage {
     this.destinationMarker.setLabel('B');
     this.setMapCenter();
   }
-  
+
   // Sets map center to origin and/or destination points
   setMapCenter() {
     let pts: google.maps.LatLng[] = [];
-    
+
     if(this.originMarker) {
       pts.push(this.originMarker.getPosition());
     }
-    
+
     if(this.destinationMarker) {
       pts.push(this.destinationMarker.getPosition());
     }
-    
+
     this.googleMapsHelpers.zoomToPoints(this.map, pts);
   }
 
   // Goes on to the categories/services page, using the given location as the center point
-  searchForServices(place: GooglePlaceModel){
+  searchForServices(place: GooglePlaceModel, time: string){
     this.storePlaceInSession(place);
+    this.storeDepartureDateTime(time);
     this.navCtrl.push(CategoriesFor211Page);
   }
 
   // Plans a trip based on origin and destination
   findTransportation(origin: GooglePlaceModel,
-                     destination: GooglePlaceModel) {
+                     destination: GooglePlaceModel, time: string) {
     this.navCtrl.push(ServiceFor211DetailPage, {
       service: null,
       origin: origin,
-      destination: destination
+      destination: destination,
+      departureDateTime: time
     });
 
   }
@@ -219,7 +223,7 @@ export class UserLocatorPage {
   private setUserPlaceFromLatLng(latLng: google.maps.LatLng) : void{
     let lat = latLng.lat();
     let lng = latLng.lng();
-    
+
     this.geoServiceProvider.getPlaceFromLatLng(lat, lng)
     .subscribe( (places) => {
       this.userLocation = places[0];
@@ -250,6 +254,12 @@ export class UserLocatorPage {
     this.auth.setSession(session);
   }
 
+  private storeDepartureDateTime(time: string) {
+    let session = this.auth.session();
+    session.user_departure_datetime = time;
+    this.auth.setSession(session);
+  }
+
 
   ////////// Support Clicking the Map ///////////////////////////////////
   // Depending on some logic, assume this click is either setting the Origin or the Destination
@@ -264,13 +274,13 @@ export class UserLocatorPage {
   private setOriginFromClick(latLng: google.maps.LatLng) : void{
     let lat = latLng.lat();
     let lng = latLng.lng();
-    
+
     this.geoServiceProvider.getPlaceFromLatLng(lat, lng)
     .subscribe( (places) => {
       this.userLocation = places[0];
       this.originSearch.searchControl.setValue(this.userLocation.formatted_address);
       this.zoomToOriginLocation(latLng);
-      // Set the origin to the user location 
+      // Set the origin to the user location
       this.originSearch.place = this.userLocation;
       this.lastClicked = 'origin';
     });
@@ -280,13 +290,13 @@ export class UserLocatorPage {
   private setDestinationFromClick(latLng: google.maps.LatLng) : void{
     let lat = latLng.lat();
     let lng = latLng.lng();
-    
+
     this.geoServiceProvider.getPlaceFromLatLng(lat, lng)
     .subscribe( (places) => {
       //this.userLocation = places[0];
       this.destinationSearch.searchControl.setValue(places[0].formatted_address);
       this.zoomToDestinationLocation(latLng);
-      // Set the origin to the user location 
+      // Set the origin to the user location
       //this.destinationSearch.place = places[0];
       this.destinationSearch.setPlace(places[0]);
       this.lastClicked = 'destination';

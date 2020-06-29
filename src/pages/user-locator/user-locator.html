@@ -15,7 +15,6 @@
     </button>
   </ion-navbar>
   <ion-toolbar class="lynx-toolbar" text-center>
-
     <div id="origin-search-container">
       <ion-title>{{ "lynx.pages.user_locator.origin_search.label" | translate }}</ion-title>
       <place-search #originSearch
@@ -37,6 +36,28 @@
                     (onSelect)="centerMapOnPlace($event, 'destination')">
       </place-search>
     </div>
+
+    <!-- Header row with editable trip date -->
+    <ion-row class="trip-date-row">
+      <ion-col class="trip-date-col"
+               col-sm-6 text-center>
+        <h3>Depart After</h3>
+      </ion-col>
+      <ion-col class="trip-date-col"
+               col-sm-6 text-center
+               (click)="tripTimeDatepicker.open()">
+
+        <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
+        <responsive-datepicker #tripTimeDatepicker
+                               [date]="tripDate"
+                               [hideBool]='false'
+                               [dateTimeFormat]="'MMM DD, YYYY hh:mm A'">
+        </responsive-datepicker>
+
+      </ion-col>
+
+
+    </ion-row>
 
    <div text-center *ngIf="viewType === 'services'">
     {{ 'lynx.pages.user_locator.services_help' | translate }}
@@ -64,7 +85,7 @@
     <button ion-button large round
             class="lynx-button-primary"
             id="find-services-button"
-            (click)="searchForServices(originSearch.place)"
+            (click)="searchForServices(originSearch.place, tripTimeDatepicker.date)"
             *ngIf="!!userLocation || originSearch.place">
       {{ "lynx.pages.user_locator.resources_button" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
@@ -77,7 +98,7 @@
             class="lynx-button-primary"
             id="find-transportation-button"
             *ngIf="originSearch.place && destinationSearch.place"
-            (click)="findTransportation(originSearch.place, destinationSearch.place)">
+            (click)="findTransportation(originSearch.place, destinationSearch.place, tripTimeDatepicker.date)">
         {{ "lynx.pages.user_locator.transportation_button" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
     </button>

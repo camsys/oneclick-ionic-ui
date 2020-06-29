@@ -164,16 +164,16 @@ export class MyApp {
       { title: 'contact_us', component: ContactUsPage },
       { title: 'transportation', component: ParatransitServicesPage },
       { title: 'resources', component: UserLocatorPage, params: { viewType: 'services'}},
-      { title: 'language_selector', component: "language_selector" },
-      { title: 'privacy_policy', component: "privacy_policy" },
+      //{ title: 'language_selector', component: "language_selector" },
+      //{ title: 'privacy_policy', component: "privacy_policy" },
       // Disabling chat based on feedback.
       //{ title: 'live_211_chat', component: "live_211_chat" },
-      { title: 'feedback', component: "feedback" }
+      //{ title: 'feedback', component: "feedback" }
     ] as PageModel[];
 
     // Pages to display if user is signed in
     this.signedInPages = this.universalPages.concat([
-      { title: 'feedback_status', component: FeedbackStatusPage },
+      //{ title: 'feedback_status', component: FeedbackStatusPage },
       { title: 'sign_out', component: "sign_out"}
     ] as PageModel[]);
 

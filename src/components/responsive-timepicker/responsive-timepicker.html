@@ -1,8 +1,8 @@
 
 <!-- Hidden select menu of times, for browsers -->
-<ion-item [hidden]="true" id="browserTimepickerContainer">
-  <ion-select #browserTimepicker 
-              [(ngModel)]="time" 
+<ion-item [(hidden)] = "hideBool" id="browserTimepickerContainer">
+  <ion-select #browserTimepicker
+              [(ngModel)]="time"
               (ngModelChange)="timeChange()"
               [compareWith]="compareTimes">
     <ion-option *ngFor="let t of times; let i = index"

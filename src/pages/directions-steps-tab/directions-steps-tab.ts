@@ -92,7 +92,7 @@ export class DirectionsStepsTabPage {
     this.oneClickProvider.planTrip(this.tripRequest)
     .subscribe((resp) => {
       let nav = this.app.getRootNav();
-      
+
       // Insert the new directions page underneat the root page, then pop off the old page.
       nav.insert(nav.length() - 1, DirectionsPage, {
         trip_response: resp,

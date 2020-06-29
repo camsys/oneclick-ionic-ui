@@ -15,13 +15,15 @@ import { HelpersProvider } from '../../providers/helpers/helpers';
   templateUrl: 'responsive-datepicker.html'
 })
 export class ResponsiveDatepickerComponent {
-  
+
   // Reference the the ionic datepicker element (only used in browsers)
   @ViewChild('browserDatepicker') browserDatepicker: any;
-  
+
   // Component accepts a date input to initialize it. Defaults to the current date and time.
   @Input() date: string = this.helpers.dateISOStringWithTimeZoneOffset(new Date());
-  
+  @Input() hideBool: boolean = true;
+  @Input() dateTimeFormat: string = "MMM DD, YYYY";
+
   // Emits output events whenever the date changes.
   @Output() change = new EventEmitter<string>();
 
@@ -29,7 +31,7 @@ export class ResponsiveDatepickerComponent {
               public platform: Platform,
               public helpers: HelpersProvider) {
   }
-  
+
   // Shows the datepicker.
   open() {
     // Wait for platform to be ready...
@@ -42,14 +44,14 @@ export class ResponsiveDatepickerComponent {
       } else {
         this.openBrowserDatepicker();
       }
-    
+
     })
   }
-  
+
   // Opens the native datepicker in ios or android, or defaults to the ionic datepicker in windows.
   openNativeDatepicker() {
     let oldDate = new Date(this.date);
-    
+
     if(this.platform.is('android') || this.platform.is('ios')) {
       this.nativeDatePicker.show({
         date: oldDate,
@@ -71,17 +73,17 @@ export class ResponsiveDatepickerComponent {
       this.openBrowserDatepicker();
     }
   }
-  
+
   // Opens the ionic datepicker.
   openBrowserDatepicker() {
     this.browserDatepicker.open();
   }
-  
+
   // Whenever the date is changed, emit a change event with the new value.
   dateChange() {
     this.change.emit(this.date);
   }
-  
+
   // Gets a list of the next few years for populating the datepicker
   yearValues() {
     return this.helpers.getYearsArray(5).join(",");

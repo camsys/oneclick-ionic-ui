@@ -74,8 +74,9 @@ export class ServicesListTabPage {
       id: null,
       name: null
     });
+    let departureDateTime = this.session().user_departure_datetime;
 
-    this.navCtrl.parent.viewCtrl._nav.push(ServiceFor211DetailPage, {service_id: match.service_id, location_id: match.location_id, origin: startLocation, destination: destination_location});
+    this.navCtrl.parent.viewCtrl._nav.push(ServiceFor211DetailPage, {service_id: match.service_id, location_id: match.location_id, origin: startLocation, destination: destination_location, departureDateTime: departureDateTime});
   }
 
   openEmailModal(services: ServiceModel[]) {
