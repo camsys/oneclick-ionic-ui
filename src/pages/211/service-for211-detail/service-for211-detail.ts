@@ -205,13 +205,12 @@ export class ServiceFor211DetailPage {
   // Opens the directions page for the desired mode, passing a clone of the
   // trip response with all the irrelevant itineraries filtered out.
   openDirectionsPage(mode: string) {
-    let tripResponse = this.tripResponse.withFilteredItineraries(mode);
+    let tripResponse = this.tripResponse;
 
     if (mode === 'car' || mode === 'transit' || mode === 'bicycle'){
       this.navCtrl.push(DirectionsPage, {
         trip_response: tripResponse,
-        trip_id: tripResponse.id,
-        mode: mode
+        trip_id: tripResponse.id
       });
     } else if (mode === 'taxi') {
       this.navCtrl.push(TaxiServicesPage, {
@@ -231,6 +230,15 @@ export class ServiceFor211DetailPage {
 
       this.exNav.goTo(lyftUrl);
     }
+  }
+
+  openDirectionsPageWithoutMode() {
+    let tripResponse = this.tripResponse;
+
+    this.navCtrl.push(DirectionsPage, {
+      trip_response: tripResponse,
+      trip_id: tripResponse.id
+    });
   }
 
   openOtherTransportationOptions(){

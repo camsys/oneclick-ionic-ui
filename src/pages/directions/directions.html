@@ -19,7 +19,7 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-tabs *ngIf="trip && mode" tabsPlacement="top" tabsHighlight="true">
+      <ion-tabs *ngIf="trip" tabsPlacement="top" tabsHighlight="true">
         <ion-tab [root]="stepsTab"
                  tabTitle="{{ 'lynx.pages.directions.steps_tab.header' | translate }}"
                 tabIcon="list"

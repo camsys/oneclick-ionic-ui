@@ -37,10 +37,11 @@ export class DirectionsStepsTabPage {
               public events: Events,
               public helpers: HelpersProvider,
               public changeDetector: ChangeDetectorRef) {
-    this.trip = navParams.data.trip;
-    this.mode = navParams.data.mode;
 
-    // Instantiate actual Leg Model objects for each leg in the itinerary
+    this.trip = navParams.data.trip;
+    //this.mode = navParams.data.mode;
+
+
     this.itineraries = this.trip.itineraries.map(function(itin) {
       itin.legs = itin.legs.map(function(legAttrs) {
         return new LegModel().assignAttributes(legAttrs);
@@ -50,7 +51,7 @@ export class DirectionsStepsTabPage {
 
     this.selectedItinerary = "0";
     this.tripRequest = new TripRequestModel;
-    this.tripRequest.trip_types = [this.mode]
+    //this.tripRequest.trip_types = [this.mode]
     this.tripRequest.trip = JSON.parse(JSON.stringify(this.trip)); // Copy the trip into the tripRequest
     this.tripRequest.trip.origin_attributes = new OneClickPlaceModel(this.trip.origin);
     this.tripRequest.trip.destination_attributes = new OneClickPlaceModel(this.trip.destination);

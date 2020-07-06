@@ -178,7 +178,7 @@ export function translateFactory() {
         { component: ServiceFor211DetailPage, name: 'Trip Options', segment: 'trip_options/:trip_id', defaultHistory: [HelpMeFindPage] },
         { component: ServiceFor211DetailPage, name: 'Service Details', segment: 'trip_options/:trip_id/:service_id/:location_id', defaultHistory: [HelpMeFindPage] },
         { component: ServiceFor211DetailPage, name: 'Service Details', segment: 'trip_options/:service_id/:location_id', defaultHistory: [HelpMeFindPage] },
-        { component: DirectionsPage, name: 'Directions', segment: 'trip_directions/:mode/:trip_id', defaultHistory: [HelpMeFindPage] },
+        { component: DirectionsPage, name: 'Directions', segment: 'trip_directions/:trip_id', defaultHistory: [HelpMeFindPage] },
         { component: TaxiServicesPage, name: 'Taxi Options', segment: 'taxi_services/:trip_id', defaultHistory: [HelpMeFindPage] },
         { component: TransportationEligibilityPage, name: 'Transportation Eligibility', segment: 'transportation_eligibility/:trip_id', defaultHistory: [HelpMeFindPage] },
         { component: ParatransitServicesPage, name: 'All Paratransit Options', segment: 'paratransit_services', defaultHistory: [HelpMeFindPage] },

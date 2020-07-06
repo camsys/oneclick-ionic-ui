@@ -18,23 +18,88 @@
 
   <!-- If no service is present, put the origin and destination in the header -->
   <ng-template #noServiceHeader>
-    <ion-navbar class="lynx-toolbar">
-      <ion-title text-center class="dynamic-toolbar-title">
-        <b>{{ origin.label() }}</b> {{ "lynx.global.common.to" | translate}}
-      </ion-title>
-      <ion-title text-center class="dynamic-toolbar-title">
-        <b>{{ destination.label() }}</b>
+    <ion-navbar class="lynx-toolbar lynx-toolbar-black">
+      <ion-title text-center>
+        <img class="lynx-logo-sm" src="assets/img/Lynx-logo-pink-xsm.png" alt="LYNX Icon">
       </ion-title>
       <button ion-button end menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-navbar>
+
+    <ion-toolbar class="lynx-toolbar" text-center>
+
+      <div id="origin-search-container">
+        <ion-title>{{ "lynx.pages.user_locator.origin_search.label" | translate }}</ion-title>
+        <place-search #originSearch
+                      placeholder="{{ origin.label() }}"
+                      (onArrowDown)="originResults.focus()"
+                      (onFocus)="originResults.show()"
+                      (onFocus)="destinationResults.hide()"
+                      (onSelect)="centerMapOnPlace($event, 'origin')">
+        </place-search>
+      </div>
+
+      <div id="destination-search-container" [hidden]="viewType === 'services'">
+        <ion-title>{{ "lynx.pages.user_locator.destination_search.label" | translate }}</ion-title>
+        <place-search #destinationSearch
+                      placeholder="{{ destination.label() }}"
+                      (onArrowDown)="destinationResults.focus()"
+                      (onFocus)="destinationResults.show()"
+                      (onFocus)="originResults.hide()"
+                      (onSelect)="centerMapOnPlace($event, 'destination')">
+        </place-search>
+      </div>
+
+      <!-- Header row with editable trip date -->
+      <ion-row class="trip-date-row">
+        <ion-col class="trip-date-col"
+                 col-sm-6 text-center>
+          <h3>Depart After</h3>
+        </ion-col>
+        <ion-col class="trip-date-col"
+                 col-sm-6 text-center
+                 (click)="tripTimeDatepicker.open()">
+
+          <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
+          <responsive-datepicker #tripTimeDatepicker
+                                 [date]="tripDate"
+                                 [hideBool]='false'
+                                 [dateTimeFormat]="'MMM DD, YYYY hh:mm A'">
+          </responsive-datepicker>
+
+        </ion-col>
+
+
+      </ion-row>
+    </ion-toolbar>
   </ng-template>
 
 </ion-header>
 
 
 <ion-content>
+
+  <!-- PLAN TRIP BUTTON -->
+  <div text-center id="find-transportation-button-container">
+    <button ion-button middle round
+            class="lynx-button-primary"
+            id="transportation-options-button"
+            *ngIf="origin && destination"
+            (click)="openDirectionsPageWithoutMode()">
+      {{ "lynx.pages.user_locator.transportation_button" | translate }}
+      <ion-icon pull-right name="arrow-forward"></ion-icon>
+    </button>
+    <button ion-button middle round
+            class="lynx-button-primary"
+            id="find-transportation-button"
+            *ngIf="origin && destination"
+            (click)="findTransportation(origin, destination, tripTimeDatepicker.date)">
+      {{ "lynx.pages.user_locator.transportation_button" | translate }}
+      <ion-icon pull-right name="arrow-forward"></ion-icon>
+    </button>
+  </div>
+
   <ion-grid>
 
     <!-- TRANSPORTATION OPTIONS -->

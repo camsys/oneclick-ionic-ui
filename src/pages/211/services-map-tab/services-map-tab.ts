@@ -70,6 +70,22 @@ export class ServicesMapTabPage {
           return marker;
         });
 
+    // // add in 'you are here' marker
+    let startIcon = {
+      url: 'assets/img/street-view-solid.svg',
+      scaledSize: new google.maps.Size(35,35)
+    }
+    let yourLocation = this.session().user_starting_location;
+    let your_location_service_location : google.maps.LatLng = new google.maps.LatLng(Number(yourLocation.geometry.location.lat), Number(yourLocation.geometry.location.lng));
+
+    let your_location_marker : google.maps.Marker = new google.maps.Marker;
+    your_location_marker.setPosition(your_location_service_location);
+    your_location_marker.setMap(this.service_map);
+    your_location_marker.setTitle('You are here');
+    your_location_marker.setClickable(false);
+    your_location_marker.setIcon(startIcon)
+    markers.push(your_location_marker);
+
     // Zoom the map to fit all the services
     this.googleMapsHelpers.zoomToObjects(this.service_map, markers);
 
@@ -89,6 +105,7 @@ export class ServicesMapTabPage {
 
   selectService(match : ServiceModel){
     let startLocation = this.session().user_starting_location;
+
     let destination_location = new GooglePlaceModel({
       address_components: null,
       geometry: {location: {lat: match.lat, lng: match.lng}},
