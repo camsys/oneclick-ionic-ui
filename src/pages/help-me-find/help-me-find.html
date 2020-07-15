@@ -1,9 +1,10 @@
 <ion-header no-border>
   <ion-navbar transparent>
-    <button text-right end class="text-right end bar-buttons bar-buttons-md bar-button bar-button-md bar-button-default bar-button-default-md bar-button-menutoggle bar-button-menutoggle-md activate"
-          (click)="openLanguageSelectorModal();">
-      <ion-icon name="globe"></ion-icon> {{ "lynx.global.languages.native." + i18n.currentLocale() | translate }}
-    </button>
+    <ion-buttons end>
+      <button ion-button class="lynx-button-link link-pink" (click)="openLanguageSelectorModal();">
+        <ion-icon class="padded" name="globe"></ion-icon> {{ "lynx.global.languages.native." + i18n.currentLocale() | translate }}
+      </button>
+    </ion-buttons>
     <button ion-button end menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -73,7 +74,7 @@
 
               </button>
               <div class="lynx-help-me-find-buttons-subtitle">
-                {{ "lynx.pages.home.resources_subtitle" | translate }} 
+                {{ "lynx.pages.home.resources_subtitle" | translate }}
               </div>
 
             </div>

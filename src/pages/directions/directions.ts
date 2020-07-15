@@ -6,6 +6,7 @@ import { DirectionsStepsTabPage } from '../directions-steps-tab/directions-steps
 import { DirectionsMapTabPage } from '../directions-map-tab/directions-map-tab';
 
 import { TripResponseModel } from "../../models/trip-response";
+import { ItineraryModel } from "../../models/itinerary";
 
 import { OneClickProvider } from "../../providers/one-click/one-click";
 
@@ -38,12 +39,15 @@ export class DirectionsPage {
     this.mapTab = DirectionsMapTabPage;
 
     if(navData.trip_response) {
-      this.displayTripResults(navData.trip_response);
+      if (navData.itinerary) {
+        this.displayItineraryResults(navData.trip_response, navData.itinerary);
+      } else {
+        this.displayTripResults(navData.trip_response);
+      }
+
     } else if(navData.trip_id) {
       this.oneClick.getTrip(this.navParams.data.trip_id)
           .subscribe((trip) => {
-            console.log('blueberrryy');
-            console.log(trip);
             let newTripResponse = new TripResponseModel(trip) //.withFilteredItineraries(navData.mode);
             this.displayTripResults(newTripResponse);
           });
@@ -64,9 +68,15 @@ export class DirectionsPage {
     this.directionsParams = {
       trip: this.trip
     }
+  }
 
-    console.log('aaapppleee');
-    console.log(this.directionsParams);
+  displayItineraryResults(trip: TripResponseModel, itinerary: ItineraryModel): void {
+    this.trip = trip;
+    this.directionsParams = {
+      trip: this.trip,
+      itinerary: itinerary
+
+    }
   }
 
 

@@ -19,6 +19,7 @@ import { GooglePlaceModel } from "../../models/google-place";
 // COMPONENTS
 import { PlaceSearchComponent } from "../../components/place-search/place-search";
 import { AutocompleteResultsComponent } from "../../components/autocomplete-results/autocomplete-results";
+import { ResponsiveDatepickerComponent } from "../../components/responsive-datepicker/responsive-datepicker";
 
 @IonicPage()
 @Component({
@@ -29,6 +30,7 @@ export class UserLocatorPage {
 
   @ViewChild('originSearch') originSearch: PlaceSearchComponent;
   @ViewChild('destinationSearch') destinationSearch: PlaceSearchComponent;
+  @ViewChild('tripTimeDatepicker') tripTimeDatepicker: ResponsiveDatepickerComponent;
 
   @ViewChild('originResults') originResults: AutocompleteResultsComponent;
   @ViewChild('destinationResults') destinationResults: AutocompleteResultsComponent;
@@ -42,7 +44,7 @@ export class UserLocatorPage {
   selectedOriginItem: number = null;
   lastClicked: string; // used for the map clicking logic
   //myLatLng: google.maps.LatLng = null;
-  tripDate: string; // For storing the user-defined trip date (including time)
+  arriveBy: boolean;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -60,7 +62,7 @@ export class UserLocatorPage {
     this.lastClicked = null;
     this.userLocation = null; // The user's device location
     this.viewType = this.navParams.data.viewType; // Find services vs. transportation view
-    this.tripDate = new Date().toISOString();
+    this.arriveBy = false;
 
     this.events.subscribe('place-search:change', () => {
       this.changeDetector.markForCheck();
@@ -204,17 +206,19 @@ export class UserLocatorPage {
   searchForServices(place: GooglePlaceModel, time: string){
     this.storePlaceInSession(place);
     this.storeDepartureDateTime(time);
+    this.storeArriveBy(this.arriveBy);
     this.navCtrl.push(CategoriesFor211Page);
   }
 
   // Plans a trip based on origin and destination
   findTransportation(origin: GooglePlaceModel,
-                     destination: GooglePlaceModel, time: string) {
+                     destination: GooglePlaceModel, time: string, arriveBy: boolean) {
     this.navCtrl.push(ServiceFor211DetailPage, {
       service: null,
       origin: origin,
       destination: destination,
-      departureDateTime: time
+      departureDateTime: time,
+      arriveBy: this.arriveBy
     });
 
   }
@@ -257,6 +261,12 @@ export class UserLocatorPage {
   private storeDepartureDateTime(time: string) {
     let session = this.auth.session();
     session.user_departure_datetime = time;
+    this.auth.setSession(session);
+  }
+
+  private storeArriveBy(arriveBy: boolean) {
+    let session = this.auth.session();
+    session.user_arrive_by = arriveBy;
     this.auth.setSession(session);
   }
 

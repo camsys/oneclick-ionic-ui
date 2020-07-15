@@ -1,78 +1,82 @@
 <!--ServiceFor211DetailPage-->
 <ion-header>
 
-  <!-- If there's a service present, put its name and address in the header -->
-  <ion-navbar class="lynx-toolbar" *ngIf="service_id && location_id; else noServiceHeader">
-    <ion-title text-center class="dynamic-toolbar-title"><b>{{service.agency_name}}</b></ion-title>
-    <!--<div class="lynx-toolbar-body">{{service.address}}</div>-->
-    <!--<div *ngIf="service" class="lynx-toolbar-body">-->
-      <!--<external-link *ngIf="service.url"-->
-                     <!--url="{{service.url}}"-->
-                     <!--text="{{service.display_url}}">-->
-      <!--</external-link>-->
-    <!--</div>-->
+  <ion-navbar class="lynx-toolbar lynx-toolbar-black">
+    <ion-title text-center>
+      <img class="lynx-logo-sm" src="assets/img/Lynx-logo-pink-xsm.png" alt="LYNX Icon">
+    </ion-title>
     <button ion-button end menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
   </ion-navbar>
 
+  <ion-toolbar class="lynx-toolbar" text-center>
+
+    <div id="origin-search-container">
+      <place-search #originSearch
+                    placeholder="{{ origin.label() }}"
+                    (onArrowDown)="originResults.focus()"
+                    (onFocus)="originResults.show()"
+                    (onFocus)="destinationResults.hide()">
+      </place-search>
+    </div>
+
+    <div id="destination-search-container" [hidden]="viewType === 'services'">
+      <place-search #destinationSearch
+                    placeholder="{{ destination.label() }}"
+                    (onArrowDown)="destinationResults.focus()"
+                    (onFocus)="destinationResults.show()"
+                    (onFocus)="originResults.hide()">
+      </place-search>
+    </div>
+
+    <!-- Header row with editable trip date -->
+    <ion-row class="trip-date-row">
+      <ion-col class="trip-date-col"
+               col-sm-6 text-center>
+        <ion-item>
+          <ion-select [(ngModel)]="arriveBy">
+            <ion-option value="false">{{ "lynx.global.directions.depart_at" | translate }}</ion-option>
+            <ion-option value="true">{{ "lynx.global.directions.arrive_by" | translate }}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col class="trip-date-col"
+               col-sm-6 text-center
+               (click)="tripTimeDatepicker.open()">
+
+        <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
+        <responsive-datepicker #tripTimeDatepicker
+                               [date]="departureDateTime"
+                               [hideBool]='false'
+                               [dateTimeFormat]="'MMM DD, YYYY hh:mm A'">
+        </responsive-datepicker>
+
+      </ion-col>
+
+
+    </ion-row>
+  </ion-toolbar>
+
   <!-- If no service is present, put the origin and destination in the header -->
   <ng-template #noServiceHeader>
-    <ion-navbar class="lynx-toolbar lynx-toolbar-black">
-      <ion-title text-center>
-        <img class="lynx-logo-sm" src="assets/img/Lynx-logo-pink-xsm.png" alt="LYNX Icon">
-      </ion-title>
+    <!-- If there's a service present, put its name and address in the header -->
+    <ion-navbar class="lynx-toolbar">
+
+
+      <ion-title text-center class="dynamic-toolbar-title"><b>{{service.agency_name}}</b></ion-title>
+      <!--<div class="lynx-toolbar-body">{{service.address}}</div>-->
+      <!--<div *ngIf="service" class="lynx-toolbar-body">-->
+      <!--<external-link *ngIf="service.url"-->
+      <!--url="{{service.url}}"-->
+      <!--text="{{service.display_url}}">-->
+      <!--</external-link>-->
+      <!--</div>-->
       <button ion-button end menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-navbar>
 
-    <ion-toolbar class="lynx-toolbar" text-center>
-
-      <div id="origin-search-container">
-        <ion-title>{{ "lynx.pages.user_locator.origin_search.label" | translate }}</ion-title>
-        <place-search #originSearch
-                      placeholder="{{ origin.label() }}"
-                      (onArrowDown)="originResults.focus()"
-                      (onFocus)="originResults.show()"
-                      (onFocus)="destinationResults.hide()"
-                      (onSelect)="centerMapOnPlace($event, 'origin')">
-        </place-search>
-      </div>
-
-      <div id="destination-search-container" [hidden]="viewType === 'services'">
-        <ion-title>{{ "lynx.pages.user_locator.destination_search.label" | translate }}</ion-title>
-        <place-search #destinationSearch
-                      placeholder="{{ destination.label() }}"
-                      (onArrowDown)="destinationResults.focus()"
-                      (onFocus)="destinationResults.show()"
-                      (onFocus)="originResults.hide()"
-                      (onSelect)="centerMapOnPlace($event, 'destination')">
-        </place-search>
-      </div>
-
-      <!-- Header row with editable trip date -->
-      <ion-row class="trip-date-row">
-        <ion-col class="trip-date-col"
-                 col-sm-6 text-center>
-          <h3>Depart After</h3>
-        </ion-col>
-        <ion-col class="trip-date-col"
-                 col-sm-6 text-center
-                 (click)="tripTimeDatepicker.open()">
-
-          <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
-          <responsive-datepicker #tripTimeDatepicker
-                                 [date]="tripDate"
-                                 [hideBool]='false'
-                                 [dateTimeFormat]="'MMM DD, YYYY hh:mm A'">
-          </responsive-datepicker>
-
-        </ion-col>
-
-
-      </ion-row>
-    </ion-toolbar>
   </ng-template>
 
 </ion-header>
@@ -80,22 +84,30 @@
 
 <ion-content>
 
+  <!-- ORIGIN AND DESTINATION AUTOCOMPLETE RESULTS LISTS -->
+  <autocomplete-results #originResults
+                        [items]="originSearch.autocompleteItems"
+                        (onSelect)="originSearch.chooseItem($event)">
+  </autocomplete-results>
+  <autocomplete-results #destinationResults
+                        [items]="destinationSearch.autocompleteItems"
+                        (onSelect)="destinationSearch.chooseItem($event)">
+  </autocomplete-results>
+
   <!-- PLAN TRIP BUTTON -->
   <div text-center id="find-transportation-button-container">
     <button ion-button middle round
             class="lynx-button-primary"
             id="transportation-options-button"
-            *ngIf="origin && destination"
-            (click)="openDirectionsPageWithoutMode()">
+            *ngIf="originSearch.place && destinationSearch.place"
+            (click)="findTransportation(originSearch.place, destinationSearch.place, tripTimeDatepicker.date)">
       {{ "lynx.pages.user_locator.transportation_button" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
     </button>
-    <button ion-button middle round
-            class="lynx-button-primary"
-            id="find-transportation-button"
-            *ngIf="origin && destination"
-            (click)="findTransportation(origin, destination, tripTimeDatepicker.date)">
-      {{ "lynx.pages.user_locator.transportation_button" | translate }}
+    <button ion-button item-end round default
+            class="lynx-button-primary mode-trip-plan-button"
+            (click)="openOtherTransportationOptions()">
+      {{ "lynx.global.modes.find_other_options" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
     </button>
   </div>
@@ -116,32 +128,17 @@
         <ion-list class="lynx-list">
 
           <!-- For each mode other than paratransit, build a button -->
-          <ion-item *ngFor="let mode of returnedModes">
+          <ion-item *ngFor="let itin of itineraries">
             <h3 item-start class="item-heading mode-label">
-              {{ "lynx.global.modes." + mode | translate }}
+              {{itin.trip_type}}
             </h3>
             <div item-end class="mode-fare">
-              {{ tripResponse.costsByTripType(mode) | prettyFare }}
+              {{ [itin.cost] | prettyFare }}
             </div>
             <button ion-button item-end round default
                     class="lynx-button-primary mode-trip-plan-button"
-                    (click)="openDirectionsPage(mode)">
-              {{ durationFor(mode) | prettyTime }}
-            </button>
-          </ion-item>
-
-          <!-- For paratransit, build a special button -->
-          <ion-item *ngIf="tripResponse.includesTripType('paratransit')">
-            <p item-start class="item-heading standout mode-label">
-              {{ "lynx.global.modes.find_other_options" | translate }}
-            </p>
-            <div item-end class="mode-fare" >
-              {{ tripResponse.costsByTripType("paratransit") | prettyFare }}
-            </div>
-            <button ion-button item-end round default
-                    class="lynx-button-primary mode-trip-plan-button"
-                    (click)="openOtherTransportationOptions()">
-                    <ion-icon pull-right name="arrow-forward"></ion-icon>
+                    (click)="openDirectionsPageForItinerary(itin)">
+              {{ itin.duration | prettyTime }}
             </button>
           </ion-item>
 

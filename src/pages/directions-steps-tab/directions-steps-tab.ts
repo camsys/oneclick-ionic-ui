@@ -24,6 +24,7 @@ export class DirectionsStepsTabPage {
   trip:TripResponseModel;
   mode:string;
   itineraries: ItineraryModel[];
+  itinerary: ItineraryModel;
   selectedItinerary: string; // Index of selected itinerary within the itineraries array
   tripRequest:TripRequestModel;
   departAtTime: string; // For storing user-defined depart at time (including date)
@@ -39,16 +40,24 @@ export class DirectionsStepsTabPage {
               public changeDetector: ChangeDetectorRef) {
 
     this.trip = navParams.data.trip;
-    //this.mode = navParams.data.mode;
-
-
-    this.itineraries = this.trip.itineraries.map(function(itin) {
-      itin.legs = itin.legs.map(function(legAttrs) {
-        return new LegModel().assignAttributes(legAttrs);
+    if (navParams.data.itinerary) {
+      this.itinerary = navParams.data.itinerary;
+      this.itineraries = this.trip.itineraries.slice(0).filter((itin) => itin === this.itinerary).map(function(itin) {
+        itin.legs = itin.legs.map(function(legAttrs) {
+          return new LegModel().assignAttributes(legAttrs);
+        });
+        return itin;
       });
-      return itin;
-    });
+    } else {
+      this.itineraries = this.trip.itineraries.map(function(itin) {
+        itin.legs = itin.legs.map(function(legAttrs) {
+          return new LegModel().assignAttributes(legAttrs);
+        });
+        return itin;
+      });
 
+    }
+    //this.mode = navParams.data.mode;
     this.selectedItinerary = "0";
     this.tripRequest = new TripRequestModel;
     //this.tripRequest.trip_types = [this.mode]
