@@ -1,3 +1,25 @@
+<!---
+<ion-header>
+  <ion-navbar class="lynx-toolbar lynx-toolbar-black">
+    <ion-title>
+      <img class="lynx-logo-sm" src="assets/img/Lynx-logo-pink-xsm.png" alt="LYNX Icon">
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button class="link-pink bar-button" (click)="openLanguageSelectorModal();">
+        <ion-icon class="padded" name="globe"></ion-icon> {{ "lynx.global.languages.native." + i18n.currentLocale() | translate }}
+      </button>
+    </ion-buttons>
+
+    <ion-buttons end>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+--->
+
 <!-- SIDEBAR MENU -->
 <ion-menu class="lynx-menu" [content]="content" side="right" persistent="true">
 
@@ -11,27 +33,27 @@
       <!-- If signed in... -->
       <div *ngIf="auth.isRegisteredUser(); else notRegistered">
 
-          <button style="background-color:#000000;" ion-item menuClose
-                  class="item-heading"
-                  id="menu-welcome-button"
-                  (click)="goHome()">
-            {{ "lynx.pages.menu.welcome_user" | translate:user_name }}
-          </button>
+        <button style="background-color:#000000;" ion-item menuClose
+                class="item-heading"
+                id="menu-welcome-button"
+                (click)="goHome()">
+          {{ "lynx.pages.menu.welcome_user" | translate:user_name }}
+        </button>
 
-          <button style="background-color:#000000;" ion-item menuClose
-                  class="item-heading"
-                  id="menu-profile-button"
-                  (click)="openPage(profilePage)">
-            {{ "lynx.pages.menu.profile" | translate }}
-          </button>
+        <button style="background-color:#000000;" ion-item menuClose
+                class="item-heading"
+                id="menu-profile-button"
+                (click)="openPage(profilePage)">
+          {{ "lynx.pages.menu.profile" | translate }}
+        </button>
 
-          <!-- Build a button for each page listed in the signedInPages attribute -->
-          <button style="background-color:#000000;" ion-item menuClose
-                  class="item-heading"
-                  *ngFor="let p of signedInPages"
-                  (click)="openPage(p)">
-            {{ "lynx.pages.menu." + p.title | translate }}
-          </button>
+        <!-- Build a button for each page listed in the signedInPages attribute -->
+        <button style="background-color:#000000;" ion-item menuClose
+                class="item-heading"
+                *ngFor="let p of signedInPages"
+                (click)="openPage(p)">
+          {{ "lynx.pages.menu." + p.title | translate }}
+        </button>
 
 
       </div>
