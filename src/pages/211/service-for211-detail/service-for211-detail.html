@@ -114,39 +114,6 @@
 
   <ion-grid>
 
-    <!-- TRANSPORTATION OPTIONS -->
-    <ion-row>
-      <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
-      <h3 class="item-heading">
-        {{ "lynx.global.transportation.help" | translate }}
-      </h3>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2 no-padding>
-        <ion-list class="lynx-list">
-
-          <!-- For each mode other than paratransit, build a button -->
-          <ion-item *ngFor="let itin of itineraries">
-            <h3 item-start class="item-heading mode-label">
-              {{itin.trip_type}}
-            </h3>
-            <div item-end class="mode-fare">
-              {{ [itin.cost] | prettyFare }}
-            </div>
-            <button ion-button item-end round default
-                    class="lynx-button-primary mode-trip-plan-button"
-                    (click)="openDirectionsPageForItinerary(itin)">
-              {{ itin.duration | prettyTime }}
-            </button>
-          </ion-item>
-
-        </ion-list>
-      </ion-col>
-    </ion-row>
-
-
     <!-- SERVICE DETAILS -->
 
     <!-- Show service details only if service is present -->

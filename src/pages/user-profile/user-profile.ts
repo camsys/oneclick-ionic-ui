@@ -9,7 +9,7 @@ import { environment } from '../../app/environment';
 import {User} from '../../models/user';
 import {Eligibility} from '../../models/eligibility';
 import {Accommodation} from '../../models/accommodation';
-import {TripType} from '../../models/user';
+import {TripType} from '../../models/trip-type';
 
 // PROVIDERS
 import { OneClickProvider } from '../../providers/one-click/one-click';
@@ -110,7 +110,7 @@ export class UserProfilePage {
         message: this.translate.instant("lynx.pages.user_profile.sign_in_required_message"),
         duration: 5000}
       ).present();
-    } else { 
+    } else {
       this.toastCtrl.create({
         message: this.translate.instant("lynx.pages.user_profile.generic_error_message"),
         duration: 5000}

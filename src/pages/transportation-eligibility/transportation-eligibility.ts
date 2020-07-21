@@ -6,11 +6,13 @@ import { OneClickProvider } from '../../providers/one-click/one-click';
 import { User } from '../../models/user';
 import { Eligibility } from '../../models/eligibility';
 import { Accommodation } from '../../models/accommodation';
-import { ParatransitServicesPage } from '../paratransit-services/paratransit-services';
+import { TripType } from '../../models/trip-type'
+import { TripResponsePage } from '../trip-response/trip-response';
 import { HelpMeFindPage } from '../help-me-find/help-me-find';
 
 import { TripRequestModel } from "../../models/trip-request";
 import { TripResponseModel } from "../../models/trip-response";
+import { GooglePlaceModel } from "../../models/google-place";
 
 /**
  * Generated class for the TransportationEligibilityPage page.
@@ -22,10 +24,13 @@ import { TripResponseModel } from "../../models/trip-response";
 })
 export class TransportationEligibilityPage {
 
+  origin: GooglePlaceModel = new GooglePlaceModel({});
+  destination: GooglePlaceModel = new GooglePlaceModel({});
   user: User;
   age: number;
   accommodations: Accommodation[] = [];
   eligibilities: Eligibility[] = [];
+  trip_types: TripType[] = [];
   tripResponse: TripResponseModel=null;
   tripRequest: TripRequestModel;
 
@@ -44,6 +49,11 @@ export class TransportationEligibilityPage {
   }
 
   ionViewDidLoad() {
+
+    // Set origin and destination places
+    this.origin = new GooglePlaceModel(this.navParams.data.origin);
+    this.destination = new GooglePlaceModel(this.navParams.data.destination);
+
     if(this.navParams.data.trip_response && this.navParams.data.trip_request) {
 
       this.loadTripResponse(this.navParams.data.trip_response);
@@ -74,11 +84,12 @@ export class TransportationEligibilityPage {
     // Pull out the relevant accommodations and eligibilities
     this.accommodations = this.tripResponse.accommodations;
     this.eligibilities = this.tripResponse.eligibilities;
+    this.trip_types = this.tripResponse.trip_types;
 
     // If user is logged in, set the values for the eligibilities and accommodations based on their saved info
     if(this.auth.isSignedIn() && this.auth.session().user) {
       this.user = this.auth.session().user;
-      this.setAccomAndEligValues();
+      this.setAccomEligAndTripTypeValues();
       this.age = this.user.age;
     }
 
@@ -90,8 +101,6 @@ export class TransportationEligibilityPage {
   loadTripRequest(tripRequest: TripRequestModel) {
     // Set up a tripRequest to make if any of the accommodation or eligibility values are changed
     this.tripRequest = tripRequest;
-    this.tripRequest.trip_types = ["paratransit"]; // Update trip request to only request paratransit
-    this.tripRequest.except_filters = ["schedule"]; // Don't filter by schedule, because we aren't letting the user pick a time
   }
 
   // Method fires every time an accommodation or eligibility is selected or unselected
@@ -116,20 +125,26 @@ export class TransportationEligibilityPage {
       eligibilities: eligs,
       age: age
     };
+    this.tripRequest.trip_types = this.trip_types
+      .filter((trip_type) => trip_type.value)
+      .map((trip_type) => {
+      return trip_type.code;
+    });
+
+    if (this.tripRequest.trip_types.findIndex((tt) => tt === 'paratransit') >= 0) {
+      this.tripRequest.except_filters = ["schedule"]; // Don't filter by schedule, because we aren't letting the user pick a time
+    }
+
   }
 
   // Shows all available paratransit options based on selected accommodations and eligibilities
   viewParatransitOptions() {
     this.events.publish('spinner:show');
     this.buildUserProfileParams();
-    this.oneClick.planTrip(this.tripRequest)
-    .subscribe((trip) => {
-      this.events.publish('spinner:hide');
-      this.navCtrl.push(ParatransitServicesPage, { trip_id: trip.id, trip_response: trip });
-    });
+    this.navCtrl.push(TripResponsePage, { tripRequest: this.tripRequest, origin: this.origin, destination: this.destination });
   }
 
-  setAccomAndEligValues() {
+  setAccomEligAndTripTypeValues() {
     this.accommodations.map((acc) => {
       let userAcc = this.user.accommodations.find((usrAccom) => usrAccom.code === acc.code);
       acc.value = userAcc.value;
@@ -138,6 +153,11 @@ export class TransportationEligibilityPage {
       let userElig = this.user.eligibilities.find((usrElig) => usrElig.code === elig.code);
       elig.value = userElig.value;
     });
+    // this.trip_types.map((trip_type) => {
+    //   let userTripType = this.user.trip_types.find((usrTripType) => usrTripType.code === trip_type.code);
+    //   trip_type.value = userTripType.value;
+    // });
+
   }
 
 }

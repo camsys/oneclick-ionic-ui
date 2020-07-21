@@ -10,7 +10,7 @@ import { AuthProvider } from '../../providers/auth/auth';
 
 // PAGES
 import { CategoriesFor211Page } from '../211/categories-for211/categories-for211';
-import { ServiceFor211DetailPage } from '../211/service-for211-detail/service-for211-detail';
+import { TripResponsePage } from '../trip-response/trip-response';
 
 // MODELS
 import { GooglePlaceModel } from "../../models/google-place";
@@ -213,8 +213,7 @@ export class UserLocatorPage {
   // Plans a trip based on origin and destination
   findTransportation(origin: GooglePlaceModel,
                      destination: GooglePlaceModel, time: string, arriveBy: boolean) {
-    this.navCtrl.push(ServiceFor211DetailPage, {
-      service: null,
+    this.navCtrl.push(TripResponsePage, {
       origin: origin,
       destination: destination,
       departureDateTime: time,

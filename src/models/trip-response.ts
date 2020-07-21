@@ -1,6 +1,7 @@
 import { User } from './user';
 import { Eligibility } from './eligibility';
 import { Accommodation } from './accommodation';
+import { TripType } from './trip-type';
 import { Purpose } from './purpose';
 import { ItineraryModel } from "./itinerary";
 import { OneClickPlaceModel } from './one-click-place';
@@ -15,9 +16,10 @@ export class TripResponseModel {
   origin: OneClickPlaceModel;
   destination: OneClickPlaceModel;
   accommodations: Accommodation[];
-  eligibilities: Eligibility[]; 
+  eligibilities: Eligibility[];
+  trip_types: TripType[];
   purposes: Purpose[];
-  
+
   constructor(attrs: any) {
     this.id = attrs.id;
     this.arrive_by = attrs.arrive_by || false;
@@ -29,14 +31,15 @@ export class TripResponseModel {
     this.destination = attrs.destination;
     this.accommodations = attrs.accommodations || [];
     this.eligibilities = attrs.eligibilities || [];
+    this.trip_types = attrs.trip_types || [];
   }
-  
+
   // Returns the subset of itineraries that match the passed trip type string
   // ".slice(0)" makes a clone of the array, to avoid weird reference effects
   itinerariesByTripType(tripType: string) {
     return this.itineraries.slice(0).filter((itin) => itin.trip_type === tripType);
   }
-  
+
   // Returns an array of costs by trip type, ignoring non-numeric values
   costsByTripType(tripType: string) {
     let costs = this.itinerariesByTripType(tripType)
@@ -44,27 +47,27 @@ export class TripResponseModel {
                     .filter((cost) => typeof(cost) === "number");
     return costs;
   }
-  
+
   // returns true/false if the trip includes an itinerary of the given mode
   includesTripType(tripType: string) {
     return this.itineraries
                .map((itin) => itin.trip_type)
                .findIndex((tt) => tt === tripType) >= 0
   }
-  
+
   // returns a copy of the trip object with only the filtered itineraries (by trip type)
   withFilteredItineraries(tripType: string): TripResponseModel {
     let newTrip = new TripResponseModel(this);
     newTrip.itineraries = this.itinerariesByTripType(tripType);
     return newTrip;
   }
-  
+
   // Builds a trip request for replanning this trip
   buildTripRequest(options?: any): TripRequestModel {
     options = options || {};
-    
+
     let tripRequest = new TripRequestModel();
-    
+
     // Set trip attributes
     tripRequest.trip.origin_attributes = this.origin;
     tripRequest.trip.destination_attributes = this.destination;
@@ -75,7 +78,7 @@ export class TripResponseModel {
     tripRequest.trip_types = options.modes || options.trip_types || ['transit', 'car', 'taxi', 'lyft', 'bicycle', 'paratransit'];
     tripRequest.except_filters = options.except_filters || null;
     tripRequest.only_filters = options.only_filters || null;
-    
+
     return tripRequest;
   }
 

@@ -18,6 +18,20 @@
 
   <h3 text-center>{{ "lynx.pages.transportation_eligibility.question_prompt" | translate }}</h3>
 
+  <!-- TRIP TYPES -->
+  <ion-list text-wrap class="lynx-list" >
+    <ion-list-header>
+      {{"lynx.pages.user_profile.trip_types" | translate}}
+    </ion-list-header>
+
+    <ion-item *ngFor="let trip_type of trip_types">
+      <ion-label>{{trip_type.name}}</ion-label>
+      <ion-checkbox [(ngModel)]=trip_type.value
+                    (ionChange)="updateCharacteristic()">
+      </ion-checkbox>
+    </ion-item>
+  </ion-list>
+
   <!-- ACCOMMODATIONS -->
   <ion-list text-wrap class="lynx-list" [hidden]="accommodations.length === 0">
     <ion-list-header>
@@ -54,11 +68,11 @@
 
     <ion-item>
       <ion-label>{{"lynx.pages.user_profile.age" | translate}}</ion-label>
-      <ion-input  class="lynx-input" 
-                  type="number" 
+      <ion-input  class="lynx-input"
+                  type="number"
                   placeholder=""
-                  name="age" 
-                  [(ngModel)]="age" 
+                  name="age"
+                  [(ngModel)]="age"
                   required>
       </ion-input>
     </ion-item>

@@ -43,6 +43,7 @@ import { ServicesMapTabPage } from '../pages/211/services-map-tab/services-map-t
 import { ServicesListTabPage } from '../pages/211/services-list-tab/services-list-tab';
 import { UserLocatorPage }  from '../pages/user-locator/user-locator';
 import { ServiceFor211DetailPage } from '../pages/211/service-for211-detail/service-for211-detail'
+import { TripResponsePage } from '../pages/trip-response/trip-response'
 import { ParatransitServicesPage } from '../pages/paratransit-services/paratransit-services';
 import { AboutUsPage } from '../pages/about-us/about-us';
 import { ContactUsPage } from '../pages/contact-us/contact-us';
@@ -125,6 +126,7 @@ export function translateFactory() {
     ServicesMapTabPage,
     ServicesListTabPage,
     ServiceFor211DetailPage,
+    TripResponsePage,
     ParatransitServicesPage,
     AboutUsPage,
     ContactUsPage,
@@ -174,10 +176,15 @@ export function translateFactory() {
         { component: SubcategoriesFor211Page, name: 'Sub-Categories', segment: 'sub_categories', defaultHistory: [HelpMeFindPage] },
         { component: SubSubcategoriesFor211Page, name: 'Sub-Sub-Categories', segment: 'sub_sub_categories/:code', defaultHistory: [HelpMeFindPage] },
         { component: ServicesPage, name: 'Services', segment: 'services/:code', defaultHistory: [HelpMeFindPage] },
-        { component: ServiceFor211DetailPage, name: 'Trip Options', segment: 'trip_options', defaultHistory: [HelpMeFindPage] },
-        { component: ServiceFor211DetailPage, name: 'Trip Options', segment: 'trip_options/:trip_id', defaultHistory: [HelpMeFindPage] },
-        { component: ServiceFor211DetailPage, name: 'Service Details', segment: 'trip_options/:trip_id/:service_id/:location_id', defaultHistory: [HelpMeFindPage] },
-        { component: ServiceFor211DetailPage, name: 'Service Details', segment: 'trip_options/:service_id/:location_id', defaultHistory: [HelpMeFindPage] },
+
+        { component: ServiceFor211DetailPage, name: 'Trip Options', segment: 'service_detail', defaultHistory: [HelpMeFindPage] },
+        { component: ServiceFor211DetailPage, name: 'Service Details', segment: 'service_detail/:service_id/:location_id', defaultHistory: [HelpMeFindPage] },
+
+        { component: TripResponsePage, name: 'Trip Options', segment: 'trip_options', defaultHistory: [HelpMeFindPage] },
+        { component: TripResponsePage, name: 'Trip Options', segment: 'trip_options/:trip_id', defaultHistory: [HelpMeFindPage] },
+        { component: TripResponsePage, name: 'Service Details', segment: 'trip_options/:trip_id/:service_id/:location_id', defaultHistory: [HelpMeFindPage] },
+        { component: TripResponsePage, name: 'Service Details', segment: 'trip_options/:service_id/:location_id', defaultHistory: [HelpMeFindPage] },
+
         { component: DirectionsPage, name: 'Directions', segment: 'trip_directions/:trip_id', defaultHistory: [HelpMeFindPage] },
         { component: TaxiServicesPage, name: 'Taxi Options', segment: 'taxi_services/:trip_id', defaultHistory: [HelpMeFindPage] },
         { component: TransportationEligibilityPage, name: 'Transportation Eligibility', segment: 'transportation_eligibility/:trip_id', defaultHistory: [HelpMeFindPage] },
@@ -217,6 +224,7 @@ export function translateFactory() {
     ServicesMapTabPage,
     ServicesListTabPage,
     ServiceFor211DetailPage,
+    TripResponsePage,
     ParatransitServicesPage,
     AboutUsPage,
     ContactUsPage,
@@ -283,6 +291,7 @@ export function translateFactory() {
     ServicesMapTabPage,
     ServicesListTabPage,
     ServiceFor211DetailPage,
+    TripResponsePage,
     ParatransitServicesPage,
     AboutUsPage,
     ContactUsPage,
