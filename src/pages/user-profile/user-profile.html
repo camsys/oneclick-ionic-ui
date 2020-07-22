@@ -1,13 +1,5 @@
 <ion-header>
-  <ion-navbar class="lynx-toolbar lynx-toolbar-black">
-    <ion-title text-center id="profile-header">
-      {{"lynx.pages.user_profile.header" | translate}}
-    </ion-title>
-    <button ion-button end menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-  </ion-navbar>
-  
+  <app-navbar headerTitle="{{ 'lynx.pages.user_profile.header' | translate }}"></app-navbar>  
   <ion-toolbar id="profile-subheader" class="lynx-toolbar" text-center>
     <h1 *ngIf="user.first_name && user.last_name">{{user.first_name}} {{user.last_name}}</h1>
     <h1 *ngIf="!user.first_name || !user.last_name">{{user.email}}</h1>

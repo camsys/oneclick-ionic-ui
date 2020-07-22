@@ -5,14 +5,7 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar class="lynx-toolbar">
-    <ion-title text-center>{{subSubCategory && subSubCategory.name}}</ion-title>
-    <button ion-button end menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-  </ion-navbar>
-
+  <app-navbar headerTitle="{{subSubCategory && subSubCategory.name}}"></app-navbar>
 </ion-header>
 
 

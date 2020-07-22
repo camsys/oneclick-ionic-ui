@@ -1,14 +1,5 @@
 <ion-header no-border>
-  <ion-navbar transparent>
-    <ion-buttons end>
-      <button ion-button class="lynx-button-link link-pink" (click)="openLanguageSelectorModal();">
-        <ion-icon class="padded" name="globe"></ion-icon> {{ "lynx.global.languages.native." + i18n.currentLocale() | translate }}
-      </button>
-    </ion-buttons>
-    <button ion-button end menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-  </ion-navbar>
+  <app-navbar></app-navbar>
 </ion-header>
 
 <ion-content fullscreen padding [style.background-image]="awsImageLocation">

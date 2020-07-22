@@ -108,6 +108,7 @@ import { PrettyTableNamePipe } from '../pipes/pretty-table-name';
 import { ServiceDetailsComponent } from '../components/service-details/service-details';
 import { AutocompleteResultsComponent } from '../components/autocomplete-results/autocomplete-results';
 import { ExternalLinkComponent } from '../components/external-link/external-link';
+import { AppNavbarComponent } from '../components/app-navbar/app-navbar';
 
 export function translateFactory() {
   (i18n) => i18n.currentLocale()
@@ -159,7 +160,8 @@ export function translateFactory() {
     PrettyTableNamePipe,
     ServiceDetailsComponent,
     AutocompleteResultsComponent,
-    ExternalLinkComponent
+    ExternalLinkComponent,
+    AppNavbarComponent
   ],
   imports: [
     BrowserModule,
