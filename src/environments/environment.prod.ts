@@ -3,8 +3,8 @@ export const environment = {
   AWS_LOCALE_BUCKET: 'https://s3.us-east-1.amazonaws.com/occ-lynx-prod/i18n/',
   AWS_IMAGE_ASSET_BUCKET: 'https://s3.us-east-1.amazonaws.com/occ-lynx-prod/assets/img/',
   DEFAULT_LOCATION: {
-    lat: 28.538336, 
-    lng: -81.379234
+    lat: 34.302587, 
+    lng: -119.318995
   },
   AVAILABLE_LOCALES: [ 'en', 'es', 'pt', 'vi', 'ht'],
   DEFAULT_LOCALE: 'en'
