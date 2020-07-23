@@ -10,4 +10,6 @@ export class Session {
   user_departure_datetime: string;
   user_arrive_by: boolean;
 
+  user_preferences_disabled: boolean;
+
 }

@@ -21,6 +21,7 @@ import { LegModel } from "../../models/leg";
 //Providers
 import { OneClickProvider } from '../../providers/one-click/one-click';
 import { ExternalNavigationProvider } from '../../providers/external-navigation/external-navigation';
+import { AuthProvider } from '../../providers/auth/auth';
 
 //Helpers
 import { HelpersProvider } from '../../providers/helpers/helpers';
@@ -82,6 +83,8 @@ export class TripResponsePage {
 
   departureDateTime: string;
 
+  skipPreferences: boolean = false;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public oneClick: OneClickProvider,
@@ -90,6 +93,7 @@ export class TripResponsePage {
               public toastCtrl: ToastController,
               public modalCtrl: ModalController,
               private helpers: HelpersProvider,
+              private auth: AuthProvider,
               private translate: TranslateService,
               public exNav: ExternalNavigationProvider,
               private location: Location) {
@@ -97,6 +101,8 @@ export class TripResponsePage {
     this.trip_id = parseInt(this.navParams.data.trip_id);
     this.location_id = parseInt(this.navParams.data.location_id);
     this.arriveBy = this.navParams.data.arriveBy;
+
+    this.skipPreferences = this.navParams.data.skipPreferences;
 
     this.events.subscribe('place-search:change', () => {
       this.changeDetector.markForCheck();
@@ -124,6 +130,16 @@ export class TripResponsePage {
         .planTrip(this.tripRequest)
         .subscribe((tripResponse) => {
           this.loadTripResponse(tripResponse);
+
+          if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
+            this.navCtrl.push(TransportationEligibilityPage, {
+              trip_response: this.tripResponse,
+              trip_request: this.tripRequest,
+              trip_id: this.trip_id,
+              origin: this.origin,
+              destination: this.destination
+            });
+          }
         });
 
     } else if(this.trip_id) {
@@ -148,6 +164,16 @@ export class TripResponsePage {
         .planTrip(this.buildTripRequest(this.allModes))
         .subscribe((tripResponse) => {
           this.loadTripResponse(tripResponse);
+
+          if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
+            this.navCtrl.push(TransportationEligibilityPage, {
+              trip_response: this.tripResponse,
+              trip_request: this.tripRequest,
+              trip_id: this.trip_id,
+              origin: this.origin,
+              destination: this.destination
+            });
+          }
         });
 
       // Otherwise, go to home page

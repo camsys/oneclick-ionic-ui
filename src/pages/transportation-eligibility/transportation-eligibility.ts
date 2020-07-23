@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ToastController } from 'ionic-angular';
 
 import { AuthProvider } from '../../providers/auth/auth';
 import { OneClickProvider } from '../../providers/one-click/one-click';
@@ -38,6 +38,7 @@ export class TransportationEligibilityPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public toastCtrl: ToastController,
               private auth: AuthProvider,
               public oneClick: OneClickProvider,
               private changeDetector: ChangeDetectorRef,
@@ -74,6 +75,11 @@ export class TransportationEligibilityPage {
       // If necessary NavParams are not present, go to home page
       this.navCtrl.setRoot(HelpMeFindPage);
     }
+
+    // reset hiding this page since user opened it
+    let session = this.auth.session();
+    session.user_preferences_disabled = false;
+    this.auth.setSession(session);
 
   }
 
@@ -118,11 +124,16 @@ export class TransportationEligibilityPage {
       eligHash[elig.code] = elig.value;
       return eligHash;
     }, {});
+    let trip_types = this.trip_types.reduce((tripTypeHash, trip_type) => {
+      tripTypeHash[trip_type.code] = trip_type.value;
+      return tripTypeHash;
+    }, {});
     let age = this.age;
     this.tripRequest.user_profile = {
       attributes: {age: age},
       accommodations: accs,
       eligibilities: eligs,
+      trip_types: trip_types,
       age: age
     };
     this.tripRequest.trip_types = this.trip_types
@@ -141,7 +152,23 @@ export class TransportationEligibilityPage {
   viewParatransitOptions() {
     this.events.publish('spinner:show');
     this.buildUserProfileParams();
-    this.navCtrl.push(TripResponsePage, { tripRequest: this.tripRequest, origin: this.origin, destination: this.destination });
+    this.navCtrl.push(TripResponsePage, {
+      tripRequest: this.tripRequest,
+      origin: this.origin,
+      destination: this.destination,
+      skipPreferences: true
+    });
+  }
+
+  storeUserPreferencesDisabledInSession() {
+    let session = this.auth.session();
+    session.user_preferences_disabled = true;
+    this.auth.setSession(session);
+
+    this.toastCtrl.create({
+      message: "Session updated",
+      duration: 5000}
+    ).present();
   }
 
   setAccomEligAndTripTypeValues() {
@@ -153,10 +180,10 @@ export class TransportationEligibilityPage {
       let userElig = this.user.eligibilities.find((usrElig) => usrElig.code === elig.code);
       elig.value = userElig.value;
     });
-    // this.trip_types.map((trip_type) => {
-    //   let userTripType = this.user.trip_types.find((usrTripType) => usrTripType.code === trip_type.code);
-    //   trip_type.value = userTripType.value;
-    // });
+    this.trip_types.map((trip_type) => {
+      let userTripType = this.user.trip_types.find((usrTripType) => usrTripType.code === trip_type.code);
+      trip_type.value = userTripType.value;
+    });
 
   }
 

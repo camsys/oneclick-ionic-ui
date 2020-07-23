@@ -74,11 +74,18 @@
 
   <!-- PLAN TRIP -->
   <div text-center id="view-paratransit-options-button-container" >
-    <button ion-button round
+    <button ion-button middle round
             class="lynx-button-primary"
             id="view-paratransit-options-button"
             (click)="viewParatransitOptions()">
       {{ "lynx.pages.transportation_eligibility.plan_trip_button" | translate }}
+      <ion-icon pull-right name="arrow-forward"></ion-icon>
+    </button>
+    <button ion-button item-end round
+            class="lynx-button-primary"
+            id="user-preferences-disabled-button"
+            (click)="storeUserPreferencesDisabledInSession()">
+      Don't show this screen again
       <ion-icon pull-right name="arrow-forward"></ion-icon>
     </button>
   </div>
