@@ -146,8 +146,6 @@ export class ServiceFor211DetailPage {
           name: null
         });
       }
-      this.originSearch.setPlace(this.origin);
-      this.destinationSearch.setPlace(this.destination);
 
       // Plan a trip and store the result.
       // Once response comes in, update the UI with travel times and allow
@@ -157,13 +155,6 @@ export class ServiceFor211DetailPage {
         .subscribe((tripResponse) => {
           this.loadTripResponse(tripResponse);
         });
-
-      // if (this.navParams.data.destination){
-      //   this.navCtrl.push(DirectionsPage, {
-      //     trip_response: this.tripResponse,
-      //     trip_id: this.tripResponse.id
-      //   });
-      // }
 
       // Otherwise, go to home page
     } else {
@@ -253,17 +244,28 @@ export class ServiceFor211DetailPage {
     this.navCtrl.push(TripResponsePage, {
       origin: origin,
       destination: destination,
-      departureDateTime: time,
-      arriveBy: this.arriveBy
+      tripRequest: this.tripRequest
     });
   }
 
   openOtherTransportationOptions(){
-    this.navCtrl.push(TransportationEligibilityPage, {
-      trip_response: this.tripResponse,
-      trip_request: this.tripRequest,
-      trip_id: this.trip_id
-    })
+    // Plan a trip and store the result.
+    // Once response comes in, update the UI with travel times and allow
+    // user to select a mode to view directions.
+
+    this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
+      .planTrip(this.buildTripRequest(this.tripRequest.trip_types))
+      .subscribe((tripResponse) => {
+        this.loadTripResponse(tripResponse);
+
+        this.navCtrl.push(TransportationEligibilityPage, {
+          trip_response: this.tripResponse,
+          trip_request: this.tripRequest,
+          trip_id: this.trip_id,
+          origin: this.origin,
+          destination: this.destination
+        });
+      })
   }
 
   // Builds a trip request based on the passed mode, stored origin/destination,
@@ -322,8 +324,8 @@ export class ServiceFor211DetailPage {
 
   // Updates the origin and destination based on the trip response
   updateTripPlaces(tripResponse: TripResponseModel) {
-    this.origin = new GooglePlaceModel(tripResponse.origin);
-    this.destination = new GooglePlaceModel(tripResponse.destination);
+    this.originSearch.setPlace(this.origin);
+    this.destinationSearch.setPlace(this.destination);
   }
 
   // Returns duration in seconds for the given mode

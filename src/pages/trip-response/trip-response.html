@@ -66,7 +66,7 @@
 
   <!-- PLAN TRIP BUTTON -->
   <div text-center id="find-transportation-button-container">
-    <button ion-button middle round
+    <button ion-button item-start round
             class="lynx-button-primary"
             id="transportation-options-button"
             *ngIf="originSearch.place && destinationSearch.place"
@@ -74,12 +74,21 @@
       {{ "lynx.pages.user_locator.transportation_button" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
     </button>
-    <button ion-button item-end round default
+    <button ion-button middle round default
             class="lynx-button-primary mode-trip-plan-button"
             (click)="openOtherTransportationOptions()">
       {{ "lynx.global.modes.find_other_options" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
     </button>
+    <button ion-button item-end round (click)="openOrderBySelect()">{{orderBySelect.text}}</button>
+    <ion-select [(ngModel)]="orderBy" hidden=true (ionChange)="orderItinList($event)" #orderBySelect>
+      <ion-option value="trip_type">Specialized Options first</ion-option>
+      <ion-option value="cost">Sort by Cost</ion-option>
+      <ion-option value="duration">Sort by Travel Time</ion-option>
+      <ion-option value="endTime">Sort by Arrival Time</ion-option>
+      <ion-option value="wait_time">Sort by Transfer Wait Time</ion-option>
+      <ion-option value="walk_distance">Sort by Walk Distance</ion-option>
+    </ion-select>
   </div>
 
   <ion-grid>
@@ -99,11 +108,31 @@
 
           <!-- For each mode other than paratransit, build a button -->
           <ion-item *ngFor="let itin of itineraries">
-            <h3 item-start class="item-heading mode-label">
-              {{itin.trip_type}}
-            </h3>
-            <div item-end class="mode-fare">
-              {{ [itin.cost] | prettyFare }}
+            <ion-row>
+              <ng-container *ngFor="let leg of itin.legs; index as i">
+                <div class="otp-legMode-icon otp-legMode-icon-{{ leg.mode }}"></div>
+                <div *ngIf="i != itin.legs.length-1" class="otp-legMode-icon otp-legMode-icon-arrow-right" style="margin-left: 4px;"></div>
+              </ng-container>
+            </ion-row>
+            <ion-row>
+              <h3 item-start class="item-heading mode-label">
+                {{ itin.legs[0].startTime | date:'shortTime' }} {{ "lynx.global.common.to" | translate }}
+                {{ itin.legs[itin.legs.length-1].endTime | date:'shortTime' }}
+              </h3>
+            </ion-row>
+            <ion-row>
+              <span *ngIf="itin.transit_time > 0">{{'lynx.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}</span>
+              <span *ngIf="itin.transit_time == 0">{{"lynx.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}</span>
+            </ion-row>
+
+
+            <div item-end>
+              <ng-container *ngFor="let leg of itin.legs; index as i">
+                <img class="ride-mode-service-icon" src="{{ leg.serviceLogoUrl }}">
+              </ng-container>
+              <h3 text-right class="item-subheading">
+                {{ [itin.cost] | prettyFare }}
+              </h3>
             </div>
             <button ion-button item-end round default
                     class="lynx-button-primary mode-trip-plan-button"
@@ -116,5 +145,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
 
 </ion-content>

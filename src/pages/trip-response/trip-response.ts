@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef, ViewChild, HostListener } from '@angular/
 import { Location } from '@angular/common';
 import { IonicPage, NavController, NavParams,
   Events, ModalController, ToastController,
-  Content } from 'ionic-angular';
+  Content, Select } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 // Pages
@@ -21,6 +21,9 @@ import { LegModel } from "../../models/leg";
 //Providers
 import { OneClickProvider } from '../../providers/one-click/one-click';
 import { ExternalNavigationProvider } from '../../providers/external-navigation/external-navigation';
+
+//Helpers
+import { HelpersProvider } from '../../providers/helpers/helpers';
 
 //Components
 import { PlaceSearchComponent } from "../../components/place-search/place-search";
@@ -51,6 +54,8 @@ export class TripResponsePage {
   @ViewChild('originResults') originResults: AutocompleteResultsComponent;
   @ViewChild('destinationResults') destinationResults: AutocompleteResultsComponent;
 
+  @ViewChild('orderBySelect') orderBySelect: Select;
+
   @HostListener('window:resize') onResize() {
     this.content && this.content.resize();
   }
@@ -66,6 +71,7 @@ export class TripResponsePage {
   arriveBy: boolean;
 
   itineraries: ItineraryModel[];
+  orderBy: String;
 
   trip_id: number;
   location_id: number;
@@ -83,6 +89,7 @@ export class TripResponsePage {
               public changeDetector: ChangeDetectorRef,
               public toastCtrl: ToastController,
               public modalCtrl: ModalController,
+              private helpers: HelpersProvider,
               private translate: TranslateService,
               public exNav: ExternalNavigationProvider,
               private location: Location) {
@@ -166,6 +173,89 @@ export class TripResponsePage {
     this.events.unsubscribe('place-search:keypress');
   }
 
+
+  openOrderBySelect()
+  {
+    this.orderBySelect.open();
+  }
+
+  // Orders the match list based on the passed string
+  orderItinList(orderBy: String) {
+    console.log(orderBy);
+
+    if(orderBy == "duration") {
+      this.orderByDuration();
+    } else if(orderBy == "walk_distance") {
+      this.orderByWalkDistance();
+    } else if(orderBy == 'cost') {
+      this.orderByCost();
+    } else if(orderBy == 'endTime') {
+      this.orderByEndTime();
+    } else if(orderBy == 'wait_time') {
+      this.orderByWaitTime();
+    } else {
+      this.orderByParatransit();
+    }
+    this.orderBy = orderBy;
+  }
+
+  orderByDuration()
+  {
+    let h = this.helpers;
+    return this.itineraries.sort(function (a : ItineraryModel, b : ItineraryModel) {
+      //sorts by shortest duration
+      return h.compareTimes(a.duration, b.duration);
+    })
+  }
+
+  orderByWalkDistance()
+  {
+    return this.itineraries.sort(function (a : ItineraryModel, b : ItineraryModel) {
+      //sorts by shortest walk distance
+      return a.walk_distance - b.walk_distance;
+    })
+  }
+
+  orderByParatransit()
+  {
+    return this.itineraries.sort(function (a : ItineraryModel, b : ItineraryModel) {
+      //sorts by paratransit first
+      if ((a.trip_type == 'paratransit') && (b.trip_type != 'paratransit')) {
+        return -1;
+      } else if  ((b.trip_type == 'paratransit') && (a.trip_type != 'paratransit')) {
+        return 1;
+      } else {
+        return 0;
+      }
+    })
+  }
+
+  orderByCost()
+  {
+    return this.itineraries.sort(function (a : ItineraryModel, b : ItineraryModel) {
+      //sorts by smallest cost
+      return a.cost - b.cost;
+    })
+  }
+
+  orderByEndTime()
+  {
+    let h = this.helpers;
+    return this.itineraries.sort(function (a : ItineraryModel, b : ItineraryModel) {
+      //sorts by earliest arrival time
+      return h.compareTimes(a.legs[a.legs.length-1].endTime, b.legs[b.legs.length-1].endTime);
+    })
+  }
+
+  orderByWaitTime()
+  {
+    let h = this.helpers;
+    return this.itineraries.sort(function (a : ItineraryModel, b : ItineraryModel) {
+      //sorts by earliest arrival time
+      return h.compareTimes(a.wait_time, b.wait_time);
+    })
+  }
+
   // Loads the page from a OneClick trip response
   loadTripResponse(tripResponse: TripResponseModel) {
     this.tripResponse = new TripResponseModel(tripResponse);
@@ -178,6 +268,7 @@ export class TripResponsePage {
       });
       return itin;
     });
+    this.orderItinList('trip_type');
 
     this.content.resize(); // Make sure content isn't covered by navbar
     this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
@@ -237,14 +328,14 @@ export class TripResponsePage {
       .subscribe((tripResponse) => {
         this.loadTripResponse(tripResponse);
 
-        this.navCtrl.push(TransportationEligibilityPage, {
-          trip_response: this.tripResponse,
-          trip_request: this.tripRequest,
-          trip_id: this.trip_id,
-          origin: this.origin,
-          destination: this.destination
-        })
+      this.navCtrl.push(TransportationEligibilityPage, {
+        trip_response: this.tripResponse,
+        trip_request: this.tripRequest,
+        trip_id: this.trip_id,
+        origin: this.origin,
+        destination: this.destination
       });
+    });
 
 
   }
