@@ -1,12 +1,16 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { App, IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { App, IonicPage, NavController, NavParams, Events, ModalController, ToastController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
+
 import { TripResponseModel } from "../../models/trip-response";
 import { TripRequestModel } from "../../models/trip-request";
 import { ItineraryModel } from "../../models/itinerary";
 import { LegModel } from "../../models/leg";
+import { ServiceModel } from "../../models/service"
 import { OneClickPlaceModel } from "../../models/one-click-place";
 import { OneClickProvider } from '../../providers/one-click/one-click';
 import { DirectionsPage } from '../directions/directions';
+import { ServiceFor211ModalPage } from '../211/service-for211-modal/service-for211-modal';
 import { HelpersProvider } from '../../providers/helpers/helpers';
 
 /**
@@ -37,7 +41,11 @@ export class DirectionsStepsTabPage {
               private app: App,
               public events: Events,
               public helpers: HelpersProvider,
-              public changeDetector: ChangeDetectorRef) {
+              public changeDetector: ChangeDetectorRef,
+              public toastCtrl: ToastController,
+              public modalCtrl: ModalController,
+              private translate: TranslateService
+  ) {
 
     this.trip = navParams.data.trip;
     if (navParams.data.itinerary) {
@@ -71,6 +79,21 @@ export class DirectionsStepsTabPage {
   }
 
   ionViewDidLoad() { }
+
+  selectService(id: number) {
+    this.oneClickProvider.get211ServiceDetailsById(id)
+      .subscribe((svc) => {
+
+        ServiceFor211ModalPage.createModal(this.modalCtrl,
+          this.toastCtrl,
+          this.translate,
+          { service: svc })
+          .present();
+      });
+
+  }
+
+
 
   // When depart at time is updated, submit new trip plan request with arrive_by = false
   updateDepartAt(t: string) {

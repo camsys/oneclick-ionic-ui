@@ -82,12 +82,12 @@
     </button>
     <button ion-button item-end round (click)="openOrderBySelect()">{{orderBySelect.text}}</button>
     <ion-select [(ngModel)]="orderBy" hidden=true (ionChange)="orderItinList($event)" #orderBySelect>
-      <ion-option value="trip_type">Specialized Options first</ion-option>
-      <ion-option value="cost">Sort by Cost</ion-option>
-      <ion-option value="duration">Sort by Travel Time</ion-option>
-      <ion-option value="endTime">Sort by Arrival Time</ion-option>
-      <ion-option value="wait_time">Sort by Transfer Wait Time</ion-option>
-      <ion-option value="walk_distance">Sort by Walk Distance</ion-option>
+      <ion-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-option>
+      <ion-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-option>
+      <ion-option value="duration">{{"sort_by" | translate}} {{"travel_time_sorter" | translate }}</ion-option>
+      <ion-option value="endTime">{{"sort_by" | translate}} {{ "arrival_time_sorter" | translate }}</ion-option>
+      <ion-option value="wait_time">{{"sort_by" | translate}} {{"wait_time_sorter" | translate}}}</ion-option>
+      <ion-option value="walk_distance">{{"sort_by" | translate}} {{"walk_distance_sorter" | translate}}</ion-option>
     </ion-select>
   </div>
 

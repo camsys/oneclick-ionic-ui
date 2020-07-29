@@ -207,8 +207,6 @@ export class TripResponsePage {
 
   // Orders the match list based on the passed string
   orderItinList(orderBy: String) {
-    console.log(orderBy);
-
     if(orderBy == "duration") {
       this.orderByDuration();
     } else if(orderBy == "walk_distance") {
@@ -350,7 +348,7 @@ export class TripResponsePage {
     // user to select a mode to view directions.
 
     this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
-      .planTrip(this.buildTripRequest(this.tripRequest.trip_types))
+      .planTrip(this.buildTripRequest(this.allModes))
       .subscribe((tripResponse) => {
         this.loadTripResponse(tripResponse);
 

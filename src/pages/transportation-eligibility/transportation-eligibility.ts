@@ -36,6 +36,8 @@ export class TransportationEligibilityPage {
 
   trip_id: number;
 
+  user_preferences_disabled: boolean = false;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public toastCtrl: ToastController,
@@ -162,7 +164,7 @@ export class TransportationEligibilityPage {
 
   storeUserPreferencesDisabledInSession() {
     let session = this.auth.session();
-    session.user_preferences_disabled = true;
+    session.user_preferences_disabled = this.user_preferences_disabled;
     this.auth.setSession(session);
 
     this.toastCtrl.create({

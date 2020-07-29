@@ -254,7 +254,7 @@ export class ServiceFor211DetailPage {
     // user to select a mode to view directions.
 
     this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
-      .planTrip(this.buildTripRequest(this.tripRequest.trip_types))
+      .planTrip(this.buildTripRequest(this.allModes))
       .subscribe((tripResponse) => {
         this.loadTripResponse(tripResponse);
 

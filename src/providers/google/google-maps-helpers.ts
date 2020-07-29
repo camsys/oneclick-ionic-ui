@@ -121,7 +121,7 @@ export class GoogleMapsHelpersProvider {
       default:
         return new google.maps.Polyline({
           path: routePoints,
-          strokeColor: '#DB0F7D', // Lynx Dark Pink
+          strokeColor: '#133182', // Lynx Dark Pink
           strokeOpacity: 0.7,
           strokeWeight: 6
         });

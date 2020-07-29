@@ -43,7 +43,7 @@ export class HelpMeFindPage {
   }
 
   ionViewDidLoad() {
-    this.awsImageLocation = this.sanitizer.bypassSecurityTrustStyle('url(' + environment.AWS_IMAGE_ASSET_BUCKET + 'find-page-background-bus.jpg)');
+    this.awsImageLocation = this.sanitizer.bypassSecurityTrustStyle('url(' + '../assets/img/GettyImages-930896740_sized.png)');
 
     // Wait until after platform is ready, so we have the user's preferred locale
     this.platform.ready().then(() => {
@@ -51,15 +51,15 @@ export class HelpMeFindPage {
         .then(alerts => this.alerts = alerts);
     });
   }
-  
+
   ionViewWillEnter() {
     // Subscribe to sign out event and refresh alerts when user is signed out
     this.events.subscribe("user:signed_out", () => {
       this.oneClickProvider.getAlerts()
         .then(alerts => this.alerts = alerts);
-    });      
+    });
   }
-  
+
   ionViewWillLeave() {
     // Unsubscribe from sign out event when page is no longer active
     this.events.unsubscribe("user:signed_out");

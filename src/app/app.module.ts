@@ -26,9 +26,8 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 export function createTranslateLoader(http: Http){
-  // return new TranslateStaticLoader(http, 'assets/i18n', '.json');
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-  // return new TranslateHttpLoader(http, environment.AWS_LOCALE_BUCKET, '.json');
+  // return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, environment.AWS_LOCALE_URL + "api/v1/translations/all?lang=", '&format=json');
 }
 
 // Ratings
@@ -42,7 +41,8 @@ import { SubcategoriesFor211Page } from '../pages/211/subcategories-for211/subca
 import { ServicesMapTabPage } from '../pages/211/services-map-tab/services-map-tab';
 import { ServicesListTabPage } from '../pages/211/services-list-tab/services-list-tab';
 import { UserLocatorPage }  from '../pages/user-locator/user-locator';
-import { ServiceFor211DetailPage } from '../pages/211/service-for211-detail/service-for211-detail'
+import { ServiceFor211DetailPage } from '../pages/211/service-for211-detail/service-for211-detail';
+import { ServiceFor211ModalPage } from '../pages/211/service-for211-modal/service-for211-modal';
 import { TripResponsePage } from '../pages/trip-response/trip-response'
 import { ParatransitServicesPage } from '../pages/paratransit-services/paratransit-services';
 import { AboutUsPage } from '../pages/about-us/about-us';
@@ -127,6 +127,7 @@ export function translateFactory() {
     ServicesMapTabPage,
     ServicesListTabPage,
     ServiceFor211DetailPage,
+    ServiceFor211ModalPage,
     TripResponsePage,
     ParatransitServicesPage,
     AboutUsPage,
@@ -226,6 +227,7 @@ export function translateFactory() {
     ServicesMapTabPage,
     ServicesListTabPage,
     ServiceFor211DetailPage,
+    ServiceFor211ModalPage,
     TripResponsePage,
     ParatransitServicesPage,
     AboutUsPage,
@@ -293,6 +295,7 @@ export function translateFactory() {
     ServicesMapTabPage,
     ServicesListTabPage,
     ServiceFor211DetailPage,
+    ServiceFor211ModalPage,
     TripResponsePage,
     ParatransitServicesPage,
     AboutUsPage,
