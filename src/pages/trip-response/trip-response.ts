@@ -85,6 +85,8 @@ export class TripResponsePage {
 
   skipPreferences: boolean = false;
 
+  can_plan_trips: boolean = false;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public oneClick: OneClickProvider,
@@ -199,12 +201,6 @@ export class TripResponsePage {
     this.events.unsubscribe('place-search:keypress');
   }
 
-
-  openOrderBySelect()
-  {
-    this.orderBySelect.open();
-  }
-
   // Orders the match list based on the passed string
   orderItinList(orderBy: String) {
     if(orderBy == "duration") {
@@ -278,6 +274,17 @@ export class TripResponsePage {
       //sorts by earliest arrival time
       return h.compareTimes(a.wait_time, b.wait_time);
     })
+  }
+
+  updateTransportationOptionsButton() {
+    this.can_plan_trips = true;
+  }
+
+  purposeList(itin: ItineraryModel): string {
+    //let results = itin.legs[0].service
+
+    //return this.service.purposes.map((purp) => purp.name).join(', ');
+    return "";
   }
 
   // Loads the page from a OneClick trip response
