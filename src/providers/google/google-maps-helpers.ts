@@ -9,7 +9,7 @@ import { environment } from '../../app/environment';
 export class GoogleMapsHelpersProvider {
 
   minZoom: number = 10;
-  maxZoom: number = 16;
+  maxZoom: number = 13;
 
   // Sets up a map element with default options, and returns it
   buildGoogleMap(mapDivId: string): google.maps.Map {
@@ -19,6 +19,7 @@ export class GoogleMapsHelpersProvider {
       center: latLng,
       zoom: this.minZoom,
       mapTypeControl: false,
+      scaleControl: true,
       streetViewControl: false,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
     };
