@@ -64,17 +64,14 @@ export class ServicesMapTabPage {
           marker.setValues(service);
           marker.setTitle(service.agency_name);
           marker.setClickable(true);
+          marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
           marker.addListener('click', function() {
             me.addServiceInfo(service);
           });
           return marker;
         });
 
-    // // add in 'you are here' marker
-    let startIcon = {
-      url: 'assets/img/street-view-solid.svg',
-      scaledSize: new google.maps.Size(35,35)
-    }
+    // add in 'you are here' marker
     let yourLocation = this.session().user_starting_location;
     let your_location_service_location : google.maps.LatLng = new google.maps.LatLng(Number(yourLocation.geometry.location.lat), Number(yourLocation.geometry.location.lng));
 
@@ -83,7 +80,6 @@ export class ServicesMapTabPage {
     your_location_marker.setMap(this.service_map);
     your_location_marker.setTitle('You are here');
     your_location_marker.setClickable(false);
-    your_location_marker.setIcon(startIcon)
     markers.push(your_location_marker);
 
     // Zoom the map to fit all the services
