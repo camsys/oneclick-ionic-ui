@@ -4,7 +4,7 @@
     <img class="lynx-logo-sm" src="assets/img/211_Ride_Logo_RGB_sm.png" alt="LYNX Icon">
   </ion-title>
   <ion-buttons end>
-    <button ion-button class="lynx-button-link link-pink" (click)="openLanguageSelectorModal();">
+    <button ion-button bar-button-menutoggle class="lynx-button-link link-pink" (click)="openLanguageSelectorModal();">
       <ion-icon class="padded" name="globe"></ion-icon> {{ "lynx.global.languages.native." + i18n.currentLocale() | translate }}
     </button>
   </ion-buttons>

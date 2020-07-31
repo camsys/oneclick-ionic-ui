@@ -62,6 +62,8 @@ export class UserLocatorPage {
     this.lastClicked = null;
     this.userLocation = null; // The user's device location
     this.viewType = this.navParams.data.viewType; // Find services vs. transportation view
+
+    console.log(this.viewType);
     this.arriveBy = false;
 
     this.events.subscribe('place-search:change', () => {

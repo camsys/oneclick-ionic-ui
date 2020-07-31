@@ -172,6 +172,11 @@ export class TransportationEligibilityPage {
       duration: 5000}
     ).present();
   }
+  storeUserPreferencesDisabledInSessionByButton() {
+    this.user_preferences_disabled = !this.user_preferences_disabled;
+    this.storeUserPreferencesDisabledInSession();
+  }
+
 
   setAccomEligAndTripTypeValues() {
     this.accommodations.map((acc) => {
