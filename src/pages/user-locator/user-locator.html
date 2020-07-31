@@ -6,7 +6,8 @@
 -->
 <ion-header>
 
-  <app-navbar></app-navbar>
+  <app-navbar *ngIf="viewType === 'services'" headerTitle="{{ 'lynx.pages.user_locator.services_help' | translate }}"></app-navbar>
+  <app-navbar *ngIf="viewType != 'services'"></app-navbar>
   <ion-toolbar class="lynx-toolbar" text-center>
     <div id="origin-search-container">
       <place-search #originSearch
@@ -53,10 +54,6 @@
 
 
     </ion-row>
-
-   <div text-center *ngIf="viewType === 'services'">
-    {{ 'lynx.pages.user_locator.services_help' | translate }}
-   </div>
 
   </ion-toolbar>
 

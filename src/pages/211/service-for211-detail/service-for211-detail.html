@@ -1,8 +1,8 @@
 <!--ServiceFor211DetailPage-->
 <ion-header>
-  <app-navbar></app-navbar>
+  <app-navbar headerTitle="{{service.agency_name}}"></app-navbar>
 
-  <ion-toolbar class="lynx-toolbar" text-center>
+  <ion-toolbar class="lynx-toolbar" hidden="true" text-center>
 
     <div id="origin-search-container">
       <place-search #originSearch
@@ -50,27 +50,6 @@
     </ion-row>
   </ion-toolbar>
 
-  <!-- If no service is present, put the origin and destination in the header -->
-  <ng-template #noServiceHeader>
-    <!-- If there's a service present, put its name and address in the header -->
-    <ion-navbar class="lynx-toolbar">
-
-
-      <ion-title text-center class="dynamic-toolbar-title"><b>{{service.agency_name}}</b></ion-title>
-      <!--<div class="lynx-toolbar-body">{{service.address}}</div>-->
-      <!--<div *ngIf="service" class="lynx-toolbar-body">-->
-      <!--<external-link *ngIf="service.url"-->
-      <!--url="{{service.url}}"-->
-      <!--text="{{service.display_url}}">-->
-      <!--</external-link>-->
-      <!--</div>-->
-      <button ion-button end menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-navbar>
-
-  </ng-template>
-
 </ion-header>
 
 
@@ -93,13 +72,7 @@
             id="transportation-options-button"
             *ngIf="originSearch.place && destinationSearch.place"
             (click)="findTransportation(originSearch.place, destinationSearch.place, tripTimeDatepicker.date)">
-      {{ "lynx.pages.user_locator.transportation_button" | translate }}
-      <ion-icon pull-right name="arrow-forward"></ion-icon>
-    </button>
-    <button ion-button item-end round default
-            class="lynx-button-primary mode-trip-plan-button"
-            (click)="openOtherTransportationOptions()">
-      {{ "lynx.global.modes.find_other_options" | translate }}
+      {{ "lynx.pages.service_details.transportation_button" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
     </button>
   </div>
@@ -150,14 +123,14 @@
       <!--</ion-col>-->
 
       <!-- Feedback? button -->
-      <ion-col col-12 col-sm text-center>
-        <h3>{{ "lynx.pages.service_details.feedback_header" | translate }}</h3>
-        <button ion-button round
-                class="lynx-button-primary"
-                (click)="rateService(service)">
-          {{ "lynx.pages.service_details.feedback_button" | translate }}
-        </button>
-      </ion-col>
+      <!--<ion-col col-12 col-sm text-center>-->
+        <!--<h3>{{ "lynx.pages.service_details.feedback_header" | translate }}</h3>-->
+        <!--<button ion-button round-->
+                <!--class="lynx-button-primary"-->
+                <!--(click)="rateService(service)">-->
+          <!--{{ "lynx.pages.service_details.feedback_button" | translate }}-->
+        <!--</button>-->
+      <!--</ion-col>-->
 
       <!-- Email button -->
       <ion-col col-12 col-sm text-center>

@@ -4,7 +4,7 @@ page-transportation-eligibility {
   #view-paratransit-options-button-container {
     padding-bottom: size(2);
     width: 100%;
-    
+
     #view-paratransit-options-button {
       padding-right: size(1);
       ion-icon {
@@ -12,5 +12,9 @@ page-transportation-eligibility {
       }
     }
   }
-  
+
+  button ion-checkbox {
+    padding-right: 8px;
+  }
+
 }

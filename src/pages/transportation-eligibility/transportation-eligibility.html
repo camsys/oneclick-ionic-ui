@@ -6,13 +6,31 @@
 </ion-header>
 
 <ion-content>
+  <!-- PLAN TRIP -->
+  <div text-center id="view-paratransit-options-button-container" >
+    <button item-start ion-button middle round
+            class="lynx-button-primary"
+            id="view-paratransit-options-button"
+            (click)="viewParatransitOptions()">
+      {{ "lynx.pages.transportation_eligibility.plan_trip_button" | translate }}
+      <ion-icon pull-right name="arrow-forward"></ion-icon>
+    </button>
+    <button item-end ion-button middle round
+            class="lynx-button-primary"
+            (click)="storeUserPreferencesDisabledInSessionByButton()">
+      <ion-checkbox [(ngModel)]="user_preferences_disabled"
+                    [checked]="true"
+                    (ionChange)="storeUserPreferencesDisabledInSession()">
+      </ion-checkbox>
+      {{"lynx.pages.session_user_preference_disabled_text" | translate }}
+    </button>
 
-  <h3 text-center>{{ "lynx.pages.transportation_eligibility.question_prompt" | translate }}</h3>
+  </div>
 
   <!-- TRIP TYPES -->
   <ion-list text-wrap class="lynx-list" >
     <ion-list-header>
-      {{"lynx.pages.user_profile.trip_types" | translate}}
+      {{"lynx.pages.transportation_eligibility.trip_types_header" | translate}}
     </ion-list-header>
 
     <ion-item *ngFor="let trip_type of trip_types">
@@ -70,30 +88,5 @@
 
 
   </ion-list>
-
-  <ion-list text-wrap class="lynx-list">
-    <ion-list-header>
-      {{"lynx.pages.session_user_preference_disabled_text" | translate }}
-    </ion-list-header>
-    <ion-item>
-      <ion-label>{{"lynx.pages.session_user_preference_disabled_text" | translate }}</ion-label>
-      <ion-checkbox [(ngModel)]="user_preferences_disabled"
-                    (ionChange)="storeUserPreferencesDisabledInSession()">
-      </ion-checkbox>
-    </ion-item>
-
-  </ion-list>
-
-
-  <!-- PLAN TRIP -->
-  <div text-center id="view-paratransit-options-button-container" >
-    <button ion-button middle round
-            class="lynx-button-primary"
-            id="view-paratransit-options-button"
-            (click)="viewParatransitOptions()">
-      {{ "lynx.pages.transportation_eligibility.plan_trip_button" | translate }}
-      <ion-icon pull-right name="arrow-forward"></ion-icon>
-    </button>
-  </div>
 
 </ion-content>
