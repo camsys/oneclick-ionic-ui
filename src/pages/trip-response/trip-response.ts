@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 // Pages
 import { DirectionsPage } from '../directions/directions';
 import { TransportationEligibilityPage } from '../transportation-eligibility/transportation-eligibility';
+import { ParatransitServicesPage } from '../paratransit-services/paratransit-services';
 import { HelpMeFindPage } from '../help-me-find/help-me-find';
 
 // Models
@@ -294,9 +295,11 @@ export class TripResponsePage {
     this.updateTripPlaces(this.tripResponse);
 
     this.itineraries = this.tripResponse.itineraries.map(function(itin) {
-      itin.legs = itin.legs.map(function(legAttrs) {
-        return new LegModel().assignAttributes(legAttrs);
-      });
+      if (itin.legs) {
+        itin.legs = itin.legs.map(function(legAttrs) {
+          return new LegModel().assignAttributes(legAttrs);
+        });
+      }
       return itin;
     });
     this.orderItinList('trip_type');
@@ -338,6 +341,10 @@ export class TripResponsePage {
       });
   }
 
+  viewParatransitOptions(itinerary: ItineraryModel) {
+    let tripResponse = this.tripResponse;
+    this.navCtrl.push(ParatransitServicesPage, { trip_id: tripResponse.id, trip_response: tripResponse, itinerary: itinerary });
+  }
 
   openDirectionsPageForItinerary(itinerary: ItineraryModel) {
     let tripResponse = this.tripResponse;

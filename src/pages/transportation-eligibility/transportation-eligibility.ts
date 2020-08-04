@@ -181,15 +181,22 @@ export class TransportationEligibilityPage {
   setAccomEligAndTripTypeValues() {
     this.accommodations.map((acc) => {
       let userAcc = this.user.accommodations.find((usrAccom) => usrAccom.code === acc.code);
-      acc.value = userAcc.value;
+      if (userAcc) {
+        acc.value = userAcc.value;
+      }
     });
     this.eligibilities.map((elig) => {
       let userElig = this.user.eligibilities.find((usrElig) => usrElig.code === elig.code);
-      elig.value = userElig.value;
+      if (userElig) {
+        elig.value = userElig.value;
+      }
     });
     this.trip_types.map((trip_type) => {
       let userTripType = this.user.trip_types.find((usrTripType) => usrTripType.code === trip_type.code);
-      trip_type.value = userTripType.value;
+      if (userTripType) {
+        trip_type.value = userTripType.value;
+      }
+
     });
 
   }
