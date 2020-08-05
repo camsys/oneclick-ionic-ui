@@ -282,10 +282,7 @@ export class TripResponsePage {
   }
 
   purposeList(itin: ItineraryModel): string {
-    //let results = itin.legs[0].service
-
-    //return this.service.purposes.map((purp) => purp.name).join(', ');
-    return "";
+    return itin.service.purposes.map((purp) => purp.name).join(', ');
   }
 
   // Loads the page from a OneClick trip response
@@ -303,6 +300,8 @@ export class TripResponsePage {
       return itin;
     });
     this.orderItinList('trip_type');
+
+    console.log(this.itineraries);
 
     this.content.resize(); // Make sure content isn't covered by navbar
     this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
@@ -471,6 +470,46 @@ export class TripResponsePage {
   // Pulls the current session from local storage
   session(): Session {
     return (JSON.parse(localStorage.session || null) as Session);
+  }
+
+  getDepartAtTime(itin: ItineraryModel): string {
+    let h = this.helpers; // for date manipulation methods
+
+    // TRIP TIMES
+    // Trip's trip_time in milliseconds since epoch
+    let tripTimeInMS: any = Date.parse(this.tripRequest.trip.trip_time);
+    let tripDepartAtTime: any
+
+    // Round to nearest 15 min (up and down) and format as ISO string with TZ offset
+    if (this.tripRequest.trip.arrive_by) {
+      tripDepartAtTime = h.roundUpToNearest(tripTimeInMS - itin.duration, 15 * 60000);
+      tripDepartAtTime = h.dateISOStringWithTimeZoneOffset(new Date(tripDepartAtTime));
+    } else {
+      tripDepartAtTime = h.roundDownToNearest(tripTimeInMS, 15 * 60000);
+      tripDepartAtTime = h.dateISOStringWithTimeZoneOffset(new Date(tripDepartAtTime));
+    }
+
+    return tripDepartAtTime;
+  }
+
+  getArriveByTime(itin: ItineraryModel): string {
+    let h = this.helpers; // for date manipulation methods
+
+    // TRIP TIMES
+    // Trip's trip_time in milliseconds since epoch
+    let tripTimeInMS: any = Date.parse(this.tripRequest.trip.trip_time);
+    let tripArriveByTime: any
+
+    // Round to nearest 15 min (up and down) and format as ISO string with TZ offset
+    if (this.tripRequest.trip.arrive_by) {
+      tripArriveByTime = h.roundDownToNearest(tripTimeInMS, 15 * 60000);
+      tripArriveByTime = h.dateISOStringWithTimeZoneOffset(new Date(tripArriveByTime));
+    } else {
+      tripArriveByTime = h.roundUpToNearest(tripTimeInMS + itin.duration, 15 * 60000);
+      tripArriveByTime = h.dateISOStringWithTimeZoneOffset(new Date(tripArriveByTime));
+    }
+
+    return tripArriveByTime;
   }
 
 }
