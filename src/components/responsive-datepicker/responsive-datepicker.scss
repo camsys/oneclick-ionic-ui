@@ -1,5 +1,11 @@
-responsive-datepicker {
+responsive-datepicker ion-datetime {
+  background-color: #fff;
+}
 
+responsive-datepicker ion-datetime .datetime-text {
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #141414;
 }
 
 /* Hack to work around IE11 ion-datetime bug in Ionic 3. Overrides generated inline style. */

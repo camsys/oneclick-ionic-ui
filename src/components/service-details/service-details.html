@@ -2,7 +2,7 @@
 
 
 <ion-row>
-  
+
   <!-- LOGO -->
   <ion-col no-padding class="image-container" *ngIf="service.logo">
     <img src="{{service.logo}}"/>
@@ -42,13 +42,13 @@
 <!-- DESCRIPTION -->
 <p class="item-body service-details-section" *ngIf="service.description">
   <b>{{ "lynx.pages.transportation_service_details.description" | translate }}: </b>
-  {{ service.description }}
+  <span [innerHTML]="service.description"></span>
 </p>
 
 <!-- SCHEDULE -->
 <div class="service-details-section" *ngIf="service.schedules && service.schedules.length > 0">
   <p class="item-body">
-    <b>{{ "lynx.pages.transportation_service_details.schedule" | translate }}:</b>              
+    <b>{{ "lynx.pages.transportation_service_details.schedule" | translate }}:</b>
   </p>
   <ul class="service-schedule">
     <li *ngFor="let schedule of service.schedules">
@@ -56,7 +56,7 @@
       {{ schedule.start_time | scheduleTime }} {{ "lynx.global.common.to" | translate }}
       {{ schedule.end_time | scheduleTime }}
     </li>
-  </ul>              
+  </ul>
 </div>
 
 <!-- ACCOMMODATIONS -->

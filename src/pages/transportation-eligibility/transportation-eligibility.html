@@ -13,7 +13,6 @@
             id="view-paratransit-options-button"
             (click)="viewParatransitOptions()">
       {{ "lynx.pages.transportation_eligibility.plan_trip_button" | translate }}
-      <ion-icon pull-right name="arrow-forward"></ion-icon>
     </button>
     <button item-end ion-button middle round
             class="lynx-button-primary"
@@ -55,20 +54,6 @@
     </ion-item>
   </ion-list>
 
-  <!-- ELIGIBILITIES -->
-  <ion-list text-wrap class="lynx-list" [hidden]="eligibilities.length === 0">
-    <ion-list-header>
-      {{ "lynx.pages.transportation_eligibility.eligibilities_header" | translate }}
-    </ion-list-header>
-
-    <ion-item *ngFor="let elig of eligibilities">
-      <ion-label>{{elig.note}}</ion-label>
-      <ion-checkbox [(ngModel)]="elig.value"
-                    (ionChange)="updateCharacteristic()">
-      </ion-checkbox>
-    </ion-item>
-  </ion-list>
-
   <!-- AGE -->
   <ion-list text-wrap class="lynx-list">
     <ion-list-header>
@@ -82,9 +67,25 @@
                   placeholder=""
                   name="age"
                   [(ngModel)]="age"
+                  min="0"
                   required>
       </ion-input>
     </ion-item>
+
+    <!-- ELIGIBILITIES -->
+  <ion-list text-wrap class="lynx-list" [hidden]="eligibilities.length === 0">
+    <ion-list-header>
+      {{ "lynx.pages.transportation_eligibility.eligibilities_header" | translate }}
+    </ion-list-header>
+
+    <ion-item *ngFor="let elig of eligibilities">
+      <ion-label>{{elig.note}}</ion-label>
+      <ion-checkbox [(ngModel)]="elig.value"
+                    (ionChange)="updateCharacteristic()">
+      </ion-checkbox>
+    </ion-item>
+  </ion-list>
+
 
 
   </ion-list>

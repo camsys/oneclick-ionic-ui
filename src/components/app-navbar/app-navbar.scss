@@ -1,3 +1,12 @@
 app-navbar {
 
+  ion-title {
+    flex: 1 0 auto;
+    text-align: center;
+  }
+
+  button.nav-icon-button {
+    background: transparent;
+    margin: 0;
+  }
 }

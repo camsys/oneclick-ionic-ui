@@ -67,7 +67,7 @@
   <!-- PLAN TRIP BUTTON -->
   <div text-center id="find-transportation-button-container">
     <ion-row>
-      <ion-col offset-sm-4 col-sm-3>
+      <ion-col offset-sm-3 col-sm-4>
         <button ion-button ion-start round
                 class="lynx-button-primary"
                 id="transportation-options-button"
@@ -75,13 +75,11 @@
                 [disabled]="!can_plan_trips"
                 (click)="findTransportation(originSearch.place, destinationSearch.place, tripTimeDatepicker.date)">
           {{ "lynx.pages.trip_response.transportation_button" | translate }}
-          <ion-icon pull-right name="arrow-forward"></ion-icon>
         </button>
         <button ion-button ion-end round default
                 class="lynx-button-primary mode-trip-plan-button"
                 (click)="openOtherTransportationOptions()">
           {{ "lynx.global.modes.find_other_options" | translate }}
-          <ion-icon pull-right name="arrow-forward"></ion-icon>
         </button>
       </ion-col>
       <ion-col col-sm-2>
@@ -115,40 +113,72 @@
 
           <!-- For each mode other than paratransit, build a button -->
           <ion-item *ngFor="let itin of itineraries">
-            <ion-row>
-              <ng-container *ngFor="let leg of itin.legs; index as i">
-                <div class="otp-legMode-icon otp-legMode-icon-{{ leg.mode }}"></div>
-                <div *ngIf="i != itin.legs.length-1" class="otp-legMode-icon otp-legMode-icon-arrow-right" style="margin-left: 4px;"></div>
-              </ng-container>
-            </ion-row>
-            <ion-row>
-              <h3 item-start class="item-heading mode-label">
-                {{ itin.legs[0].startTime | date:'shortTime' }} {{ "lynx.global.common.to" | translate }}
-                {{ itin.legs[itin.legs.length-1].endTime | date:'shortTime' }}
-              </h3>
-            </ion-row>
-            <ion-row>
-              <span *ngIf="itin.transit_time > 0">{{'lynx.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}</span>
-              <span *ngIf="itin.transit_time == 0">{{"lynx.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}</span>
-            </ion-row>
-            <ion-row>
-              <h3 text-right class="item-subheading">
-                {{ [itin.cost] | prettyFare }}
-              </h3>
-            </ion-row>
+            <ng-container *ngIf="itin.trip_type != 'paratransit'; else isParatransit">
+              <ion-row>
+                <ion-col col-sm-6>
+                  <ng-container *ngFor="let leg of itin.legs; index as i">
+                    <div class="otp-legMode-icon otp-legMode-icon-{{ leg.mode }}"></div>
+                    <div *ngIf="i != itin.legs.length-1" class="otp-legMode-icon otp-legMode-icon-arrow-right" style="margin-left: 4px;"></div>
+                  </ng-container>
+                  <ion-row>
+                    <h3 item-start class="item-heading mode-label">
+                      {{ itin.legs[0].startTime | date:'shortTime' }} {{ "lynx.global.common.to" | translate }}
+                      {{ itin.legs[itin.legs.length-1].endTime | date:'shortTime' }}
+                    </h3>
+                  </ion-row>
+                  <h3 class="item-subheading" *ngIf="itin.transit_time > 0">{{'lynx.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}</h3>
+                  <h3 class="item-subheading" *ngIf="itin.transit_time == 0">{{"lynx.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}</h3>
+                  <h3>
+                    {{ [itin.cost] | prettyFare }}
+                  </h3>
+                </ion-col>
+                <ion-col text-right col-sm-6>
+                  <div item-end>
+                    <ng-container *ngFor="let leg of itin.legs; index as i">
+                      <img class="ride-mode-service-icon" src="{{ leg.serviceLogoUrl }}">
+                    </ng-container>
+                  </div>
+                  <button ion-button item-end round default
+                          class="lynx-button-primary mode-trip-plan-button"
+                          (click)="openDirectionsPageForItinerary(itin)">
+                    {{ itin.duration | prettyTime }}
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ng-container>
 
+            <ng-template #isParatransit>
+              <ion-row>
+                <ion-col col-sm-6>
+                  <div class="otp-legMode-icon otp-legMode-icon-call-and-ride"></div>
+                  <ion-row>
+                    <h3 item-start class="item-heading mode-label">
+                      {{ getDepartAtTime(itin) | date:'shortTime' }} {{ "lynx.global.common.to" | translate }}
+                      {{ getArriveByTime(itin) | date:'shortTime' }}
+                    </h3>
+                  </ion-row>
+                  <h3 class="item-subheading">{{'lynx.global.modes.paratransit' | translate}}: {{itin.transit_time | prettyTime}}</h3>
+                  <h3>
+                    {{ [itin.cost] | prettyFare }}
+                  </h3>
+                </ion-col>
+                <ion-col text-right col-sm-6>
+                  <div item-end>
+                    <img class="ride-mode-service-icon" src="{{ itin.service.logo }}">
+                  </div>
+                  <p class="item-body service-details-section" *ngIf="itin.service.purposes.length > 0">
+                    <b>{{ "lynx.pages.transportation_service_details.purposes_header" | translate }}: </b>
+                    {{ purposeList(itin) }}
+                  </p>
+                  <button ion-button item-end round default
+                          class="lynx-button-primary mode-trip-plan-button"
+                          (click)="viewParatransitOptions(itin)">
+                    {{ itin.duration | prettyTime }}
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ng-template>
 
-            <div item-end>
-              <ng-container *ngFor="let leg of itin.legs; index as i">
-                <img class="ride-mode-service-icon" src="{{ leg.serviceLogoUrl }}">
-              </ng-container>
-
-            </div>
-            <button ion-button item-end round default
-                    class="lynx-button-primary mode-trip-plan-button"
-                    (click)="openDirectionsPageForItinerary(itin)">
-              {{ itin.duration | prettyTime }}
-            </button>
           </ion-item>
 
         </ion-list>

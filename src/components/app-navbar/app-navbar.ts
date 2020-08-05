@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { ModalController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import { LanguageSelectorModalPage } from '../../pages/language-selector-modal/language-selector-modal';
+import { HelpMeFindPage } from '../../pages/help-me-find/help-me-find';
 
 // PROVIDERS
 import { OneClickProvider } from '../../providers/one-click/one-click';
@@ -27,6 +28,7 @@ export class AppNavbarComponent {
   @Input() headerTitle: string; // If no title is provided, display the logo.
 
   constructor(public oneClickProvider: OneClickProvider,
+          public navCtrl: NavController,
   			  private modalCtrl: ModalController,
   			  private i18n: I18nProvider,
   			  private auth: AuthProvider) {
@@ -50,6 +52,13 @@ export class AppNavbarComponent {
       }
     })
     languageSelectorModal.present();
+  }
+
+  // Check if we're already at the home page; if not, go there.
+  goHome() {
+    if((this.navCtrl.getActive() && this.navCtrl.getActive().name) !== "HelpMeFindPage") {
+      this.navCtrl.setRoot(HelpMeFindPage);
+    }
   }
 
 }

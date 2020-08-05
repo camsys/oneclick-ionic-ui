@@ -207,9 +207,11 @@ export class ServiceFor211DetailPage {
     this.updateTripPlaces(this.tripResponse);
 
     this.itineraries = this.tripResponse.itineraries.map(function(itin) {
-      itin.legs = itin.legs.map(function(legAttrs) {
-        return new LegModel().assignAttributes(legAttrs);
-      });
+      if (itin.legs) {
+        itin.legs = itin.legs.map(function(legAttrs) {
+          return new LegModel().assignAttributes(legAttrs);
+        });
+      }
       return itin;
     });
 
