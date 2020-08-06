@@ -17,23 +17,7 @@
     <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
       <h3>{{ "lynx.pages.service_details.details_header" | translate }}</h3>
 
-      <div>
-        <b>{{ "lynx.pages.service_details.service_description" | translate }}: </b><external-link url="{{service.description}}"></external-link>
-      </div>
-
-      <div *ngIf="service.url">
-        <b>{{ "lynx.pages.service_details.url" | translate }}: </b><external-link url="{{service.url}}"></external-link>
-      </div>
-
-      <div *ngIf="service.email">
-        <b>{{ "lynx.pages.service_details.email" | translate }}: </b><a href="mailto:{{service.email}}">{{service.email}}</a>
-      </div>
-
-      <!-- insert a line for each non-null key in the details hash -->
-      <div *ngFor="let k of detailKeys" class="">
-        <b>{{ "lynx.pages.service_details." + k | translate }}: </b>
-        <span [innerHTML]="service.details[k]"></span>
-      </div>
+      <service-details [service]="service"></service-details>
     </ion-col>
   </ion-row>
 </ion-content>

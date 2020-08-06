@@ -81,7 +81,7 @@ export class DirectionsStepsTabPage {
   ionViewDidLoad() { }
 
   selectService(id: number) {
-    this.oneClickProvider.get211ServiceDetailsById(id)
+    this.oneClickProvider.getServiceDetails(id)
       .subscribe((svc) => {
 
         ServiceFor211ModalPage.createModal(this.modalCtrl,

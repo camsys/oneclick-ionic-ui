@@ -272,17 +272,17 @@ export class OneClickProvider {
       .catch(error => this.handleError(error));
   }
 
-  get211ServiceDetailsById(id: number): Observable<ServiceModel> {
+  getServiceDetails(id: number): Observable<OneClickServiceModel> {
     let url = encodeURI(
       this.oneClickUrl +
-      'oneclick_refernet/services/' +
+      'services/' +
       id +
       '&locale=' + this.i18n.currentLocale()
     );
 
     return this.http.get(url)
       .map((response) => {
-        return JSON.parse(response.text()) as ServiceModel;
+        return JSON.parse(response.text()) as OneClickServiceModel;
       })
       .catch(error => this.handleError(error));
   }
