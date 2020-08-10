@@ -97,9 +97,9 @@ export class TransportationEligibilityPage {
     // If user is logged in, set the values for the eligibilities and accommodations based on their saved info
     if(this.auth.isSignedIn() && this.auth.session().user) {
       this.user = this.auth.session().user;
-      this.setAccomEligAndTripTypeValues();
       this.age = this.user.age;
     }
+    this.setAccomEligAndTripTypeValues();
 
     this.events.publish("spinner:hide");
     this.changeDetector.markForCheck();
@@ -179,25 +179,33 @@ export class TransportationEligibilityPage {
 
 
   setAccomEligAndTripTypeValues() {
-    this.accommodations.map((acc) => {
-      let userAcc = this.user.accommodations.find((usrAccom) => usrAccom.code === acc.code);
-      if (userAcc) {
-        acc.value = userAcc.value;
-      }
-    });
-    this.eligibilities.map((elig) => {
-      let userElig = this.user.eligibilities.find((usrElig) => usrElig.code === elig.code);
-      if (userElig) {
-        elig.value = userElig.value;
-      }
-    });
-    this.trip_types.map((trip_type) => {
-      let userTripType = this.user.trip_types.find((usrTripType) => usrTripType.code === trip_type.code);
-      if (userTripType) {
-        trip_type.value = userTripType.value;
-      }
 
-    });
+    if (this.user) {
+      this.accommodations.map((acc) => {
+        let userAcc = this.user.accommodations.find((usrAccom) => usrAccom.code === acc.code);
+        if (userAcc) {
+          acc.value = userAcc.value;
+        }
+      });
+      this.eligibilities.map((elig) => {
+        let userElig = this.user.eligibilities.find((usrElig) => usrElig.code === elig.code);
+        if (userElig) {
+          elig.value = userElig.value;
+        }
+      });
+      this.trip_types.map((trip_type) => {
+        let userTripType = this.user.trip_types.find((usrTripType) => usrTripType.code === trip_type.code);
+        if (userTripType) {
+          trip_type.value = userTripType.value;
+        }
+
+      });
+    } else {
+      this.trip_types.map((trip_type) => {
+        trip_type.value = true;
+      });
+    }
+
 
   }
 

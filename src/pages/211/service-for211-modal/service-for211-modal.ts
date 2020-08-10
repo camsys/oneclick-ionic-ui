@@ -6,7 +6,6 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
 import { OneClickServiceModel } from "../../../models/one-click-service";
-import { ServiceModel } from "../../../models/service";
 import { FeedbackModel } from "../../../models/feedback";
 import { SearchResultModel } from "../../../models/search-result";
 
@@ -22,7 +21,7 @@ import { AuthProvider } from '../../../providers/auth/auth';
 })
 export class ServiceFor211ModalPage {
 
-  service: ServiceModel;
+  service: OneClickServiceModel;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -71,7 +70,7 @@ export namespace ServiceFor211ModalPage {
                               toastCtrl: ToastController,
                               translate: TranslateService,
                               subjectData: {
-                                service?: ServiceModel;
+                                service?: OneClickServiceModel;
                               } = {}) {
     let serviceFor211Modal = modalCtrl.create(ServiceFor211ModalPage, subjectData);
     serviceFor211Modal.onDidDismiss(data => {
