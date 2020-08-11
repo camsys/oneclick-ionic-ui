@@ -26,7 +26,7 @@
       <ion-col class="trip-date-col"
                col-sm-6 text-center>
         <ion-item>
-          <ion-select [(ngModel)]="arriveBy">
+          <ion-select [(ngModel)]="arriveBy" (ionChange)="updateTransportationOptionsButton()">
             <ion-option value="false">{{ "lynx.global.directions.depart_at" | translate }}</ion-option>
             <ion-option value="true">{{ "lynx.global.directions.arrive_by" | translate }}</ion-option>
           </ion-select>
@@ -40,7 +40,8 @@
         <responsive-datepicker #tripTimeDatepicker
                                [date]="departureDateTime"
                                [hideBool]='false'
-                               [dateTimeFormat]="'MMM DD, YYYY hh:mm A'">
+                               [dateTimeFormat]="'MMM DD, YYYY hh:mm A'"
+                               (change)="updateTransportationOptionsButton()">
         </responsive-datepicker>
 
       </ion-col>
