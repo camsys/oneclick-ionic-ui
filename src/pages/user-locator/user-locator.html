@@ -30,7 +30,7 @@
     </div>
 
     <!-- Header row with editable trip date -->
-    <ion-row class="trip-date-row">
+    <ion-row class="trip-date-row" [hidden]="viewType === 'services'">
       <ion-col class="trip-date-col"
                col-sm-6 text-center>
         <ion-item>
@@ -51,8 +51,6 @@
         </responsive-datepicker>
 
       </ion-col>
-
-
     </ion-row>
 
   </ion-toolbar>
