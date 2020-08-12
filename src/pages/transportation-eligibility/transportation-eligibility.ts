@@ -1,5 +1,6 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ToastController, AlertController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 
 import { AuthProvider } from '../../providers/auth/auth';
 import { OneClickProvider } from '../../providers/one-click/one-click';
@@ -41,9 +42,11 @@ export class TransportationEligibilityPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public toastCtrl: ToastController,
+              public alertCtrl: AlertController,
               private auth: AuthProvider,
               public oneClick: OneClickProvider,
               private changeDetector: ChangeDetectorRef,
+              private translate: TranslateService,
               public events: Events) {
 
     this.events.publish('spinner:show');
@@ -207,6 +210,42 @@ export class TransportationEligibilityPage {
     }
 
 
+  }
+
+  async showTripTypesPopup() {
+    let alert = await this.alertCtrl.create({
+      message: this.translate.instant('lynx.pages.transportation_eligibility.trip_types_info_popup'),
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
+  async showAccommodationsPopup() {
+    let alert = await this.alertCtrl.create({
+      message: this.translate.instant('lynx.pages.transportation_eligibility.accommodations_info_popup'),
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
+  async showEligibilitiesPopup() {
+    let alert = await this.alertCtrl.create({
+      message: this.translate.instant('lynx.pages.transportation_eligibility.eligibilities_info_popup'),
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
+  async showAgePopup() {
+    let alert = await this.alertCtrl.create({
+      message: this.translate.instant('lynx.pages.transportation_eligibility.age_info_popup'),
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 
 }

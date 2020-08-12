@@ -30,6 +30,7 @@
   <ion-list text-wrap class="lynx-list" >
     <ion-list-header>
       {{"lynx.pages.transportation_eligibility.trip_types_header" | translate}}
+      <button class="transportation-eligibility-info-button" (click)="showTripTypesPopup()"><ion-icon name="information-circle"></ion-icon></button>
     </ion-list-header>
 
     <ion-item *ngFor="let trip_type of trip_types">
@@ -44,6 +45,7 @@
   <ion-list text-wrap class="lynx-list" [hidden]="accommodations.length === 0">
     <ion-list-header>
       {{ "lynx.pages.transportation_eligibility.accommodations_header" | translate }}
+      <button class="transportation-eligibility-info-button" (click)="showAccommodationsPopup()"><ion-icon name="information-circle"></ion-icon></button>
     </ion-list-header>
 
     <ion-item *ngFor="let acc of accommodations">
@@ -58,6 +60,7 @@
   <ion-list text-wrap class="lynx-list">
     <ion-list-header>
       {{ "lynx.pages.transportation_eligibility.age_header" | translate }}
+      <button class="transportation-eligibility-info-button" (click)="showAgePopup()"><ion-icon name="information-circle"></ion-icon></button>
     </ion-list-header>
 
     <ion-item>
@@ -76,6 +79,7 @@
   <ion-list text-wrap class="lynx-list" [hidden]="eligibilities.length === 0">
     <ion-list-header>
       {{ "lynx.pages.transportation_eligibility.eligibilities_header" | translate }}
+      <button class="transportation-eligibility-info-button" (click)="showEligibilitiesPopup()"><ion-icon name="information-circle"></ion-icon></button>
     </ion-list-header>
 
     <ion-item *ngFor="let elig of eligibilities">
