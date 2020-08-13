@@ -17,7 +17,9 @@ export class TripResponseModel {
   destination: OneClickPlaceModel;
   accommodations: Accommodation[];
   eligibilities: Eligibility[];
-  trip_types: TripType[];
+  all_accommodations: Accommodation[];
+  all_eligibilities: Eligibility[];
+  all_trip_types: TripType[];
   purposes: Purpose[];
 
   constructor(attrs: any) {
@@ -31,7 +33,9 @@ export class TripResponseModel {
     this.destination = attrs.destination;
     this.accommodations = attrs.accommodations || [];
     this.eligibilities = attrs.eligibilities || [];
-    this.trip_types = attrs.trip_types || [];
+    this.all_accommodations = attrs.all_accommodations || [];
+    this.all_eligibilities = attrs.all_eligibilities || [];
+    this.all_trip_types = attrs.all_trip_types || [];
   }
 
   // Returns the subset of itineraries that match the passed trip type string

@@ -23,7 +23,6 @@
       </ion-checkbox>
       {{"lynx.pages.session_user_preference_disabled_text" | translate }}
     </button>
-
   </div>
 
   <!-- TRIP TYPES -->
@@ -93,5 +92,24 @@
 
 
   </ion-list>
+
+  <!-- PLAN TRIP -->
+  <div text-center id="view-paratransit-options-button-container-bottom" >
+    <button item-start ion-button middle round
+            class="lynx-button-primary"
+            id="view-paratransit-options-bottom-button"
+            (click)="viewParatransitOptions()">
+      {{ "lynx.pages.transportation_eligibility.plan_trip_button" | translate }}
+    </button>
+    <button item-end ion-button middle round
+            class="lynx-button-primary"
+            (click)="storeUserPreferencesDisabledInSessionByButton()">
+      <ion-checkbox [(ngModel)]="user_preferences_disabled"
+                    [checked]="true"
+                    (ionChange)="storeUserPreferencesDisabledInSession()">
+      </ion-checkbox>
+      {{"lynx.pages.session_user_preference_disabled_text" | translate }}
+    </button>
+  </div>
 
 </ion-content>

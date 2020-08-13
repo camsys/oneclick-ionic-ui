@@ -93,9 +93,9 @@ export class TransportationEligibilityPage {
     this.tripResponse = new TripResponseModel(tripResponse);
 
     // Pull out the relevant accommodations and eligibilities
-    this.accommodations = this.tripResponse.accommodations;
-    this.eligibilities = this.tripResponse.eligibilities;
-    this.trip_types = this.tripResponse.trip_types;
+    this.accommodations = this.tripResponse.all_accommodations;
+    this.eligibilities = this.tripResponse.all_eligibilities;
+    this.trip_types = this.tripResponse.all_trip_types;
 
     // If user is logged in, set the values for the eligibilities and accommodations based on their saved info
     if(this.auth.isSignedIn() && this.auth.session().user) {
@@ -208,7 +208,6 @@ export class TransportationEligibilityPage {
         trip_type.value = true;
       });
     }
-
 
   }
 
