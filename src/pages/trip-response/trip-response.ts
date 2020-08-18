@@ -51,7 +51,6 @@ export class TripResponsePage {
 
   @ViewChild('originSearch') originSearch: PlaceSearchComponent;
   @ViewChild('destinationSearch') destinationSearch: PlaceSearchComponent;
-  @ViewChild('tripTimeDatepicker') tripTimeDatepicker: ResponsiveDatepickerComponent;
 
   @ViewChild('originResults') originResults: AutocompleteResultsComponent;
   @ViewChild('destinationResults') destinationResults: AutocompleteResultsComponent;
@@ -71,6 +70,7 @@ export class TripResponsePage {
   tripPlanSubscription: any;
   detailKeys: string[] = []; // Array of the non-null detail keys in the details hash
   arriveBy: boolean;
+  departureDateTime: string;
 
   itineraries: ItineraryModel[];
   orderBy: String;
@@ -81,8 +81,6 @@ export class TripResponsePage {
   transitTime: number = 0;
   driveTime: number = 0;
   bicycleTime: number = 0;
-
-  departureDateTime: string;
 
   skipPreferences: boolean = false;
 
@@ -135,12 +133,15 @@ export class TripResponsePage {
           this.loadTripResponse(tripResponse);
 
           if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
-            this.navCtrl.push(TransportationEligibilityPage, {
-              trip_response: this.tripResponse,
-              trip_request: this.tripRequest,
-              trip_id: this.trip_id,
-              origin: this.origin,
-              destination: this.destination
+            let this_pg_idx = this.navCtrl.length() - 1;
+            this.navCtrl.remove(this_pg_idx).then(() => {
+              this.navCtrl.push(TransportationEligibilityPage, {
+                trip_response: this.tripResponse,
+                trip_request: this.tripRequest,
+                trip_id: this.trip_id,
+                origin: this.origin,
+                destination: this.destination
+              })
             });
           }
         });
@@ -169,12 +170,15 @@ export class TripResponsePage {
           this.loadTripResponse(tripResponse);
 
           if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
-            this.navCtrl.push(TransportationEligibilityPage, {
-              trip_response: this.tripResponse,
-              trip_request: this.tripRequest,
-              trip_id: this.trip_id,
-              origin: this.origin,
-              destination: this.destination
+            let this_pg_idx = this.navCtrl.length() - 1;
+            this.navCtrl.remove(this_pg_idx).then(() => {
+              this.navCtrl.push(TransportationEligibilityPage, {
+                trip_response: this.tripResponse,
+                trip_request: this.tripRequest,
+                trip_id: this.trip_id,
+                origin: this.origin,
+                destination: this.destination
+              })
             });
           }
         });
@@ -277,6 +281,10 @@ export class TripResponsePage {
     })
   }
 
+  updateDepartureDateTime(time: string) {
+    this.departureDateTime = time;
+  }
+
   updateTransportationOptionsButton() {
     this.can_plan_trips = true;
   }
@@ -301,8 +309,6 @@ export class TripResponsePage {
     });
     this.orderItinList('trip_type');
 
-    console.log(this.itineraries);
-
     this.content.resize(); // Make sure content isn't covered by navbar
     this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
     this.events.publish('spinner:hide');
@@ -310,11 +316,11 @@ export class TripResponsePage {
 
   // Plans a trip based on origin and destination
   findTransportation(origin: GooglePlaceModel,
-                     destination: GooglePlaceModel, time: string) {
+                     destination: GooglePlaceModel) {
 
     this.origin = new GooglePlaceModel(origin);
     this.destination = new GooglePlaceModel(destination);
-    this.departureDateTime = time;
+
 
     // Set origin and destination
     this.tripRequest.trip.origin_attributes = this.origin.toOneClickPlace();
@@ -482,11 +488,9 @@ export class TripResponsePage {
 
     // Round to nearest 15 min (up and down) and format as ISO string with TZ offset
     if (this.tripRequest.trip.arrive_by) {
-      tripDepartAtTime = h.roundUpToNearest(tripTimeInMS - itin.duration, 15 * 60000);
-      tripDepartAtTime = h.dateISOStringWithTimeZoneOffset(new Date(tripDepartAtTime));
+      tripDepartAtTime = h.dateISOStringWithTimeZoneOffset(new Date((tripTimeInMS - itin.duration*1000)));
     } else {
-      tripDepartAtTime = h.roundDownToNearest(tripTimeInMS, 15 * 60000);
-      tripDepartAtTime = h.dateISOStringWithTimeZoneOffset(new Date(tripDepartAtTime));
+      tripDepartAtTime = h.dateISOStringWithTimeZoneOffset(new Date(tripTimeInMS));
     }
 
     return tripDepartAtTime;
@@ -502,11 +506,9 @@ export class TripResponsePage {
 
     // Round to nearest 15 min (up and down) and format as ISO string with TZ offset
     if (this.tripRequest.trip.arrive_by) {
-      tripArriveByTime = h.roundDownToNearest(tripTimeInMS, 15 * 60000);
-      tripArriveByTime = h.dateISOStringWithTimeZoneOffset(new Date(tripArriveByTime));
+      tripArriveByTime = h.dateISOStringWithTimeZoneOffset(new Date(tripTimeInMS));
     } else {
-      tripArriveByTime = h.roundUpToNearest(tripTimeInMS + itin.duration, 15 * 60000);
-      tripArriveByTime = h.dateISOStringWithTimeZoneOffset(new Date(tripArriveByTime));
+      tripArriveByTime = h.dateISOStringWithTimeZoneOffset(new Date((tripTimeInMS + itin.duration*1000)));
     }
 
     return tripArriveByTime;

@@ -8,6 +8,9 @@ import { GeocodeServiceProvider } from '../../providers/google/geocode-service';
 import { GoogleMapsHelpersProvider } from '../../providers/google/google-maps-helpers';
 import { AuthProvider } from '../../providers/auth/auth';
 
+// HELPERS
+import { HelpersProvider } from '../../providers/helpers/helpers';
+
 // PAGES
 import { CategoriesFor211Page } from '../211/categories-for211/categories-for211';
 import { TripResponsePage } from '../trip-response/trip-response';
@@ -30,7 +33,6 @@ export class UserLocatorPage {
 
   @ViewChild('originSearch') originSearch: PlaceSearchComponent;
   @ViewChild('destinationSearch') destinationSearch: PlaceSearchComponent;
-  @ViewChild('tripTimeDatepicker') tripTimeDatepicker: ResponsiveDatepickerComponent;
 
   @ViewChild('originResults') originResults: AutocompleteResultsComponent;
   @ViewChild('destinationResults') destinationResults: AutocompleteResultsComponent;
@@ -45,6 +47,7 @@ export class UserLocatorPage {
   lastClicked: string; // used for the map clicking logic
   //myLatLng: google.maps.LatLng = null;
   arriveBy: boolean;
+  departureDateTime: string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -52,6 +55,7 @@ export class UserLocatorPage {
               public geolocation: Geolocation,
               public geoServiceProvider: GeocodeServiceProvider,
               private googleMapsHelpers: GoogleMapsHelpersProvider,
+              private helpers: HelpersProvider,
               private changeDetector: ChangeDetectorRef,
               private auth: AuthProvider,
               public events: Events,
@@ -63,8 +67,8 @@ export class UserLocatorPage {
     this.userLocation = null; // The user's device location
     this.viewType = this.navParams.data.viewType; // Find services vs. transportation view
 
-    console.log(this.viewType);
     this.arriveBy = false;
+    this.departureDateTime = this.helpers.dateISOStringWithTimeZoneOffset(new Date());
 
     this.events.subscribe('place-search:change', () => {
       this.changeDetector.markForCheck();
@@ -205,20 +209,24 @@ export class UserLocatorPage {
   }
 
   // Goes on to the categories/services page, using the given location as the center point
-  searchForServices(place: GooglePlaceModel, time: string){
+  searchForServices(place: GooglePlaceModel){
     this.storePlaceInSession(place);
-    this.storeDepartureDateTime(time);
+    this.storeDepartureDateTime(this.helpers.dateISOStringWithTimeZoneOffset(new Date()));
     this.storeArriveBy(this.arriveBy);
     this.navCtrl.push(CategoriesFor211Page);
   }
 
+  updateDepartureDateTime(time: string) {
+    this.departureDateTime = time;
+  }
+
   // Plans a trip based on origin and destination
   findTransportation(origin: GooglePlaceModel,
-                     destination: GooglePlaceModel, time: string, arriveBy: boolean) {
+                     destination: GooglePlaceModel) {
     this.navCtrl.push(TripResponsePage, {
       origin: origin,
       destination: destination,
-      departureDateTime: time,
+      departureDateTime: this.departureDateTime,
       arriveBy: this.arriveBy
     });
 

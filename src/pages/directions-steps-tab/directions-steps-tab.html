@@ -23,20 +23,11 @@
     <!-- Header row with editable trip date -->
     <ion-row class="trip-date-row">
       <ion-col class="trip-date-col"
-               col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 text-center
-               (click)="tripTimeDatepicker.open()">
+               col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 text-center>
         <h3>
           {{ "lynx.pages.directions.steps_tab.trip_date_label" | translate }} {{tripDate | date: 'mediumDate'}}
-          <ion-icon class="leg-time-header-content-edit-icon icon-sm clickable" name="calendar"></ion-icon>
         </h3>
-
       </ion-col>
-
-      <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
-      <responsive-datepicker #tripTimeDatepicker
-                             [date]="tripDate"
-                             (change)="updateTripDate($event)">
-      </responsive-datepicker>
 
     </ion-row>
 

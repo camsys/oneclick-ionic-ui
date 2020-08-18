@@ -4,6 +4,9 @@ app-navbar {
     flex: 1 0 auto;
     text-align: center;
   }
+  ion-title.header-title {
+    margin-top: 10px;
+  }
 
   button.nav-icon-button {
     background: transparent;

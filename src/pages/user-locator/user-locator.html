@@ -31,8 +31,7 @@
 
     <!-- Header row with editable trip date -->
     <ion-row class="trip-date-row" [hidden]="viewType === 'services'">
-      <ion-col class="trip-date-col"
-               col-sm-6 text-center>
+      <ion-col col-sm-6 text-center>
         <ion-item>
           <ion-select [(ngModel)]="arriveBy">
             <ion-option value="false">{{ "lynx.global.directions.depart_at" | translate }}</ion-option>
@@ -40,17 +39,32 @@
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col class="trip-date-col"
-               col-sm-6 text-center
-               (click)="tripTimeDatepicker.open()">
+
+      <ion-col col-sm-3 text-center
+               (click)="tripDatepicker.open()">
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
-        <responsive-datepicker #tripTimeDatepicker
+        <responsive-datepicker #tripDatepicker
+                               [date]="departureDateTime"
                                [hideBool]='false'
-                               [dateTimeFormat]="'MMM DD, YYYY hh:mm A'">
+                               [dateTimeFormat]="'MMM DD, YYYY'"
+                               (change)="updateDepartureDateTime($event)">
         </responsive-datepicker>
 
       </ion-col>
+      <ion-col col-sm-3 text-center
+               (click)="tripTimepicker.open()">
+
+        <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
+        <responsive-datepicker #tripTimepicker
+                               [date]="departureDateTime"
+                               [hideBool]='false'
+                               [dateTimeFormat]="'hh:mm A'"
+                               (change)="updateDepartureDateTime($event)">
+        </responsive-datepicker>
+
+      </ion-col>
+
     </ion-row>
 
   </ion-toolbar>
@@ -75,7 +89,7 @@
     <button ion-button large round
             class="lynx-button-primary"
             id="find-services-button"
-            (click)="searchForServices(originSearch.place, tripTimeDatepicker.date)"
+            (click)="searchForServices(originSearch.place)"
             *ngIf="!!userLocation || originSearch.place">
       {{ "lynx.pages.user_locator.resources_button" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
@@ -88,7 +102,7 @@
             class="lynx-button-primary"
             id="find-transportation-button"
             *ngIf="originSearch.place && destinationSearch.place"
-            (click)="findTransportation(originSearch.place, destinationSearch.place, tripTimeDatepicker.date)">
+            (click)="findTransportation(originSearch.place, destinationSearch.place)">
         {{ "lynx.pages.user_locator.transportation_button" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
     </button>

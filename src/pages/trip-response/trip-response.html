@@ -23,8 +23,7 @@
 
     <!-- Header row with editable trip date -->
     <ion-row class="trip-date-row">
-      <ion-col class="trip-date-col"
-               col-sm-6 text-center>
+      <ion-col col-sm-6 text-center>
         <ion-item>
           <ion-select [(ngModel)]="arriveBy" (ionChange)="updateTransportationOptionsButton()">
             <ion-option value="false">{{ "lynx.global.directions.depart_at" | translate }}</ion-option>
@@ -32,16 +31,27 @@
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col class="trip-date-col"
-               col-sm-6 text-center
-               (click)="tripTimeDatepicker.open()">
+      <ion-col col-sm-3 text-center
+               (click)="tripDatepicker.open()">
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
-        <responsive-datepicker #tripTimeDatepicker
+        <responsive-datepicker #tripDatepicker
                                [date]="departureDateTime"
                                [hideBool]='false'
-                               [dateTimeFormat]="'MMM DD, YYYY hh:mm A'"
-                               (change)="updateTransportationOptionsButton()">
+                               [dateTimeFormat]="'MMM DD, YYYY'"
+                               (change)="updateDepartureDateTime($event);updateTransportationOptionsButton();">
+        </responsive-datepicker>
+
+      </ion-col>
+      <ion-col col-sm-3 text-center
+               (click)="tripTimepicker.open()">
+
+        <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
+        <responsive-datepicker #tripTimepicker
+                               [date]="departureDateTime"
+                               [hideBool]='false'
+                               [dateTimeFormat]="'hh:mm A'"
+                               (change)="updateDepartureDateTime($event);updateTransportationOptionsButton();">
         </responsive-datepicker>
 
       </ion-col>
@@ -74,7 +84,7 @@
                 id="transportation-options-button"
                 *ngIf="originSearch.place && destinationSearch.place"
                 [disabled]="!can_plan_trips"
-                (click)="findTransportation(originSearch.place, destinationSearch.place, tripTimeDatepicker.date)">
+                (click)="findTransportation(originSearch.place, destinationSearch.place)">
           {{ "lynx.pages.trip_response.transportation_button" | translate }}
         </button>
         <button ion-button ion-end round default
