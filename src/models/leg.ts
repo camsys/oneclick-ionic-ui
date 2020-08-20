@@ -26,13 +26,14 @@ export class LegModel {
   serviceName:string;
   serviceFareInfo:string;
   serviceLogoUrl:string;
-  
+  serviceFullLogoUrl:string;
+
   // constructor(legAttrs: any) {
   //   // Assign all attributes
   //   console.log("Constructor")
   //   // Object.keys(legAttrs).forEach((k) => { this[k] = legAttrs[k]; });
   // }
-  
+
   public assignAttributes(legAttrs: any) {
     Object.keys(legAttrs).forEach((k) => { this[k] = legAttrs[k]; });
     return this;
@@ -56,11 +57,11 @@ export class LegModel {
         return 'walk';
     }
   }
-  
+
   // Returns true/false based on whether the leg has a transit mode code
   public isTransit():Boolean {
-    return  this.mode === 'BUS' || 
-            this.mode === 'TRAM' || 
+    return  this.mode === 'BUS' ||
+            this.mode === 'TRAM' ||
             this.mode === 'SUBWAY';
   }
 

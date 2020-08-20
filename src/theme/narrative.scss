@@ -40,8 +40,27 @@
   display: inline-block;
   vertical-align: text-top;
 }
-.otp-legMode-icon-call-and-ride {
-  background-image: url('../assets/img/mode/dial-a-bus-icon_dark-blue.png');
+.otp-legMode-icon-paratransit {
+  background-image: url('../assets/img/mode/paratransit-icon.png');
+  width: 1.525em;
+  height: 1.525em;
+  margin-right: 8px;
+  background-size: 100%;
+}
+.otp-legMode-icon-taxi {
+  background-image: url('../assets/img/mode/taxi-icon.png');
+  width: 1.525em;
+  height: 1.525em;
+  background-size: 100%;
+}
+.otp-legMode-icon-lyft {
+  background-image: url('../assets/img/mode/taxi-icon-lyft.png');
+  width: 1.525em;
+  height: 1.525em;
+  background-size: 100%;
+}
+.otp-legMode-icon-uber {
+  background-image: url('../assets/img/mode/taxi-icon-uber.png');
   width: 1.525em;
   height: 1.525em;
   background-size: 100%;

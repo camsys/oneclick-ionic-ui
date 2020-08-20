@@ -309,6 +309,8 @@ export class TripResponsePage {
     });
     this.orderItinList('trip_type');
 
+    console.log(this.itineraries);
+
     this.content.resize(); // Make sure content isn't covered by navbar
     this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
     this.events.publish('spinner:hide');
