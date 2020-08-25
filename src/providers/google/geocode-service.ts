@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 
+import { environment } from '../../app/environment';
+
 import { GooglePlaceModel } from "../../models/google-place";
 import { AddressComponentModel } from '../../models/address-component';
 
@@ -14,7 +16,14 @@ export class GeocodeServiceProvider {
   googleAutoCompleteService = new google.maps.places.AutocompleteService();
   googleGeoCoder = new google.maps.Geocoder();
 
+  // Zipcodes within service area of Find Services workflow.
+  servicesZipcodes: number[] = [];
+  // Zipcodes within service area of Find Transportation workflow.
+  transportationZipcodes: number[] = [];
+
   constructor(public http: Http) {
+    this.servicesZipcodes = environment.SERVICES_ZIPCODES;
+    this.transportationZipcodes = environment.TRANSPORTATION_ZIPCODES;
   }
 
   public getGooglePlaces(address_query: string): Observable<GooglePlaceModel[]>{
@@ -97,5 +106,29 @@ export class GeocodeServiceProvider {
       place_id: result.place_id,
       types: result.types
     });
+  }
+
+  // Check if the Google place's zipcode is within service area zipcodes of Find Services workflow.
+  public isZipcodeOutOfAreaForServices(place: GooglePlaceModel): boolean {
+    let postalCode = place.address_components.find(function (component) {
+      return component.types[0] == "postal_code";
+    });
+    if (postalCode && postalCode.short_name && 
+      this.servicesZipcodes.indexOf(parseInt(postalCode.short_name, 10)) == -1) {
+      return true;
+    }
+    return false;
+  }
+
+  // Check if the Google place's zipcode is within service area zipcodes of Find Transportation workflow.
+  public isZipcodeOutOfAreaForTransportation(place: GooglePlaceModel): boolean {
+    let postalCode = place.address_components.find(function (component) {
+      return component.types[0] == "postal_code";
+    });
+    if (postalCode && postalCode.short_name && 
+      this.transportationZipcodes.indexOf(parseInt(postalCode.short_name, 10)) == -1) {
+      return true;
+    }
+    return false;
   }
 }
