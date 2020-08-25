@@ -1,5 +1,21 @@
-.select-full-width {
-  max-width: 100% !important;
-  width: 100% !important;
-  padding-left: 0 !important;
+page-trip-response {
+  .select-full-width {
+      max-width: 100% !important;
+      width: 100% !important;
+      padding-left: 0 !important;
+  }
+
+  .itinerary-item ion-row ion-col {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+  }
+
+  .itinerary-item ion-row ion-col:nth-child(2) {
+    justify-content: flex-end;
+  }
+
+  .itinerary-item.item-md h2 {
+    font-size: 2.2rem;
+  }
 }

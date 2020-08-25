@@ -50,7 +50,6 @@ export class ServiceFor211DetailPage {
 
   @ViewChild('originSearch') originSearch: PlaceSearchComponent;
   @ViewChild('destinationSearch') destinationSearch: PlaceSearchComponent;
-  @ViewChild('tripTimeDatepicker') tripTimeDatepicker: ResponsiveDatepickerComponent;
 
   @ViewChild('originResults') originResults: AutocompleteResultsComponent;
   @ViewChild('destinationResults') destinationResults: AutocompleteResultsComponent;

@@ -36,15 +36,15 @@ export class ParatransitServicesPage {
 
     this.trip_id = this.navParams.data.trip_id;
     this.transportationServices = null;
+    if (this.navParams.data.itinerary) {
+      this.itinerary = this.navParams.data.itinerary;
+    }
   }
 
   ionViewDidLoad() {
 
     if(this.navParams.data.trip_response) { // If a trip object is passed, load its services
       this.loadTripResponse(this.navParams.data.trip_response);
-      if (this.navParams.data.itinerary) {
-        this.itinerary = this.navParams.data.itinerary;
-      }
     } else if(this.trip_id) { // If a trip_id is passed, get the trip from OneClick and load its services
       this.oneClick.getTrip(this.trip_id)
       .subscribe(trip => this.loadTripResponse(trip));
