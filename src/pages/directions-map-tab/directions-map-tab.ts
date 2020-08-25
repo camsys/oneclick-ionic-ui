@@ -56,6 +56,9 @@ export class DirectionsMapTabPage {
   initializeMap() {
 
     this.map = this.googleMapsHelpers.buildGoogleMap('directions-route-map-canvas');
+
+    this.googleMapsHelpers.addParticipatingCountiesLayer(this.map);
+
     let me = this;
 
     // Create and store google maps polyLines for each itinerary's legs

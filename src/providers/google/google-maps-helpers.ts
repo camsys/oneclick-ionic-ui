@@ -8,8 +8,8 @@ import { environment } from '../../app/environment';
 @Injectable()
 export class GoogleMapsHelpersProvider {
 
-  minZoom: number = 10;
-  maxZoom: number = 13;
+  minZoom: number = 7;
+  maxZoom: number = 15;
 
   // Sets up a map element with default options, and returns it
   buildGoogleMap(mapDivId: string): google.maps.Map {
@@ -170,6 +170,17 @@ export class GoogleMapsHelpersProvider {
     marker.setClickable(false);
 
     return marker;
+  }
+
+  // Add layer to map representing the participating counties.
+  addParticipatingCountiesLayer(map: google.maps.Map) {
+    map.data.loadGeoJson('assets/data/counties.geojson');
+    map.data.setStyle({
+      clickable: true,
+      fillOpacity: 0,
+      strokeColor: 'blue',
+      strokeWeight: 1
+    });
   }
 
 }

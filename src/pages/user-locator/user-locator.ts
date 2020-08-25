@@ -88,6 +88,7 @@ export class UserLocatorPage {
   initializeMap() {
     this.map = this.googleMapsHelpers.buildGoogleMap('user-locator-map-canvas');
 
+    this.googleMapsHelpers.addParticipatingCountiesLayer(this.map);
 
     this.setMapClickListener()
 
@@ -318,6 +319,10 @@ export class UserLocatorPage {
   private setMapClickListener(){
     let me = this;
     google.maps.event.addDomListener(this.map, 'click', function(event) {
+      me.setPlaceFromClick(event.latLng);
+    });
+    // Also capture click events on the data layer overlay.
+    google.maps.event.addDomListener(this.map.data, 'click', function(event) {
       me.setPlaceFromClick(event.latLng);
     });
   }

@@ -47,6 +47,8 @@ export class ServicesMapTabPage {
   initializeMap(): void {
     this.service_map = this.googleMapsHelpers.buildGoogleMap('service-results-map-canvas');
 
+    this.googleMapsHelpers.addParticipatingCountiesLayer(this.service_map);
+
     let me = this;
 
     // Draw service markers, with event handlers that open details window on click
