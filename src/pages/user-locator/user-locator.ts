@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { IonicPage, Platform, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, Platform, NavController, NavParams, Events, ToastController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -59,7 +59,8 @@ export class UserLocatorPage {
               private changeDetector: ChangeDetectorRef,
               private auth: AuthProvider,
               public events: Events,
-              private translate: TranslateService
+              private translate: TranslateService,
+              public toastCtrl: ToastController
             ) {
 
     this.map = null;
@@ -92,6 +93,7 @@ export class UserLocatorPage {
   initializeMap() {
     this.map = this.googleMapsHelpers.buildGoogleMap('user-locator-map-canvas');
 
+    this.googleMapsHelpers.addParticipatingCountiesLayer(this.map);
 
     this.setMapClickListener()
 
@@ -302,6 +304,7 @@ export class UserLocatorPage {
       // Set the origin to the user location
       this.originSearch.place = this.userLocation;
       this.lastClicked = 'origin';
+      this.checkIfZipcodeOutOfArea(places[0]);
     });
   }
 
@@ -319,13 +322,41 @@ export class UserLocatorPage {
       //this.destinationSearch.place = places[0];
       this.destinationSearch.setPlace(places[0]);
       this.lastClicked = 'destination';
+      this.checkIfZipcodeOutOfArea(places[0]);
     });
+  }
+
+  // Check if the Google place's zipcode is within the service area of Find Services or Transportation workflow.
+  private checkIfZipcodeOutOfArea(place: GooglePlaceModel) : void {
+    if (this.viewType == 'services') {
+        if (this.geoServiceProvider.isZipcodeOutOfAreaForServices(place)) {
+          let toast = this.toastCtrl.create({
+            message: this.translate.instant('find_services_out_of_area_message'),
+            position: 'bottom',
+            duration: 3000
+          });
+          toast.present();
+        }
+    } else {
+      if (this.geoServiceProvider.isZipcodeOutOfAreaForTransportation(place)) {
+          let toast = this.toastCtrl.create({
+            message: this.translate.instant('find_transportation_out_of_area_message'),
+            position: 'bottom',
+            duration: 3000
+          });
+          toast.present();
+      }
+    }
   }
 
   // Detect the Click and Grab the LatLng
   private setMapClickListener(){
     let me = this;
     google.maps.event.addDomListener(this.map, 'click', function(event) {
+      me.setPlaceFromClick(event.latLng);
+    });
+    // Also capture click events on the data layer overlay.
+    google.maps.event.addDomListener(this.map.data, 'click', function(event) {
       me.setPlaceFromClick(event.latLng);
     });
   }

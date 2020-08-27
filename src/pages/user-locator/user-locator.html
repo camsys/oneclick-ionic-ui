@@ -77,11 +77,11 @@
   <!-- ORIGIN AND DESTINATION AUTOCOMPLETE RESULTS LISTS -->
   <autocomplete-results #originResults
     [items]="originSearch.autocompleteItems"
-    (onSelect)="originSearch.chooseItem($event)">
+    (onSelect)="originSearch.chooseItem($event, viewType)">
   </autocomplete-results>
   <autocomplete-results #destinationResults
     [items]="destinationSearch.autocompleteItems"
-    (onSelect)="destinationSearch.chooseItem($event)">
+    (onSelect)="destinationSearch.chooseItem($event, viewType)">
   </autocomplete-results>
 
   <!-- 211 SERVICE FINDER BUTTON -->

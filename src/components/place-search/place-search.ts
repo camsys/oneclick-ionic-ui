@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectorRef, HostListener } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Events } from 'ionic-angular';
+import { Events, ToastController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 
 // MODELS
 import { GooglePlaceModel } from "../../models/google-place";
@@ -45,6 +46,8 @@ export class PlaceSearchComponent {
   constructor(public geoServiceProvider: GeocodeServiceProvider,
               public oneClickProvider: OneClickProvider,
               public events: Events,
+              public toastCtrl: ToastController,
+              private translate: TranslateService,
               public changeDetector: ChangeDetectorRef) {
     this.query = '';
     this.searchControl = new FormControl;
@@ -118,7 +121,7 @@ export class PlaceSearchComponent {
   }
 
   // Select an item from the search results list
-  chooseItem(item: any) {
+  chooseItem(item: any, viewType: string) {
     this.events.publish('spinner:show'); // Show spinner until geocoding call returns
 
     // If the item already has a lat/lng, save it as the selected place.
@@ -128,7 +131,31 @@ export class PlaceSearchComponent {
       this.geoServiceProvider.getPlaceFromFormattedAddress(item.result)
       .subscribe((places) => {
         this.setPlace(places[0]); // Set the component's place variable to the first result
+        this.checkIfZipcodeOutOfArea(places[0], viewType);
       });
+    }
+  }
+
+  // Check if the Google place's zipcode is within the service area of Find Services or Transportation workflow.
+  private checkIfZipcodeOutOfArea(place: GooglePlaceModel, viewType: string) : void {
+    if (viewType == 'services') {
+        if (this.geoServiceProvider.isZipcodeOutOfAreaForServices(place)) {
+          let toast = this.toastCtrl.create({
+            message: this.translate.instant('find_services_out_of_area_message'),
+            position: 'bottom',
+            duration: 3000
+          });
+          toast.present();
+        }
+    } else {
+      if (this.geoServiceProvider.isZipcodeOutOfAreaForTransportation(place)) {
+          let toast = this.toastCtrl.create({
+            message: this.translate.instant('find_transportation_out_of_area_message'),
+            position: 'bottom',
+            duration: 3000
+          });
+          toast.present();
+      }
     }
   }
 
