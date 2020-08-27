@@ -1,5 +1,5 @@
 <ion-header>
-  <app-navbar></app-navbar>
+  <app-navbar headerTitle="{{ 'lynx.global.transportation.help' | translate }}"></app-navbar>
 
   <ion-toolbar class="lynx-toolbar" text-center>
 
@@ -108,16 +108,6 @@
   </div>
 
   <ion-grid>
-
-    <!-- TRANSPORTATION OPTIONS -->
-    <ion-row>
-      <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
-        <h3 class="item-heading">
-          {{ "lynx.global.transportation.help" | translate }}
-        </h3>
-      </ion-col>
-    </ion-row>
-
     <ion-row>
       <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2 no-padding>
         <ion-list class="lynx-list">
@@ -172,7 +162,7 @@
                 </ion-col>
                 <ion-col col-sm-6>
                   <div item-end>
-                    <img class="ride-mode-service-icon" src="{{ itin.service.full_logo }}">
+                    <img class="ride-mode-service-icon" src="{{ itin.service.full_logo }}" width="75">
                   </div>
                 </ion-col>
               </ion-row>
@@ -182,7 +172,7 @@
                 </ion-col>
                 <ion-col col-sm-6>
                   <p class="item-body service-details-section" *ngIf="itin.service.purposes.length > 0" style="background-color:yellow;">
-                    <b>{{ "lynx.pages.transportation_service_details.purposes_header" | translate }}: </b>
+                    <b>{{ "lynx.pages.trip_response.purposes_header" | translate }}: </b>
                   </p>
                 </ion-col>
               </ion-row>
@@ -219,7 +209,7 @@
                 </ion-col>
                 <ion-col col-sm-6>
                   <div item-end>
-                    <img class="ride-mode-service-icon" src="{{ itin.service.full_logo }}">
+                    <img class="ride-mode-service-icon" src="{{ itin.service.full_logo }}" width="75">
                   </div>
                 </ion-col>
               </ion-row>

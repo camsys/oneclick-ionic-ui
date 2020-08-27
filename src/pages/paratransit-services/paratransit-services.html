@@ -5,8 +5,7 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <app-navbar *ngIf="transportationServices && transportationServices.length == 1" headerTitle="{{transportationServices[0].name}}"></app-navbar>
-  <app-navbar *ngIf="transportationServices && transportationServices.length != 1" headerTitle="{{ 'lynx.pages.paratransit_services.header' | translate }}"></app-navbar>
+  <app-navbar headerTitle="{{headerTitle}}"></app-navbar>
 </ion-header>
 
 <ion-content>

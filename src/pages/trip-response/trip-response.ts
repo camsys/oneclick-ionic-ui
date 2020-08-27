@@ -309,8 +309,6 @@ export class TripResponsePage {
     });
     this.orderItinList('trip_type');
 
-    console.log(this.itineraries);
-
     this.content.resize(); // Make sure content isn't covered by navbar
     this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
     this.events.publish('spinner:hide');
@@ -319,6 +317,8 @@ export class TripResponsePage {
   // Plans a trip based on origin and destination
   findTransportation(origin: GooglePlaceModel,
                      destination: GooglePlaceModel) {
+
+    this.can_plan_trips = false;
 
     this.origin = new GooglePlaceModel(origin);
     this.destination = new GooglePlaceModel(destination);

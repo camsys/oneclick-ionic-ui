@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 // Providers
@@ -21,6 +21,8 @@ import { FeedbackModalPage } from "../feedback-modal/feedback-modal";
 })
 export class ParatransitServicesPage {
 
+  headerTitle: string;
+
   tripResponse: TripResponseModel;
   itinerary: ItineraryModel;
   transportationServices: OneClickServiceModel[];
@@ -30,8 +32,6 @@ export class ParatransitServicesPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private oneClick: OneClickProvider,
-              public modalCtrl: ModalController,
-              public toastCtrl: ToastController,
               private translate: TranslateService) {
 
     this.trip_id = this.navParams.data.trip_id;
@@ -39,6 +39,8 @@ export class ParatransitServicesPage {
     if (this.navParams.data.itinerary) {
       this.itinerary = this.navParams.data.itinerary;
     }
+
+    this.headerTitle = this.translate.instant("lynx.pages.paratransit_services.header");
   }
 
   ionViewDidLoad() {
@@ -51,6 +53,10 @@ export class ParatransitServicesPage {
     } else { // Otherwise, make a call to OneClick for an index of all services
       this.oneClick.getParatransitServices()
       .then(tps => this.transportationServices = tps);
+    }
+
+    if (this.transportationServices && this.transportationServices.length == 1) {
+      this.headerTitle = this.transportationServices[0].name;
     }
   }
 
@@ -67,15 +73,6 @@ export class ParatransitServicesPage {
       svc.fare = itin.cost;
       return svc;
      })
-  }
-
-  // Open the feedback modal for rating the service
-  rateService(service: OneClickServiceModel) {
-    FeedbackModalPage.createModal(this.modalCtrl,
-                                  this.toastCtrl,
-                                  this.translate,
-                                { subject: service, type: "Service" })
-                     .present();
   }
 
 }
