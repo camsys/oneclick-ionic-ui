@@ -162,7 +162,8 @@ export class MyApp {
       { title: 'home', component: "home" },
       { title: 'about_us', component: AboutUsPage },
       { title: 'contact_us', component: ContactUsPage },
-      { title: 'transportation', component: ParatransitServicesPage },
+      // Disabling transportation options based on feedback.
+      //{ title: 'transportation', component: ParatransitServicesPage },
       { title: 'resources', component: UserLocatorPage, params: { viewType: 'services'}},
       //{ title: 'language_selector', component: "language_selector" },
       //{ title: 'privacy_policy', component: "privacy_policy" },
