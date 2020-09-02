@@ -2,7 +2,7 @@ app-navbar {
 
   ion-title {
     flex: 1 0 auto;
-    text-align: center;
+    text-align: left;
   }
   ion-title.header-title {
     margin-top: 10px;
@@ -11,5 +11,12 @@ app-navbar {
   button.nav-icon-button {
     background: transparent;
     margin: 0;
+  }
+
+  .toolbar-content > ion-row > ion-col.col:nth-child(2) {
+    margin-left: -22px;
+  }
+  .toolbar-content > ion-row > ion-col.col:nth-child(3) {
+    margin-left: 22px;
   }
 }

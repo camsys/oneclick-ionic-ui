@@ -7,7 +7,7 @@
 <ion-header>
 
   <app-navbar *ngIf="viewType === 'services'" headerTitle="{{ 'lynx.pages.user_locator.services_help' | translate }}"></app-navbar>
-  <app-navbar *ngIf="viewType != 'services'"></app-navbar>
+  <app-navbar *ngIf="viewType != 'services'" headerTitle="{{ 'lynx.pages.user_locator.plan_a_trip_header' | translate }}"></app-navbar>
   <ion-toolbar class="lynx-toolbar" text-center>
     <div id="origin-search-container">
       <place-search #originSearch
@@ -33,7 +33,7 @@
     <ion-row class="trip-date-row" [hidden]="viewType === 'services'">
       <ion-col col-sm-6 text-center>
         <ion-item>
-          <ion-select [(ngModel)]="arriveBy">
+          <ion-select id="arriveBySelector" [(ngModel)]="arriveBy">
             <ion-option value="false">{{ "lynx.global.directions.depart_at" | translate }}</ion-option>
             <ion-option value="true">{{ "lynx.global.directions.arrive_by" | translate }}</ion-option>
           </ion-select>
