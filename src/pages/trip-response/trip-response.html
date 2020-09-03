@@ -76,7 +76,7 @@
   </autocomplete-results>
 
   <!-- PLAN TRIP BUTTON -->
-  <div text-center id="find-transportation-button-container">
+  <ion-row text-center id="find-transportation-button-container">
     <!--<ion-row>-->
       <!--<ion-col offset-sm-3 col-sm-4>-->
         <!--<button ion-button ion-start round-->
@@ -118,16 +118,22 @@
             (click)="openOtherTransportationOptions()">
       {{ "lynx.global.modes.find_other_options" | translate }}
     </button>
-    <!--<ion-select [(ngModel)]="orderBy" (ionChange)="orderItinList($event)" #orderBySelect>-->
-      <!--<ion-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-option>-->
-      <!--<ion-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-option>-->
-      <!--<ion-option value="duration">{{"sort_by" | translate}} {{"travel_time_sorter" | translate }}</ion-option>-->
-      <!--<ion-option value="endTime">{{"sort_by" | translate}} {{ "arrival_time_sorter" | translate }}</ion-option>-->
-      <!--<ion-option value="wait_time">{{"sort_by" | translate}} {{"wait_time_sorter" | translate}}</ion-option>-->
-      <!--<ion-option value="walk_distance">{{"sort_by" | translate}} {{"walk_distance_sorter" | translate}}</ion-option>-->
-    <!--</ion-select>-->
+    <ion-row>
+      <ion-col col-sm-12>
+        <ion-select [(ngModel)]="orderBy" (ionChange)="orderItinList($event)" #orderBySelect>
+          <ion-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-option>
+          <ion-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-option>
+          <ion-option value="duration">{{"sort_by" | translate}} {{"travel_time_sorter" | translate }}</ion-option>
+          <ion-option value="endTime">{{"sort_by" | translate}} {{ "arrival_time_sorter" | translate }}</ion-option>
+          <ion-option value="wait_time">{{"sort_by" | translate}} {{"wait_time_sorter" | translate}}</ion-option>
+          <ion-option value="walk_distance">{{"sort_by" | translate}} {{"walk_distance_sorter" | translate}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
 
-  </div>
+
+
+  </ion-row>
 
   <ion-grid>
     <ion-row>
@@ -147,25 +153,30 @@
                 <ion-col col-sm-6>
                   <div item-end>
                     <ng-container *ngFor="let leg of itin.legs; index as i">
-                      <img class="ride-mode-service-icon" src="{{ leg.serviceFullLogoUrl }}" width="75">
+                      <img class="ride-mode-service-icon" src="{{ leg.serviceFullLogoUrl }}" height="50">
                     </ng-container>
                   </div>
                 </ion-col>
               </ion-row>
               <ion-row>
+                <ion-col col-sm-6>
                   <h3 item-start class="item-heading">
                     {{ itin.legs[0].startTime | date:'shortTime' }} {{ "lynx.global.common.to" | translate }}
                     {{ itin.legs[itin.legs.length-1].endTime | date:'shortTime' }}
                   </h3>
-              </ion-row>
-              <ion-row>
-                  <h3 class="item-subheading">{{ itin.duration | prettyTime }} ({{'lynx.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</h3>
+                </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h2><b>
+                  <h3 class="item-subheading">{{ itin.duration | prettyTime }} ({{'lynx.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</h3>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h2 *ngIf="itin.cost"><b>
                     {{ [itin.cost] | prettyFare }}
                   </b></h2>
+                  <h2 *ngIf="!itin.cost"><b>{{ "lynx.pages.trip_response.cost_na_header" | translate }}</b></h2>
                 </ion-col>
                 <ion-col col-sm-6>
                   <button ion-button item-end round default
@@ -184,7 +195,7 @@
                 </ion-col>
                 <ion-col col-sm-6>
                   <div item-end>
-                    <img class="ride-mode-service-icon" src="{{ itin.service.full_logo }}" width="75">
+                    <img class="ride-mode-service-icon" src="{{ itin.service.full_logo }}" height="50">
                   </div>
                 </ion-col>
               </ion-row>
@@ -200,7 +211,7 @@
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 class="item-subheading">{{itin.duration | prettyTime}} {{'lynx.global.modes.paratransit' | translate}} ({{'lynx.global.modes.paratransit_estimated' | translate}}): </h3>
+                  <h3 class="item-subheading">{{itin.duration | prettyTime}} {{'lynx.global.modes.paratransit' | translate}} ({{'lynx.global.modes.paratransit_estimated' | translate}})</h3>
                 </ion-col>
                 <ion-col col-sm-6>
                   <p class="item-body service-details-section" *ngIf="itin.service.purposes.length > 0" style="background-color:yellow;">
@@ -210,9 +221,10 @@
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h2><b>
+                  <h2 *ngIf="itin.cost"><b>
                     {{ [itin.cost] | prettyFare }}
                   </b></h2>
+                  <h2 *ngIf="!itin.cost"><b>{{ "lynx.pages.trip_response.cost_na_header" | translate }}</b></h2>
                 </ion-col>
                 <ion-col col-sm-6>
                   <button ion-button item-end round default
@@ -231,7 +243,7 @@
                 </ion-col>
                 <ion-col col-sm-6>
                   <div item-end>
-                    <img class="ride-mode-service-icon" src="{{ itin.service.full_logo }}" width="75">
+                    <img class="ride-mode-service-icon" src="{{ itin.service.full_logo }}" height="50">
                   </div>
                 </ion-col>
               </ion-row>
@@ -255,7 +267,8 @@
 
               <ion-row>
                 <ion-col col-sm-6>
-                  <h2><b>{{ [itin.cost] | prettyFare }}</b></h2>
+                  <h2 *ngIf="itin.cost"><b>{{ [itin.cost] | prettyFare }}</b></h2>
+                  <h2 *ngIf="!itin.cost"><b>{{ "lynx.pages.trip_response.cost_na_header" | translate }}</b></h2>
                 </ion-col>
                 <ion-col col-sm-6>
                   <button ion-button item-end round default
@@ -288,7 +301,6 @@
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h2><b>{{ "lynx.pages.trip_response.cost_na_header" | translate }}</b></h2>
                 </ion-col>
                 <ion-col col-sm-6>
                   <button ion-button item-end round default
