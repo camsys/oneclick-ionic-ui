@@ -44,7 +44,7 @@
   <ion-list text-wrap class="lynx-list" [hidden]="accommodations.length === 0">
     <ion-list-header>
       {{ "lynx.pages.transportation_eligibility.accommodations_header" | translate }}
-      <button class="transportation-eligibility-info-button" (click)="showAccommodationsPopup()"><ion-icon name="information-circle"></ion-icon></button>
+      <button large class="transportation-eligibility-info-button" (click)="showAccommodationsPopup()"><ion-icon name="information-circle"></ion-icon></button>
     </ion-list-header>
 
     <ion-item *ngFor="let acc of accommodations">

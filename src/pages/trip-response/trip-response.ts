@@ -259,6 +259,23 @@ export class TripResponsePage {
   {
     return this.itineraries.sort(function (a : ItineraryModel, b : ItineraryModel) {
       //sorts by smallest cost
+      // sort nil first - which is car, bike, walking
+      // sort nils that are unknowns next
+      // then ones with known costs in asc
+      // used 2000 as no fare will likely be more in cost
+      if (a.cost == null) {
+        if (a.trip_type == 'car' || a.trip_type == 'bicycle' || a.trip_type == 'walk') {
+          return -2000;
+        } else {
+          return -1999;
+        }
+      } else if (b.cost == null && a.cost != null) {
+        if (b.trip_type == 'car' ||b.trip_type == 'bicycle' || b.trip_type == 'walk') {
+          return 1999;
+        } else {
+          return 2000;
+        }
+      }
       return a.cost - b.cost;
     })
   }

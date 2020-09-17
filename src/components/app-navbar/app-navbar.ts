@@ -61,4 +61,8 @@ export class AppNavbarComponent {
     }
   }
 
+  private isHomePage(): boolean {
+    return ((this.navCtrl.getActive() && this.navCtrl.getActive().name) == "HelpMeFindPage");
+  }
+
 }

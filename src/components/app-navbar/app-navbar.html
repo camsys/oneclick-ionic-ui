@@ -1,11 +1,13 @@
 <ion-navbar class="lynx-toolbar lynx-toolbar-black">
   <ion-row>
     <ion-col col-sm-2>
-      <ion-title>
-        <button class="lynx-button-link nav-icon-button" (click)="goHome()">
-          <img class="lynx-logo-sm" src="assets/img/211-ride@1x.png" alt="211Ride Logo">
-        </button>
-      </ion-title>
+      <ng-container *ngIf="!isHomePage()">
+        <ion-title class="header-logo-title">
+          <button class="lynx-button-link nav-icon-button" (click)="goHome()">
+            <img class="lynx-logo-sm" src="assets/img/211-ride@1x.png" alt="211Ride Logo">
+          </button>
+        </ion-title>
+      </ng-container>
     </ion-col>
     <ion-col col-sm-8>
       <ion-title class="header-title" *ngIf="headerTitle" text-center>{{headerTitle}}</ion-title>
