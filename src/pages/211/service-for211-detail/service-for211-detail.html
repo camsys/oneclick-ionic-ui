@@ -28,8 +28,8 @@
                col-sm-6 text-center>
         <ion-item>
           <ion-select [(ngModel)]="arriveBy">
-            <ion-option value="false">{{ "lynx.global.directions.depart_at" | translate }}</ion-option>
-            <ion-option value="true">{{ "lynx.global.directions.arrive_by" | translate }}</ion-option>
+            <ion-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-option>
+            <ion-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-option>
           </ion-select>
         </ion-item>
       </ion-col>
@@ -72,7 +72,7 @@
             id="transportation-options-button"
             *ngIf="originSearch.place && destinationSearch.place"
             (click)="findTransportation(originSearch.place, destinationSearch.place, tripTimeDatepicker.date)">
-      {{ "lynx.pages.service_details.transportation_button" | translate }}
+      {{ "oneclick.pages.service_details.transportation_button" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
     </button>
   </div>
@@ -84,29 +84,29 @@
     <!-- Show service details only if service is present -->
     <ion-row *ngIf="service_id && location_id">
       <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
-        <h3>{{ "lynx.pages.service_details.details_header" | translate }}</h3>
+        <h3>{{ "oneclick.pages.service_details.details_header" | translate }}</h3>
 
         <div *ngIf="service.url">
-          <b>{{ "lynx.pages.service_details.url" | translate }}: </b><external-link url="{{service.url}}"></external-link>
+          <b>{{ "oneclick.pages.service_details.url" | translate }}: </b><external-link url="{{service.url}}"></external-link>
         </div>
 
         <div *ngIf="service.email">
-          <b>{{ "lynx.pages.service_details.email" | translate }}: </b><a href="mailto:{{service.email}}">{{service.email}}</a>
+          <b>{{ "oneclick.pages.service_details.email" | translate }}: </b><a href="mailto:{{service.email}}">{{service.email}}</a>
         </div>
 
         <div *ngIf="service.address">
-          <b>{{ "lynx.pages.service_details.address" | translate }}</b>
+          <b>{{ "oneclick.pages.service_details.address" | translate }}</b>
           <span>{{ service.address }}</span>
         </div>
 
         <div *ngIf="service.phones">
-          <b>{{ "lynx.pages.service_details.phone_header" | translate }}: </b><br>
+          <b>{{ "oneclick.pages.service_details.phone_header" | translate }}: </b><br>
           <span *ngFor="let p of service.phones">{{p}}<br></span>
         </div>
 
         <!-- insert a line for each non-null key in the details hash -->
         <div *ngFor="let k of detailKeys" class="">
-          <b>{{ "lynx.pages.service_details." + k | translate }}: </b><br>
+          <b>{{ "oneclick.pages.service_details." + k | translate }}: </b><br>
           <span [innerHTML]="service.details[k]"></span>
         </div>
       </ion-col>
@@ -118,7 +118,7 @@
       <!-- Questions? button -->
       <!-- Show questions? button only if service phone # is present -->
       <!--<ion-col col-12 col-sm text-center *ngIf="service.phone">-->
-        <!--<h3>{{ "lynx.pages.service_details.phone_header" | translate }}</h3>-->
+        <!--<h3>{{ "oneclick.pages.service_details.phone_header" | translate }}</h3>-->
         <!--<a href="tel:{{service.phone}}">-->
           <!--<button ion-button round-->
                   <!--class="lynx-button-primary">-->
@@ -129,31 +129,31 @@
 
       <!-- Feedback? button -->
       <!--<ion-col col-12 col-sm text-center>-->
-        <!--<h3>{{ "lynx.pages.service_details.feedback_header" | translate }}</h3>-->
+        <!--<h3>{{ "oneclick.pages.service_details.feedback_header" | translate }}</h3>-->
         <!--<button ion-button round-->
                 <!--class="lynx-button-primary"-->
                 <!--(click)="rateService(service)">-->
-          <!--{{ "lynx.pages.service_details.feedback_button" | translate }}-->
+          <!--{{ "oneclick.pages.service_details.feedback_button" | translate }}-->
         <!--</button>-->
       <!--</ion-col>-->
 
       <!-- Email button -->
       <ion-col col-12 col-sm text-center>
-        <h3>{{ "lynx.pages.service_details.email_header" | translate }}</h3>
+        <h3>{{ "oneclick.pages.service_details.email_header" | translate }}</h3>
         <button ion-button round
                 class="lynx-button-primary"
                 (click)="openEmailModal(service)">
-          {{ "lynx.pages.service_details.email_button" | translate }}
+          {{ "oneclick.pages.service_details.email_button" | translate }}
         </button>
       </ion-col>
 
       <!-- SMS button -->
       <!--<ion-col col-12 col-sm text-center>-->
-        <!--<h3>{{ "lynx.pages.service_details.sms_header" | translate }}</h3>-->
+        <!--<h3>{{ "oneclick.pages.service_details.sms_header" | translate }}</h3>-->
         <!--<button ion-button round-->
                 <!--class="lynx-button-primary"-->
                 <!--(click)="openSmsModal(service)">-->
-          <!--{{ "lynx.pages.service_details.sms_button" | translate }}-->
+          <!--{{ "oneclick.pages.service_details.sms_button" | translate }}-->
         <!--</button>-->
       <!--</ion-col>-->
 

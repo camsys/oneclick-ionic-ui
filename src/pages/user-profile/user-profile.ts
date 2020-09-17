@@ -71,7 +71,7 @@ export class UserProfilePage {
   showSuccess() {
     // If the user token is expired, redirect to the sign in page and display a notification
     this.toastCtrl.create({
-      message: this.translate.instant("lynx.pages.user_profile.update_profile_success"),
+      message: this.translate.instant("oneclick.pages.user_profile.update_profile_success"),
       duration: 5000}
     ).present();
   }
@@ -107,12 +107,12 @@ export class UserProfilePage {
       console.error("USER TOKEN EXPIRED", error);
       this.navCtrl.push(SignInPage);
       this.toastCtrl.create({
-        message: this.translate.instant("lynx.pages.user_profile.sign_in_required_message"),
+        message: this.translate.instant("oneclick.pages.user_profile.sign_in_required_message"),
         duration: 5000}
       ).present();
     } else {
       this.toastCtrl.create({
-        message: this.translate.instant("lynx.pages.user_profile.generic_error_message"),
+        message: this.translate.instant("oneclick.pages.user_profile.generic_error_message"),
         duration: 5000}
       ).present();
       this.ionViewDidLoad();

@@ -215,7 +215,7 @@ export class TransportationEligibilityPage {
 
   async showTripTypesPopup() {
     let alert = await this.alertCtrl.create({
-      message: this.translate.instant('lynx.pages.transportation_eligibility.trip_types_info_popup'),
+      message: this.translate.instant('oneclick.pages.transportation_eligibility.trip_types_info_popup'),
       buttons: ['OK'],
     });
 
@@ -224,7 +224,7 @@ export class TransportationEligibilityPage {
 
   async showAccommodationsPopup() {
     let alert = await this.alertCtrl.create({
-      message: this.translate.instant('lynx.pages.transportation_eligibility.accommodations_info_popup'),
+      message: this.translate.instant('oneclick.pages.transportation_eligibility.accommodations_info_popup'),
       buttons: ['OK'],
     });
 
@@ -233,7 +233,7 @@ export class TransportationEligibilityPage {
 
   async showEligibilitiesPopup() {
     let alert = await this.alertCtrl.create({
-      message: this.translate.instant('lynx.pages.transportation_eligibility.eligibilities_info_popup'),
+      message: this.translate.instant('oneclick.pages.transportation_eligibility.eligibilities_info_popup'),
       buttons: ['OK'],
     });
 
@@ -242,7 +242,7 @@ export class TransportationEligibilityPage {
 
   async showAgePopup() {
     let alert = await this.alertCtrl.create({
-      message: this.translate.instant('lynx.pages.transportation_eligibility.age_info_popup'),
+      message: this.translate.instant('oneclick.pages.transportation_eligibility.age_info_popup'),
       buttons: ['OK'],
     });
 

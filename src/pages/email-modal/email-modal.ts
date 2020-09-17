@@ -60,7 +60,7 @@ export class EmailModalPage {
     this.oneClick.email211Service(this.emailForm.value['email'],ids);
     this.viewCtrl.dismiss(null);
     let toast = this.toastCtrl.create({
-      message: this.translate.instant('lynx.pages.email.email_sent'),
+      message: this.translate.instant('oneclick.pages.email.email_sent'),
       position: 'bottom',
       duration: 3000
     });

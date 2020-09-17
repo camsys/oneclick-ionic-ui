@@ -86,11 +86,11 @@ export class MyApp {
         console.error("USER TOKEN EXPIRED");
         this.signOut();
         this.nav.push(SignInPage);
-        this.showErrorToast('lynx.global.error_message.auth_needed');
+        this.showErrorToast('oneclick.global.error_message.auth_needed');
         break;
       default:
         this.goHome();
-        this.showErrorToast('lynx.global.error_messages.default');
+        this.showErrorToast('oneclick.global.error_messages.default');
         break;
     }
 
@@ -243,7 +243,7 @@ export class MyApp {
     this.setMenu();
     this.nav.push(this.rootPage);
     // This isn't an error, but there is no difference in the toast
-    this.showErrorToast('lynx.global.sign_out_successful');
+    this.showErrorToast('oneclick.global.sign_out_successful');
   }
 
   // Creates and presents a modal for changing the locale.

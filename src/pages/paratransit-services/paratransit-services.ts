@@ -40,7 +40,7 @@ export class ParatransitServicesPage {
       this.itinerary = this.navParams.data.itinerary;
     }
 
-    this.headerTitle = this.translate.instant("lynx.pages.paratransit_services.header");
+    this.headerTitle = this.translate.instant("oneclick.pages.paratransit_services.header");
   }
 
   ionViewDidLoad() {

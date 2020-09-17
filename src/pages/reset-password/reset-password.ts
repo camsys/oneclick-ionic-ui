@@ -31,7 +31,7 @@ export class ResetPasswordPage {
              .subscribe(
         data => {
           let successToast = this.toastCtrl.create({
-            message: this.translate.instant("lynx.pages.reset_password.success_message", { email: this.email }),
+            message: this.translate.instant("oneclick.pages.reset_password.success_message", { email: this.email }),
             position: "top",
             duration: 3000
           });
@@ -40,7 +40,7 @@ export class ResetPasswordPage {
         error => {
           console.error(error);
           let errorToast = this.toastCtrl.create({
-            message: this.translate.instant("lynx.pages.reset_password.error_message"),
+            message: this.translate.instant("oneclick.pages.reset_password.error_message"),
             position: "top",
             duration: 3000
           });

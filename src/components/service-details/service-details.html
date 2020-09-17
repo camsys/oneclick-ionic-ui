@@ -2,43 +2,43 @@
 
 <!-- FARE -->
 <p class="item-body service-details-section" *ngIf="service.fare">
-  <b>{{ "lynx.pages.transportation_service_details.fare" | translate }}: </b>
+  <b>{{ "oneclick.pages.transportation_service_details.fare" | translate }}: </b>
   {{ service.fare | currency:'USD':true:'1.2-2' }}
 </p>
 
 <!-- PHONE -->
 <p class="item-body service-details-section" *ngIf="!!(service.formatted_phone || service.phone)">
-  <b>{{ "lynx.pages.transportation_service_details.phone" | translate }}: </b>
+  <b>{{ "oneclick.pages.transportation_service_details.phone" | translate }}: </b>
   <a href="tel:{{service.phone}}">{{service.formatted_phone || service.phone}}</a>
 </p>
 
 <!-- EMAIL -->
 <p class="item-body service-details-section" *ngIf="service.email">
-  <b>{{ "lynx.pages.transportation_service_details.email" | translate }}: </b>
+  <b>{{ "oneclick.pages.transportation_service_details.email" | translate }}: </b>
   <a href="mailto:{{service.email}}">{{service.email}}</a>
 </p>
 
 <!-- WEBSITE -->
 <p class="item-body service-details-section" *ngIf="helpers.urlPresent(service.url)">
-  <b>{{ "lynx.pages.transportation_service_details.url" | translate }}: </b>
+  <b>{{ "oneclick.pages.transportation_service_details.url" | translate }}: </b>
   <external-link url="{{service.url}}"></external-link>
 </p>
 
 <!-- DESCRIPTION -->
 <p class="item-body service-details-section" *ngIf="service.description">
-  <b>{{ "lynx.pages.transportation_service_details.description" | translate }}: </b>
+  <b>{{ "oneclick.pages.transportation_service_details.description" | translate }}: </b>
   <span [innerHTML]="service.description"></span>
 </p>
 
 <!-- SCHEDULE -->
 <div class="service-details-section" *ngIf="service.schedules && service.schedules.length > 0">
   <p class="item-body">
-    <b>{{ "lynx.pages.transportation_service_details.schedule" | translate }}:</b>
+    <b>{{ "oneclick.pages.transportation_service_details.schedule" | translate }}:</b>
   </p>
   <ul class="service-schedule">
     <li *ngFor="let schedule of service.schedules">
       <b>{{ schedule.day | scheduleDay }}:</b>
-      {{ schedule.start_time | scheduleTime }} {{ "lynx.global.common.to" | translate }}
+      {{ schedule.start_time | scheduleTime }} {{ "oneclick.global.common.to" | translate }}
       {{ schedule.end_time | scheduleTime }}
     </li>
   </ul>
@@ -46,18 +46,18 @@
 
 <!-- ACCOMMODATIONS -->
 <p class="item-body service-details-section" *ngIf="service.accommodations.length > 0">
-  <b>{{ "lynx.pages.transportation_service_details.accommodations_header" | translate }}: </b>
+  <b>{{ "oneclick.pages.transportation_service_details.accommodations_header" | translate }}: </b>
   {{ accommodationList() }}
 </p>
 
 <!-- PURPOSES -->
 <p class="item-body service-details-section" *ngIf="service.purposes.length > 0">
-  <b>{{ "lynx.pages.transportation_service_details.purposes_header" | translate }}: </b>
+  <b>{{ "oneclick.pages.transportation_service_details.purposes_header" | translate }}: </b>
   {{ purposeList() }}
 </p>
 
 <!-- ELIGIBILITIES -->
 <p class="item-body service-details-section" *ngIf="service.eligibilities.length > 0">
-  <b>{{ "lynx.pages.transportation_service_details.eligibilities_header" | translate }}: </b>
+  <b>{{ "oneclick.pages.transportation_service_details.eligibilities_header" | translate }}: </b>
   {{ eligibilityList() }}
 </p>

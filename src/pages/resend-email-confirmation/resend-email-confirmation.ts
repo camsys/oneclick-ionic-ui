@@ -35,7 +35,7 @@ export class ResendEmailConfirmationPage {
       .subscribe(
         data => {
           let successToast = this.toastCtrl.create({
-            message: this.translate.instant("lynx.pages.resend_email_confirmation.success_message", {email: this.email}),
+            message: this.translate.instant("oneclick.pages.resend_email_confirmation.success_message", {email: this.email}),
             position: "top",
             duration: 3000
           });
@@ -44,7 +44,7 @@ export class ResendEmailConfirmationPage {
         error => {
           console.error(error);
           let errorToast = this.toastCtrl.create({
-            message: this.translate.instant("lynx.pages.resend_email_confirmation.error_message"),
+            message: this.translate.instant("oneclick.pages.resend_email_confirmation.error_message"),
             position: "top",
             duration: 3000
           });

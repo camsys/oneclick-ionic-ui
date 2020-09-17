@@ -1,5 +1,5 @@
 <ion-header>
-  <app-navbar headerTitle="{{ 'lynx.global.transportation.help' | translate }}"></app-navbar>
+  <app-navbar headerTitle="{{ 'oneclick.global.transportation.help' | translate }}"></app-navbar>
 
   <ion-toolbar class="lynx-toolbar" text-center>
 
@@ -26,8 +26,8 @@
       <ion-col col-sm-6 text-center>
         <ion-item>
           <ion-select id="arriveBySelector" [(ngModel)]="arriveBy" (ionChange)="updateTransportationOptionsButton()">
-            <ion-option value="false">{{ "lynx.global.directions.depart_at" | translate }}</ion-option>
-            <ion-option value="true">{{ "lynx.global.directions.arrive_by" | translate }}</ion-option>
+            <ion-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-option>
+            <ion-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-option>
           </ion-select>
         </ion-item>
       </ion-col>
@@ -85,12 +85,12 @@
                 <!--*ngIf="originSearch.place && destinationSearch.place"-->
                 <!--[disabled]="!can_plan_trips"-->
                 <!--(click)="findTransportation(originSearch.place, destinationSearch.place)">-->
-          <!--{{ "lynx.pages.trip_response.transportation_button" | translate }}-->
+          <!--{{ "oneclick.pages.trip_response.transportation_button" | translate }}-->
         <!--</button>-->
         <!--<button ion-button ion-end round default-->
                 <!--class="lynx-button-primary mode-trip-plan-button"-->
                 <!--(click)="openOtherTransportationOptions()">-->
-          <!--{{ "lynx.global.modes.find_other_options" | translate }}-->
+          <!--{{ "oneclick.global.modes.find_other_options" | translate }}-->
         <!--</button>-->
       <!--</ion-col>-->
       <!--<ion-col col-sm-2>-->
@@ -111,12 +111,12 @@
             *ngIf="originSearch.place && destinationSearch.place"
             [disabled]="!can_plan_trips"
             (click)="findTransportation(originSearch.place, destinationSearch.place)">
-      {{ "lynx.pages.trip_response.transportation_button" | translate }}
+      {{ "oneclick.pages.trip_response.transportation_button" | translate }}
     </button>
     <button ion-button ion-end round default
             class="lynx-button-primary mode-trip-plan-button"
             (click)="openOtherTransportationOptions()">
-      {{ "lynx.global.modes.find_other_options" | translate }}
+      {{ "oneclick.global.modes.find_other_options" | translate }}
     </button>
     <ion-row>
       <ion-col col-sm-12>
@@ -161,14 +161,14 @@
               <ion-row>
                 <ion-col col-sm-6>
                   <h3 item-start class="item-heading">
-                    {{ itin.legs[0].startTime | date:'shortTime' }} {{ "lynx.global.common.to" | translate }}
+                    {{ itin.legs[0].startTime | date:'shortTime' }} {{ "oneclick.global.common.to" | translate }}
                     {{ itin.legs[itin.legs.length-1].endTime | date:'shortTime' }}
                   </h3>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 class="item-subheading">{{ itin.duration | prettyTime }} ({{'lynx.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</h3>
+                  <h3 class="item-subheading">{{ itin.duration | prettyTime }} ({{'oneclick.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</h3>
                 </ion-col>
               </ion-row>
               <ion-row>
@@ -176,13 +176,13 @@
                   <h2 *ngIf="itin.cost"><b>
                     {{ [itin.cost] | prettyFare }}
                   </b></h2>
-                  <h2 *ngIf="!itin.cost"><b>{{ "lynx.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                  <h2 *ngIf="!itin.cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
                 </ion-col>
                 <ion-col col-sm-6>
                   <button ion-button item-end round default
                           class="lynx-button-primary mode-trip-plan-button"
                           (click)="openDirectionsPageForItinerary(itin)">
-                    {{ "lynx.pages.trip_response.go_button" | translate }}
+                    {{ "oneclick.pages.trip_response.go_button" | translate }}
                   </button>
                 </ion-col>
               </ion-row>
@@ -201,17 +201,17 @@
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 item-start class="item-heading">{{ "lynx.pages.trip_response.call_to_schedule" | translate}}</h3>
+                  <h3 item-start class="item-heading">{{ "oneclick.pages.trip_response.call_to_schedule" | translate}}</h3>
                 </ion-col>
                 <ion-col col-sm-6>
                   <p class="item-body service-details-section" *ngIf="itin.service.purposes.length > 0" style="background-color:yellow;">
-                    <b>{{ "lynx.pages.trip_response.purposes_header" | translate }}: </b>
+                    <b>{{ "oneclick.pages.trip_response.purposes_header" | translate }}: </b>
                   </p>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 class="item-subheading">{{itin.duration | prettyTime}} {{'lynx.global.modes.paratransit' | translate}} ({{'lynx.global.modes.paratransit_estimated' | translate}})</h3>
+                  <h3 class="item-subheading">{{itin.duration | prettyTime}} {{'oneclick.global.modes.paratransit' | translate}} ({{'oneclick.global.modes.paratransit_estimated' | translate}})</h3>
                 </ion-col>
                 <ion-col col-sm-6>
                   <p class="item-body service-details-section" *ngIf="itin.service.purposes.length > 0" style="background-color:yellow;">
@@ -224,13 +224,13 @@
                   <h2 *ngIf="itin.cost"><b>
                     {{ [itin.cost] | prettyFare }}
                   </b></h2>
-                  <h2 *ngIf="!itin.cost"><b>{{ "lynx.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                  <h2 *ngIf="!itin.cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
                 </ion-col>
                 <ion-col col-sm-6>
                   <button ion-button item-end round default
                           class="lynx-button-primary mode-trip-plan-button"
                           (click)="viewParatransitOptions(itin)">
-                    {{ "lynx.pages.trip_response.go_button" | translate }}
+                    {{ "oneclick.pages.trip_response.go_button" | translate }}
                   </button>
                 </ion-col>
               </ion-row>
@@ -251,30 +251,30 @@
               <ion-row>
                 <ion-col col-sm-6>
                   <h3 item-start class="item-heading" *ngIf="itin.trip_type == 'taxi'">
-                    {{ "lynx.pages.trip_response.call_to_schedule" | translate}}
+                    {{ "oneclick.pages.trip_response.call_to_schedule" | translate}}
                   </h3>
                   <h3 item-start class="item-heading " *ngIf="itin.trip_type != 'taxi'">
-                    {{ "lynx.pages.trip_response.connect_to_app." + itin.trip_type | translate}}
+                    {{ "oneclick.pages.trip_response.connect_to_app." + itin.trip_type | translate}}
                   </h3>
                 </ion-col>
               </ion-row>
 
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 class="item-subheading">{{"lynx.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</h3>
+                  <h3 class="item-subheading">{{"oneclick.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</h3>
                 </ion-col>
               </ion-row>
 
               <ion-row>
                 <ion-col col-sm-6>
                   <h2 *ngIf="itin.cost"><b>{{ [itin.cost] | prettyFare }}</b></h2>
-                  <h2 *ngIf="!itin.cost"><b>{{ "lynx.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                  <h2 *ngIf="!itin.cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
                 </ion-col>
                 <ion-col col-sm-6>
                   <button ion-button item-end round default
                           class="lynx-button-primary mode-trip-plan-button"
                           (click)="openDirectionsPageForItinerary(itin)">
-                    {{ "lynx.pages.trip_response.go_button" | translate }}
+                    {{ "oneclick.pages.trip_response.go_button" | translate }}
                   </button>
                 </ion-col>
               </ion-row>
@@ -283,20 +283,20 @@
             <ng-container *ngIf="(itin.trip_type == 'car' || itin.trip_type == 'walk' || itin.trip_type == 'bicycle')">
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 item-start class="item-heading "><div class="otp-legMode-icon otp-legMode-icon-{{ itin.legs[0].mode }}"></div><b>{{ "lynx.pages.trip_response." + itin.trip_type + ".only_label" | translate}}</b></h3>
+                  <h3 item-start class="item-heading "><div class="otp-legMode-icon otp-legMode-icon-{{ itin.legs[0].mode }}"></div><b>{{ "oneclick.pages.trip_response." + itin.trip_type + ".only_label" | translate}}</b></h3>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
                   <h3 item-start class="item-heading ">
-                    {{ itin.legs[0].startTime | date:'shortTime' }} {{ "lynx.global.common.to" | translate }}
+                    {{ itin.legs[0].startTime | date:'shortTime' }} {{ "oneclick.global.common.to" | translate }}
                     {{ itin.legs[itin.legs.length-1].endTime | date:'shortTime' }}
                   </h3>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 class="item-subheading">{{"lynx.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</h3>
+                  <h3 class="item-subheading">{{"oneclick.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</h3>
                 </ion-col>
               </ion-row>
               <ion-row>
@@ -306,7 +306,7 @@
                   <button ion-button item-end round default
                           class="lynx-button-primary mode-trip-plan-button"
                           (click)="openDirectionsPageForItinerary(itin)">
-                    {{ "lynx.pages.trip_response.go_button" | translate }}
+                    {{ "oneclick.pages.trip_response.go_button" | translate }}
                   </button>
                 </ion-col>
               </ion-row>

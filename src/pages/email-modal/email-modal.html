@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title text-center>{{ "lynx.pages.email.header" | translate}}</ion-title>
+    <ion-title text-center>{{ "oneclick.pages.email.header" | translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -16,14 +16,14 @@
 <ion-content padding>
 
     <ion-item>
-      {{ "lynx.pages.email.description" | translate}}
+      {{ "oneclick.pages.email.description" | translate}}
     </ion-item>
 
 
     <form [formGroup]="emailForm" (ngSubmit)="send()">
       <!-- Email input just a standard text input -->
       <ion-item>
-        <ion-input type="email" formControlName="email" placeholder="{{'lynx.pages.email.placeholder' | translate}}"></ion-input>
+        <ion-input type="email" formControlName="email" placeholder="{{'oneclick.pages.email.placeholder' | translate}}"></ion-input>
       </ion-item>
 
       <!-- Submit button creates a feedback, cancel discards data without leaving feedback-->
@@ -31,14 +31,14 @@
         <ion-col col-md-6 text-center>
         <button ion-button round
                 type="submit"
-                class="lynx-button-dark">{{ "lynx.pages.email.submit_button" | translate }}</button>
+                class="lynx-button-dark">{{ "oneclick.pages.email.submit_button" | translate }}</button>
         </ion-col>
         <ion-col col-md-6 text-center>
         <!-- Submit button creates a feedback, cancel discards data without leaving feedback-->
         <button ion-button round
                 class="lynx-button-white"
                 type="button"
-                (click)="cancel()">{{ "lynx.pages.email.cancel_button" | translate }}
+                (click)="cancel()">{{ "oneclick.pages.email.cancel_button" | translate }}
         </button>
         </ion-col>
       </div>

@@ -5,7 +5,7 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <app-navbar headerTitle="{{ 'lynx.pages.feedback_status.header' | translate }}"></app-navbar>
+  <app-navbar headerTitle="{{ 'oneclick.pages.feedback_status.header' | translate }}"></app-navbar>
 </ion-header>
 
 
@@ -18,7 +18,7 @@
         <ion-list class="lynx-list">
 
           <ion-list-header *ngIf="feedbacks.length === 0">
-            {{ "lynx.pages.feedback_status.no_feedback" | translate }}
+            {{ "oneclick.pages.feedback_status.no_feedback" | translate }}
           </ion-list-header>
 
           <!-- FEEDBACK DETAILS -->
@@ -27,7 +27,7 @@
             <!-- SUBJECT/DATE HEADER -->
             <h2 *ngIf="feedback.subject !== 'General'; else generalFeedbackHeader">
               {{
-                "lynx.pages.feedback_status.feedback_header_w_subj" |
+                "oneclick.pages.feedback_status.feedback_header_w_subj" |
                 translate:{
                   subject: feedback.subject,
                   date: (feedback.created_at | date:'mediumDate')
@@ -37,7 +37,7 @@
             <ng-template #generalFeedbackHeader>
               <h2>
                 {{
-                  "lynx.pages.feedback_status.feedback_header_no_subj" |
+                  "oneclick.pages.feedback_status.feedback_header_no_subj" |
                   translate:{ date: (feedback.created_at | date:'mediumDate') }
                 }}
               </h2>
@@ -45,31 +45,31 @@
 
             <!-- RATING -->
             <div *ngIf="feedback.rating">
-              <b>{{ "lynx.pages.feedback_status.rating" | translate }}: </b><rating class="lynx-rating lynx-rating-sm" [ngModel]="feedback.rating"></rating>
+              <b>{{ "oneclick.pages.feedback_status.rating" | translate }}: </b><rating class="lynx-rating lynx-rating-sm" [ngModel]="feedback.rating"></rating>
             </div>
 
             <!-- REVIEW -->
             <div *ngIf="feedback.review">
-              <b>{{ "lynx.pages.feedback_status.review" | translate }}: </b>{{ feedback.review }}
+              <b>{{ "oneclick.pages.feedback_status.review" | translate }}: </b>{{ feedback.review }}
             </div>
 
             <!-- STATUS -->
             <div *ngIf="feedback.acknowledged; else notAcknowledged">
 
-              <b>{{ "lynx.pages.feedback_status.status" | translate }}: </b>
+              <b>{{ "oneclick.pages.feedback_status.status" | translate }}: </b>
               {{
-                "lynx.pages.feedback_status.status_acknowledged" |
+                "oneclick.pages.feedback_status.status_acknowledged" |
                 translate:{
                   date: (feedback.acknowledged_at | date:"mediumDate"),
                   commenter: feedback.acknowledged_by
                 }
               }}<span *ngIf="feedback.acknowledgement_comment">,
-                {{ "lynx.pages.feedback_status.with_comment" | translate }}: <i>"{{ feedback.acknowledgement_comment }}"</i>
+                {{ "oneclick.pages.feedback_status.with_comment" | translate }}: <i>"{{ feedback.acknowledgement_comment }}"</i>
               </span>.
 
             </div>
             <ng-template #notAcknowledged>
-              <b>{{ "lynx.pages.feedback_status.status" | translate }}: </b>{{ "lynx.pages.feedback_status.status_pending" | translate }}
+              <b>{{ "oneclick.pages.feedback_status.status" | translate }}: </b>{{ "oneclick.pages.feedback_status.status_pending" | translate }}
             </ng-template>
 
           </ion-item>

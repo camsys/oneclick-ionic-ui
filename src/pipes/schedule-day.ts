@@ -13,7 +13,7 @@ export class ScheduleDayPipe implements PipeTransform {
   
   transform(day: number): string {
     return this.translate.instant(
-      "lynx.global.weekdays." + this.dayCodes[day] + "_short"
+      "oneclick.global.weekdays." + this.dayCodes[day] + "_short"
     );
   }
   

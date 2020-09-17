@@ -15,7 +15,7 @@
                      *ngIf="itineraries.length > 1">
         <ion-segment-button *ngFor="let itin of itineraries; let i = index" 
                             value="{{ i | toString }}">
-          {{ "lynx.pages.directions.steps_tab.option" | translate }} {{i + 1}}
+          {{ "oneclick.pages.directions.steps_tab.option" | translate }} {{i + 1}}
         </ion-segment-button>
       </ion-segment>
     </div>

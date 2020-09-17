@@ -76,8 +76,8 @@ export namespace ServiceFor211ModalPage {
     serviceFor211Modal.onDidDismiss(data => {
       if(data) {
         let toast = toastCtrl.create({
-          message: (data.status === 200 ? translate.instant("lynx.pages.feedback.success_message") :
-                                          translate.instant("lynx.pages.feedback.error_message")),
+          message: (data.status === 200 ? translate.instant("oneclick.pages.feedback.success_message") :
+                                          translate.instant("oneclick.pages.feedback.error_message")),
           position: 'bottom',
           duration: 3000
         });

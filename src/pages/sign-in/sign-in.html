@@ -1,5 +1,5 @@
 <ion-header no-border>
-  <app-navbar headerTitle="{{ 'lynx.pages.sign_in.header' | translate }}"></app-navbar>
+  <app-navbar headerTitle="{{ 'oneclick.pages.sign_in.header' | translate }}"></app-navbar>
 </ion-header>
 
 <ion-content padding>
@@ -35,7 +35,7 @@
       <ion-row>
         <ion-col>
           <button ion-button round class="lynx-button-dark center" type="submit" [disabled]="!signInForm.form.valid">
-            {{ "lynx.pages.sign_in.sign_in_button" | translate }}
+            {{ "oneclick.pages.sign_in.sign_in_button" | translate }}
           </button>
         </ion-col>
       </ion-row>
@@ -43,21 +43,21 @@
       <ion-row>
         <ion-col text-center>
           <button type="button" class="lynx-button-link link-black" (click)="signUp()">
-            {{ "lynx.pages.menu.sign_up" | translate }}
+            {{ "oneclick.pages.menu.sign_up" | translate }}
           </button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col text-center>
           <button type="button" class="lynx-button-link link-black" (click)="resetPassword()">
-            {{ "lynx.pages.sign_in.reset_password_button" | translate }}
+            {{ "oneclick.pages.sign_in.reset_password_button" | translate }}
           </button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col text-center>
           <button type="button" class="lynx-button-link link-black" (click)="resendConfirmation()">
-            {{ "lynx.pages.sign_in.resend_confirmation_button" | translate }}
+            {{ "oneclick.pages.sign_in.resend_confirmation_button" | translate }}
           </button>
         </ion-col>
       </ion-row>

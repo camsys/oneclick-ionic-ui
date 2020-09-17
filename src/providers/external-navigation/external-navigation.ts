@@ -19,16 +19,16 @@ export class ExternalNavigationProvider {
   // Opens an external website, but first confirms with the user that they want to leave the site
   goTo(url: any) {
     let confirmExit = this.alertCtrl.create({
-      title: this.translate.instant("lynx.pages.external_navigation.header"),
-      message: this.translate.instant("lynx.pages.external_navigation.message"),
+      title: this.translate.instant("oneclick.pages.external_navigation.header"),
+      message: this.translate.instant("oneclick.pages.external_navigation.message"),
       buttons: [
         {
-          text: this.translate.instant("lynx.pages.external_navigation.cancel_button"),
+          text: this.translate.instant("oneclick.pages.external_navigation.cancel_button"),
           role: 'cancel',
           handler: () => { }
         },
         {
-          text: this.translate.instant("lynx.pages.external_navigation.confirm_button"),
+          text: this.translate.instant("oneclick.pages.external_navigation.confirm_button"),
           handler: () => {
             this.goDirectlyTo(url);
           }

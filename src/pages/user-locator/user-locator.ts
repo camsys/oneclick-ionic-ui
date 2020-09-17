@@ -103,7 +103,7 @@ export class UserLocatorPage {
     if (this.platform.is('cordova') || !this.platform.is('windows')) {
       this.checkGeolocationSupportAndSetupFeatures();
     } else {
-      this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found");
+      this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
     }
   }
 
@@ -123,19 +123,19 @@ export class UserLocatorPage {
               this.setupGeolocationFeatures();
             } else {
               console.error("The browser or device does not support geolocation.");
-              this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found");
+              this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
             }
       //  } else if (permission.state === "prompt") {
       //    console.log("The browser or device needs to prompt the user for geolocation permission. Won't geolocate initially.");
-      //    this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found");
+      //    this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
       //  } else {
       //    console.error("The browser or device does not have permission for geolocation.");
-      //    this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found");
+      //    this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
       //  }
       //});
     //} else {
     //  console.error("The browser or device does not support checking permissions for geolocation.");
-    //  this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found");
+    //  this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
     //}
   }
 
@@ -169,7 +169,7 @@ export class UserLocatorPage {
     })
     .catch((err) => {
       console.error("Could not geolocate device position");
-      this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found");
+      this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
     });
   }
 
@@ -242,7 +242,7 @@ export class UserLocatorPage {
     this.geoServiceProvider.getPlaceFromLatLng(lat, lng)
     .subscribe( (places) => {
       this.userLocation = places[0];
-      this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found") + this.userLocation.formatted_address;
+      this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found") + this.userLocation.formatted_address;
 
       // Set the origin to the user location if it isn't already set
       //this.originSearch.place = this.originSearch.place || this.userLocation;

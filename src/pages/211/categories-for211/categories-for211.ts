@@ -153,14 +153,14 @@ export class CategoriesFor211Page {
   
   // Builds a translated title for a search result
   translateSearchResult(result: SearchResultModel): SearchResultModel {
-    let tkey = "lynx.pages.categories.resources_search." + this.translationKeyFor(result.type);
+    let tkey = "oneclick.pages.categories.resources_search." + this.translationKeyFor(result.type);
     result.title = this.translate.instant(tkey);
     return result;
   }
   
   // Returns a translated message for empty search results
   emptySearchResult(): SearchResultModel {
-    return { label: this.translate.instant('lynx.pages.categories.resources_search.empty_search_result') } as SearchResultModel;
+    return { label: this.translate.instant('oneclick.pages.categories.resources_search.empty_search_result') } as SearchResultModel;
   }
 
 }
