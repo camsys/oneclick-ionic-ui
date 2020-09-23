@@ -250,23 +250,12 @@ export class ServiceFor211DetailPage {
   }
 
   openOtherTransportationOptions(){
-    // Plan a trip and store the result.
-    // Once response comes in, update the UI with travel times and allow
-    // user to select a mode to view directions.
-
-    this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
-      .planTrip(this.buildTripRequest(this.allModes))
-      .subscribe((tripResponse) => {
-        this.loadTripResponse(tripResponse);
-
-        this.navCtrl.push(TransportationEligibilityPage, {
-          trip_response: this.tripResponse,
-          trip_request: this.tripRequest,
-          trip_id: this.trip_id,
-          origin: this.origin,
-          destination: this.destination
-        });
-      })
+    this.navCtrl.push(TransportationEligibilityPage, {
+      trip_request: this.tripRequest,
+      trip_id: this.trip_id,
+      origin: this.origin,
+      destination: this.destination
+    });
   }
 
   // Builds a trip request based on the passed mode, stored origin/destination,

@@ -60,22 +60,10 @@ export class TransportationEligibilityPage {
     this.origin = new GooglePlaceModel(this.navParams.data.origin);
     this.destination = new GooglePlaceModel(this.navParams.data.destination);
 
-    if(this.navParams.data.trip_response && this.navParams.data.trip_request) {
+    if(this.navParams.data.trip_request) {
 
-      this.loadTripResponse(this.navParams.data.trip_response);
+      this.loadTripResponse();
       this.loadTripRequest(this.navParams.data.trip_request);
-
-    } else if(this.trip_id) {
-      this.oneClick.getTrip(this.trip_id)
-          .subscribe((tripResponse) => {
-
-            let tripRequest = new TripResponseModel(tripResponse).buildTripRequest({except_filters: ["schedule", "eligibility"]});
-            this.loadTripRequest(tripRequest);
-
-            // Have to re-plan trip in order to get relevant eligibilities and accommodations
-            this.oneClick.planTrip(tripRequest)
-            .subscribe(trip => this.loadTripResponse(trip));
-          });
     } else {
       // If necessary NavParams are not present, go to home page
       this.navCtrl.setRoot(HelpMeFindPage);
@@ -89,21 +77,25 @@ export class TransportationEligibilityPage {
   }
 
   // Loads trip response data onto the page
-  loadTripResponse(tripResponse: TripResponseModel) {
-    this.tripResponse = new TripResponseModel(tripResponse);
+  loadTripResponse() {
 
-    // Pull out the relevant accommodations and eligibilities
-    this.accommodations = this.tripResponse.all_accommodations;
-    this.eligibilities = this.tripResponse.all_eligibilities;
-    this.trip_types = this.tripResponse.all_trip_types;
+    this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
+      .newTrip()
+      .subscribe((tripResponse) => {
+        this.tripResponse = new TripResponseModel(tripResponse);
 
-    // If user is logged in, set the values for the eligibilities and accommodations based on their saved info
-    if(this.auth.isSignedIn() && this.auth.session().user) {
-      this.user = this.auth.session().user;
-      this.age = this.user.age;
-      this.setAccomEligAndTripTypeValues();
-    }
+        // Pull out the relevant accommodations and eligibilities
+        this.accommodations = this.tripResponse.all_accommodations;
+        this.eligibilities = this.tripResponse.all_eligibilities;
+        this.trip_types = this.tripResponse.all_trip_types;
 
+        // If user is logged in, set the values for the eligibilities and accommodations based on their saved info
+        if(this.auth.isSignedIn() && this.auth.session().user) {
+          this.user = this.auth.session().user;
+          this.age = this.user.age;
+          this.setAccomEligAndTripTypeValues();
+        }
+    });
 
     this.events.publish("spinner:hide");
     this.changeDetector.markForCheck();
