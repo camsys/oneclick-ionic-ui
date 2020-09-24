@@ -330,6 +330,16 @@ export class OneClickProvider {
                .catch(error => this.handleError(error));
   }
 
+  newTrip(): Observable<TripResponseModel> {
+    let uri = encodeURI(this.oneClickUrl +
+      'trips/new?locale=' + this.i18n.currentLocale());
+
+
+    return this.http.get(uri, this.requestOptions())
+      .map(response => this.unpackTripResponse(response))
+      .catch(error => this.handleError(error));
+  }
+
   getAlerts(): Promise<Alert[]>{
     let uri = encodeURI(this.oneClickUrl +
                         'alerts?locale=' +
@@ -453,12 +463,16 @@ export class OneClickProvider {
   }
 
   private unpackTripResponse(response: any): TripResponseModel {
+
     let trip = (response.json().data.trip as TripResponseModel);
     let user = trip.user as User;
-    // If no user is signed in, OR the user is signed in as the user
-    // returned by the trip plan call, store returned user info in the session.
-    if(!this.auth.isSignedIn() || this.auth.isSignedIn(user)) {
-      this.auth.updateSessionUser(user);
+
+    if (user) {
+      // If no user is signed in, OR the user is signed in as the user
+      // returned by the trip plan call, store returned user info in the session.
+      if(!this.auth.isSignedIn() || this.auth.isSignedIn(user)) {
+        this.auth.updateSessionUser(user);
+      }
     }
 
     return trip;

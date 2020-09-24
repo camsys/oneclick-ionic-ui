@@ -124,27 +124,27 @@ export class TripResponsePage {
       this.origin = new GooglePlaceModel(this.navParams.data.origin);
       this.destination = new GooglePlaceModel(this.navParams.data.destination);
 
-      // Plan a trip and store the result.
-      // Once response comes in, update the UI with travel times and allow
-      // user to select a mode to view directions.
-      this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
+
+      if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
+        let this_pg_idx = this.navCtrl.length() - 1;
+        this.navCtrl.remove(this_pg_idx).then(() => {
+          this.navCtrl.push(TransportationEligibilityPage, {
+            trip_request: this.tripRequest,
+            trip_id: this.trip_id,
+            origin: this.origin,
+            destination: this.destination
+          })
+        });
+      } else {
+        // Plan a trip and store the result.
+        // Once response comes in, update the UI with travel times and allow
+        // user to select a mode to view directions.
+        this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
         .planTrip(this.tripRequest)
         .subscribe((tripResponse) => {
           this.loadTripResponse(tripResponse);
-
-          if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
-            let this_pg_idx = this.navCtrl.length() - 1;
-            this.navCtrl.remove(this_pg_idx).then(() => {
-              this.navCtrl.push(TransportationEligibilityPage, {
-                trip_response: this.tripResponse,
-                trip_request: this.tripRequest,
-                trip_id: this.trip_id,
-                origin: this.origin,
-                destination: this.destination
-              })
-            });
-          }
         });
+      }
 
     } else if(this.trip_id) {
       this.oneClick.getTrip(this.trip_id)
@@ -160,28 +160,30 @@ export class TripResponsePage {
       // Set origin and destination places
       this.origin = new GooglePlaceModel(this.navParams.data.origin);
       this.destination = new GooglePlaceModel(this.navParams.data.destination);
+      this.buildTripRequest(this.allModes)
 
-      // Plan a trip and store the result.
-      // Once response comes in, update the UI with travel times and allow
-      // user to select a mode to view directions.
-      this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
-        .planTrip(this.buildTripRequest(this.allModes))
-        .subscribe((tripResponse) => {
-          this.loadTripResponse(tripResponse);
 
-          if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
-            let this_pg_idx = this.navCtrl.length() - 1;
-            this.navCtrl.remove(this_pg_idx).then(() => {
-              this.navCtrl.push(TransportationEligibilityPage, {
-                trip_response: this.tripResponse,
-                trip_request: this.tripRequest,
-                trip_id: this.trip_id,
-                origin: this.origin,
-                destination: this.destination
-              })
-            });
-          }
+      if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
+        let this_pg_idx = this.navCtrl.length() - 1;
+        this.navCtrl.remove(this_pg_idx).then(() => {
+          this.navCtrl.push(TransportationEligibilityPage, {
+            trip_request: this.tripRequest,
+            trip_id: this.trip_id,
+            origin: this.origin,
+            destination: this.destination
+          })
         });
+      } else {
+        // Plan a trip and store the result.
+        // Once response comes in, update the UI with travel times and allow
+        // user to select a mode to view directions.
+        this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
+          .planTrip(this.tripRequest)
+          .subscribe((tripResponse) => {
+            this.loadTripResponse(tripResponse);
+          });
+      }
+
 
       // Otherwise, go to home page
     } else {
@@ -385,18 +387,12 @@ export class TripResponsePage {
     // Once response comes in, update the UI with travel times and allow
     // user to select a mode to view directions.
 
-    this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
-      .planTrip(this.buildTripRequest(this.allModes))
-      .subscribe((tripResponse) => {
-        this.loadTripResponse(tripResponse);
-
-      this.navCtrl.push(TransportationEligibilityPage, {
-        trip_response: this.tripResponse,
-        trip_request: this.tripRequest,
-        trip_id: this.trip_id,
-        origin: this.origin,
-        destination: this.destination
-      });
+    this.buildTripRequest(this.allModes);
+    this.navCtrl.push(TransportationEligibilityPage, {
+      trip_request: this.tripRequest,
+      trip_id: this.trip_id,
+      origin: this.origin,
+      destination: this.destination
     });
 
 
