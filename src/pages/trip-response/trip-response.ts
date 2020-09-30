@@ -115,7 +115,7 @@ export class TripResponsePage {
     this.events.publish('spinner:show');
 
     // If a Trip ID is present, use that to fetch the already-planned trip
-    if (this.navParams.data.tripRequest) {
+    if (!this.trip_id && this.navParams.data.tripRequest) {
       this.tripRequest = this.navParams.data.tripRequest;
       this.departureDateTime = this.tripRequest.trip.trip_time;
       this.arriveBy = this.tripRequest.trip.arrive_by;
@@ -315,6 +315,7 @@ export class TripResponsePage {
   // Loads the page from a OneClick trip response
   loadTripResponse(tripResponse: TripResponseModel) {
     this.tripResponse = new TripResponseModel(tripResponse);
+    this.trip_id = this.tripResponse.id;
     this.updateTravelTimesFromTripResponse(this.tripResponse);
     this.updateTripPlaces(this.tripResponse);
 
