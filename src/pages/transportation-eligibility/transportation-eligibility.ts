@@ -94,6 +94,10 @@ export class TransportationEligibilityPage {
           this.user = this.auth.session().user;
           this.age = this.user.age;
           this.setAccomEligAndTripTypeValues();
+        } else {
+          this.trip_types.map((trip_type) => {
+            trip_type.value = true;
+          });
         }
     });
 
@@ -194,14 +198,6 @@ export class TransportationEligibilityPage {
       }
 
     });
-    if (!this.auth.isRegisteredUser()) {
-      this.trip_types.map((trip_type) => {
-        trip_type.value = true;
-      });
-    }
-
-    console.log(this.user);
-    console.log(this.trip_types);
 
   }
 
