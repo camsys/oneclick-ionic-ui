@@ -26,8 +26,8 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 export function createTranslateLoader(http: Http){
-  // return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-  return new TranslateHttpLoader(http, environment.AWS_LOCALE_URL + "api/v1/translations/all?lang=", '&format=json');
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  //return new TranslateHttpLoader(http, environment.AWS_LOCALE_URL + "api/v1/translations/all?lang=", '&format=json');
 }
 
 // Ratings
