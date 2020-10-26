@@ -73,8 +73,8 @@ export class ServiceFor211DetailPage {
   itineraries: ItineraryModel[];
 
   trip_id: number;
-  service_id: number;
-  location_id: number;
+  service_id: string;
+  location_id: string;
   service_location: OneClickPlaceModel;
 
   transitTime: number = 0;
@@ -95,8 +95,8 @@ export class ServiceFor211DetailPage {
               private location: Location) {
 
     this.trip_id = parseInt(this.navParams.data.trip_id);
-    this.service_id = parseInt(this.navParams.data.service_id);
-    this.location_id = parseInt(this.navParams.data.location_id);
+    this.service_id = this.navParams.data.service_id;
+    this.location_id = this.navParams.data.location_id;
     this.arriveBy = this.navParams.data.arriveBy;
 
     this.events.subscribe('place-search:change', () => {
@@ -182,8 +182,11 @@ export class ServiceFor211DetailPage {
   updateURL() {
 
     this.trip_id = this.tripResponse && this.tripResponse.id;
-    this.service_id = this.service && this.service.service_id;
-    this.location_id = this.service && this.service.location_id;
+
+    if (this.service) {
+      this.service_id = this.service.service_id;
+      this.location_id = this.service.location_id;
+    }
 
     let path = "/service_detail/";
 

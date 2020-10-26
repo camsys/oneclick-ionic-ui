@@ -76,7 +76,7 @@ export class TripResponsePage {
   orderBy: String;
 
   trip_id: number;
-  location_id: number;
+  location_id: string;
 
   transitTime: number = 0;
   driveTime: number = 0;
@@ -100,7 +100,7 @@ export class TripResponsePage {
               private location: Location) {
 
     this.trip_id = parseInt(this.navParams.data.trip_id);
-    this.location_id = parseInt(this.navParams.data.location_id);
+    this.location_id = this.navParams.data.location_id;
     this.arriveBy = this.navParams.data.arriveBy;
 
     this.skipPreferences = this.navParams.data.skipPreferences;

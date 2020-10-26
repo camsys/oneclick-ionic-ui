@@ -14,7 +14,7 @@ export class ServiceModel {
   phone: string;
   url: string;
   email: string;
-  display_url: string; 
+  display_url: string;
   details: {
     service_description: string;
     eligibility: string;
@@ -28,7 +28,7 @@ export class ServiceModel {
     travel_instructions: string;
     area_served: string;
   };
-  service_id:number;
-  location_id:number;
+  service_id:string;
+  location_id:string;
 
 }
