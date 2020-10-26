@@ -164,8 +164,7 @@ export class MyApp {
       { title: 'contact_us', component: ContactUsPage },
       // Disabling transportation options based on feedback.
       //{ title: 'transportation', component: ParatransitServicesPage },
-      // Disabling find services temporarily.
-      //{ title: 'resources', component: UserLocatorPage, params: { viewType: 'services'}},
+      { title: 'resources', component: UserLocatorPage, params: { viewType: 'services'}},
       //{ title: 'language_selector', component: "language_selector" },
       //{ title: 'privacy_policy', component: "privacy_policy" },
       // Disabling chat based on feedback.
