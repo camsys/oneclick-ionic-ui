@@ -6,12 +6,13 @@ import { TripResponseModel } from "../../models/trip-response";
 import { TripRequestModel } from "../../models/trip-request";
 import { ItineraryModel } from "../../models/itinerary";
 import { LegModel } from "../../models/leg";
-import { ServiceModel } from "../../models/service"
 import { OneClickPlaceModel } from "../../models/one-click-place";
 import { OneClickProvider } from '../../providers/one-click/one-click';
 import { DirectionsPage } from '../directions/directions';
 import { ServiceFor211ModalPage } from '../211/service-for211-modal/service-for211-modal';
+import { EmailItineraryModalPage } from "../email-itinerary-modal/email-itinerary-modal";
 import { HelpersProvider } from '../../providers/helpers/helpers';
+
 
 /**
  * Generated class for the DirectionsStepsTabPage page.
@@ -79,6 +80,13 @@ export class DirectionsStepsTabPage {
   }
 
   ionViewDidLoad() { }
+
+  openEmailModal() {
+    if (this.itinerary) {
+      let emailModal = this.modalCtrl.create(EmailItineraryModalPage, {itinerary: this.itinerary});
+      emailModal.present();
+    }
+  }
 
   selectService(id: number) {
     this.oneClickProvider.getServiceDetails(id)

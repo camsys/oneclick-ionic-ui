@@ -207,6 +207,18 @@
 
       <!-- END itinerary rows -->
 
+      <ion-row>
+        <!-- Email button -->
+        <ion-col col-12 col-sm text-center>
+          <h3>{{ "email_your_ride_details" | translate }}</h3>
+          <button ion-button round
+                  class="lynx-button-primary"
+                  (click)="openEmailModal()">
+            {{ "oneclick.pages.service_details.email_button" | translate }}
+          </button>
+        </ion-col>
+      </ion-row>
+
     </div>
 
   </ion-grid>
