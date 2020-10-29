@@ -18,14 +18,14 @@
         <ion-tab  [root]="listTab"
                   tabTitle="{{ 'oneclick.pages.services.list_tab.header' | translate }}"
                   tabIcon="list"
-                  [rootParams]="this.services">
+                  [rootParams]="this.servicesParams">
         </ion-tab>
 
         <!-- Map results tab -->
         <ion-tab  [root]="mapTab"
                   tabTitle="{{ 'oneclick.pages.services.map_tab.header' | translate }}"
                   tabIcon="map"
-                  [rootParams]="this.services">
+                  [rootParams]="this.servicesParams">
         </ion-tab>
 
       </ion-tabs>
