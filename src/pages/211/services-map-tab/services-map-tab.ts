@@ -35,7 +35,7 @@ export class ServicesMapTabPage {
               public events: Events,
               private changeDetector: ChangeDetectorRef) {
     this.service_map = null;
-    this.services = navParams.data;
+    this.services = navParams.data.services;
     this.selectedService = null;
     this.markerSelected = false;
   }

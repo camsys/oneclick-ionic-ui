@@ -30,6 +30,8 @@ export class ServicesPage {
   subSubCategory: SubSubcategoryFor211Model;
   services: ServiceModel[] = [];
 
+  servicesParams: any;
+
   mapTab: any;
   listTab: any;
 
@@ -43,10 +45,10 @@ export class ServicesPage {
     this.mapTab = ServicesMapTabPage;
     this.listTab = ServicesListTabPage;
     this.code = this.navParams.data.code;
-    
+
     // Wait for platform to be ready so proper language is set
     this.platform.ready().then(() => {
-      
+
       // If subsubcategory object is passed, set it as the subsubcategory
       if(this.navParams.data.sub_sub_category) {
         this.subSubCategory = this.navParams.data.sub_sub_category as SubSubcategoryFor211Model;
@@ -56,39 +58,40 @@ export class ServicesPage {
       } else { // Or, if necessary nav params not passed, go home.
         this.navCtrl.setRoot(HelpMeFindPage);
       }
-      
+
     })
   }
 
   ionViewDidLoad() {
     this.events.publish('spinner:show'); // Show spinner while results are loading
     let userLocation = this.auth.userLocation();
-    
+
     this.oneClick
     .getServicesFromSubSubCategoryName(this.code, userLocation.lat(), userLocation.lng())
     .then((svcs) => {
       this.events.publish('spinner:hide'); // Hide spinner once results come back
       this.services = svcs;
+      this.servicesParams = {services: this.services, service_count: this.subSubCategory.service_count}
     });
   }
-  
+
   ionViewWillEnter() {
     // Watch for service:selected events from child tabs
     this.events.subscribe('service:selected', (service) => {
       this.onServiceSelected(service);
     })
   }
-  
+
   ionViewWillLeave() {
     // on leaving the page, unsubscribe from the service:selected event to avoid
     // destroyed view errors
     this.events.unsubscribe('service:selected');
   }
-  
+
   // When a service selected event is fired in one of the child tabs,
   // open the transportation options page, passing along the service, an origin, and a destination
   onServiceSelected(service: ServiceModel) {
-    
+
     // Insert the new page underneat the tabs pages, and then pop the tabs pages off the stack
     this.navCtrl.insert(this.navCtrl.length() - 1, ServiceFor211DetailPage, {
       service: service,

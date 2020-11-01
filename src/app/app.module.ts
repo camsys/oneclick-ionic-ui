@@ -59,6 +59,7 @@ import { ServicesPage } from '../pages/211/services/services'
 import { TaxiServicesPage } from '../pages/taxi-services/taxi-services';
 import { FeedbackModalPage } from '../pages/feedback-modal/feedback-modal';
 import { EmailModalPage } from '../pages/email-modal/email-modal';
+import { EmailItineraryModalPage } from '../pages/email-itinerary-modal/email-itinerary-modal';
 import { SmsModalPage } from '../pages/sms-modal/sms-modal';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { ResendEmailConfirmationPage } from '../pages/resend-email-confirmation/resend-email-confirmation';
@@ -142,6 +143,7 @@ export function translateFactory() {
     UserProfilePage,
     FeedbackModalPage,
     EmailModalPage,
+    EmailItineraryModalPage,
     SmsModalPage,
     ResetPasswordPage,
     ResendEmailConfirmationPage,
@@ -242,6 +244,7 @@ export function translateFactory() {
     UserProfilePage,
     FeedbackModalPage,
     EmailModalPage,
+    EmailItineraryModalPage,
     SmsModalPage,
     ResetPasswordPage,
     ResendEmailConfirmationPage,
@@ -310,6 +313,7 @@ export function translateFactory() {
     UserProfilePage,
     FeedbackModalPage,
     EmailModalPage,
+    EmailItineraryModalPage,
     SmsModalPage,
     ResetPasswordPage,
     ResendEmailConfirmationPage,

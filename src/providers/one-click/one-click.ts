@@ -405,6 +405,15 @@ export class OneClickProvider {
       });
   }
 
+  emailItinerary(email: string, itinerary_id: number): Promise<any> {
+    return this.http
+      .post(this.oneClickUrl + 'itineraries/email',
+        { email_address:  email, itinerary_id: itinerary_id, locale: this.i18n.currentLocale()},
+        this.requestOptions())
+      .toPromise()
+      .catch(error => this.handleError(error));
+  }
+
   // Email 211 Services
   email211Service(email: string, id: number[]): Promise<any> {
     return this.http
