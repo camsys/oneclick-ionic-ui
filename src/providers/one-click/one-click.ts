@@ -132,7 +132,9 @@ export class OneClickProvider {
       "last_name": user.last_name,
       "email": user.email,
       "age": user.age,
-      "preferred_locale": user.preferred_locale
+      "preferred_locale": user.preferred_locale,
+      "county": user.county,
+      "paratransit_id": user.paratransit_id
     }
 
     if(user.password && user.password_confirmation) {

@@ -37,6 +37,7 @@ export class UserProfilePage {
   trip_types: TripType[];
   filtered_trip_types: TripType[];
   available_locales: string[];
+  counties: string[];
 
   @ViewChild('updateProfileForm') updateProfileForm: NgForm = {} as NgForm;
   public passwordFieldType = "password";
@@ -48,6 +49,7 @@ export class UserProfilePage {
               public oneClickProvider: OneClickProvider,
               private translate: TranslateService) {
     this.available_locales = environment.AVAILABLE_LOCALES;
+    this.counties = ['Orange', 'Riverside', 'San Bernardino', 'Ventura'];
   }
 
   ionViewDidLoad() {

@@ -16,4 +16,6 @@ export class User {
   password: string;
   password_confirmation: string;
   age: number;
+  paratransit_id: string;
+  county: string;
 }

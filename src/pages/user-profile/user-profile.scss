@@ -41,6 +41,10 @@ page-user-profile {
     padding: size(2) 0;
   }
   
+  #county-item ion-label {
+    max-width: size(7);
+  }
+
   #preferred-locale-item ion-label {
     max-width: size(7);
   }

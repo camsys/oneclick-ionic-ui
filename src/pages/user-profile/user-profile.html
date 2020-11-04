@@ -81,10 +81,39 @@
             </ion-input>
           </ion-item>
 
+          <!-- Paratransit Id -->
+          <ion-item>
+            <ion-label>{{"oneclick.pages.user_profile.paratransit_id" | translate}}</ion-label>
+            <ion-input  class="lynx-input" 
+                        type="string" 
+                        placeholder=""
+                        name="paratransit_id" 
+                        [(ngModel)]="user.paratransit_id">
+            </ion-input>
+          </ion-item>
+
       </ion-col>   
     </ion-row>
-    
-         
+
+    <!-- County -->
+    <ion-row>
+      <ion-col no-padding padding-right col-sm-10 offset-sm-1 col-md-8 offset-md-2>
+
+        <ion-item id="county-item">
+          
+          <ion-label>{{"oneclick.pages.user_profile.county" | translate}}</ion-label>
+          <ion-select ion-start name="county" [(ngModel)]="user.county">
+            <ion-option *ngFor="let county of counties"
+                        value="{{county}}">
+              {{ county }}             
+            </ion-option>
+          </ion-select>
+        
+        </ion-item>
+
+      </ion-col>
+    </ion-row>
+
     <!-- Preferred Locale -->
     <ion-row>
       <ion-col no-padding padding-right col-sm-10 offset-sm-1 col-md-8 offset-md-2>
