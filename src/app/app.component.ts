@@ -241,7 +241,8 @@ export class MyApp {
 
   onSignOut() {
     this.setMenu();
-    this.nav.push(this.rootPage);
+    //this.nav.push(this.rootPage);
+    this.nav.setRoot(this.rootPage);
     // This isn't an error, but there is no difference in the toast
     this.showErrorToast('oneclick.global.sign_out_successful');
   }
