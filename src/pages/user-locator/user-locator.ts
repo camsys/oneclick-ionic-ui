@@ -95,7 +95,13 @@ export class UserLocatorPage {
 
     this.googleMapsHelpers.addParticipatingCountiesLayer(this.map);
 
-    this.setMapClickListener()
+    this.setMapClickListener();
+
+    if ((this.originMarker) && (this.destinationMarker)) {
+      this.googleMapsHelpers.dropUserLocationPin(this.map, this.originMarker.getPosition());
+      this.googleMapsHelpers.dropUserLocationPin(this.map, this.destinationMarker.getPosition());
+      this.setMapCenter();
+    }
 
     // Check if we're on a mobile device (as opposed to browser) or a non-Windows browser.
     // Geolocation features are only enabled for those platforms.

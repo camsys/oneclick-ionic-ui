@@ -90,7 +90,7 @@ export class TransportationEligibilityPage {
         this.trip_types = this.tripResponse.all_trip_types;
 
         // If user is logged in, set the values for the eligibilities and accommodations based on their saved info
-        if(this.auth.isSignedIn() && this.auth.session().user) {
+        if(this.auth.isRegisteredUser()) {
           this.user = this.auth.session().user;
           this.age = this.user.age;
           this.setAccomEligAndTripTypeValues();
