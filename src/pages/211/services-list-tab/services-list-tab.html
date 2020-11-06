@@ -18,7 +18,7 @@
     <ion-row>
       <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
         <ion-list class="lynx-list">
-          <ion-list-header *ngIf="service_count <= 25; else moreServicesHeader">{{ "oneclick.pages.services.list_tab.results_header" | translate }}</ion-list-header>
+          <ion-list-header *ngIf="service_count <= 10; else moreServicesHeader">{{ "oneclick.pages.services.list_tab.results_header" | translate }}</ion-list-header>
 
           <ng-template #moreServicesHeader>
             <ion-list-header>{{ "oneclick.pages.services.list_tab.over_25_results_header" | translate }}</ion-list-header>
