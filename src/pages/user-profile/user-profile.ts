@@ -88,7 +88,8 @@ export class UserProfilePage {
     this.eligibilities = this.user.eligibilities;
     this.accommodations = this.user.accommodations;
     this.trip_types = this.user.trip_types;
-    this.filterTripTypes();
+    // Don't filter trip types here so that it matches travel profile page.
+    //this.filterTripTypes();
   }
 
   filterTripTypes() {
