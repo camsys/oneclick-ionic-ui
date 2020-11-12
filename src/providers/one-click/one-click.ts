@@ -283,9 +283,7 @@ export class OneClickProvider {
     );
 
     return this.http.get(url)
-      .map((response) => {
-        return JSON.parse(response.text()) as OneClickServiceModel;
-      })
+      .map(response => this.unpackServiceResponse(response))
       .catch(error => this.handleError(error));
   }
 
@@ -487,6 +485,20 @@ export class OneClickProvider {
     }
 
     return trip;
+  }
+
+  private unpackServiceResponse(response: any): OneClickServiceModel {
+
+    let data = response.json().data;
+
+    if (data.transit) {
+      return (data.transit as OneClickServiceModel);
+    }
+    if (data.paratransit) {
+      return (data.paratransit as OneClickServiceModel);
+    }
+
+    return null;
   }
 
 }
