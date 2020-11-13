@@ -4,6 +4,7 @@
 import { Accommodation } from './accommodation';
 import { Eligibility } from './eligibility';
 import { TripType } from './trip-type';
+import { County } from './county';
 
 export class User {
   first_name: string;
@@ -18,4 +19,5 @@ export class User {
   age: number;
   paratransit_id: string;
   county: string;
+  counties: County[];
 }

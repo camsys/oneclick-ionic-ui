@@ -49,7 +49,6 @@ export class UserProfilePage {
               public oneClickProvider: OneClickProvider,
               private translate: TranslateService) {
     this.available_locales = environment.AVAILABLE_LOCALES;
-    this.counties = ['Orange', 'Riverside', 'San Bernardino', 'Ventura'];
   }
 
   ionViewDidLoad() {
@@ -88,6 +87,7 @@ export class UserProfilePage {
     this.eligibilities = this.user.eligibilities;
     this.accommodations = this.user.accommodations;
     this.trip_types = this.user.trip_types;
+    this.counties = this.user.counties.map(county => county.name).sort();
     // Don't filter trip types here so that it matches travel profile page.
     //this.filterTripTypes();
   }
