@@ -89,8 +89,8 @@ export class TransportationEligibilityPage {
         this.eligibilities = this.tripResponse.all_eligibilities;
         this.trip_types = this.tripResponse.all_trip_types;
 
-        // If user is logged in, set the values for the eligibilities and accommodations based on their saved info
-        if(this.auth.isRegisteredUser()) {
+        // If user is logged in or guest user exists, set the values for the eligibilities and accommodations based on their saved info
+        if(this.auth.isRegisteredUser() || this.auth.session().user) {
           this.user = this.auth.session().user;
           this.age = this.user.age;
           this.setAccomEligAndTripTypeValues();
