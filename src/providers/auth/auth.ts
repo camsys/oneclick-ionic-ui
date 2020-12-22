@@ -99,9 +99,9 @@ export class AuthProvider {
   }
 
   //creates a new user
-  signUp(email_address: string, password: string, password_confirmation: string): Observable<Response> {
+  signUp(email_address: string, password: string, password_confirmation: string, paratransit_id:string, county:string): Observable<Response> {
     let uri: string = encodeURI(this.baseUrl + 'sign_up');
-    let body = JSON.stringify({user: { email: email_address, password:  password, password_confirmation: password_confirmation }});
+    let body = JSON.stringify({user: { email: email_address, password:  password, password_confirmation: password_confirmation, paratransit_id: paratransit_id, county: county }});
     let options: RequestOptions = new RequestOptions({
       headers: this.defaultHeaders
     });

@@ -18,6 +18,7 @@ import { TripRequestModel } from '../../models/trip-request';
 import { TripResponseModel } from '../../models/trip-response';
 import { FeedbackModel } from '../../models/feedback';
 import { SearchResultModel } from '../../models/search-result';
+import { County } from '../../models/county';
 
 import { environment } from '../../app/environment'
 import { User } from '../../models/user';
@@ -83,6 +84,15 @@ export class OneClickProvider {
       .toPromise()
       .then(response => response.text())
       .then(json => JSON.parse(json).data.agencies as AgencyModel[])
+      .catch(error => this.handleError(error));
+  }
+
+  public getCounties(): Promise<County[]> {
+     var uri: string = encodeURI(this.oneClickUrl + 'counties');
+     return this.http.get(uri, this.requestOptions())
+      .toPromise()
+      .then(response => response.text())
+      .then(json => JSON.parse(json).data as County[])
       .catch(error => this.handleError(error));
   }
 
