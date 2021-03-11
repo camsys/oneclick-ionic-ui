@@ -6,6 +6,7 @@ import { IonicPage, NavController, NavParams,
 import { TranslateService } from '@ngx-translate/core';
 
 // Pages
+import { TripResponsePage } from "../../trip-response/trip-response";
 import { FeedbackModalPage } from "../../feedback-modal/feedback-modal";
 import { EmailModalPage } from "../../email-modal/email-modal";
 import { SmsModalPage } from "../../sms-modal/sms-modal";
@@ -21,10 +22,17 @@ import { TripResponseModel } from "../../../models/trip-response";
 import { GooglePlaceModel } from "../../../models/google-place";
 import { Session } from '../../../models/session';
 import { OneClickPlaceModel } from '../../../models/one-click-place'
+import { ItineraryModel } from "../../../models/itinerary";
+import { LegModel } from "../../../models/leg";
 
 //Providers
 import { OneClickProvider } from '../../../providers/one-click/one-click';
 import { ExternalNavigationProvider } from '../../../providers/external-navigation/external-navigation';
+
+//Components
+import { PlaceSearchComponent } from "../../../components/place-search/place-search";
+import { ResponsiveDatepickerComponent } from "../../../components/responsive-datepicker/responsive-datepicker";
+import { AutocompleteResultsComponent } from "../../../components/autocomplete-results/autocomplete-results";
 
 /**
  * Generated class for the ServiceFor211DetailPage page.
@@ -39,6 +47,13 @@ export class ServiceFor211DetailPage {
   // Detect when the screen is resized and resize the content based on the
   // new header bar height.
   @ViewChild(Content) content: Content;
+
+  @ViewChild('originSearch') originSearch: PlaceSearchComponent;
+  @ViewChild('destinationSearch') destinationSearch: PlaceSearchComponent;
+
+  @ViewChild('originResults') originResults: AutocompleteResultsComponent;
+  @ViewChild('destinationResults') destinationResults: AutocompleteResultsComponent;
+
   @HostListener('window:resize') onResize() {
     this.content && this.content.resize();
   }
@@ -53,15 +68,20 @@ export class ServiceFor211DetailPage {
   tripResponse: TripResponseModel = new TripResponseModel({});
   tripPlanSubscription: any;
   detailKeys: string[] = []; // Array of the non-null detail keys in the details hash
+  arriveBy: boolean;
+
+  itineraries: ItineraryModel[];
 
   trip_id: number;
-  service_id: number;
-  location_id: number;
+  service_id: string;
+  location_id: string;
   service_location: OneClickPlaceModel;
 
   transitTime: number = 0;
   driveTime: number = 0;
   bicycleTime: number = 0;
+
+  departureDateTime: string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -75,8 +95,13 @@ export class ServiceFor211DetailPage {
               private location: Location) {
 
     this.trip_id = parseInt(this.navParams.data.trip_id);
-    this.service_id = parseInt(this.navParams.data.service_id);
-    this.location_id = parseInt(this.navParams.data.location_id);
+    this.service_id = this.navParams.data.service_id;
+    this.location_id = this.navParams.data.location_id;
+    this.arriveBy = this.navParams.data.arriveBy;
+
+    this.events.subscribe('place-search:change', () => {
+      this.changeDetector.markForCheck();
+    });
   }
 
   ionViewDidEnter() {
@@ -86,10 +111,10 @@ export class ServiceFor211DetailPage {
     // If a service_id and location_id are passed, get its details and load it into the page
     if(this.service_id && this.location_id) {
       this.oneClick
-          .get211ServiceDetails(this.navParams.data.service_id, this.navParams.data.location_id)
-          .subscribe((svc) => this.loadServiceDetails(svc));
+        .get211ServiceDetails(this.navParams.data.service_id, this.navParams.data.location_id)
+        .subscribe((svc) => this.loadServiceDetails(svc));
 
-    // If a service is passed in the navParams, load it onto the page
+      // If a service is passed in the navParams, load it onto the page
     } else if(this.navParams.data.service) {
       this.loadServiceDetails(this.navParams.data.service);
     }
@@ -101,6 +126,10 @@ export class ServiceFor211DetailPage {
 
       // If an origin and destination are passed, make a trip request based on those
     } else if( this.navParams.data.origin && (this.navParams.data.destination|| this.service) ) {
+
+      if (this.navParams.data.departureDateTime) {
+        this.departureDateTime = this.navParams.data.departureDateTime;
+      }
 
       // Set origin and destination places
       this.origin = new GooglePlaceModel(this.navParams.data.origin);
@@ -132,6 +161,9 @@ export class ServiceFor211DetailPage {
     }
 
     this.content.resize(); // Make sure content isn't covered by navbar
+
+
+
   }
 
   // On page leave, unsubscribe from the trip plan call so it doesn't trigger errors when it resolves
@@ -139,30 +171,33 @@ export class ServiceFor211DetailPage {
     if(this.tripPlanSubscription) {
       this.tripPlanSubscription.unsubscribe();
     }
+
+    // on leaving the page, unsubscribe from the place-search events to avoid
+    // detecting changes on destroyed views
+    this.events.unsubscribe('place-search:change');
+    this.events.unsubscribe('place-search:keypress');
   }
 
   // Populates the URL based on the trip and service ids
   updateURL() {
 
     this.trip_id = this.tripResponse && this.tripResponse.id;
-    this.service_id = this.service && this.service.service_id;
-    this.location_id = this.service && this.service.location_id;
 
-    let path = "/trip_options/";
-
-    // If trip ID is present, add that to the path.
-    if(this.trip_id) {
-      path += this.trip_id;
-
-      // If service is also present, add it as well.
-      if(this.service_id && this.location_id) {
-        path += "/" + this.service_id + "/" + this.location_id;
-      }
-
-      // Update the URL with the path string.
-      //this.location.replaceState(path);
-      // DEREK removed this because it was causing the back button to disappear.
+    if (this.service) {
+      this.service_id = this.service.service_id;
+      this.location_id = this.service.location_id;
     }
+
+    let path = "/service_detail/";
+
+    // If service is also present, add it as well.
+    if(this.service_id && this.location_id) {
+      path += this.service_id + "/" + this.location_id;
+    }
+
+    // Update the URL with the path string.
+    //this.location.replaceState(path);
+    // DEREK removed this because it was causing the back button to disappear.
 
   }
 
@@ -172,6 +207,16 @@ export class ServiceFor211DetailPage {
     this.updateTravelTimesFromTripResponse(this.tripResponse);
     this.updateReturnedModes(this.tripResponse);
     this.updateTripPlaces(this.tripResponse);
+
+    this.itineraries = this.tripResponse.itineraries.map(function(itin) {
+      if (itin.legs) {
+        itin.legs = itin.legs.map(function(legAttrs) {
+          return new LegModel().assignAttributes(legAttrs);
+        });
+      }
+      return itin;
+    });
+
     this.content.resize(); // Make sure content isn't covered by navbar
     this.updateURL();
     this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
@@ -196,43 +241,24 @@ export class ServiceFor211DetailPage {
 
   }
 
-  // Opens the directions page for the desired mode, passing a clone of the
-  // trip response with all the irrelevant itineraries filtered out.
-  openDirectionsPage(mode: string) {
-    let tripResponse = this.tripResponse.withFilteredItineraries(mode);
+  // Plans a trip based on origin and destination
+  findTransportation(origin: GooglePlaceModel,
+                     destination: GooglePlaceModel, time: string) {
 
-    if (mode === 'car' || mode === 'transit' || mode === 'bicycle'){
-      this.navCtrl.push(DirectionsPage, {
-        trip_response: tripResponse,
-        trip_id: tripResponse.id,
-        mode: mode
-      });
-    } else if (mode === 'taxi') {
-      this.navCtrl.push(TaxiServicesPage, {
-        trip_response: tripResponse,
-        trip_id: tripResponse.id,
-        mode: mode
-      });
-    } else if (mode === 'lyft') {
-      let lyftUrl = encodeURI(
-        'https://lyft.com/ride?id=lyft&' +
-        'pickup[latitude]=' + tripResponse.origin.lat +
-        '&pickup[longitude]=' + tripResponse.origin.lng +
-        '&partner=w_W2xgvUud_Y' +
-        '&destination[latitude]=' + tripResponse.destination.lat +
-        '&destination[longitude]=' + tripResponse.destination.lng
-      );
-
-      this.exNav.goTo(lyftUrl);
-    }
+    this.navCtrl.push(TripResponsePage, {
+      origin: origin,
+      destination: destination,
+      tripRequest: this.tripRequest
+    });
   }
 
   openOtherTransportationOptions(){
     this.navCtrl.push(TransportationEligibilityPage, {
-      trip_response: this.tripResponse.withFilteredItineraries('paratransit'),
       trip_request: this.tripRequest,
-      trip_id: this.trip_id
-    })
+      trip_id: this.trip_id,
+      origin: this.origin,
+      destination: this.destination
+    });
   }
 
   // Builds a trip request based on the passed mode, stored origin/destination,
@@ -245,10 +271,14 @@ export class ServiceFor211DetailPage {
     tripRequest.trip.destination_attributes = this.destination.toOneClickPlace();
 
     // Set trip time to now by default, in ISO 8601 format
-    tripRequest.trip.trip_time = new Date().toISOString();
+    if (this.departureDateTime == undefined) {
+      tripRequest.trip.trip_time = new Date().toISOString();
+    } else {
+      tripRequest.trip.trip_time = this.departureDateTime;
+    }
 
     // Set arrive_by to true by default
-    tripRequest.trip.arrive_by = false;
+    tripRequest.trip.arrive_by = this.arriveBy;
 
     // Set trip types to the mode passed to this method
     tripRequest.trip_types = modes;
@@ -287,8 +317,8 @@ export class ServiceFor211DetailPage {
 
   // Updates the origin and destination based on the trip response
   updateTripPlaces(tripResponse: TripResponseModel) {
-    this.origin = new GooglePlaceModel(tripResponse.origin);
-    this.destination = new GooglePlaceModel(tripResponse.destination);
+    this.originSearch.setPlace(this.origin);
+    this.destinationSearch.setPlace(this.destination);
   }
 
   // Returns duration in seconds for the given mode

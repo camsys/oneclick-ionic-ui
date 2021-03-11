@@ -86,11 +86,11 @@ export class MyApp {
         console.error("USER TOKEN EXPIRED");
         this.signOut();
         this.nav.push(SignInPage);
-        this.showErrorToast('lynx.global.error_message.auth_needed');
+        this.showErrorToast('oneclick.global.error_message.auth_needed');
         break;
       default:
         this.goHome();
-        this.showErrorToast('lynx.global.error_messages.default');
+        this.showErrorToast('oneclick.global.error_messages.default');
         break;
     }
 
@@ -162,18 +162,19 @@ export class MyApp {
       { title: 'home', component: "home" },
       { title: 'about_us', component: AboutUsPage },
       { title: 'contact_us', component: ContactUsPage },
-      { title: 'transportation', component: ParatransitServicesPage },
+      // Disabling transportation options based on feedback.
+      //{ title: 'transportation', component: ParatransitServicesPage },
       { title: 'resources', component: UserLocatorPage, params: { viewType: 'services'}},
-      { title: 'language_selector', component: "language_selector" },
-      { title: 'privacy_policy', component: "privacy_policy" },
+      //{ title: 'language_selector', component: "language_selector" },
+      //{ title: 'privacy_policy', component: "privacy_policy" },
       // Disabling chat based on feedback.
       //{ title: 'live_211_chat', component: "live_211_chat" },
-      { title: 'feedback', component: "feedback" }
+      //{ title: 'feedback', component: "feedback" }
     ] as PageModel[];
 
     // Pages to display if user is signed in
     this.signedInPages = this.universalPages.concat([
-      { title: 'feedback_status', component: FeedbackStatusPage },
+      //{ title: 'feedback_status', component: FeedbackStatusPage },
       { title: 'sign_out', component: "sign_out"}
     ] as PageModel[]);
 
@@ -240,9 +241,10 @@ export class MyApp {
 
   onSignOut() {
     this.setMenu();
-    this.nav.push(this.rootPage);
+    //this.nav.push(this.rootPage);
+    this.nav.setRoot(this.rootPage);
     // This isn't an error, but there is no difference in the toast
-    this.showErrorToast('lynx.global.sign_out_successful');
+    this.showErrorToast('oneclick.global.sign_out_successful');
   }
 
   // Creates and presents a modal for changing the locale.

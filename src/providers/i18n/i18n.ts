@@ -24,6 +24,8 @@ export class I18nProvider {
 
   // Initializes the App, adding available languages and setting the default language
   initializeApp() {
+    //console.log('start loading translations');
+    this.events.publish("spinner:show");
     this.translate.addLangs(environment.AVAILABLE_LOCALES);
     this.translate.setDefaultLang(environment.DEFAULT_LOCALE);
 
@@ -66,6 +68,8 @@ export class I18nProvider {
   // Sets the locale, defaulting to default language.
   setLocale(locale: string) {
     this.translate.use(locale || this.currentLocale());
+    this.events.publish("spinner:hide");
+    //console.log('finish loading translations');
   }
 
 }

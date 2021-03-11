@@ -1,0 +1,125 @@
+.drag-info {
+  font-size: 13px;
+  font-style: italic;
+}
+.otp-itinHeader {
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+}
+.otp-itinHeader-preview {
+  font-family: 'Roboto', sans-serif;
+}
+.otp-leg {
+  .alert {
+    padding: 1em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+  background-color: #fff;
+  border-radius: .5em;
+  overflow: hidden;
+}
+
+.otp-legMode-glyphicon {
+  font-size: 18px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.otp-legMode-icon {
+  font-size: 25px;
+  background-image: url('../assets/img/mode/modes_hires.png');
+  background-repeat: no-repeat;
+  background-size: 10em 1em;
+  display: inline-block;
+  vertical-align: text-top;
+}
+.otp-legMode-icon-ko {
+  background-image: url('../assets/img/mode/modes_hires_white.png');
+  background-repeat: no-repeat;
+  background-size: 10em 1em;
+  display: inline-block;
+  vertical-align: text-top;
+}
+.otp-legMode-icon-paratransit {
+  background-image: url('../assets/img/mode/paratransit-icon.png');
+  width: 1.525em;
+  height: 1.525em;
+  margin-right: 8px;
+  background-size: 100%;
+}
+.otp-legMode-icon-taxi {
+  background-image: url('../assets/img/mode/taxi-icon.png');
+  width: 1.525em;
+  height: 1.525em;
+  background-size: 100%;
+}
+.otp-legMode-icon-lyft {
+  background-image: url('../assets/img/mode/taxi-icon-lyft.png');
+  width: 1.525em;
+  height: 1.525em;
+  background-size: 100%;
+}
+.otp-legMode-icon-uber {
+  background-image: url('../assets/img/mode/taxi-icon-uber.png');
+  width: 1.525em;
+  height: 1.525em;
+  background-size: 100%;
+}
+.otp-legMode-icon-WALK {
+  background-position: 0px 0;
+  width: .75em;
+  height: 1em;
+}
+.otp-legMode-icon-BICYCLE {
+  background-position: -.75em 0;
+  width: 1.15em;
+  height: 1em;
+}
+.otp-legMode-icon-BUS {
+  background-position: -1.95em 0;
+  width: .95em;
+  height: 1em;
+}
+.otp-legMode-icon-RAIL {
+  background-position: -3em 0;
+  width: .85em;
+  height: 1em;
+}
+.otp-legMode-icon-TRAM {
+  background-position: -3em 0;
+  width: .85em;
+  height: 1em;
+}
+.otp-legMode-icon-SUBWAY {
+  background-position: -3.85em 0;
+  width: .95em;
+  height: 1em;
+}
+.otp-legMode-icon-FERRY {
+  background-position: -4.85em 0;
+  width: 1.05em;
+  height: 1em;
+}
+.otp-legMode-icon-GONDOLA {
+  background-position: -5.95em 0;
+  width: .95em;
+  height: 1em;
+}
+.otp-legMode-icon-CAR {
+  background-position: -6.95em 0;
+  width: 26px;
+  height: 1em;
+}
+.otp-legMode-icon-arrow-left {
+  background-position: -8.1em 0px;
+  width: .5em;
+  height: .8em;
+}
+.otp-legMode-icon-arrow-right {
+  background-position: -8.8em 0px;
+  width: .5em;
+  height: 1em;
+}
+.otp-legMode-title {
+  display: none;
+}

@@ -1,5 +1,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { App, IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { App, IonicPage, NavController, NavParams, Events, ModalController, ToastController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
+
 import { TripResponseModel } from "../../models/trip-response";
 import { TripRequestModel } from "../../models/trip-request";
 import { ItineraryModel } from "../../models/itinerary";
@@ -7,7 +9,10 @@ import { LegModel } from "../../models/leg";
 import { OneClickPlaceModel } from "../../models/one-click-place";
 import { OneClickProvider } from '../../providers/one-click/one-click';
 import { DirectionsPage } from '../directions/directions';
+import { ServiceFor211ModalPage } from '../211/service-for211-modal/service-for211-modal';
+import { EmailItineraryModalPage } from "../email-itinerary-modal/email-itinerary-modal";
 import { HelpersProvider } from '../../providers/helpers/helpers';
+
 
 /**
  * Generated class for the DirectionsStepsTabPage page.
@@ -24,6 +29,7 @@ export class DirectionsStepsTabPage {
   trip:TripResponseModel;
   mode:string;
   itineraries: ItineraryModel[];
+  itinerary: ItineraryModel;
   selectedItinerary: string; // Index of selected itinerary within the itineraries array
   tripRequest:TripRequestModel;
   departAtTime: string; // For storing user-defined depart at time (including date)
@@ -36,21 +42,34 @@ export class DirectionsStepsTabPage {
               private app: App,
               public events: Events,
               public helpers: HelpersProvider,
-              public changeDetector: ChangeDetectorRef) {
+              public changeDetector: ChangeDetectorRef,
+              public toastCtrl: ToastController,
+              public modalCtrl: ModalController,
+              private translate: TranslateService
+  ) {
+
     this.trip = navParams.data.trip;
-    this.mode = navParams.data.mode;
-
-    // Instantiate actual Leg Model objects for each leg in the itinerary
-    this.itineraries = this.trip.itineraries.map(function(itin) {
-      itin.legs = itin.legs.map(function(legAttrs) {
-        return new LegModel().assignAttributes(legAttrs);
+    if (navParams.data.itinerary) {
+      this.itinerary = navParams.data.itinerary;
+      this.itineraries = this.trip.itineraries.slice(0).filter((itin) => itin === this.itinerary).map(function(itin) {
+        itin.legs = itin.legs.map(function(legAttrs) {
+          return new LegModel().assignAttributes(legAttrs);
+        });
+        return itin;
       });
-      return itin;
-    });
+    } else {
+      this.itineraries = this.trip.itineraries.map(function(itin) {
+        itin.legs = itin.legs.map(function(legAttrs) {
+          return new LegModel().assignAttributes(legAttrs);
+        });
+        return itin;
+      });
 
+    }
+    //this.mode = navParams.data.mode;
     this.selectedItinerary = "0";
     this.tripRequest = new TripRequestModel;
-    this.tripRequest.trip_types = [this.mode]
+    //this.tripRequest.trip_types = [this.mode]
     this.tripRequest.trip = JSON.parse(JSON.stringify(this.trip)); // Copy the trip into the tripRequest
     this.tripRequest.trip.origin_attributes = new OneClickPlaceModel(this.trip.origin);
     this.tripRequest.trip.destination_attributes = new OneClickPlaceModel(this.trip.destination);
@@ -61,6 +80,28 @@ export class DirectionsStepsTabPage {
   }
 
   ionViewDidLoad() { }
+
+  openEmailModal() {
+    if (this.itinerary) {
+      let emailModal = this.modalCtrl.create(EmailItineraryModalPage, {itinerary: this.itinerary});
+      emailModal.present();
+    }
+  }
+
+  selectService(id: number) {
+    this.oneClickProvider.getServiceDetails(id)
+      .subscribe((svc) => {
+
+        ServiceFor211ModalPage.createModal(this.modalCtrl,
+          this.toastCtrl,
+          this.translate,
+          { service: svc })
+          .present();
+      });
+
+  }
+
+
 
   // When depart at time is updated, submit new trip plan request with arrive_by = false
   updateDepartAt(t: string) {
@@ -92,7 +133,7 @@ export class DirectionsStepsTabPage {
     this.oneClickProvider.planTrip(this.tripRequest)
     .subscribe((resp) => {
       let nav = this.app.getRootNav();
-      
+
       // Insert the new directions page underneat the root page, then pop off the old page.
       nav.insert(nav.length() - 1, DirectionsPage, {
         trip_response: resp,

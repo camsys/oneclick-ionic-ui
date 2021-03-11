@@ -6,20 +6,12 @@
 -->
 <ion-header>
 
-  <ion-navbar class="lynx-toolbar lynx-toolbar-black">
-    <ion-title text-center>
-      <img class="lynx-logo-sm" src="assets/img/Lynx-logo-pink-xsm.png" alt="LYNX Icon">
-    </ion-title>
-    <button ion-button end menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-  </ion-navbar>
+  <app-navbar *ngIf="viewType === 'services'" headerTitle="{{ 'oneclick.pages.user_locator.services_help' | translate }}"></app-navbar>
+  <app-navbar *ngIf="viewType != 'services'" headerTitle="{{ 'oneclick.pages.user_locator.plan_a_trip_header' | translate }}"></app-navbar>
   <ion-toolbar class="lynx-toolbar" text-center>
-
     <div id="origin-search-container">
-      <ion-title>{{ "lynx.pages.user_locator.origin_search.label" | translate }}</ion-title>
       <place-search #originSearch
-                    placeholder="{{ 'lynx.pages.user_locator.origin_search.placeholder_pending' | translate }}"
+                    placeholder="{{ 'oneclick.pages.user_locator.origin_search.placeholder_pending' | translate }}"
                     (onArrowDown)="originResults.focus()"
                     (onFocus)="originResults.show()"
                     (onFocus)="destinationResults.hide()"
@@ -28,9 +20,8 @@
     </div>
 
     <div id="destination-search-container" [hidden]="viewType === 'services'">
-      <ion-title>{{ "lynx.pages.user_locator.destination_search.label" | translate }}</ion-title>
       <place-search #destinationSearch
-                    placeholder="{{ 'lynx.pages.user_locator.destination_search.placeholder' | translate }}"
+                    placeholder="{{ 'oneclick.pages.user_locator.destination_search.placeholder' | translate }}"
                     (onArrowDown)="destinationResults.focus()"
                     (onFocus)="destinationResults.show()"
                     (onFocus)="originResults.hide()"
@@ -38,9 +29,43 @@
       </place-search>
     </div>
 
-   <div text-center *ngIf="viewType === 'services'">
-    {{ 'lynx.pages.user_locator.services_help' | translate }}
-   </div>
+    <!-- Header row with editable trip date -->
+    <ion-row class="trip-date-row" [hidden]="viewType === 'services'">
+      <ion-col col-sm-6 text-center>
+        <ion-item>
+          <ion-select id="arriveBySelector" [(ngModel)]="arriveBy">
+            <ion-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-option>
+            <ion-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+
+      <ion-col col-sm-3 text-center
+               (click)="tripDatepicker.open()">
+
+        <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
+        <responsive-datepicker #tripDatepicker
+                               [date]="departureDateTime"
+                               [hideBool]='false'
+                               [dateTimeFormat]="'MMM DD, YYYY'"
+                               (change)="updateDepartureDateTime($event)">
+        </responsive-datepicker>
+
+      </ion-col>
+      <ion-col col-sm-3 text-center
+               (click)="tripTimepicker.open()">
+
+        <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
+        <responsive-datepicker #tripTimepicker
+                               [date]="departureDateTime"
+                               [hideBool]='false'
+                               [dateTimeFormat]="'hh:mm A'"
+                               (change)="updateDepartureDateTime($event)">
+        </responsive-datepicker>
+
+      </ion-col>
+
+    </ion-row>
 
   </ion-toolbar>
 
@@ -52,11 +77,11 @@
   <!-- ORIGIN AND DESTINATION AUTOCOMPLETE RESULTS LISTS -->
   <autocomplete-results #originResults
     [items]="originSearch.autocompleteItems"
-    (onSelect)="originSearch.chooseItem($event)">
+    (onSelect)="originSearch.chooseItem($event, viewType)">
   </autocomplete-results>
   <autocomplete-results #destinationResults
     [items]="destinationSearch.autocompleteItems"
-    (onSelect)="destinationSearch.chooseItem($event)">
+    (onSelect)="destinationSearch.chooseItem($event, viewType)">
   </autocomplete-results>
 
   <!-- 211 SERVICE FINDER BUTTON -->
@@ -66,7 +91,7 @@
             id="find-services-button"
             (click)="searchForServices(originSearch.place)"
             *ngIf="!!userLocation || originSearch.place">
-      {{ "lynx.pages.user_locator.resources_button" | translate }}
+      {{ "oneclick.pages.user_locator.resources_button" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
     </button>
   </div>
@@ -78,7 +103,7 @@
             id="find-transportation-button"
             *ngIf="originSearch.place && destinationSearch.place"
             (click)="findTransportation(originSearch.place, destinationSearch.place)">
-        {{ "lynx.pages.user_locator.transportation_button" | translate }}
+        {{ "oneclick.pages.user_locator.transportation_button" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
     </button>
   </div>

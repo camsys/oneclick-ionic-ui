@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { IonicPage, Platform, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, Platform, NavController, NavParams, Events, ToastController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -8,9 +8,12 @@ import { GeocodeServiceProvider } from '../../providers/google/geocode-service';
 import { GoogleMapsHelpersProvider } from '../../providers/google/google-maps-helpers';
 import { AuthProvider } from '../../providers/auth/auth';
 
+// HELPERS
+import { HelpersProvider } from '../../providers/helpers/helpers';
+
 // PAGES
 import { CategoriesFor211Page } from '../211/categories-for211/categories-for211';
-import { ServiceFor211DetailPage } from '../211/service-for211-detail/service-for211-detail';
+import { TripResponsePage } from '../trip-response/trip-response';
 
 // MODELS
 import { GooglePlaceModel } from "../../models/google-place";
@@ -19,6 +22,7 @@ import { GooglePlaceModel } from "../../models/google-place";
 // COMPONENTS
 import { PlaceSearchComponent } from "../../components/place-search/place-search";
 import { AutocompleteResultsComponent } from "../../components/autocomplete-results/autocomplete-results";
+import { ResponsiveDatepickerComponent } from "../../components/responsive-datepicker/responsive-datepicker";
 
 @IonicPage()
 @Component({
@@ -42,6 +46,8 @@ export class UserLocatorPage {
   selectedOriginItem: number = null;
   lastClicked: string; // used for the map clicking logic
   //myLatLng: google.maps.LatLng = null;
+  arriveBy: boolean;
+  departureDateTime: string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -49,16 +55,21 @@ export class UserLocatorPage {
               public geolocation: Geolocation,
               public geoServiceProvider: GeocodeServiceProvider,
               private googleMapsHelpers: GoogleMapsHelpersProvider,
+              private helpers: HelpersProvider,
               private changeDetector: ChangeDetectorRef,
               private auth: AuthProvider,
               public events: Events,
-              private translate: TranslateService
+              private translate: TranslateService,
+              public toastCtrl: ToastController
             ) {
 
     this.map = null;
     this.lastClicked = null;
     this.userLocation = null; // The user's device location
     this.viewType = this.navParams.data.viewType; // Find services vs. transportation view
+
+    this.arriveBy = false;
+    this.departureDateTime = this.helpers.dateISOStringWithTimeZoneOffset(new Date());
 
     this.events.subscribe('place-search:change', () => {
       this.changeDetector.markForCheck();
@@ -82,8 +93,15 @@ export class UserLocatorPage {
   initializeMap() {
     this.map = this.googleMapsHelpers.buildGoogleMap('user-locator-map-canvas');
 
+    this.googleMapsHelpers.addParticipatingCountiesLayer(this.map);
 
-    this.setMapClickListener()
+    this.setMapClickListener();
+
+    if ((this.originMarker) && (this.destinationMarker)) {
+      this.googleMapsHelpers.dropUserLocationPin(this.map, this.originMarker.getPosition());
+      this.googleMapsHelpers.dropUserLocationPin(this.map, this.destinationMarker.getPosition());
+      this.setMapCenter();
+    }
 
     // Check if we're on a mobile device (as opposed to browser) or a non-Windows browser.
     // Geolocation features are only enabled for those platforms.
@@ -91,7 +109,7 @@ export class UserLocatorPage {
     if (this.platform.is('cordova') || !this.platform.is('windows')) {
       this.checkGeolocationSupportAndSetupFeatures();
     } else {
-      this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found");
+      this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
     }
   }
 
@@ -100,7 +118,7 @@ export class UserLocatorPage {
     // (The Permissions API is not supported on IE11, so this check isn't that useful.)
     //if (navigator['permissions']) {
 
-      // Check if device has permission to geolocate.         
+      // Check if device has permission to geolocate.
       //navigator['permissions'].query({
       //  name: 'geolocation'
       //}).then(permission => {
@@ -111,19 +129,19 @@ export class UserLocatorPage {
               this.setupGeolocationFeatures();
             } else {
               console.error("The browser or device does not support geolocation.");
-              this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found");
+              this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
             }
       //  } else if (permission.state === "prompt") {
       //    console.log("The browser or device needs to prompt the user for geolocation permission. Won't geolocate initially.");
-      //    this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found");
+      //    this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
       //  } else {
       //    console.error("The browser or device does not have permission for geolocation.");
-      //    this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found");
+      //    this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
       //  }
       //});
     //} else {
     //  console.error("The browser or device does not support checking permissions for geolocation.");
-    //  this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found");
+    //  this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
     //}
   }
 
@@ -157,7 +175,7 @@ export class UserLocatorPage {
     })
     .catch((err) => {
       console.error("Could not geolocate device position");
-      this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found");
+      this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
     });
   }
 
@@ -166,7 +184,7 @@ export class UserLocatorPage {
     if (this.originMarker != undefined && this.originMarker.getMap() != null) {
       this.originMarker.setMap(null);
     }
-    
+
     this.originMarker = this.googleMapsHelpers.dropUserLocationPin(this.map, latLng);
     this.originMarker.setLabel('A');
     this.setMapCenter();
@@ -182,35 +200,42 @@ export class UserLocatorPage {
     this.destinationMarker.setLabel('B');
     this.setMapCenter();
   }
-  
+
   // Sets map center to origin and/or destination points
   setMapCenter() {
     let pts: google.maps.LatLng[] = [];
-    
+
     if(this.originMarker) {
       pts.push(this.originMarker.getPosition());
     }
-    
+
     if(this.destinationMarker) {
       pts.push(this.destinationMarker.getPosition());
     }
-    
+
     this.googleMapsHelpers.zoomToPoints(this.map, pts);
   }
 
   // Goes on to the categories/services page, using the given location as the center point
   searchForServices(place: GooglePlaceModel){
     this.storePlaceInSession(place);
+    this.storeDepartureDateTime(this.helpers.dateISOStringWithTimeZoneOffset(new Date()));
+    this.storeArriveBy(this.arriveBy);
     this.navCtrl.push(CategoriesFor211Page);
+  }
+
+  updateDepartureDateTime(time: string) {
+    this.departureDateTime = time;
   }
 
   // Plans a trip based on origin and destination
   findTransportation(origin: GooglePlaceModel,
                      destination: GooglePlaceModel) {
-    this.navCtrl.push(ServiceFor211DetailPage, {
-      service: null,
+    this.navCtrl.push(TripResponsePage, {
       origin: origin,
-      destination: destination
+      destination: destination,
+      departureDateTime: this.departureDateTime,
+      arriveBy: this.arriveBy
     });
 
   }
@@ -219,11 +244,11 @@ export class UserLocatorPage {
   private setUserPlaceFromLatLng(latLng: google.maps.LatLng) : void{
     let lat = latLng.lat();
     let lng = latLng.lng();
-    
+
     this.geoServiceProvider.getPlaceFromLatLng(lat, lng)
     .subscribe( (places) => {
       this.userLocation = places[0];
-      this.originSearch.placeholder = this.translate.instant("lynx.pages.user_locator.origin_search.placeholder_found") + this.userLocation.formatted_address;
+      this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found") + this.userLocation.formatted_address;
 
       // Set the origin to the user location if it isn't already set
       //this.originSearch.place = this.originSearch.place || this.userLocation;
@@ -250,6 +275,18 @@ export class UserLocatorPage {
     this.auth.setSession(session);
   }
 
+  private storeDepartureDateTime(time: string) {
+    let session = this.auth.session();
+    session.user_departure_datetime = time;
+    this.auth.setSession(session);
+  }
+
+  private storeArriveBy(arriveBy: boolean) {
+    let session = this.auth.session();
+    session.user_arrive_by = arriveBy;
+    this.auth.setSession(session);
+  }
+
 
   ////////// Support Clicking the Map ///////////////////////////////////
   // Depending on some logic, assume this click is either setting the Origin or the Destination
@@ -264,15 +301,16 @@ export class UserLocatorPage {
   private setOriginFromClick(latLng: google.maps.LatLng) : void{
     let lat = latLng.lat();
     let lng = latLng.lng();
-    
+
     this.geoServiceProvider.getPlaceFromLatLng(lat, lng)
     .subscribe( (places) => {
       this.userLocation = places[0];
       this.originSearch.searchControl.setValue(this.userLocation.formatted_address);
       this.zoomToOriginLocation(latLng);
-      // Set the origin to the user location 
+      // Set the origin to the user location
       this.originSearch.place = this.userLocation;
       this.lastClicked = 'origin';
+      this.checkIfZipcodeOutOfArea(places[0]);
     });
   }
 
@@ -280,23 +318,51 @@ export class UserLocatorPage {
   private setDestinationFromClick(latLng: google.maps.LatLng) : void{
     let lat = latLng.lat();
     let lng = latLng.lng();
-    
+
     this.geoServiceProvider.getPlaceFromLatLng(lat, lng)
     .subscribe( (places) => {
       //this.userLocation = places[0];
       this.destinationSearch.searchControl.setValue(places[0].formatted_address);
       this.zoomToDestinationLocation(latLng);
-      // Set the origin to the user location 
+      // Set the origin to the user location
       //this.destinationSearch.place = places[0];
       this.destinationSearch.setPlace(places[0]);
       this.lastClicked = 'destination';
+      this.checkIfZipcodeOutOfArea(places[0]);
     });
+  }
+
+  // Check if the Google place's zipcode is within the service area of Find Services or Transportation workflow.
+  private checkIfZipcodeOutOfArea(place: GooglePlaceModel) : void {
+    if (this.viewType == 'services') {
+        if (this.geoServiceProvider.isZipcodeOutOfAreaForServices(place)) {
+          let toast = this.toastCtrl.create({
+            message: this.translate.instant('find_services_out_of_area_message'),
+            position: 'bottom',
+            duration: 3000
+          });
+          toast.present();
+        }
+    } else {
+      if (this.geoServiceProvider.isZipcodeOutOfAreaForTransportation(place)) {
+          let toast = this.toastCtrl.create({
+            message: this.translate.instant('find_transportation_out_of_area_message'),
+            position: 'bottom',
+            duration: 3000
+          });
+          toast.present();
+      }
+    }
   }
 
   // Detect the Click and Grab the LatLng
   private setMapClickListener(){
     let me = this;
     google.maps.event.addDomListener(this.map, 'click', function(event) {
+      me.setPlaceFromClick(event.latLng);
+    });
+    // Also capture click events on the data layer overlay.
+    google.maps.event.addDomListener(this.map.data, 'click', function(event) {
       me.setPlaceFromClick(event.latLng);
     });
   }

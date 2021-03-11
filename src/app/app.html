@@ -4,59 +4,37 @@
   <ion-content>
 
     <!-- Build menu buttons based on whether or not user is signed in or not -->
-    
+
 
     <ion-list class="lynx-list lynx-list-contrast">
 
       <!-- If signed in... -->
       <div *ngIf="auth.isRegisteredUser(); else notRegistered">
 
-          <button style="background-color:#000000;" ion-item menuClose
-                  class="item-heading"
-                  id="menu-welcome-button"
-                  (click)="goHome()">
-            {{ "lynx.pages.menu.welcome_user" | translate:user_name }}
-          </button>
+        <button style="background-color:#000000;" ion-item menuClose
+                class="item-heading"
+                id="menu-welcome-button"
+                (click)="goHome()">
+          {{ "oneclick.pages.menu.welcome_user" | translate:user_name }}
+        </button>
 
-          <button style="background-color:#000000;" ion-item menuClose
-                  class="item-heading"
-                  id="menu-profile-button"
-                  (click)="openPage(profilePage)">
-            {{ "lynx.pages.menu.profile" | translate }}
-          </button>
+        <button style="background-color:#000000;" ion-item menuClose
+                class="item-heading"
+                id="menu-profile-button"
+                (click)="openPage(profilePage)">
+          {{ "oneclick.pages.menu.profile" | translate }}
+        </button>
 
-          <!-- Build a button for each page listed in the signedInPages attribute -->
-          <button style="background-color:#000000;" ion-item menuClose
-                  class="item-heading"
-                  *ngFor="let p of signedInPages"
-                  (click)="openPage(p)">
-            {{ "lynx.pages.menu." + p.title | translate }}
-          </button>
+        <!-- Build a button for each page listed in the signedInPages attribute -->
+        <button style="background-color:#000000;" ion-item menuClose
+                class="item-heading"
+                *ngFor="let p of signedInPages"
+                (click)="openPage(p)">
+          {{ "oneclick.pages.menu." + p.title | translate }}
+        </button>
 
 
       </div>
-      
-      <!-- Social media links -->
-      <ion-item  text-center>
-        <button class="lynx-button-link link-white" (click)="exNav.goTo('https://twitter.com/lynxbusorlando')">
-          <ion-icon name="logo-twitter"></ion-icon>
-        </button>
-        <button class="lynx-button-link link-white" (click)="exNav.goTo('https://www.facebook.com/golynx/')">
-          <ion-icon name="logo-facebook"></ion-icon>
-        </button>        
-      </ion-item>
-
-      <!-- Other External Links -->
-      <ion-item text-center>
-        <button style="background-color:#000000;" (click)="exNav.goTo('http://www.golynx.com')">
-            <img class="lynx-logo-ms" src="assets/img/Lynx-logo-white-med.png" alt="LYNX logo" />
-        </button> 
-      </ion-item>
-      <ion-item text-center> 
-        <button style="background-color:#000000;" (click)="exNav.goTo('https://www.hfuw.org/')">
-            <img class="lynx-logo-md" src="assets/img/hfuw_small.jpg" alt="HFUW logo" />
-        </button> 
-      </ion-item> 
 
 
 
@@ -67,14 +45,14 @@
                 class="item-heading"
                 id="menu-sign-in-button"
                 (click)="openPage(signInPage)">
-          {{ "lynx.pages.menu.sign_in" | translate }}
+          {{ "oneclick.pages.menu.sign_in" | translate }}
         </button>
 
         <button style="background-color:#000000;" ion-item menuClose
                 class="item-heading"
                 id="menu-sign-up-button"
                 (click)="openPage(signUpPage)">
-          {{ "lynx.pages.menu.sign_up" | translate }}
+          {{ "oneclick.pages.menu.sign_up" | translate }}
         </button>
 
         <!-- Build a button for each page listed in the signedOutPages attribute -->
@@ -82,11 +60,11 @@
                 class="item-heading"
                 *ngFor="let p of signedOutPages"
                 (click)="openPage(p)">
-          {{ "lynx.pages.menu." + p.title | translate }}
+          {{ "oneclick.pages.menu." + p.title | translate }}
         </button>
 
       </ng-template>
-      
+
     </ion-list>
 
   </ion-content>

@@ -2,9 +2,10 @@ page-transportation-eligibility {
 
 
   #view-paratransit-options-button-container {
-    padding-bottom: size(2);
+    padding-top: size(1);
+    padding-bottom: size(1);
     width: 100%;
-    
+
     #view-paratransit-options-button {
       padding-right: size(1);
       ion-icon {
@@ -12,5 +13,22 @@ page-transportation-eligibility {
       }
     }
   }
-  
+
+  button ion-checkbox {
+    padding-right: 8px;
+  }
+
+  button.transportation-eligibility-info-button {
+    background: transparent;
+  }
+
+  #age-label {
+    color: black;
+  }
+
+  ion-icon.ion-md-information-circle {
+    color: $lynxPink;
+    font-size: 20px;
+  }
+
 }

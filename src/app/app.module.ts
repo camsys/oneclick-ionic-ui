@@ -26,9 +26,8 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 export function createTranslateLoader(http: Http){
-  // return new TranslateStaticLoader(http, 'assets/i18n', '.json');
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-  // return new TranslateHttpLoader(http, environment.AWS_LOCALE_BUCKET, '.json');
+  //return new TranslateHttpLoader(http, environment.AWS_LOCALE_URL + "api/v1/translations/all?lang=", '&format=json');
 }
 
 // Ratings
@@ -42,7 +41,9 @@ import { SubcategoriesFor211Page } from '../pages/211/subcategories-for211/subca
 import { ServicesMapTabPage } from '../pages/211/services-map-tab/services-map-tab';
 import { ServicesListTabPage } from '../pages/211/services-list-tab/services-list-tab';
 import { UserLocatorPage }  from '../pages/user-locator/user-locator';
-import { ServiceFor211DetailPage } from '../pages/211/service-for211-detail/service-for211-detail'
+import { ServiceFor211DetailPage } from '../pages/211/service-for211-detail/service-for211-detail';
+import { ServiceFor211ModalPage } from '../pages/211/service-for211-modal/service-for211-modal';
+import { TripResponsePage } from '../pages/trip-response/trip-response'
 import { ParatransitServicesPage } from '../pages/paratransit-services/paratransit-services';
 import { AboutUsPage } from '../pages/about-us/about-us';
 import { ContactUsPage } from '../pages/contact-us/contact-us';
@@ -58,6 +59,7 @@ import { ServicesPage } from '../pages/211/services/services'
 import { TaxiServicesPage } from '../pages/taxi-services/taxi-services';
 import { FeedbackModalPage } from '../pages/feedback-modal/feedback-modal';
 import { EmailModalPage } from '../pages/email-modal/email-modal';
+import { EmailItineraryModalPage } from '../pages/email-itinerary-modal/email-itinerary-modal';
 import { SmsModalPage } from '../pages/sms-modal/sms-modal';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { ResendEmailConfirmationPage } from '../pages/resend-email-confirmation/resend-email-confirmation';
@@ -107,6 +109,7 @@ import { PrettyTableNamePipe } from '../pipes/pretty-table-name';
 import { ServiceDetailsComponent } from '../components/service-details/service-details';
 import { AutocompleteResultsComponent } from '../components/autocomplete-results/autocomplete-results';
 import { ExternalLinkComponent } from '../components/external-link/external-link';
+import { AppNavbarComponent } from '../components/app-navbar/app-navbar';
 
 export function translateFactory() {
   (i18n) => i18n.currentLocale()
@@ -125,6 +128,8 @@ export function translateFactory() {
     ServicesMapTabPage,
     ServicesListTabPage,
     ServiceFor211DetailPage,
+    ServiceFor211ModalPage,
+    TripResponsePage,
     ParatransitServicesPage,
     AboutUsPage,
     ContactUsPage,
@@ -138,6 +143,7 @@ export function translateFactory() {
     UserProfilePage,
     FeedbackModalPage,
     EmailModalPage,
+    EmailItineraryModalPage,
     SmsModalPage,
     ResetPasswordPage,
     ResendEmailConfirmationPage,
@@ -157,7 +163,8 @@ export function translateFactory() {
     PrettyTableNamePipe,
     ServiceDetailsComponent,
     AutocompleteResultsComponent,
-    ExternalLinkComponent
+    ExternalLinkComponent,
+    AppNavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -174,11 +181,16 @@ export function translateFactory() {
         { component: SubcategoriesFor211Page, name: 'Sub-Categories', segment: 'sub_categories', defaultHistory: [HelpMeFindPage] },
         { component: SubSubcategoriesFor211Page, name: 'Sub-Sub-Categories', segment: 'sub_sub_categories/:code', defaultHistory: [HelpMeFindPage] },
         { component: ServicesPage, name: 'Services', segment: 'services/:code', defaultHistory: [HelpMeFindPage] },
-        { component: ServiceFor211DetailPage, name: 'Trip Options', segment: 'trip_options', defaultHistory: [HelpMeFindPage] },
-        { component: ServiceFor211DetailPage, name: 'Trip Options', segment: 'trip_options/:trip_id', defaultHistory: [HelpMeFindPage] },
-        { component: ServiceFor211DetailPage, name: 'Service Details', segment: 'trip_options/:trip_id/:service_id/:location_id', defaultHistory: [HelpMeFindPage] },
-        { component: ServiceFor211DetailPage, name: 'Service Details', segment: 'trip_options/:service_id/:location_id', defaultHistory: [HelpMeFindPage] },
-        { component: DirectionsPage, name: 'Directions', segment: 'trip_directions/:mode/:trip_id', defaultHistory: [HelpMeFindPage] },
+
+        { component: ServiceFor211DetailPage, name: 'Trip Options', segment: 'service_detail', defaultHistory: [HelpMeFindPage] },
+        { component: ServiceFor211DetailPage, name: 'Service Details', segment: 'service_detail/:service_id/:location_id', defaultHistory: [HelpMeFindPage] },
+
+        { component: TripResponsePage, name: 'Trip Options', segment: 'trip_options', defaultHistory: [HelpMeFindPage] },
+        { component: TripResponsePage, name: 'Trip Options', segment: 'trip_options/:trip_id', defaultHistory: [HelpMeFindPage] },
+        { component: TripResponsePage, name: 'Service Details', segment: 'trip_options/:trip_id/:service_id/:location_id', defaultHistory: [HelpMeFindPage] },
+        { component: TripResponsePage, name: 'Service Details', segment: 'trip_options/:service_id/:location_id', defaultHistory: [HelpMeFindPage] },
+
+        { component: DirectionsPage, name: 'Directions', segment: 'trip_directions/:trip_id', defaultHistory: [HelpMeFindPage] },
         { component: TaxiServicesPage, name: 'Taxi Options', segment: 'taxi_services/:trip_id', defaultHistory: [HelpMeFindPage] },
         { component: TransportationEligibilityPage, name: 'Transportation Eligibility', segment: 'transportation_eligibility/:trip_id', defaultHistory: [HelpMeFindPage] },
         { component: ParatransitServicesPage, name: 'All Paratransit Options', segment: 'paratransit_services', defaultHistory: [HelpMeFindPage] },
@@ -217,6 +229,8 @@ export function translateFactory() {
     ServicesMapTabPage,
     ServicesListTabPage,
     ServiceFor211DetailPage,
+    ServiceFor211ModalPage,
+    TripResponsePage,
     ParatransitServicesPage,
     AboutUsPage,
     ContactUsPage,
@@ -230,6 +244,7 @@ export function translateFactory() {
     UserProfilePage,
     FeedbackModalPage,
     EmailModalPage,
+    EmailItineraryModalPage,
     SmsModalPage,
     ResetPasswordPage,
     ResendEmailConfirmationPage,
@@ -283,6 +298,8 @@ export function translateFactory() {
     ServicesMapTabPage,
     ServicesListTabPage,
     ServiceFor211DetailPage,
+    ServiceFor211ModalPage,
+    TripResponsePage,
     ParatransitServicesPage,
     AboutUsPage,
     ContactUsPage,
@@ -296,6 +313,7 @@ export function translateFactory() {
     UserProfilePage,
     FeedbackModalPage,
     EmailModalPage,
+    EmailItineraryModalPage,
     SmsModalPage,
     ResetPasswordPage,
     ResendEmailConfirmationPage,

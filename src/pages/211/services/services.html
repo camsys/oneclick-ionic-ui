@@ -5,14 +5,7 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar class="lynx-toolbar">
-    <ion-title text-center>{{subSubCategory && subSubCategory.name}}</ion-title>
-    <button ion-button end menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-  </ion-navbar>
-
+  <app-navbar headerTitle="{{subSubCategory && subSubCategory.name}}"></app-navbar>
 </ion-header>
 
 
@@ -23,16 +16,16 @@
 
         <!-- List results tab -->
         <ion-tab  [root]="listTab"
-                  tabTitle="{{ 'lynx.pages.services.list_tab.header' | translate }}"
+                  tabTitle="{{ 'oneclick.pages.services.list_tab.header' | translate }}"
                   tabIcon="list"
-                  [rootParams]="this.services">
+                  [rootParams]="this.servicesParams">
         </ion-tab>
 
         <!-- Map results tab -->
         <ion-tab  [root]="mapTab"
-                  tabTitle="{{ 'lynx.pages.services.map_tab.header' | translate }}"
+                  tabTitle="{{ 'oneclick.pages.services.map_tab.header' | translate }}"
                   tabIcon="map"
-                  [rootParams]="this.services">
+                  [rootParams]="this.servicesParams">
         </ion-tab>
 
       </ion-tabs>

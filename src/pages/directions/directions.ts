@@ -6,6 +6,7 @@ import { DirectionsStepsTabPage } from '../directions-steps-tab/directions-steps
 import { DirectionsMapTabPage } from '../directions-map-tab/directions-map-tab';
 
 import { TripResponseModel } from "../../models/trip-response";
+import { ItineraryModel } from "../../models/itinerary";
 
 import { OneClickProvider } from "../../providers/one-click/one-click";
 
@@ -28,23 +29,31 @@ export class DirectionsPage {
   mapTab: any;
   directionsParams: any;
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public events: Events,
               private oneClick: OneClickProvider) {
     let navData = this.navParams.data;
-    
+
     this.stepsTab = DirectionsStepsTabPage;
     this.mapTab = DirectionsMapTabPage;
-    
-    if(navData.trip_response && navData.mode) {
-      this.displayTripResults(navData.trip_response, navData.mode);
-    } else if(navData.trip_id && navData.mode) {
+
+    if(navData.trip_response) {
+      if (navData.itinerary) {
+        this.displayItineraryResults(navData.trip_response, navData.itinerary);
+      } else {
+        this.displayTripResults(navData.trip_response);
+      }
+
+    } else if(navData.trip_id) {
       this.oneClick.getTrip(this.navParams.data.trip_id)
           .subscribe((trip) => {
-            let newTripResponse = new TripResponseModel(trip).withFilteredItineraries(navData.mode);
-            this.displayTripResults(newTripResponse, navData.mode);
+            let newTripResponse = new TripResponseModel(trip) //.withFilteredItineraries(navData.mode);
+            this.displayTripResults(newTripResponse);
           });
+
+
+
     } else {
       this.navCtrl.setRoot(HelpMeFindPage); // If necessary navParams aren't present, go back to the home page
     }
@@ -53,15 +62,22 @@ export class DirectionsPage {
   ionViewDidLoad() {
 
   }
-  
-  displayTripResults(trip: TripResponseModel, mode: string): void {
+
+  displayTripResults(trip: TripResponseModel): void {
     this.trip = trip;
-    this.mode = mode;
     this.directionsParams = {
-      trip: this.trip,
-      mode: this.mode
+      trip: this.trip
     }
   }
-  
+
+  displayItineraryResults(trip: TripResponseModel, itinerary: ItineraryModel): void {
+    this.trip = trip;
+    this.directionsParams = {
+      trip: this.trip,
+      itinerary: itinerary
+
+    }
+  }
+
 
 }

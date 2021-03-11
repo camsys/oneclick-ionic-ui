@@ -73,7 +73,7 @@ export class SignInPage {
             this.errorToast.dismissAll();
 
             let errorToast = this.toastCtrl.create({
-              message: this.translate.instant("lynx.pages.sign_in.error_messages." + errorCode),
+              message: this.translate.instant("oneclick.pages.sign_in.error_messages." + errorCode),
               position: "top",
               duration: 3000
             });

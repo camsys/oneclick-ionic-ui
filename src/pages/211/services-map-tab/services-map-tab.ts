@@ -35,7 +35,7 @@ export class ServicesMapTabPage {
               public events: Events,
               private changeDetector: ChangeDetectorRef) {
     this.service_map = null;
-    this.services = navParams.data;
+    this.services = navParams.data.services;
     this.selectedService = null;
     this.markerSelected = false;
   }
@@ -46,6 +46,8 @@ export class ServicesMapTabPage {
 
   initializeMap(): void {
     this.service_map = this.googleMapsHelpers.buildGoogleMap('service-results-map-canvas');
+
+    this.googleMapsHelpers.addParticipatingCountiesLayer(this.service_map);
 
     let me = this;
 
@@ -64,11 +66,23 @@ export class ServicesMapTabPage {
           marker.setValues(service);
           marker.setTitle(service.agency_name);
           marker.setClickable(true);
+          marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
           marker.addListener('click', function() {
             me.addServiceInfo(service);
           });
           return marker;
         });
+
+    // add in 'you are here' marker
+    let yourLocation = this.session().user_starting_location;
+    let your_location_service_location : google.maps.LatLng = new google.maps.LatLng(Number(yourLocation.geometry.location.lat), Number(yourLocation.geometry.location.lng));
+
+    let your_location_marker : google.maps.Marker = new google.maps.Marker;
+    your_location_marker.setPosition(your_location_service_location);
+    your_location_marker.setMap(this.service_map);
+    your_location_marker.setTitle('You are here');
+    your_location_marker.setClickable(false);
+    markers.push(your_location_marker);
 
     // Zoom the map to fit all the services
     this.googleMapsHelpers.zoomToObjects(this.service_map, markers);
@@ -89,6 +103,7 @@ export class ServicesMapTabPage {
 
   selectService(match : ServiceModel){
     let startLocation = this.session().user_starting_location;
+
     let destination_location = new GooglePlaceModel({
       address_components: null,
       geometry: {location: {lat: match.lat, lng: match.lng}},
@@ -96,8 +111,10 @@ export class ServicesMapTabPage {
       id: null,
       name: null
     });
+    let departureDateTime = this.session().user_departure_datetime;
+    let arriveBy = this.session().user_arrive_by;
 
-    this.navCtrl.parent.viewCtrl._nav.push(ServiceFor211DetailPage, {service_id: match.service_id, location_id: match.location_id, origin: startLocation, destination: destination_location});
+    this.navCtrl.parent.viewCtrl._nav.push(ServiceFor211DetailPage, {service_id: match.service_id, location_id: match.location_id, origin: startLocation, destination: destination_location, departureDateTime: departureDateTime, arriveBy: arriveBy});
   }
 
   // Pulls the current session from local storage

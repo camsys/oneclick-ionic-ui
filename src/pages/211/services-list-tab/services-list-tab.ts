@@ -21,6 +21,7 @@ import { ServiceFor211DetailPage } from '../service-for211-detail/service-for211
 export class ServicesListTabPage {
 
   services: ServiceModel[];
+  service_count: number;
   orderBy: String;
 
   constructor(public navCtrl: NavController,
@@ -28,7 +29,8 @@ export class ServicesListTabPage {
               public modalCtrl: ModalController,
               private helpers: HelpersProvider,
               public events: Events) {
-    this.services = navParams.data;
+    this.services = navParams.data.services;
+    this.service_count = navParams.data.service_count;
     this.orderMatchList("drive_time");
   }
 
@@ -72,10 +74,12 @@ export class ServicesListTabPage {
       geometry: {location: {lat: match.lat, lng: match.lng}},
       formatted_address: null,
       id: null,
-      name: null
+      name: match.address
     });
+    let departureDateTime = this.session().user_departure_datetime;
+    let arriveBy = this.session().user_arrive_by;
 
-    this.navCtrl.parent.viewCtrl._nav.push(ServiceFor211DetailPage, {service_id: match.service_id, location_id: match.location_id, origin: startLocation, destination: destination_location});
+    this.navCtrl.parent.viewCtrl._nav.push(ServiceFor211DetailPage, {service_id: match.service_id, location_id: match.location_id, origin: startLocation, destination: destination_location, departureDateTime: departureDateTime, arriveBy: arriveBy});
   }
 
   openEmailModal(services: ServiceModel[]) {

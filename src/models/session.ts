@@ -7,4 +7,9 @@ export class Session {
   user?: User;
   user_starting_location: GooglePlaceModel;
   recent_places: GooglePlaceModel[];
+  user_departure_datetime: string;
+  user_arrive_by: boolean;
+
+  user_preferences_disabled: boolean;
+
 }

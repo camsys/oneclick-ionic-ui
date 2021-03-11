@@ -1,16 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, Events, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, Events } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlertController } from 'ionic-angular';
 import { environment } from '../../app/environment';
 
 import { UserLocatorPage }    from '../user-locator/user-locator';
-import { LanguageSelectorModalPage } from '../language-selector-modal/language-selector-modal';
 
 // PROVIDERS
 import { OneClickProvider } from '../../providers/one-click/one-click';
-import { I18nProvider } from '../../providers/i18n/i18n';
-import { AuthProvider } from '../../providers/auth/auth';
 
 // MODELS
 import { Alert } from '../../models/alert';
@@ -42,14 +39,11 @@ export class HelpMeFindPage {
               public oneClickProvider: OneClickProvider,
               public sanitizer: DomSanitizer,
               public translate: TranslateService,
-              public events: Events,
-              private modalCtrl: ModalController,
-              private i18n: I18nProvider,
-              private auth: AuthProvider) {
+              public events: Events) {
   }
 
   ionViewDidLoad() {
-    this.awsImageLocation = this.sanitizer.bypassSecurityTrustStyle('url(' + environment.AWS_IMAGE_ASSET_BUCKET + 'find-page-background-bus.jpg)');
+    this.awsImageLocation = this.sanitizer.bypassSecurityTrustStyle('url(' + '../assets/img/GettyImages-930896740_sized.png)');
 
     // Wait until after platform is ready, so we have the user's preferred locale
     this.platform.ready().then(() => {
@@ -57,15 +51,15 @@ export class HelpMeFindPage {
         .then(alerts => this.alerts = alerts);
     });
   }
-  
+
   ionViewWillEnter() {
     // Subscribe to sign out event and refresh alerts when user is signed out
     this.events.subscribe("user:signed_out", () => {
       this.oneClickProvider.getAlerts()
         .then(alerts => this.alerts = alerts);
-    });      
+    });
   }
-  
+
   ionViewWillLeave() {
     // Unsubscribe from sign out event when page is no longer active
     this.events.unsubscribe("user:signed_out");
@@ -103,26 +97,6 @@ export class HelpMeFindPage {
 
   ackAlert(alert: Alert){
     //this.oneClickProvider.ackAlert(alert);
-  }
-
-    // Creates and presents a modal for changing the locale.
-  openLanguageSelectorModal() {
-    let languageSelectorModal = this.modalCtrl.create(
-      LanguageSelectorModalPage,
-      { locale: this.i18n.currentLocale() }
-    );
-    languageSelectorModal.onDidDismiss(locale => {
-      if(locale) {
-        // If a new locale was selected, store it as the preferred locale in the session
-        this.user = this.auth.setPreferredLocale(locale);
-
-        // If user is signed in, update their information with the new locale.
-        if(this.auth.isSignedIn()) {
-          this.oneClickProvider.updateProfile(this.user);
-        }
-      }
-    })
-    languageSelectorModal.present();
   }
 
   // Updates this component's user model based on the information stored in the session

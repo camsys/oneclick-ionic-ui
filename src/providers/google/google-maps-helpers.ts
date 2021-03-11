@@ -8,8 +8,8 @@ import { environment } from '../../app/environment';
 @Injectable()
 export class GoogleMapsHelpersProvider {
 
-  minZoom: number = 10;
-  maxZoom: number = 16;
+  minZoom: number = 7;
+  maxZoom: number = 15;
 
   // Sets up a map element with default options, and returns it
   buildGoogleMap(mapDivId: string): google.maps.Map {
@@ -19,6 +19,7 @@ export class GoogleMapsHelpersProvider {
       center: latLng,
       zoom: this.minZoom,
       mapTypeControl: false,
+      scaleControl: true,
       streetViewControl: false,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
     };
@@ -121,7 +122,7 @@ export class GoogleMapsHelpersProvider {
       default:
         return new google.maps.Polyline({
           path: routePoints,
-          strokeColor: '#DB0F7D', // Lynx Dark Pink
+          strokeColor: '#133182', // Lynx Dark Pink
           strokeOpacity: 0.7,
           strokeWeight: 6
         });
@@ -169,6 +170,17 @@ export class GoogleMapsHelpersProvider {
     marker.setClickable(false);
 
     return marker;
+  }
+
+  // Add layer to map representing the participating counties.
+  addParticipatingCountiesLayer(map: google.maps.Map) {
+    map.data.loadGeoJson('assets/data/counties.geojson');
+    map.data.setStyle({
+      clickable: true,
+      fillOpacity: 0,
+      strokeColor: 'blue',
+      strokeWeight: 1
+    });
   }
 
 }

@@ -5,29 +5,22 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title text-center>{{ "lynx.pages.directions.header" | translate }}</ion-title>
-    <button ion-button end menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-  </ion-navbar>
-
+  <app-navbar headerTitle="{{ 'oneclick.pages.directions.header' | translate }}"></app-navbar>
 </ion-header>
 
 
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-tabs *ngIf="trip && mode" tabsPlacement="top" tabsHighlight="true">
+      <ion-tabs *ngIf="trip" tabsPlacement="top" tabsHighlight="true">
         <ion-tab [root]="stepsTab"
-                 tabTitle="{{ 'lynx.pages.directions.steps_tab.header' | translate }}"
+                 tabTitle="{{ 'oneclick.pages.directions.steps_tab.header' | translate }}"
                 tabIcon="list"
                  [rootParams]="directionsParams">
           >
          </ion-tab>
         <ion-tab [root]="mapTab"
-                 tabTitle="{{ 'lynx.pages.directions.map_tab.header' | translate }}"
+                 tabTitle="{{ 'oneclick.pages.directions.map_tab.header' | translate }}"
                 tabIcon="map"
                  [rootParams]="directionsParams">
           >

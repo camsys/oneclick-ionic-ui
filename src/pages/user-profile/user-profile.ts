@@ -9,7 +9,7 @@ import { environment } from '../../app/environment';
 import {User} from '../../models/user';
 import {Eligibility} from '../../models/eligibility';
 import {Accommodation} from '../../models/accommodation';
-import {TripType} from '../../models/user';
+import {TripType} from '../../models/trip-type';
 
 // PROVIDERS
 import { OneClickProvider } from '../../providers/one-click/one-click';
@@ -37,6 +37,7 @@ export class UserProfilePage {
   trip_types: TripType[];
   filtered_trip_types: TripType[];
   available_locales: string[];
+  counties: string[];
 
   @ViewChild('updateProfileForm') updateProfileForm: NgForm = {} as NgForm;
   public passwordFieldType = "password";
@@ -71,7 +72,7 @@ export class UserProfilePage {
   showSuccess() {
     // If the user token is expired, redirect to the sign in page and display a notification
     this.toastCtrl.create({
-      message: this.translate.instant("lynx.pages.user_profile.update_profile_success"),
+      message: this.translate.instant("oneclick.pages.user_profile.update_profile_success"),
       duration: 5000}
     ).present();
   }
@@ -86,7 +87,9 @@ export class UserProfilePage {
     this.eligibilities = this.user.eligibilities;
     this.accommodations = this.user.accommodations;
     this.trip_types = this.user.trip_types;
-    this.filterTripTypes();
+    this.counties = this.user.counties.map(county => county.name).sort();
+    // Don't filter trip types here so that it matches travel profile page.
+    //this.filterTripTypes();
   }
 
   filterTripTypes() {
@@ -107,12 +110,12 @@ export class UserProfilePage {
       console.error("USER TOKEN EXPIRED", error);
       this.navCtrl.push(SignInPage);
       this.toastCtrl.create({
-        message: this.translate.instant("lynx.pages.user_profile.sign_in_required_message"),
+        message: this.translate.instant("oneclick.pages.user_profile.sign_in_required_message"),
         duration: 5000}
       ).present();
-    } else { 
+    } else {
       this.toastCtrl.create({
-        message: this.translate.instant("lynx.pages.user_profile.generic_error_message"),
+        message: this.translate.instant("oneclick.pages.user_profile.generic_error_message"),
         duration: 5000}
       ).present();
       this.ionViewDidLoad();

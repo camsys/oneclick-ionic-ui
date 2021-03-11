@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title text-center>{{ "lynx.pages.language_selector_modal.header" | translate }}</ion-title>
+    <ion-title text-center>{{ "oneclick.pages.language_selector_modal.header" | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,7 +15,7 @@
 
 <ion-content text-center>
 
-  <h2 id="language-selector-modal-title">{{ "lynx.pages.language_selector_modal.form_title" | translate }}</h2>
+  <h2 id="language-selector-modal-title">{{ "oneclick.pages.language_selector_modal.form_title" | translate }}</h2>
 
   <!-- LOCALE SELECTOR RADIO BUTTONS -->
   <ion-list id="language-selector-container"
@@ -24,7 +24,7 @@
             (ngModelChange)="onLocaleChange()">
 
     <ion-item *ngFor="let locale of available_locales">
-      <ion-label>{{ "lynx.global.languages.native." + locale | translate }}</ion-label>
+      <ion-label>{{ "oneclick.global.languages.native." + locale | translate }}</ion-label>
       <ion-radio value="{{locale}}"></ion-radio>
     </ion-item>
 
@@ -35,7 +35,7 @@
     <button ion-button round
             class="lynx-button-white"
             type="button"
-            (click)="cancel()">{{ "lynx.pages.feedback.cancel_button" | translate }}</button>
+            (click)="cancel()">{{ "oneclick.pages.feedback.cancel_button" | translate }}</button>
   </div>
 
 </ion-content>

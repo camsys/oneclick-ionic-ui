@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title text-center>{{ "lynx.pages.feedback.header" | translate }}</ion-title>
+    <ion-title text-center>{{ "oneclick.pages.feedback.header" | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -29,7 +29,7 @@
     <ng-template #subjectPicker>
 
       <ion-item text-center id="subject-picker-container">
-        <ion-input placeholder="{{ 'lynx.pages.feedback.subject_picker_placeholder' | translate }}"
+        <ion-input placeholder="{{ 'oneclick.pages.feedback.subject_picker_placeholder' | translate }}"
                    [formControl]="searchControl"
                    (ionFocus)="searchResultsList.show()"
                    #searchInput></ion-input>
@@ -51,7 +51,7 @@
     <!-- Review textarea is elastic, i.e. it expands as user types new lines -->
     <ion-item id="feedback-modal-review">
       <ion-textarea fz-elastic
-                    placeholder="{{ 'lynx.pages.feedback.review_placeholder' | translate }}"
+                    placeholder="{{ 'oneclick.pages.feedback.review_placeholder' | translate }}"
                     formControlName="review">
       </ion-textarea>
     </ion-item>
@@ -59,18 +59,18 @@
     <br>
     <br>
     <h4>
-        {{ "lynx.pages.feedback.contact" | translate }}
+        {{ "oneclick.pages.feedback.contact" | translate }}
     </h4>
 
     <!-- Email input just a standard text input -->
     <ion-item>
-      <ion-label>{{ "lynx.pages.feedback.email" | translate }}</ion-label>
+      <ion-label>{{ "oneclick.pages.feedback.email" | translate }}</ion-label>
       <ion-input type="email" formControlName="email"></ion-input>
     </ion-item>
 
     <!-- Phone input uses a text mask to format the input value as a phone number -->
     <ion-item>
-      <ion-label>{{ "lynx.pages.feedback.phone" | translate }}</ion-label>
+      <ion-label>{{ "oneclick.pages.feedback.phone" | translate }}</ion-label>
       <ion-input type="tel" formControlName="phone" [textMask]="{mask: phoneMask}"></ion-input>
     </ion-item>
 
@@ -78,11 +78,11 @@
     <div id="feedback-modal-buttons">
       <button ion-button round
               type="submit"
-              class="lynx-button-dark">{{ "lynx.pages.feedback.submit_button" | translate }}</button>
+              class="lynx-button-dark">{{ "oneclick.pages.feedback.submit_button" | translate }}</button>
       <button ion-button round
               class="lynx-button-white"
               type="button"
-              (click)="cancel()">{{ "lynx.pages.feedback.cancel_button" | translate }}</button>
+              (click)="cancel()">{{ "oneclick.pages.feedback.cancel_button" | translate }}</button>
     </div>
   </form>
 

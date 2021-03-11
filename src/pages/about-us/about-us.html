@@ -1,12 +1,5 @@
 <ion-header>
-
-  <ion-navbar>
-    <ion-title text-center>{{ "lynx.pages.about_us.header" | translate }}</ion-title>
-    <button ion-button end menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-  </ion-navbar>
-
+  <app-navbar headerTitle="{{ 'oneclick.pages.about_us.header' | translate }}"></app-navbar>
 </ion-header>
 
 <ion-content>
@@ -14,29 +7,7 @@
   <ion-grid no-padding>
     <ion-row>
       <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
-      <h3 class="item-heading">
-        {{ "agency.title" | translate }}
-      </h3>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
-
-        <ion-list class="lynx-list">
-          <ion-item text-wrap *ngFor="let agency of agencies">
-            <h3 class="item-heading">{{agency.name}}</h3>
-            <h4 class="item-subheading" *ngIf="!!(agency.formatted_phone || agency.phone)">
-              <a href="tel:{{agency.phone}}">{{agency.formatted_phone || agency.phone}}</a>
-            </h4>
-            <p class="item-body" *ngIf="helpers.urlPresent(agency.url)">
-              <b>{{ "lynx.pages.about_us.url" | translate }}: </b><external-link url="{{agency.url}}"></external-link>
-            </p>
-            <p class="item-body">
-              <b>{{ "lynx.pages.about_us.description" | translate }}: </b>{{agency.description }}
-            </p>
-          </ion-item>
-        </ion-list>
-
+        <span [innerHTML]="'oneclick.pages.about_us.intro' | translate"></span>
       </ion-col>
     </ion-row>
 
