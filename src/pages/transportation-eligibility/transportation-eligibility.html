@@ -22,6 +22,7 @@
       {{"oneclick.pages.session_user_preference_disabled_text" | translate }}
       <button class="transportation-eligibility-info-button" (click)="showRegistrationPopup()">
         <ion-icon
+          class="ion-md-information-circle info-white"
           name="information-circle"
           (click)="showRegistrationPopup"
         ></ion-icon>
@@ -103,14 +104,19 @@
             (click)="viewParatransitOptions()">
       {{ "oneclick.pages.transportation_eligibility.plan_trip_button" | translate }}
     </button>
-    <button item-end ion-button middle round
-            class="lynx-button-primary"
-            (click)="storeUserPreferencesDisabledInSessionByButton()">
+    <button item-end ion-button middle round class="lynx-button-primary">
       <ion-checkbox [(ngModel)]="user_preferences_disabled"
                     [checked]="true"
                     (ionChange)="storeUserPreferencesDisabledInSession()">
       </ion-checkbox>
       {{"oneclick.pages.session_user_preference_disabled_text" | translate }}
+      <button class="transportation-eligibility-info-button" (click)="showRegistrationPopup()">
+        <ion-icon
+          class="ion-md-information-circle info-white"
+          name="information-circle"
+          (click)="showRegistrationPopup"
+        ></ion-icon>
+      </button>
     </button>
   </div>
 
