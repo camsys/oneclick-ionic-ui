@@ -13,4 +13,7 @@ page-sign-up {
   ion-label {
     color: $lynxWhite;
   }
+  ion-label, ion-input, .button-md {
+    font-size: $font-size-md;
+  }
 }
