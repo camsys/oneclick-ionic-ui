@@ -76,7 +76,7 @@
                         <button ion-button round *ngIf="leg.mode != 'WALK' && leg.mode != 'CAR' && leg.mode != 'BICYCLE'"
                           class="lynx-button-primary"
                           (click)="selectService(leg.serviceId)">
-                          Service info
+                          {{ "oneclick.pages.directions.steps_tab.service_info_button" | translate }}
                         </button>
                       </h3>
                     </div>

@@ -289,7 +289,7 @@ export class OneClickProvider {
       this.oneClickUrl +
       'services/' +
       id +
-      '&locale=' + this.i18n.currentLocale()
+      '?locale=' + this.i18n.currentLocale()
     );
 
     return this.http.get(url)
