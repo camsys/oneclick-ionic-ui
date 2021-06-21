@@ -36,6 +36,14 @@ page-help-me-find {
       }
     }
 
+    a.ieuw-hipaa-notice-link:link,a.ieuw-hipaa-notice-link:visited {
+      color:#fbb255;
+    }
+
+    a.ieuw-hipaa-notice-link:hover,a.ieuw-hipaa-notice-link:focus,a.ieuw-hipaa-notice-link:active {
+      color:darken(#fbb255, 20%);
+    }
+
     ion-card-content.card-content {
 
       color: $lynxWhite;
@@ -52,7 +60,7 @@ page-help-me-find {
 
       }
       .lynx-help-me-find-buttons-subtitle {
-        text-alighn: center !important;
+        text-align: center !important;
       }
 
     }
