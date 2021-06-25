@@ -5,6 +5,7 @@ export class OneClickPlaceModel {
   city?: string;
   state?: string;
   zip?: string;
+  county?: string;
   lat: number; // REQUIRED
   lng: number; // REQUIRED
   
@@ -16,5 +17,6 @@ export class OneClickPlaceModel {
     this.zip = attrs.zip;
     this.lat = attrs.lat;
     this.lng = attrs.lng;
+    this.county = attrs.county;
   }
 }
