@@ -2,6 +2,8 @@
  * Created by mmaranda on 6/21/17.
  */
 
+import { AddressComponentModel } from "./address-component";
+
 export class ServiceModel {
   id: number;
   agency_name:string;
@@ -9,6 +11,7 @@ export class ServiceModel {
   lat:number;
   lng:number;
   address:string;
+  address_components: AddressComponentModel[];
   drive_time: number;
   transit_time: number;
   phone: string;

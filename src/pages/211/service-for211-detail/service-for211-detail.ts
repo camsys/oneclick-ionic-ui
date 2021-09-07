@@ -36,6 +36,12 @@ import { AutocompleteResultsComponent } from "../../../components/autocomplete-r
 
 /**
  * Generated class for the ServiceFor211DetailPage page.
+ * NOTE: The below methods are potentially dead code:
+ * - this.buildTripRequest()
+ * - this.updateTravelTimesFromTripResonse()
+ * - this.updateReturnedModes()
+ * - this.updateTripPlaces()
+ *
  */
 @IonicPage()
 @Component({
@@ -104,6 +110,18 @@ export class ServiceFor211DetailPage {
     });
   }
 
+  /**
+   * On View Enter:
+   * 1. if service id is passed in fetch it and on response:
+   *   a. load service details into page state
+   *   b. overwrite destination data in page state(this probably means there's redundant code somewhere)
+   *   c. update originSearch and destinationSearch
+   * 2. if a trip id is passed in, then fetch trip details and load it in
+   * 3. else if an origin and destination is supplied
+   *   a. load that into the page state
+   *   b. set departure time from navParams
+   * 4. else if none of the above is present, redirect home
+   */
   ionViewDidEnter() {
     // Show the spinner until a trip is present
     // this.events.publish('spinner:show');
@@ -137,9 +155,10 @@ export class ServiceFor211DetailPage {
       if (this.navParams.data.destination){
         this.destination = new GooglePlaceModel(this.navParams.data.destination);
       }
+      // NOTE: this is probably redundant if we're fetching service details from OCC and loading it in anyways
       else if (this.service){
         this.destination = new GooglePlaceModel({
-          address_components: null,
+          address_components: this.service.address_components,
           geometry: {location: {lat: this.service.lat, lng: this.service.lng}},
           formatted_address: null,
           id: null,
@@ -235,6 +254,8 @@ export class ServiceFor211DetailPage {
       // Set the detail keys to the non-null details
       this.detailKeys = Object.keys(this.service.details)
                               .filter((k) => this.service.details[k] !== null);
+      // Update destination address components with the Refernet returned service's address components
+      this.destination.setAddressComponents(service.address_components);
 
       this.updateOriginDestinationSearch()
     }
@@ -242,7 +263,6 @@ export class ServiceFor211DetailPage {
     // Update the URL now that the service ID is present
     this.updateURL();
     this.changeDetector.markForCheck();
-
   }
 
   // Plans a trip based on origin and destination

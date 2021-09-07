@@ -22,7 +22,7 @@ export class GooglePlaceModel {
     this.place_id = attrs.place_id || null;
     this.types = attrs.types || [];
   }
-  
+
   toOneClickPlace(): OneClickPlaceModel {
     return new OneClickPlaceModel({
       name: this.label(),
@@ -36,17 +36,28 @@ export class GooglePlaceModel {
       state: this.addressComponent("administrative_area_level_1").long_name
     })
   }
-  
-  // Returns the long_name of the first address component with the given type
+
+  /**
+   * NOTE: if addressComponent() can't find the component, the fallback causes other code to fail
+   * @param type is a string that's generally the below values:
+   * - 'street_number'
+   * - 'route'
+   * - 'county' OR 'administrative_area_level_2'
+   * - 'postal_code'
+   * - 'locality'
+   * - 'administrative_area_level_1'
+   * @returns AddressComponentModel
+   */
   addressComponent(type: string) {
-    let addrComp = this.address_components
-                   .filter((ac) => {
+    // Find and return the first address component that matches the input type
+    const addrComp = this.address_components
+                   .find((ac) => {
                      // Filter by address_components with the the right type...
-                     return ac.types.findIndex((t) => t === type) > -1; 
-                   })[0]; // ...and take the first one.
+                     return ac.types.findIndex((t) => t === type) > -1;
+                   });
     return addrComp || new AddressComponentModel();
   }
-  
+
   // Returns a label for the place, either from the address components or using the formatted address
   label() {
     return (this.name || 
