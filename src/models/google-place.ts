@@ -31,6 +31,7 @@ export class GooglePlaceModel {
       street_number: this.addressComponent("street_number").long_name,
       route: this.addressComponent("route").long_name,
       city: this.addressComponent("locality").long_name,
+      county: this.addressComponent("county").long_name || this.addressComponent("administrative_area_level_2").long_name,
       zip: this.addressComponent("postal_code").long_name,
       state: this.addressComponent("administrative_area_level_1").long_name
     })

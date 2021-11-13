@@ -201,6 +201,14 @@ export class TransportationEligibilityPage {
 
   }
 
+  async showRegistrationPopup() {
+    let alert = await this.alertCtrl.create({
+      message: this.translate.instant('oneclick.pages.transportation_eligibility.create_account_popup'),
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
   async showTripTypesPopup() {
     let alert = await this.alertCtrl.create({
       message: this.translate.instant('oneclick.pages.transportation_eligibility.trip_types_info_popup'),

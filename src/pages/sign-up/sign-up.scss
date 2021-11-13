@@ -10,4 +10,10 @@ page-sign-up {
   .toast-message {
     white-space: pre;
   }
+  ion-label {
+    color: $lynxWhite;
+  }
+  ion-label, ion-input, .button-md {
+    font-size: $font-size-md;
+  }
 }

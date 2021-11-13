@@ -2,4 +2,7 @@ page-sign-in {
   .content-ios,.content-md,.content-wp {
     background-color: $lynxPink;
   }
+  ion-label, ion-input, .button-md {
+    font-size: $font-size-md;
+  }
 }

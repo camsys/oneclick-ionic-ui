@@ -116,5 +116,8 @@ a.lynx-button-link {
     &:active, &:hover {
       color: $lynxPink;
     }
+    &.link-white-high-contrast:active, &.link-white-high-contrast:hover {
+      color: #fbb255;
+    }
   }
 }
