@@ -68,5 +68,8 @@ export class GooglePlaceModel {
   isGeocoded(): Boolean {
     return !!(this.lat() && this.lng());
   }
-  
+
+  setAddressComponents(addrComp: AddressComponentModel[]): void {
+    this.address_components = addrComp
+  }
 }

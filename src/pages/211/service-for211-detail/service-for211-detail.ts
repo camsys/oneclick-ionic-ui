@@ -106,7 +106,7 @@ export class ServiceFor211DetailPage {
 
   ionViewDidEnter() {
     // Show the spinner until a trip is present
-    this.events.publish('spinner:show');
+    // this.events.publish('spinner:show');
 
     // If a service_id and location_id are passed, get its details and load it into the page
     if(this.service_id && this.location_id) {
@@ -119,14 +119,15 @@ export class ServiceFor211DetailPage {
       this.loadServiceDetails(this.navParams.data.service);
     }
 
+    // NOTE: This might be dead code, warrants investigation into OCNUI, OCC, and OTP
     // If a Trip ID is present, use that to fetch the already-planned trip
-    if(this.trip_id) {
-      this.oneClick.getTrip(this.trip_id)
-        .subscribe((tripResponse) => this.loadTripResponse(tripResponse))
+    // if(this.trip_id) {
+    //   this.oneClick.getTrip(this.trip_id)
+    //     .subscribe((tripResponse) => this.loadTripResponse(tripResponse))
 
-      // If an origin and destination are passed, make a trip request based on those
-    } else if( this.navParams.data.origin && (this.navParams.data.destination|| this.service) ) {
-
+    //   // If an origin and destination are passed, make a trip request based on those
+    // } else if( this.navParams.data.origin && (this.navParams.data.destination|| this.service) ) {
+     if( this.navParams.data.origin && (this.navParams.data.destination|| this.service) ) {
       if (this.navParams.data.departureDateTime) {
         this.departureDateTime = this.navParams.data.departureDateTime;
       }
@@ -146,14 +147,15 @@ export class ServiceFor211DetailPage {
         });
       }
 
+      // NOTE: Seems like dead code, trip data isn't actively used in the Find Service - Service Details Page
       // Plan a trip and store the result.
       // Once response comes in, update the UI with travel times and allow
       // user to select a mode to view directions.
-      this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
-        .planTrip(this.buildTripRequest(this.allModes))
-        .subscribe((tripResponse) => {
-          this.loadTripResponse(tripResponse);
-        });
+      // this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
+      //   .planTrip(this.buildTripRequest(this.allModes))
+      //   .subscribe((tripResponse) => {
+      //     this.loadTripResponse(tripResponse);
+      //   });
 
       // Otherwise, go to home page
     } else {
@@ -233,6 +235,8 @@ export class ServiceFor211DetailPage {
       // Set the detail keys to the non-null details
       this.detailKeys = Object.keys(this.service.details)
                               .filter((k) => this.service.details[k] !== null);
+
+      this.updateOriginDestinationSearch()
     }
 
     // Update the URL now that the service ID is present
@@ -317,6 +321,11 @@ export class ServiceFor211DetailPage {
 
   // Updates the origin and destination based on the trip response
   updateTripPlaces(tripResponse: TripResponseModel) {
+    this.originSearch.setPlace(this.origin);
+    this.destinationSearch.setPlace(this.destination);
+  }
+
+  updateOriginDestinationSearch() {
     this.originSearch.setPlace(this.origin);
     this.destinationSearch.setPlace(this.destination);
   }
