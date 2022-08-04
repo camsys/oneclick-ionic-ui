@@ -18,6 +18,7 @@ export class ExternalNavigationProvider {
   
   // Opens an external website, but first confirms with the user that they want to leave the site
   goTo(url: any) {
+    event.preventDefault();
     let confirmExit = this.alertCtrl.create({
       title: this.translate.instant("oneclick.pages.external_navigation.header"),
       message: this.translate.instant("oneclick.pages.external_navigation.message"),
