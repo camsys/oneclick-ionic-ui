@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FeedbackModel } from 'src/app/models/feedback';
+import { OneClickService } from 'src/app/services/one-click.service';
 
 @Component({
   selector: 'app-feedback-status',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FeedbackStatusPage implements OnInit {
 
-  constructor() { }
+  feedbacks: FeedbackModel[] = [];
+
+  constructor(private oneClick: OneClickService) {
+  }
 
   ngOnInit() {
+    this.oneClick.getFeedbacks()
+                 .subscribe((feedbacks) => this.feedbacks = feedbacks);
   }
 
 }

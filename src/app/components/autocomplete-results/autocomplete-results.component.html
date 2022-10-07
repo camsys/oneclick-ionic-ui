@@ -1,3 +1,12 @@
-<p>
-  autocomplete-results works!
-</p>
+<div class="lynx-autocomplete-results-container"
+     [hidden]="hidden || items.length <= 0"
+     (click)="hide()">
+  <ion-list class="lynx-autocomplete-results">
+    <ion-item *ngFor="let item of items; let i = index"
+              tappable text-wrap
+              [class.focus]="focusItem === i"
+              (click)="selectItem(item, $event)">
+      <b *ngIf="item.title">{{item.title}}</b><b *ngIf="item.title && item.label && distinctTitleAndLabel(item)">: </b><span *ngIf="!item.title || distinctTitleAndLabel(item)">{{ item.label }}</span>
+    </ion-item>
+  </ion-list>
+</div>

@@ -1,0 +1,123 @@
+/* BUTTONS */
+
+// Lynx Button Primary (bright pink, black on click)
+// EXAMPLE: <ion-button round class="lynx-button-primary"> BUTTON TEXT </ion-button>
+ion-button.lynx-button-primary {
+  background-color: var(--lynxPink);
+  color: var(--lynxWhite);
+  
+  ion-icon.icon.icon-ios,
+  ion-icon.icon.icon-md,
+  ion-icon.icon.icon-wp {
+    color: inherit;
+  }
+  
+  &:active, &:hover {
+    background-color: var(--lynxBlack);
+    color: var(--lynxWhite);
+  }
+}
+
+// Lynx Button Outline (white, dark pink outline, dark pink on click)
+// EXAMPLE: <ion-button round outline class="lynx-button-outline"> BUTTON TEXT </ion-button>
+ion-button.lynx-button-outline {
+  background-color: $lynxWhite;
+  border: size(-5) solid $lynxDarkPink;
+  color: $lynxDarkPink;
+  
+  &:active, &:hover {
+    background-color: $lynxDarkPink;
+    color: $lynxWhite;
+  }
+}
+
+// Lynx Button Dark (dark pink, white on click)
+// EXAMPLE: <ion-button round class="lynx-button-dark"> BUTTON TEXT </ion-button>
+ion-button.lynx-button-dark {
+  background-color: var(--lynxDarkPink);
+  border: size(-5) solid var(--lynxDarkPink);
+  color: var(--lynxWhite);
+  
+  &:active, &:hover {
+    background-color: var(--lynxWhite) !important;
+    border-color: var(--lynxLtGray);
+    color: var(--lynxDarkPink);
+  }
+}
+
+// Lynx Button White (white, no outline, dark pink on click)
+// EXAMPLE: <ion-button round class="lynx-button-white"> BUTTON TEXT </ion-button>
+ion-button.lynx-button-white {
+  background-color: var(--lynxWhite);
+  color: var(--lynxDarkPink);
+  
+  &:active, &:hover {
+    background-color: var(--lynxDarkPink);
+    color: var(--lynxWhite);
+  }
+}
+
+ion-button.lynx-button-clear {
+  background: rgba(black, 0.0);
+  color: var(--lynxWhite);
+
+  &:active, &:hover {
+    background-color: var(--lynxDarkPink);
+    color: var(--lynxWhite);
+  }
+}
+
+// Circular Buttons
+ion-button.lynx-button-circle {
+  border-radius: 50%;
+  font-size: var(--font-size-md);
+  font-weight: 900;
+  height: size(5);
+  width: size(5);
+}
+ion-button.lynx-button-circle-lg {
+  border-radius: 50%;
+  font-size: var(--font-size-lg);
+  font-weight: 900;
+  height: size(7);
+  width: size(7);
+}
+
+// Link-style Buttons
+div.lynx-button-link,
+ion-button.lynx-button-link,
+a.lynx-button-link {
+  background-color: transparent;
+  cursor: pointer;
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  margin: size(1);
+  text-decoration: none;
+  
+  &:active, &:hover {
+    opacity: 1.0;
+  }
+  
+  // Link colorings
+  &.link-pink {
+    color: var(--lynxDarkPink);
+    &:active, &:hover {
+      color: var(--lynxPink);
+    }
+  }
+  &.link-black {
+    color: var(--lynxBlack);
+    &:active, &:hover {
+      color: var(--lynxWhite);
+    }
+  }
+  &.link-white {
+    color: var(--lynxWhite);
+    &:active, &:hover {
+      color: var(--lynxPink);
+    }
+    &.link-white-high-contrast:active, &.link-white-high-contrast:hover {
+      color: #fbb255;
+    }
+  }
+}

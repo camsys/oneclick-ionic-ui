@@ -1,9 +1,86 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>ServicesListTab</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <ion-grid no-padding>
+    <ion-row>
+      <ion-col col-sm-8 offset-sm-2 col-md-4 offset-md-4>
+        <ion-list class="lynx-list" radio-group>
+          <ion-list-header>{{ "oneclick.pages.services.list_tab.sort_by_header" | translate }}</ion-list-header>
+          <ion-item class="sort-by-header">
+            <ion-label><ion-icon name="car"></ion-icon>{{ "oneclick.global.modes.car" | translate }}</ion-label>
+            <ion-radio checked="true" value="driveTime" (ionSelect)="orderMatchList('drive_time')"></ion-radio>
+          </ion-item>
+          <ion-item class="sort-by-header">
+            <ion-label><ion-icon name="bus"></ion-icon>{{ "oneclick.global.modes.transit" | translate }}</ion-label>
+            <ion-radio value="transitTime" (ionSelect)="orderMatchList('transit_time')"></ion-radio>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
+        <ion-list class="lynx-list">
+          <ion-list-header *ngIf="service_count <= 10; else moreServicesHeader">{{ "oneclick.pages.services.list_tab.results_header" | translate }}</ion-list-header>
 
+          <ng-template #moreServicesHeader>
+            <ion-list-header>{{ "oneclick.pages.services.list_tab.over_25_results_header" | translate }}</ion-list-header>
+          </ng-template>
+
+          <ion-item text-wrap
+                    *ngFor="let match of services">
+            <ion-label>
+              <ion-row>
+                <ion-col>
+                  <h3 class="item-subheading"> {{match.agency_name}} </h3>
+                  <p> {{match.address}} <p>
+                </ion-col>
+                <ion-col>
+                  <div item-content>
+                    <div class="icon-wrapper">
+                      <div *ngIf="orderBy == 'transit_time'; then orderByTransitTime else orderByDriveTime"></div>
+                    </div>
+                    <ng-template #orderByDriveTime>
+                      <div *ngIf="match.drive_time != null">
+                        <ion-icon name="car"></ion-icon>
+                        <label>{{match.drive_time | prettyTime}}</label>
+                      </div>
+                      <div *ngIf="match.drive_time == null">
+                        <label>{{ "oneclick.global.driving_unavailable" | translate }}</label>
+                      </div>
+
+                    </ng-template>
+                    <ng-template #orderByTransitTime  class="icon-wrapper">
+                      <div *ngIf="match.transit_time != null">
+                        <ion-icon center name="bus"></ion-icon>
+                        <label>{{match.transit_time | prettyTime}}</label>
+                      </div>
+                      <div *ngIf="match.transit_time == null">
+                        <label>{{ "oneclick.global.transit_unavailable" | translate }}</label>
+                      </div>
+                    </ng-template>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-label>
+            <div item-content>
+              <ion-button default round float-right
+                      class="lynx-button-primary"
+                      (click)="selectService(match)">
+                {{ "oneclick.pages.services.map_tab.go_button" | translate }}
+              </ion-button>
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <!-- Email button -->
+      <ion-col col-md-12 text-center>
+        <h3>{{ "oneclick.pages.services.list_tab.email_yourself" | translate}}</h3>
+        <ion-button round
+                class="lynx-button-primary"
+                (click)="openEmailModal(services)">
+          {{ "oneclick.global.common.send_email" | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

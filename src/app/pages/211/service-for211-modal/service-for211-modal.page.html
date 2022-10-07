@@ -1,9 +1,26 @@
 <ion-header>
+
   <ion-toolbar>
-    <ion-title>ServiceFor211Modal</ion-title>
+    <ion-title text-center>{{ "oneclick.pages.service_details.service_header" | translate }}</ion-title>
   </ion-toolbar>
+
 </ion-header>
 
-<ion-content>
+<ion-content padding text-center>
+
+  <ion-row>
+    <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
+      <h3>{{ "oneclick.pages.service_details.details_header" | translate }}</h3>
+
+      <service-details [service]="service"></service-details>
+    </ion-col>
+  </ion-row>
+
+  <div id="language-selector-modal-buttons">
+    <ion-button round
+            class="lynx-button-white"
+            type="button"
+            (click)="cancel()">{{ "oneclick.pages.feedback.cancel_button" | translate }}</ion-button>
+  </div>
 
 </ion-content>

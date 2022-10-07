@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ExternalNavigationService } from 'src/app/services/external-navigation.service';
 
 @Component({
   selector: 'app-external-link',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ExternalLinkComponent implements OnInit {
 
-  constructor() { }
+  @Input() url: string;
+  @Input() text: string;
+
+  constructor(public exNav: ExternalNavigationService) { }
 
   ngOnInit() {}
 

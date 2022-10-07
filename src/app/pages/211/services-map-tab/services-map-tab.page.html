@@ -1,9 +1,30 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>ServicesMapTab</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+  <div id="service-results-map-canvas"></div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar id="go-toolbar"
+               class="lynx-toolbar lynx-toolbar-overlay" 
+               text-center 
+               *ngIf="selectedService != null"
+               (click)="selectService(selectedService)">
+    <ion-title text-wrap>{{selectedService.agency_name}}</ion-title>
+    
+    <span class="travel-time-container" *ngIf="selectedService.drive_time">
+      <ion-icon class="icon-lg" name="car"></ion-icon>
+      {{selectedService.drive_time | prettyTime}}
+    </span>
+    <span class="travel-time-container" *ngIf="selectedService.transit_time">
+      <ion-icon class="icon-lg" name="bus"></ion-icon>
+      {{selectedService.transit_time | prettyTime}}
+    </span>   
+
+    <ion-buttons id="go-button-container" end>
+      <ion-button id="go-button"
+              class="lynx-button-white lynx-button-circle-lg">
+        {{ "oneclick.pages.services.map_tab.go_button" | translate }}
+      </ion-button>
+    </ion-buttons>
+    
+  </ion-toolbar>
+</ion-footer>

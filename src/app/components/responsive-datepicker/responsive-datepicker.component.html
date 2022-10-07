@@ -1,3 +1,8 @@
-<p>
-  responsive-datepicker works!
-</p>
+<ion-datetime #browserDatepicker
+              [(displayFormat)]="dateTimeFormat"
+              [(pickerFormat)]="dateTimeFormat"
+              yearValues="{{yearValues()}}"
+              [(ngModel)]="date"
+              (ngModelChange)="dateChange()"
+              [(hidden)] = "hideBool">
+</ion-datetime>

@@ -1,9 +1,26 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>SubSubcategoriesFor211</ion-title>
-  </ion-toolbar>
+  <app-navbar headerTitle="{{subcategory && subcategory.name}}"></app-navbar>
 </ion-header>
 
-<ion-content>
 
+<ion-content>
+  <ion-grid>
+
+    <ion-row>
+      <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
+        <ion-list class="lynx-list">
+          <ion-item class="lynx-list-inline-item lynx-list-category-item"
+                    text-wrap
+                    *ngFor="let subSubCategory of subSubCategories"
+                    (click)="openToServices(subSubCategory)">
+            <ion-label>
+              <h3 class="item-heading">{{subSubCategory.name}}</h3>
+            </ion-label>
+            <ion-badge item-end>{{subSubCategory.service_count}}</ion-badge>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
 </ion-content>

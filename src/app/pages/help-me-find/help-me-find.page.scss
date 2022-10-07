@@ -1,0 +1,66 @@
+ion-navbar {
+
+    .helper{
+      font-family: 'MyFontFamily';
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      background: blue;
+    }
+  
+    button.bar-button-menutoggle {
+      color: #f6b77c;
+    }
+  
+    button.lynx-button-primary {
+      background-color: $lynxTranslucentPink;
+    }
+  
+  }
+
+ion-content {
+    background-position-x: 50%;
+    background-size: cover;
+  }
+
+  .lynx-card-help-me-find {
+    background-color: $lynxTranslucentPink;
+
+    ion-card-header.card-header {
+      padding: size(3) size(6) size(2);
+
+      img.lynx-logo-md {
+        margin: size(1) auto;
+      }
+    }
+
+    a.ieuw-hipaa-notice-link:link,a.ieuw-hipaa-notice-link:visited {
+      color:#fbb255;
+    }
+
+    a.ieuw-hipaa-notice-link:hover,a.ieuw-hipaa-notice-link:focus,a.ieuw-hipaa-notice-link:active {
+      color:darken(#fbb255, 20%);
+    }
+
+    ion-card-content.card-content {
+
+      color: $lynxWhite;
+      padding: size(2) size(4) size(1);
+
+      .lynx-welcome-message-2 {
+        font-size: x-large;
+      }
+
+      .lynx-help-me-find-buttons {
+
+        margin: size(2) 0 size(4);
+
+
+      }
+      .lynx-help-me-find-buttons-subtitle {
+        text-align: center !important;
+      }
+
+    }
+
+
+  }

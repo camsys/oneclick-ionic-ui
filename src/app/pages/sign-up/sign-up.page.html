@@ -1,9 +1,85 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>SignUp</ion-title>
-  </ion-toolbar>
+<ion-header no-border>
+  <app-navbar headerTitle="{{ 'oneclick.pages.sign_up.header' | translate }}"></app-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
+
+  <div>
+    <p *ngIf="submitAttempt" style="color: #ea6153;">Please fill out all details accurately.</p>
+
+    <ion-row>
+      <ion-col>
+        <img class="lynx-logo-md" src="assets/img/211-ride@1x.png"/>
+      </ion-col>
+    </ion-row>
+
+    <form [formGroup]="signUpFormGroup" (ngSubmit)="signUp()" #signUpForm="ngForm">
+
+      <ion-row>
+        <ion-col>
+          <!--placeholder="{{ 'oneclick.pages.user_locator.origin_search.placeholders.email' | translate }}"-->
+          <ion-label text-wrap>{{ 'oneclick.pages.sign_up.email_placeholder' | translate }}</ion-label>
+          <ion-input  formControlName="formControlEmail"
+                      class="lynx-input"
+                      type="text"
+                      name="email"
+                      required>
+          </ion-input>
+          <ion-label text-wrap>{{ 'oneclick.pages.sign_up.password_placeholder' | translate }}</ion-label>
+          <ion-input  formControlName="formControlPassword"
+                      class="lynx-input"
+                      type="password"
+                      name="password"
+                      required minlength="4" >
+          </ion-input>
+          <ion-label text-wrap>{{ 'oneclick.pages.sign_up.confirm_password_placeholder' | translate }}</ion-label>
+          <ion-input  formControlName="formControlPasswordConfirm"
+                      class="lynx-input"
+                      type="password"
+                      name="confirm_password"
+                      required>
+          </ion-input>
+          <ion-label text-wrap>{{ 'oneclick.pages.user_profile.paratransit_id' | translate }}</ion-label>
+          <ion-input  formControlName="formControlParatransitId"
+                      class="lynx-input"
+                      type="string"
+                      name="paratransit_id">
+          </ion-input>      
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item id="county-item">      
+              <ion-label>{{"oneclick.pages.user_profile.county" | translate}}</ion-label>
+              <ion-select formControlName="formControlCounty" ion-start name="county">
+                <ion-option *ngFor="let county of counties"
+                            value="{{county}}">
+                  {{ county }}             
+                </ion-option>
+              </ion-select>
+            </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button round class="lynx-button-dark center" type="submit">
+            {{ "oneclick.pages.sign_up.sign_up_button" | translate }}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <br><br>
+      <ion-row>
+        <ion-col text-center>
+          <button role="link" type="button" class="lynx-button-link link-white link-white-high-contrast" (click)="this.exNav.goTo('http://www.gooneclick.com/privacy-policy.stml')">
+            {{ "oneclick.pages.menu.privacy_policy" | translate }}
+          </button>
+        </ion-col>
+      </ion-row>
+
+    </form>
+
+  </div>
 
 </ion-content>

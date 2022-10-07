@@ -1,0 +1,22 @@
+#find-transportation-button-container {
+    padding-top: size(1);
+    padding-bottom: size(1);
+  }
+
+  ion-list.lynx-list {
+
+    ion-item.item {
+      .item-heading {
+        color: var(--lynxBlack);
+      }
+
+      ion-button {
+        padding: 0px;
+        width: size(8);
+      }
+    }
+  }
+
+  .standout{
+    font-weight: bold !important;
+  }

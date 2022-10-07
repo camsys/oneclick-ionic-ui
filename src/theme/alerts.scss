@@ -1,0 +1,11 @@
+
+ion-toast > .toast-wrapper > .toast-container {
+
+  
+  &> .toast-message {
+    color: -var(--lynxPink);
+    font-weight: 500;
+    font-size: var(--font-size-md);
+  }
+  
+}

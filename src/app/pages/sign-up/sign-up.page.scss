@@ -1,0 +1,17 @@
+.content-ios,.content-md,.content-wp {
+    background-color: var(--lynxPink);
+  }
+
+  .invalid {
+    border: 1px solid #ea6153;
+  }
+
+  .toast-message {
+    white-space: pre;
+  }
+  ion-label {
+    color: var(--lynxWhite);
+  }
+  ion-label, ion-input, .button-md {
+    font-size: var(--font-size-md);
+  }

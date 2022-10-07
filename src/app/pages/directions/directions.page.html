@@ -1,9 +1,25 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Directions</ion-title>
-  </ion-toolbar>
+  <app-navbar headerTitle="{{ 'oneclick.pages.directions.header' | translate }}"></app-navbar>
 </ion-header>
 
-<ion-content>
 
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-tabs *ngIf="trip" tabsPlacement="top" tabsHighlight="true">
+        <ion-tab [root]="stepsTab"
+                 tabTitle="{{ 'oneclick.pages.directions.steps_tab.header' | translate }}"
+                tabIcon="list"
+                 [rootParams]="directionsParams">
+          >
+         </ion-tab>
+        <ion-tab [root]="mapTab"
+                 tabTitle="{{ 'oneclick.pages.directions.map_tab.header' | translate }}"
+                tabIcon="map"
+                 [rootParams]="directionsParams">
+          >
+        </ion-tab>
+      </ion-tabs>
+    </ion-row>
+  </ion-grid>
 </ion-content>

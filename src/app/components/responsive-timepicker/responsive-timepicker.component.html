@@ -1,3 +1,11 @@
-<p>
-  responsive-timepicker works!
-</p>
+<ion-item [(hidden)] = "hideBool" id="browserTimepickerContainer">
+  <ion-select #browserTimepicker
+              [(ngModel)]="time"
+              (ngModelChange)="timeChange()"
+              [compareWith]="compareTimes">
+    <ion-option *ngFor="let t of times; let i = index"
+                [value]="t">
+      {{t | date:'shortTime'}}
+    </ion-option>
+  </ion-select>
+</ion-item>
