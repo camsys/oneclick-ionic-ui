@@ -163,7 +163,6 @@ export class GoogleMapsHelpersService {
     let marker = new google.maps.Marker;
     marker.setPosition(latLng);
     marker.setMap(map);
-    marker.setValues('Your Location');
     marker.setTitle('Your Location');
     marker.setClickable(false);
 

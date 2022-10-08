@@ -1,12 +1,15 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { AgencyModel } from '../models/agency';
 import { Alert } from '../models/alert';
 import { CategoryFor211Model } from '../models/category-for-211';
 import { County } from '../models/county';
 import { FeedbackModel } from '../models/feedback';
 import { GooglePlaceModel } from '../models/google-place';
+import { OneClickHttpResponse } from '../models/one-click-http-response';
 import { OneClickServiceModel } from '../models/one-click-service';
 import { SearchResultModel } from '../models/search-result';
 import { ServiceModel } from '../models/service';
@@ -25,14 +28,19 @@ export class OneClickService {
 
   public oneClickUrl = environment.BASE_ONECLICK_URL;
 
+  private _httpError:BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
+
   constructor(public http: HttpClient,
               private auth: AuthService,
-              private i18n: I18nService,
-              public events: Events) {}
+              private i18n: I18nService) {}
+
+  get httpError(): Observable<any> {
+    return this._httpError.asObservable();
+  }
 
   // Constructs a request options hash with auth headers
-  requestOptions(): RequestOptions {
-    return new RequestOptions({ headers: this.auth.authHeaders() });
+  requestOptions(): { headers: HttpHeaders } {
+    return { headers: this.auth.authHeaders() };
   }
 
   // Gets a list of all Transportation Agencies
@@ -53,19 +61,19 @@ export class OneClickService {
   // Gets OneClick global landmarks and user's stomping grounds based on a query string
   public getPlaces(places_query: String ): Observable<GooglePlaceModel[]> {
     return this.http
-     .get(this.oneClickUrl + "places?name=" + places_query + "&max_results=10", this.requestOptions())
-     .map( (response) => {
-       return response.json().data.places as GooglePlaceModel[];
-     })
+     .get<OneClickHttpResponse>(this.oneClickUrl + "places?name=" + places_query + "&max_results=10", this.requestOptions()).pipe(
+     map( (response) => {
+       return response.data.places as GooglePlaceModel[];
+     }));
   }
 
   // Gets users stomping grounds
   public getStompingGrounds(): Observable<GooglePlaceModel[]> {
     return this.http
-      .get(this.oneClickUrl + "stomping_grounds", this.requestOptions())
-      .map( (response) => {
-        return response.json().data.stomping_grounds as GooglePlaceModel[];
-      })
+      .get<OneClickHttpResponse>(this.oneClickUrl + "stomping_grounds", this.requestOptions()).pipe(
+      map( (response) => {
+        return response.data.stomping_grounds as GooglePlaceModel[];
+      }));
   }
 
   public getAgencies(type: String): Promise<AgencyModel[]> {
@@ -74,20 +82,16 @@ export class OneClickService {
       '&locale=' + this.i18n.currentLocale()
     );
 
-    return this.http.get(uri)
+    return this.http.get<AgencyModel[]>(uri)
       .toPromise()
-      .then(response => response.text())
-      .then(json => JSON.parse(json).data.agencies as AgencyModel[])
-      .catch(error => this.handleError(error));
+      .catch(error => this.handleError(error).toPromise());
   }
 
   public getCounties(): Promise<County[]> {
      var uri: string = encodeURI(this.oneClickUrl + 'counties');
-     return this.http.get(uri, this.requestOptions())
+     return this.http.get<County[]>(uri, this.requestOptions())
       .toPromise()
-      .then(response => response.text())
-      .then(json => JSON.parse(json).data as County[])
-      .catch(error => this.handleError(error));
+      .catch(error => this.handleError(error).toPromise());
   }
 
   // Gets all paratransit services from OneClick
@@ -97,11 +101,10 @@ export class OneClickService {
       '&locale=' + this.i18n.currentLocale()
     );
 
-    return this.http.get(uri)
+    return this.http.get<OneClickHttpResponse>(uri)
       .toPromise()
-      .then(response => response.text())
-      .then(json => JSON.parse(json).data.services as OneClickServiceModel[])
-      .catch(error => this.handleError(error));
+      .then(response => response.data.services as OneClickServiceModel[])
+      .catch(error => this.handleError(error).toPromise());
   }
 
   // Gets a User from 1-Click
@@ -110,7 +113,7 @@ export class OneClickService {
      return this.http.get(uri, this.requestOptions())
       .toPromise()
       .then((response) => this.unpackUserResponse(response))
-      .catch(error => this.handleError(error));
+      .catch(error => this.handleError(error).toPromise());
   }
 
   // Updates a User in 1-Click
@@ -157,7 +160,7 @@ export class OneClickService {
     return this.http.put(uri, body, this.requestOptions())
       .toPromise()
       .then((response) => this.unpackUserResponse(response))
-      .catch(error => this.handleError(error));
+      .catch(error => this.handleError(error).toPromise());
   }
 
   // Unpacks a OneClick user response and stores the user in the session
@@ -173,9 +176,8 @@ export class OneClickService {
       '?locale=' + this.i18n.currentLocale()
     );
 
-    return this.http.get(url)
-      .map(resp => JSON.parse(resp.text()) as CategoryFor211Model)
-      .catch(error => this.handleError(error));
+    return this.http.get<CategoryFor211Model>(url).pipe(
+      catchError(error => this.handleError(error)));
   }
 
   getCategoriesFor211Services(lat: number, lng: number): Promise<CategoryFor211Model[]> {
@@ -188,12 +190,10 @@ export class OneClickService {
     // Add lat & lng params
     if(lat && lng) { uri += ('&lat=' + lat + '&lng=' + lng); }
 
-    return this.http.get(uri)
+    return this.http.get<CategoryFor211Model[]>(uri)
       .toPromise()
-      .then(response => response.text())
-      .then(jsonable => JSON.parse(jsonable) as CategoryFor211Model[])
       .then(categories => this.filterEmptyCategories(categories))
-      .catch(error => this.handleError(error));
+      .catch(error => this.handleError(error).toPromise());
   }
 
   getSubCategoryByCode(code: string): Observable<SubcategoryFor211Model> {
@@ -203,9 +203,8 @@ export class OneClickService {
       '?locale=' + this.i18n.currentLocale()
     );
 
-    return this.http.get(url)
-      .map(resp => JSON.parse(resp.text()) as SubcategoryFor211Model)
-      .catch(error => this.handleError(error));
+    return this.http.get<SubcategoryFor211Model>(url).pipe(
+      catchError(error => this.handleError(error)));
   }
 
   getSubcategoryForCategoryName(categoryName: string, lat: number, lng: number): Promise<SubcategoryFor211Model[]> {
@@ -220,12 +219,10 @@ export class OneClickService {
     // Add lat & lng params
     if(lat && lng) { uri += ('&lat=' + lat + '&lng=' + lng); }
 
-    return this.http.get(uri)
+    return this.http.get<SubcategoryFor211Model[]>(uri)
       .toPromise()
-      .then(response => response.text())
-      .then(jsonable => JSON.parse(jsonable) as SubcategoryFor211Model[])
       .then(subCats => this.filterEmptyCategories(subCats))
-      .catch(error => this.handleError(error));
+      .catch(error => this.handleError(error).toPromise());
   }
 
   getSubSubCategoryByCode(code: string): Observable<SubSubcategoryFor211Model> {
@@ -235,9 +232,8 @@ export class OneClickService {
       '?locale=' + this.i18n.currentLocale()
     );
 
-    return this.http.get(url)
-      .map(resp => JSON.parse(resp.text()) as SubSubcategoryFor211Model)
-      .catch(error => this.handleError(error));
+    return this.http.get<SubSubcategoryFor211Model>(url).pipe(
+      catchError(error => this.handleError(error)));
   }
 
   getSubSubcategoryForSubcategoryName(subcategoryName: string, lat: number, lng: number): Promise<SubSubcategoryFor211Model[]>{
@@ -253,12 +249,10 @@ export class OneClickService {
     // Add lat & lng params
     if(lat && lng) { uri += ('&lat=' + lat + '&lng=' + lng); }
 
-    return this.http.get(uri)
+    return this.http.get<SubSubcategoryFor211Model[]>(uri)
       .toPromise()
-      .then(response => response.text())
-      .then(jsonable => JSON.parse(jsonable) as SubSubcategoryFor211Model[])
       .then(subSubCats => this.filterEmptyCategories(subSubCats))
-      .catch(error => this.handleError(error));
+      .catch(error => this.handleError(error).toPromise());
   }
 
   // Gets ReferNET 211 service details
@@ -271,11 +265,8 @@ export class OneClickService {
       '&locale=' + this.i18n.currentLocale()
     );
 
-    return this.http.get(url)
-      .map((response) => {
-        return JSON.parse(response.text()) as ServiceModel;
-      })
-      .catch(error => this.handleError(error));
+    return this.http.get<ServiceModel>(url).pipe(
+      catchError(error => this.handleError(error)));
   }
 
   getServiceDetails(id: number): Observable<OneClickServiceModel> {
@@ -286,9 +277,9 @@ export class OneClickService {
       '?locale=' + this.i18n.currentLocale()
     );
 
-    return this.http.get(url)
-      .map(response => this.unpackServiceResponse(response))
-      .catch(error => this.handleError(error));
+    return this.http.get(url).pipe(
+      map(response => this.unpackServiceResponse(response)),
+      catchError(error => this.handleError(error)));
   }
 
   // Gets refernet services based on subsubcategory name, and optional lat/lng
@@ -304,11 +295,9 @@ export class OneClickService {
     // Add lat & lng params
     if(lat && lng) { uri += ('&lat=' + lat + '&lng=' + lng); }
 
-    return this.http.get(uri)
+    return this.http.get<ServiceModel[]>(uri)
       .toPromise()
-      .then(response => response.text())
-      .then(jsonable => JSON.parse(jsonable) as ServiceModel[])
-      .catch(error => this.handleError(error));
+      .catch(error => this.handleError(error).toPromise());
   }
 
   // Plans a trip via OneClick, and returns the result
@@ -318,9 +307,9 @@ export class OneClickService {
                         this.i18n.currentLocale());
 
     return this.http
-            .post(uri, tripRequest, this.requestOptions())
-            .map(response => this.unpackTripResponse(response))
-            .catch(error => this.handleError(error));
+            .post(uri, tripRequest, this.requestOptions()).pipe(
+            map(response => this.unpackTripResponse(response)),
+            catchError(error => this.handleError(error)));
   }
 
   // Gets an already-planned trip, based on trip ID (and user auth)
@@ -329,9 +318,9 @@ export class OneClickService {
                         'trips/' + tripId +
                         '?locale=' + this.i18n.currentLocale());
 
-    return this.http.get(uri, this.requestOptions())
-               .map(response => this.unpackTripResponse(response))
-               .catch(error => this.handleError(error));
+    return this.http.get(uri, this.requestOptions()).pipe(
+               map(response => this.unpackTripResponse(response)),
+               catchError(error => this.handleError(error)));
   }
 
   newTrip(): Observable<TripResponseModel> {
@@ -339,9 +328,9 @@ export class OneClickService {
       'trips/new?locale=' + this.i18n.currentLocale());
 
 
-    return this.http.get(uri, this.requestOptions())
-      .map(response => this.unpackTripResponse(response))
-      .catch(error => this.handleError(error));
+    return this.http.get(uri, this.requestOptions()).pipe(
+      map(response => this.unpackTripResponse(response)),
+      catchError(error => this.handleError(error)));
   }
 
   getAlerts(): Promise<Alert[]>{
@@ -350,11 +339,10 @@ export class OneClickService {
                         this.i18n.currentLocale())
 
     return this.http
-               .get(uri, this.requestOptions())
+               .get<OneClickHttpResponse>(uri, this.requestOptions())
                .toPromise()
-               .then(response => response.text())
-               .then(json => JSON.parse(json).data.user_alerts as Alert[])
-               .catch(error => this.handleError(error));
+               .then(response => response.data.user_alerts as Alert[])
+               .catch(error => this.handleError(error).toPromise());
   }
 
   ackAlert(alert: Alert){
@@ -388,11 +376,11 @@ export class OneClickService {
   getFeedbacks(): Observable<FeedbackModel[]> {
 
     return this.http
-               .get(this.oneClickUrl + 'feedbacks', this.requestOptions())
-               .map( response => {
-                 return (response.json().data.feedbacks as FeedbackModel[]);
-               })
-               .catch(error => this.handleError(error));
+               .get<OneClickHttpResponse>(this.oneClickUrl + 'feedbacks', this.requestOptions()).pipe(
+               map(response => {
+                 return (response.data.feedbacks as FeedbackModel[]);
+               }),
+               catchError(error => this.handleError(error)));
   }
 
   // Makes a refernet keyword search call, returning the results array
@@ -403,10 +391,7 @@ export class OneClickService {
       '&locale=' + this.i18n.currentLocale() +
       '&type=' + typeFilter);
 
-    return this.http.get(uri)
-      .map( (response) => {
-        return response.json().results as SearchResultModel[];
-      });
+    return this.http.get<SearchResultModel[]>(uri);
   }
 
   emailItinerary(email: string, itinerary_id: number): Promise<any> {
@@ -444,23 +429,24 @@ export class OneClickService {
                         'users/unsubscribe?locale=' +
                         this.i18n.currentLocale());
 
-    let headers = new Headers({
+    let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'X-User-Email': email
     });
-    let requestOpts = new RequestOptions({ headers: headers });
+    let requestOpts = { headers: headers };
 
     return this.http
-            .post(uri, {}, requestOpts)
-            .map(response => response.status === 200)
-            .catch(error => this.handleError(error));  }
+            .post<OneClickHttpResponse>(uri, {}, requestOpts).pipe(
+            map(response => response.status === 200),
+            catchError(error => this.handleError(error)));
+  }
 
   // Handle errors by console logging the error, and publishing an error event
   // for consumption by the app's home page.
-  private handleError(error: any): any {
+  private handleError(error: any) {
     console.error('An error occurred', error, this); // for demo purposes only
-    this.events.publish('error:http', error);
-    return Observable.empty(); // return an empty observable so subscribe calls don't break
+    this._httpError.next(error);
+    return EMPTY; // return an empty observable so subscribe calls don't break
   }
 
   // // Console log the error and pass along a rejected promise... if uncaught

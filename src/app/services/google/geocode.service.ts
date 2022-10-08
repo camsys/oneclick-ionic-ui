@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AddressComponentModel } from 'src/app/models/address-component';
@@ -18,7 +17,7 @@ export class GeocodeService {
   // Zipcodes within service area of Find Transportation workflow.
   transportationZipcodes: number[] = [];
 
-  constructor(public http: HttpClient) {
+  constructor() {
     this.servicesZipcodes = environment.SERVICES_ZIPCODES;
     this.transportationZipcodes = environment.TRANSPORTATION_ZIPCODES;
   }

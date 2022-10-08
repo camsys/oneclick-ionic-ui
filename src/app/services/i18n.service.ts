@@ -1,22 +1,22 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
+import { AuthService } from './auth.service';
+import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class I18nService {
 
-  constructor(public http: HttpClient,
-    public events: Events,
-    //public platform: Platform,
-    public translate: TranslateService) { }
+  constructor(public translate: TranslateService,
+    public auth: AuthService,
+    public loader: LoaderService) { }
 
   // Initializes the App, adding available languages and setting the default language
   initializeApp() {
     //console.log('start loading translations');
-    this.events.publish("spinner:show");
+    this.loader.showLoader();
     this.translate.addLangs(environment.AVAILABLE_LOCALES);
     this.translate.setDefaultLang(environment.DEFAULT_LOCALE);
 
@@ -30,13 +30,11 @@ export class I18nService {
     //}
 
     // When user is updated, set locale to user's preferred locale.
-    this.events.subscribe("user:updated", (user) => {
-    if(user.preferred_locale) {
-    this.setLocale(user.preferred_locale);
-    }
-    })
-
-
+    this.auth.userUpdated.subscribe((user) => {
+      if (user && user.preferred_locale) {
+        this.setLocale(user.preferred_locale);
+      }
+    });
   }
 
   // Iron out any quirks in the browser/device's preferred locale code. Then,
@@ -59,7 +57,7 @@ export class I18nService {
   // Sets the locale, defaulting to default language.
   setLocale(locale: string) {
   this.translate.use(locale || this.currentLocale());
-  this.events.publish("spinner:hide");
+  this.loader.hideLoader();
   //console.log('finish loading translations');
   }
 

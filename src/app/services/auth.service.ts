@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators'
-
-import { TranslateService } from '@ngx-translate/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { asyncScheduler, BehaviorSubject, Observable, scheduled, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
@@ -14,17 +12,25 @@ import { Session } from '../models/session';
   providedIn: 'root'
 })
 export class AuthService {
+  private _userUpdated:BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
+  private _userSignedOut:Subject<any> = new Subject<any>();
 
   public baseUrl = environment.BASE_ONECLICK_URL;
-  public defaultHeaders: Headers = new Headers({
+  public defaultHeaders: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json'
   })
   public recentPlacesLength: number = 10; // Max # of places in a recent places list
   public guestUserEmailDomain: string = "example.com"; // Guest users will be identified by their email addresses belonging to this domain
 
-  constructor(public http: HttpClient,
-              public events: Events,
-              private translate: TranslateService) { }
+  constructor(public http: HttpClient) { }
+
+  get userUpdated(): Observable<User> {
+    return this._userUpdated.asObservable();
+  }
+
+  get userSignedOut(): Observable<any> {
+    return this._userSignedOut.asObservable();
+  }
 
   // Pulls the current session from local storage
   session(): Session {
@@ -81,15 +87,15 @@ export class AuthService {
   }
 
   // Constructs a hash of necessary Auth Headers for communicating with OneClick
-  authHeaders(): Headers {
+  authHeaders(): HttpHeaders {
     if(this.isRegisteredUser()) {
-      return new Headers({
+      return new HttpHeaders({
         'Content-Type': 'application/json',
         'X-User-Email': this.session().email,
         'X-User-Token': this.session().authentication_token
       });
     } else if(this.isGuestUser()) {
-      return new Headers({
+      return new HttpHeaders({
         'Content-Type': 'application/json',
         'X-User-Email': this.session().email
       });
@@ -102,9 +108,9 @@ export class AuthService {
   signUp(email_address: string, password: string, password_confirmation: string, paratransit_id:string, county:string): Observable<Response> {
     let uri: string = encodeURI(this.baseUrl + 'sign_up');
     let body = JSON.stringify({user: { email: email_address, password:  password, password_confirmation: password_confirmation, paratransit_id: paratransit_id, county: county }});
-    let options: RequestOptions = new RequestOptions({
+    let options = {
       headers: this.defaultHeaders
-    });
+    };
 
     return this.http
       .post(uri, body, options).pipe(
@@ -130,13 +136,13 @@ export class AuthService {
   signIn(email: string, password: string): Observable<Response> {
     let uri: string = encodeURI(this.baseUrl + 'sign_in');
     let body = JSON.stringify({user: { email: email, password: password }});
-    let options: RequestOptions = new RequestOptions({
+    let options = {
       headers: this.defaultHeaders
-    });
+    };
 
     return this.http
-        .post(uri, body, options)
-        .map((response: Response) => {
+        .post(uri, body, options).pipe(
+        map((response: any) => {
 
           // Pull the session hash (user email and auth token) out of the response
           let data = response.json().data;
@@ -148,7 +154,7 @@ export class AuthService {
           }
 
           return response;
-        });
+        }));
   }
 
   // Removes session from local storage and tells backend to reset the user's token
@@ -157,20 +163,20 @@ export class AuthService {
     // If signed in, remove the item from local storage and make sign out call
     if(this.isSignedIn()) {
       let uri: string = encodeURI(this.baseUrl + 'sign_out');
-      let options: RequestOptions = new RequestOptions({
+      let options = {
         headers: this.authHeaders()
-      });
+      };
 
       localStorage.removeItem('session');
-      this.events.publish("user:signed_out");
+      this._userSignedOut.next();
 
       return this.http
-          .delete(uri, options)
-          .map((response: Response) => {
+          .delete(uri, options).pipe(
+          map((response: Response) => {
             return response;
-          });
+          }));
     } else { // If not signed in, return an empty observable
-      return Observable.of();
+      return scheduled([null],asyncScheduler);
     }
   }
 
@@ -178,30 +184,30 @@ export class AuthService {
   resetPassword(email: string): Observable<Response>{
     let uri: string = encodeURI(this.baseUrl + 'users/reset_password');
     let body = JSON.stringify({user: { email: email }});
-    let options: RequestOptions = new RequestOptions({
+    let options = {
       headers: this.defaultHeaders
-    });
+    };
 
     return this.http
-        .post(uri, body, options)
-        .map((response: Response) => {
+        .post(uri, body, options).pipe(
+        map((response: Response) => {
           return response;
-        });
+        }));
   }
 
   // Resets the password of the provided user (only email required)
   resendEmailConfirmation(email: string): Observable<Response>{
     let uri: string = encodeURI(this.baseUrl + 'users/resend_email_confirmation');
     let body = JSON.stringify({user: { email: email }});
-    let options: RequestOptions = new RequestOptions({
+    let options = {
       headers: this.defaultHeaders
-    });
+    };
 
     return this.http
-      .post(uri, body, options)
-      .map((response: Response) => {
+      .post(uri, body, options).pipe(
+      map((response: Response) => {
         return response;
-      });
+      }));
   }
 
   // Pulls the user location out of the session if available
@@ -238,7 +244,7 @@ export class AuthService {
     session.email = user.email;
     session.user = user;
     this.setSession(session);
-    this.events.publish('user:updated', user);  // Publish user updated event for pages to listen to
+    this._userUpdated.next(user);// Publish user updated event for pages to listen to
     return this.user();
   }
 
