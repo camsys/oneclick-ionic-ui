@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { HelpMeFindPage } from '../help-me-find/help-me-find.page';
+import { ResendEmailConfirmationPage } from '../resend-email-confirmation/resend-email-confirmation.page';
+import { ResetPasswordPage } from '../reset-password/reset-password.page';
+import { SignUpPage } from '../sign-up/sign-up.page';
 
 @Component({
   selector: 'app-sign-in',
@@ -10,19 +15,16 @@ import { OneClickService } from 'src/app/services/one-click.service';
   styleUrls: ['./sign-in.page.scss'],
 })
 export class SignInPage implements OnInit {
+  static routePath:string = '/sign_in';
 
   user: User = { email: null, password: null } as User;
   signInSubscription: any;
-  errorToast: Toast;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
               private authProvider: AuthService,
               private oneClickProvider: OneClickService,
               private toastCtrl: ToastController,
-              private translate: TranslateService,
-              private events: Events) {
-    this.errorToast = this.toastCtrl.create({});
+              private translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -32,15 +34,15 @@ export class SignInPage implements OnInit {
     this.authProvider
         .signIn(this.user.email, this.user.password)
         .subscribe(
-          data => {
+          () => {
             // Get the user's profile data and store it in the session
             this.oneClickProvider.getProfile()
                 // Then, redirect the user to the home page
-                .then((usr) => {
-                  this.navCtrl.setRoot(HelpMeFindPage);
+                .then(() => {
+                  this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
                 });
           },
-          error => {
+          (error) => {
             // On failed response, display a pop-up error message and remain on page.
             console.error(error.json().data.errors);
             let errorBody = error.json().data.errors;
@@ -57,28 +59,32 @@ export class SignInPage implements OnInit {
               errorCode = 'default';
             }
 
-            this.errorToast.dismissAll();
-
-            let errorToast = this.toastCtrl.create({
-              message: this.translate.instant("oneclick.pages.sign_in.error_messages." + errorCode),
-              position: "top",
-              duration: 3000
+            
+            this.toastCtrl.dismiss().catch(()=>{
+              //this will catch the error if there is no toast to dismiss
+            }).finally(()=>{
+              this.toastCtrl.create({
+                message: this.translate.instant("oneclick.pages.sign_in.error_messages." + errorCode),
+                position: "top",
+                duration: 3000
+              }).then(errorToast => errorToast.present());
             });
-            errorToast.present();
+
+            
           }
         );
   }
 
   signUp(){
-    this.navCtrl.push(SignUpPage);
+    this.navCtrl.navigateForward(SignUpPage.routePath);
   }
 
   resetPassword() {
-    this.navCtrl.push(ResetPasswordPage);
+    this.navCtrl.navigateForward(ResetPasswordPage.routePath);
   }
 
   resendConfirmation() {
-    this.navCtrl.push(ResendEmailConfirmationPage);
+    this.navCtrl.navigateForward(ResendEmailConfirmationPage.routePath);
   }
 
 

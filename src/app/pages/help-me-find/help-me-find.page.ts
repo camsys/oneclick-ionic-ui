@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { AlertController, Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Alert } from 'src/app/models/alert';
 import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth.service';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { UserLocatorPage } from '../user-locator/user-locator.page';
 
 @Component({
   selector: 'app-help-me-find',
@@ -12,20 +17,22 @@ import { OneClickService } from 'src/app/services/one-click.service';
   styleUrls: ['./help-me-find.page.scss'],
 })
 export class HelpMeFindPage implements OnInit {
+  private unsubscribe:Subject<any>;
+
+  static routePath: string = '/home';
 
   alerts: Alert[];
   user: User;
 
   awsImageLocation;
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
+  constructor(public router: Router,
               private platform: Platform,
               private alertCtrl: AlertController,
               public oneClickProvider: OneClickService,
               public sanitizer: DomSanitizer,
               public translate: TranslateService,
-              public events: Events) {
+              public auth: AuthService) {
   }
   
   ngOnInit() {
@@ -42,8 +49,9 @@ export class HelpMeFindPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.unsubscribe = new Subject<any>();
     // Subscribe to sign out event and refresh alerts when user is signed out
-    this.events.subscribe("user:signed_out", () => {
+    this.auth.userSignedOut.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
       this.oneClickProvider.getAlerts()
         .then(alerts => this.alerts = alerts);
     });
@@ -51,17 +59,18 @@ export class HelpMeFindPage implements OnInit {
 
   ionViewWillLeave() {
     // Unsubscribe from sign out event when page is no longer active
-    this.events.unsubscribe("user:signed_out");
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
   openResourcesPage() {
-     console.log(this);
+    console.log(this);
 
-    this.navCtrl.push(UserLocatorPage, { viewType: 'services'});
+    this.router.navigate([UserLocatorPage.routePath, 'services']);
   }
 
   openTransportationPage() {
-    this.navCtrl.push(UserLocatorPage, { viewType: 'transportation'});
+    this.router.navigate([UserLocatorPage.routePath, 'transportation']);
   }
 
 
@@ -70,17 +79,16 @@ export class HelpMeFindPage implements OnInit {
     //document.getElementById('messages-button').style.display = "none";
 
     for(let entry of this.alerts) {
-      let alert = this.alertCtrl.create({
-        title: entry.subject,
-        subTitle: entry.message,
+      this.alertCtrl.create({
+        header: entry.subject,
+        subHeader: entry.message,
         buttons: [{
           text: 'OK',
           handler: () => {
             this.ackAlert(entry);
           }
         }]
-      });
-      alert.present();
+      }).then(alert => alert.present());
     }
   }
 

@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NavController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { County } from 'src/app/models/county';
 import { AuthService } from 'src/app/services/auth.service';
 import { ExternalNavigationService } from 'src/app/services/external-navigation.service';
 import { OneClickService } from 'src/app/services/one-click.service';
 import { EmailAddressValidator } from 'src/app/validators/email-address';
+import { HelpMeFindPage } from '../help-me-find/help-me-find.page';
 
 @Component({
   selector: 'app-sign-up',
@@ -13,6 +15,7 @@ import { EmailAddressValidator } from 'src/app/validators/email-address';
   styleUrls: ['./sign-up.page.scss'],
 })
 export class SignUpPage implements OnInit {
+  static routePath: string = '/sign_up';
 
  
   // formControlEmail: FormControl;
@@ -20,12 +23,10 @@ export class SignUpPage implements OnInit {
   // formControlPasswordConfirm: FormControl;
   signUpFormGroup: FormGroup;
   submitAttempt: boolean = false;
-  errorToast: Toast;
   counties: string[];
 
   constructor(public navCtrl: NavController,
               public formBuilder: FormBuilder,
-              public navParams: NavParams,
               private authProvider: AuthService,
               private toastCtrl: ToastController,
               public oneClickProvider: OneClickService,
@@ -39,13 +40,18 @@ export class SignUpPage implements OnInit {
       formControlParatransitId: ['', Validators.maxLength(30)],
       formControlCounty: [''],
     });
-    this.errorToast = this.toastCtrl.create({});
   }
 
   ngOnInit() {
     this.oneClickProvider.getCounties()
     .then((countiesArray) => this.updateUserData(countiesArray))
     .catch((error) => this.handleError(error))
+  }
+
+  ionViewDidLeave() {
+    this.toastCtrl.dismiss().catch(()=>{
+      //this will catch the error if there is no toast to dismiss
+    });
   }
 
   updateUserData(countiesArray: County[]) {
@@ -56,7 +62,7 @@ export class SignUpPage implements OnInit {
     this.toastCtrl.create({
       message: this.translate.instant("oneclick.pages.user_profile.generic_error_message"),
       duration: 5000}
-    ).present();
+    ).then(toast => toast.present());
   }
 
   signUp() {
@@ -68,7 +74,9 @@ export class SignUpPage implements OnInit {
           this.signUpFormGroup.controls.formControlParatransitId.value,
           this.signUpFormGroup.controls.formControlCounty.value)
         .subscribe(
-          data => {this.navCtrl.setRoot(HelpMeFindPage);},
+          () => {
+            this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
+          },
           error => {
             let errors: string = '';
             errors = this.translate.instant("oneclick.pages.sign_up.error_messages.default");
@@ -105,16 +113,16 @@ export class SignUpPage implements OnInit {
             {
               errors += this.translate.instant("oneclick.pages.sign_up.error_messages.password_confirmation_cant_be_blank");
             }
-            
-            this.errorToast.dismissAll();
 
-            this.errorToast = this.toastCtrl.create({
-              message: errors,
-              dismissOnPageChange: true,
-              position: "top",
-              duration: 10000
+            this.toastCtrl.dismiss().catch(()=>{
+              //this will catch the error if there is no toast to dismiss
+            }).finally(()=>{
+              this.toastCtrl.create({
+                message: errors,
+                position: "top",
+                duration: 10000
+              }).then(errorToast => errorToast.present());
             });
-            this.errorToast.present();
           });
   }
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -8,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./reset-password.page.scss'],
 })
 export class ResetPasswordPage implements OnInit {
+  static routePath: string = '/reset_password';
 
   email: string;
 
@@ -20,24 +22,21 @@ export class ResetPasswordPage implements OnInit {
   }
 
   resetPassword() {
-    this.auth.resetPassword(this.email)
-             .subscribe(
-        data => {
-          let successToast = this.toastCtrl.create({
+    this.auth.resetPassword(this.email).subscribe(
+        () => {
+          this.toastCtrl.create({
             message: this.translate.instant("oneclick.pages.reset_password.success_message", { email: this.email }),
             position: "top",
             duration: 3000
-          });
-          successToast.present();
+          }).then(successToast => successToast.present());
         },
-        error => {
+        (error) => {
           console.error(error);
-          let errorToast = this.toastCtrl.create({
+          this.toastCtrl.create({
             message: this.translate.instant("oneclick.pages.reset_password.error_message"),
             position: "top",
             duration: 3000
-          });
-          errorToast.present();
+          }).then(errorToast => errorToast.present());
         }
       );
   }

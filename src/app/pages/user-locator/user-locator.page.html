@@ -10,7 +10,8 @@
                     (onArrowDown)="originResults.focus()"
                     (onFocus)="originResults.show()"
                     (onFocus)="destinationResults.hide()"
-                    (onSelect)="centerMapOnPlace($event, 'origin')">
+                    (onSelect)="centerMapOnPlace($event, 'origin')"
+                    (onChange)="placeSearchChanged()">
       </place-search>
     </div>
 
@@ -20,7 +21,8 @@
                     (onArrowDown)="destinationResults.focus()"
                     (onFocus)="destinationResults.show()"
                     (onFocus)="originResults.hide()"
-                    (onSelect)="centerMapOnPlace($event, 'destination')">
+                    (onSelect)="centerMapOnPlace($event, 'destination')"
+                    (onChange)="placeSearchChanged()">
       </place-search>
     </div>
 

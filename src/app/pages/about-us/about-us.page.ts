@@ -9,6 +9,7 @@ import { OneClickService } from 'src/app/services/one-click.service';
   styleUrls: ['./about-us.page.scss'],
 })
 export class AboutUsPage implements OnInit {
+  static routePath:string = '/about_us';
 
   agencies: AgencyModel[];
   

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { NavController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Accommodation } from 'src/app/models/accommodation';
 import { Eligibility } from 'src/app/models/eligibility';
@@ -7,6 +8,7 @@ import { TripType } from 'src/app/models/trip-type';
 import { User } from 'src/app/models/user';
 import { OneClickService } from 'src/app/services/one-click.service';
 import { environment } from 'src/environments/environment';
+import { SignInPage } from '../sign-in/sign-in.page';
 
 @Component({
   selector: 'app-user-profile',
@@ -14,6 +16,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./user-profile.page.scss'],
 })
 export class UserProfilePage implements OnInit {
+  static routePath: string = '/profile';
 
   user: User = {} as User;
   eligibilities: Eligibility[];
@@ -28,7 +31,6 @@ export class UserProfilePage implements OnInit {
   public showPassword = false;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
               public toastCtrl: ToastController,
               public oneClickProvider: OneClickService,
               private translate: TranslateService) {
@@ -58,7 +60,7 @@ export class UserProfilePage implements OnInit {
     this.toastCtrl.create({
       message: this.translate.instant("oneclick.pages.user_profile.update_profile_success"),
       duration: 5000}
-    ).present();
+    ).then(toast => toast.present());
   }
 
   updateUserDataAndShowMessage(user: User) {
@@ -92,16 +94,17 @@ export class UserProfilePage implements OnInit {
     // If the user token is expired, redirect to the sign in page and display a notification
     if(error.status === 401) {
       console.error("USER TOKEN EXPIRED", error);
-      this.navCtrl.push(SignInPage);
+      this.navCtrl.navigateForward(SignInPage.routePath);
       this.toastCtrl.create({
         message: this.translate.instant("oneclick.pages.user_profile.sign_in_required_message"),
         duration: 5000}
-      ).present();
+      ).then(toast => toast.present());
     } else {
       this.toastCtrl.create({
         message: this.translate.instant("oneclick.pages.user_profile.generic_error_message"),
         duration: 5000}
-      ).present();
+      ).then(toast => toast.present());
+
       this.ngOnInit();
     }
   }

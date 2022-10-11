@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Platform, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AutocompleteResultsComponent } from 'src/app/components/autocomplete-results/autocomplete-results.component';
 import { PlaceSearchComponent } from 'src/app/components/place-search/place-search.component';
@@ -8,6 +9,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { GeocodeService } from 'src/app/services/google/geocode.service';
 import { GoogleMapsHelpersService } from 'src/app/services/google/google-maps-helpers.service';
 import { HelpersService } from 'src/app/services/helpers.service';
+import { CategoriesFor211Page } from '../211/categories-for211/categories-for211.page';
+import { TripResponsePage } from '../trip-response/trip-response.page';
 
 @Component({
   selector: 'app-user-locator',
@@ -15,6 +18,7 @@ import { HelpersService } from 'src/app/services/helpers.service';
   styleUrls: ['./user-locator.page.scss'],
 })
 export class UserLocatorPage implements OnInit {
+  static routePath:string = '/locator';
 
   @ViewChild('originSearch') originSearch: PlaceSearchComponent;
   @ViewChild('destinationSearch') destinationSearch: PlaceSearchComponent;
@@ -34,8 +38,8 @@ export class UserLocatorPage implements OnInit {
   arriveBy: boolean;
   departureDateTime: string;
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
+  constructor(public router: Router,
+              private route: ActivatedRoute,
               public platform: Platform,
               public geolocation: Geolocation,
               public geoServiceProvider: GeocodeService,
@@ -43,38 +47,28 @@ export class UserLocatorPage implements OnInit {
               private helpers: HelpersService,
               private changeDetector: ChangeDetectorRef,
               private auth: AuthService,
-              public events: Events,
               private translate: TranslateService,
               public toastCtrl: ToastController
             ) {
 
     this.map = null;
     this.lastClicked = null;
-    this.userLocation = null; // The user's device location
-    this.viewType = this.navParams.data.viewType; // Find services vs. transportation view
+    this.userLocation = null; // The user's device location\
 
     this.arriveBy = false;
     this.departureDateTime = this.helpers.dateISOStringWithTimeZoneOffset(new Date());
-
-    this.events.subscribe('place-search:change', () => {
-      this.changeDetector.markForCheck();
-    });
   }
 
   ngOnInit() {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.viewType = params.get('viewType');// Find services vs. transportation view
+    })
   }
 
   ionViewDidEnter() {
     // Initialize the map once device is ready
     this.platform.ready()
     .then(() => this.initializeMap());
-  }
-
-  ionViewWillLeave() {
-    // on leaving the page, unsubscribe from the place-search events to avoid
-    // detecting changes on destroyed views
-    this.events.unsubscribe('place-search:change');
-    this.events.unsubscribe('place-search:keypress');
   }
 
   // Sets up the google map and geolocation services
@@ -99,6 +93,10 @@ export class UserLocatorPage implements OnInit {
     //} else {
       this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
     //}
+  }
+
+  placeSearchChanged() {
+    this.changeDetector.markForCheck();
   }
 
   checkGeolocationSupportAndSetupFeatures() {
@@ -152,19 +150,22 @@ export class UserLocatorPage implements OnInit {
     var options = {
       timeout: 5000,
     };
-    this.geolocation.getCurrentPosition(options)
-    .then((position) => {
-      // Only zoom to location if another location isn't set yet
-      if(!this.userLocation) {
-        let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        this.zoomToOriginLocation(latLng);
-        this.setUserPlaceFromLatLng(latLng);
-      }
-    })
-    .catch((err) => {
-      console.error("Could not geolocate device position");
-      this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
-    });
+
+    this.geolocation.getCurrentPosition(
+      (position) => {
+        // Only zoom to location if another location isn't set yet
+        if(!this.userLocation) {
+          let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          this.zoomToOriginLocation(latLng);
+          this.setUserPlaceFromLatLng(latLng);
+        }
+      },
+      (err) => {
+        console.error("Could not geolocate device position");
+        this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
+      },
+      options
+    );
   }
 
   // Updates the userLocation, and centers the map at the given latlng
@@ -209,7 +210,7 @@ export class UserLocatorPage implements OnInit {
     this.storePlaceInSession(place);
     this.storeDepartureDateTime(this.helpers.dateISOStringWithTimeZoneOffset(new Date()));
     this.storeArriveBy(this.arriveBy);
-    this.navCtrl.push(CategoriesFor211Page);
+    this.router.navigateByUrl(CategoriesFor211Page.routePath);
   }
 
   updateDepartureDateTime(time: string) {
@@ -219,11 +220,13 @@ export class UserLocatorPage implements OnInit {
   // Plans a trip based on origin and destination
   findTransportation(origin: GooglePlaceModel,
                      destination: GooglePlaceModel) {
-    this.navCtrl.push(TripResponsePage, {
-      origin: origin,
-      destination: destination,
-      departureDateTime: this.departureDateTime,
-      arriveBy: this.arriveBy
+    this.router.navigate([TripResponsePage.routePath], {
+      state: {
+        origin: origin,
+        destination: destination,
+        departureDateTime: this.departureDateTime,
+        arriveBy: this.arriveBy 
+      }
     });
 
   }
@@ -324,21 +327,19 @@ export class UserLocatorPage implements OnInit {
   private checkIfZipcodeOutOfArea(place: GooglePlaceModel) : void {
     if (this.viewType == 'services') {
         if (this.geoServiceProvider.isZipcodeOutOfAreaForServices(place)) {
-          let toast = this.toastCtrl.create({
+          this.toastCtrl.create({
             message: this.translate.instant('find_services_out_of_area_message'),
             position: 'bottom',
             duration: 3000
-          });
-          toast.present();
+          }).then(toast => toast.present());
         }
     } else {
       if (this.geoServiceProvider.isZipcodeOutOfAreaForTransportation(place)) {
-          let toast = this.toastCtrl.create({
+          this.toastCtrl.create({
             message: this.translate.instant('find_transportation_out_of_area_message'),
             position: 'bottom',
             duration: 3000
-          });
-          toast.present();
+          }).then(toast => toast.present());
       }
     }
   }

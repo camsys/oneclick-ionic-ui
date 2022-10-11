@@ -9,6 +9,7 @@ import { OneClickService } from 'src/app/services/one-click.service';
   styleUrls: ['./contact-us.page.scss'],
 })
 export class ContactUsPage implements OnInit {
+  static routePath:string = '/contact_us';
 
   constructor(private oneClickProvider: OneClickService,
     public helpers: HelpersService) {}

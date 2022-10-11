@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { debounceTime } from 'rxjs/operators';
 import { AutocompleteResultsComponent } from 'src/app/components/autocomplete-results/autocomplete-results.component';
@@ -7,6 +8,10 @@ import { CategoryFor211Model } from 'src/app/models/category-for-211';
 import { SearchResultModel } from 'src/app/models/search-result';
 import { AuthService } from 'src/app/services/auth.service';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { ServiceFor211DetailPage } from '../service-for211-detail/service-for211-detail.page';
+import { ServicesPage } from '../services/services.page';
+import { SubSubcategoriesFor211Page } from '../sub-subcategories-for211/sub-subcategories-for211.page';
+import { SubcategoriesFor211Page } from '../subcategories-for211/subcategories-for211.page';
 
 @Component({
   selector: 'app-categories-for211',
@@ -14,6 +19,7 @@ import { OneClickService } from 'src/app/services/one-click.service';
   styleUrls: ['./categories-for211.page.scss'],
 })
 export class CategoriesFor211Page implements OnInit {
+  static routePath: string = '/categories';
 
   @ViewChild('searchResultsList') searchResultsList: AutocompleteResultsComponent;
   
@@ -28,10 +34,9 @@ export class CategoriesFor211Page implements OnInit {
     }
   }
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
+  constructor(//public navCtrl: NavController,
+              private router: Router,
               private oneClickProvider: OneClickService,
-              public events: Events,
               private auth: AuthService,
               private changeDetector: ChangeDetectorRef,
               private translate: TranslateService) {
@@ -60,7 +65,11 @@ export class CategoriesFor211Page implements OnInit {
   }
 
   openToSubcategory(category: CategoryFor211Model){
-    this.navCtrl.push(SubcategoriesFor211Page, { category: category, code: category.code } );
+    this.router.navigate([SubcategoriesFor211Page.routePath], { 
+      state: { 
+        category: category, 
+        code: category.code }
+    } );
   }
   
   // Updates the search results based on a query string.
@@ -84,15 +93,15 @@ export class CategoriesFor211Page implements OnInit {
   goToSearchResult(result: SearchResultModel) {
     switch(result.type) {
       case "OneclickRefernet::Category":
-        this.navCtrl.push(SubcategoriesFor211Page, { category: JSON.stringify(result.result) } );
+        this.router.navigate([SubcategoriesFor211Page.routePath, JSON.stringify(result.result)]);
         break;
       case "OneclickRefernet::SubCategory":
-        this.navCtrl.push(SubSubcategoriesFor211Page, { sub_category: JSON.stringify(result.result) } );
+        this.router.navigate([SubSubcategoriesFor211Page.routePath, JSON.stringify(result.result)]);
         break;
       case "OneclickRefernet::SubSubCategory":
         let ssc = result.result;
         // let userLocation = this.auth.userLocation();
-        this.navCtrl.push(ServicesPage, { sub_sub_category: JSON.stringify(result.result) });
+        this.router.navigate([ServicesPage.routePath, JSON.stringify(result.result)]);
 
         // this.events.publish('spinner:show'); // Show spinner while results are loading
 
@@ -109,12 +118,14 @@ export class CategoriesFor211Page implements OnInit {
         let service = result.result;
         // service.url = null;
       
-        this.navCtrl.push(ServiceFor211DetailPage, {
-          service: service,
-          origin: this.auth.userLocation(),
-          destination: {
-            name: service.site_name,
-            geometry: { location: { lat: service.lat, lng: service.lng } }
+        this.router.navigate([ServiceFor211DetailPage.routePath], {
+          state : {
+            service: service,
+            origin: this.auth.userLocation(),
+            destination: {
+              name: service.site_name,
+              geometry: { location: { lat: service.lat, lng: service.lng } }
+            }
           }
         });
         break;
