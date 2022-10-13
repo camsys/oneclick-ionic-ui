@@ -165,7 +165,7 @@ export class OneClickService {
 
   // Unpacks a OneClick user response and stores the user in the session
   unpackUserResponse(response): User {
-    let user = JSON.parse(response.text()).data.user as User;
+    let user = response.data.user as User;
     return this.auth.updateSessionUser(user); // store user info in session storage
   }
 
@@ -463,7 +463,7 @@ export class OneClickService {
 
   private unpackTripResponse(response: any): TripResponseModel {
 
-    let trip = (response.json().data.trip as TripResponseModel);
+    let trip = (response.data.trip as TripResponseModel);
     let user = trip.user as User;
 
     if (user) {

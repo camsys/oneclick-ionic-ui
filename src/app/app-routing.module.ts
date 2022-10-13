@@ -96,11 +96,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/trip-response/trip-response.module').then( m => m.TripResponsePageModule)
   },
   {
-    path: 'trip_options/:trip_id/:service_id/:location_id',
+    path: 'trip_options/:service_id/:location_id',
     loadChildren: () => import('./pages/trip-response/trip-response.module').then( m => m.TripResponsePageModule)
   },
   {
-    path: 'trip_options/:trip_id/:trip_id/:service_id/:location_id',
+    path: 'trip_options/:trip_id/:service_id/:location_id',
     loadChildren: () => import('./pages/trip-response/trip-response.module').then( m => m.TripResponsePageModule)
   },
   {

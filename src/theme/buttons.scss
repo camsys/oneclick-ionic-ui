@@ -21,13 +21,13 @@ ion-button.lynx-button-primary {
 // Lynx Button Outline (white, dark pink outline, dark pink on click)
 // EXAMPLE: <ion-button round outline class="lynx-button-outline"> BUTTON TEXT </ion-button>
 ion-button.lynx-button-outline {
-  background-color: $lynxWhite;
-  border: size(-5) solid $lynxDarkPink;
-  color: $lynxDarkPink;
+  background-color: var(--lynxWhite);
+  border: size(-5) solid var(--lynxDarkPink);
+  color: var(--lynxDarkPink);
   
   &:active, &:hover {
-    background-color: $lynxDarkPink;
-    color: $lynxWhite;
+    background-color: var(--lynxDarkPink);
+    color: var(--lynxWhite);
   }
 }
 

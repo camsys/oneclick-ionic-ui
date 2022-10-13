@@ -12,7 +12,7 @@ ion-navbar {
     }
   
     button.lynx-button-primary {
-      background-color: $lynxTranslucentPink;
+      background-color: var(--lynxTranslucentPink);
     }
   
   }
@@ -23,7 +23,7 @@ ion-content {
   }
 
   .lynx-card-help-me-find {
-    background-color: $lynxTranslucentPink;
+    background-color: var(--lynxTranslucentPink);
 
     ion-card-header.card-header {
       padding: size(3) size(6) size(2);
@@ -43,7 +43,7 @@ ion-content {
 
     ion-card-content.card-content {
 
-      color: $lynxWhite;
+      color: var(--lynxWhite);
       padding: size(2) size(4) size(1);
 
       .lynx-welcome-message-2 {

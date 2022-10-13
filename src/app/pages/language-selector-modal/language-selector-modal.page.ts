@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ModalController, NavParams } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -10,10 +12,10 @@ export class LanguageSelectorModalPage implements OnInit {
 
   locale: string = null; // Selected locale
   available_locales: string[];
+  radioLocaleControl: FormControl = new FormControl();
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public viewCtrl: ViewController
+  constructor(public navParams: NavParams,
+              private modalCtrl: ModalController
               ) {
 
     // Include all available locales (including translation keys)
@@ -25,16 +27,23 @@ export class LanguageSelectorModalPage implements OnInit {
   // Set the selected locale based on the passed nav params
   ngOnInit() {
     this.locale = this.navParams.data.locale;
+
+    this.radioLocaleControl.valueChanges.subscribe(
+      (value:string) => {
+        this.locale = value;
+        this.onLocaleChange();
+      }
+    );
   }
 
   // Dismiss the modal with the selected locale as data returned
-  submit() {
-    this.viewCtrl.dismiss(this.locale);
+  async submit() {
+    await this.modalCtrl.dismiss({locale: this.locale});
   }
 
   // Dismiss the modal without the selected locale returned as data
-  cancel() {
-    this.viewCtrl.dismiss(null);
+  async cancel() {
+    await this.modalCtrl.dismiss(null);
   }
 
   // Submit the modal automatically when a new locale is selected

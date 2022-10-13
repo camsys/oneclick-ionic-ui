@@ -104,10 +104,10 @@
           
           <ion-label>{{"oneclick.pages.user_profile.county" | translate}}</ion-label>
           <ion-select ion-start name="county" [(ngModel)]="user.county">
-            <ion-option *ngFor="let county of counties"
+            <ion-select-option *ngFor="let county of counties"
                         value="{{county}}">
               {{ county }}             
-            </ion-option>
+            </ion-select-option>
           </ion-select>
         
         </ion-item>

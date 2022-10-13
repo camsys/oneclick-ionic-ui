@@ -6,7 +6,21 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-tabs *ngIf="trip" tabsPlacement="top" tabsHighlight="true">
+      <ion-tabs *ngIf="trip">
+        <ion-tab-bar slot="top">
+          <ion-tab-button tab="steps-tab">
+            <ion-icon mode="md" name="list"></ion-icon>
+            <ion-label>{{ 'oneclick.pages.directions.steps_tab.header' | translate }}</ion-label>
+          </ion-tab-button>
+          <ion-tab-button tab="map-tab">
+            <ion-icon mode="md" name="map"></ion-icon>
+            <ion-label>{{ 'oneclick.pages.directions.map_tab.header' | translate }}</ion-label>
+          </ion-tab-button>
+        </ion-tab-bar>
+        
+    
+      </ion-tabs>
+      <!-- <ion-tabs *ngIf="trip" tabsPlacement="top" tabsHighlight="true">
         <ion-tab [root]="stepsTab"
                  tabTitle="{{ 'oneclick.pages.directions.steps_tab.header' | translate }}"
                 tabIcon="list"
@@ -19,7 +33,7 @@
                  [rootParams]="directionsParams">
           >
         </ion-tab>
-      </ion-tabs>
+      </ion-tabs> -->
     </ion-row>
   </ion-grid>
 </ion-content>

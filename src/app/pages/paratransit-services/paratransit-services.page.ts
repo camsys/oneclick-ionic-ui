@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ItineraryModel } from 'src/app/models/itinerary';
 import { OneClickServiceModel } from 'src/app/models/one-click-service';
@@ -11,6 +12,7 @@ import { OneClickService } from 'src/app/services/one-click.service';
   styleUrls: ['./paratransit-services.page.scss'],
 })
 export class ParatransitServicesPage implements OnInit {
+  static routePath:string = '/paratransit_services';
 
   headerTitle: string;
 
@@ -20,25 +22,29 @@ export class ParatransitServicesPage implements OnInit {
 
   trip_id: number;
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
+  constructor(private route: ActivatedRoute,
+              private router: Router,
               private oneClick: OneClickService,
               private translate: TranslateService) {
-
-    this.trip_id = this.navParams.data.trip_id;
-    this.transportationServices = null;
-    if (this.navParams.data.itinerary) {
-      this.itinerary = this.navParams.data.itinerary;
-    }
 
     this.headerTitle = this.translate.instant("oneclick.pages.paratransit_services.header");
   }
 
   ngOnInit() {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.trip_id = +params.get('trip_id'); 
 
-    if(this.navParams.data.trip_response) { // If a trip object is passed, load its services
-      this.loadTripResponse(this.navParams.data.trip_response);
-    } else if(this.trip_id) { // If a trip_id is passed, get the trip from OneClick and load its services
+      if (this.router.getCurrentNavigation().extras.state) {
+        let state = this.router.getCurrentNavigation().extras.state;
+
+        this.itinerary = state.itinerary;
+        this.tripResponse = state.trip_response;
+      }
+    });
+
+    if (this.tripResponse) { // If a trip object is passed, load its services
+      this.loadTripResponse(this.tripResponse);
+    } else if (this.trip_id) { // If a trip_id is passed, get the trip from OneClick and load its services
       this.oneClick.getTrip(this.trip_id)
       .subscribe(trip => this.loadTripResponse(trip));
     } else { // Otherwise, make a call to OneClick for an index of all services

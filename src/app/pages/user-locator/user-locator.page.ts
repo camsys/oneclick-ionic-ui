@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Geolocation } from '@capacitor/geolocation';
 import { Platform, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AutocompleteResultsComponent } from 'src/app/components/autocomplete-results/autocomplete-results.component';
@@ -41,7 +42,6 @@ export class UserLocatorPage implements OnInit {
   constructor(public router: Router,
               private route: ActivatedRoute,
               public platform: Platform,
-              public geolocation: Geolocation,
               public geoServiceProvider: GeocodeService,
               private googleMapsHelpers: GoogleMapsHelpersService,
               private helpers: HelpersService,
@@ -111,12 +111,17 @@ export class UserLocatorPage implements OnInit {
       //  if (permission.state === "granted") {
 
             // Check if the Geolocation API is supported
-            if (this.geolocation) {
-              this.setupGeolocationFeatures();
-            } else {
-              console.error("The browser or device does not support geolocation.");
-              this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
-            }
+            Geolocation.checkPermissions()
+            .then(
+              () => this.setupGeolocationFeatures()
+            )
+            .catch(
+              () => {
+                console.error("The browser or device does not support geolocation.");
+                this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
+              }
+            );
+            
       //  } else if (permission.state === "prompt") {
       //    console.log("The browser or device needs to prompt the user for geolocation permission. Won't geolocate initially.");
       //    this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
@@ -138,9 +143,9 @@ export class UserLocatorPage implements OnInit {
       this.zoomToOriginLocation(latLng);
 
       // Clear the search bar and search results
-      this.originSearch.searchControl.setValue("", {emitEvent: false});
+      this.originSearch.query = "";
 
-      // Clear the origin search location so it can be replaced by the user location
+      // Clear the origin search location so it acan be replaced by the user location
       this.originSearch.place = null;
 
     });
@@ -151,7 +156,7 @@ export class UserLocatorPage implements OnInit {
       timeout: 5000,
     };
 
-    this.geolocation.getCurrentPosition(
+    Geolocation.getCurrentPosition(options).then(
       (position) => {
         // Only zoom to location if another location isn't set yet
         if(!this.userLocation) {
@@ -159,12 +164,12 @@ export class UserLocatorPage implements OnInit {
           this.zoomToOriginLocation(latLng);
           this.setUserPlaceFromLatLng(latLng);
         }
-      },
+      }
+    ).catch(
       (err) => {
         console.error("Could not geolocate device position");
         this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
-      },
-      options
+      }
     );
   }
 
@@ -210,7 +215,7 @@ export class UserLocatorPage implements OnInit {
     this.storePlaceInSession(place);
     this.storeDepartureDateTime(this.helpers.dateISOStringWithTimeZoneOffset(new Date()));
     this.storeArriveBy(this.arriveBy);
-    this.router.navigateByUrl(CategoriesFor211Page.routePath);
+    this.router.navigate([CategoriesFor211Page.routePath]);
   }
 
   updateDepartureDateTime(time: string) {
@@ -296,7 +301,7 @@ export class UserLocatorPage implements OnInit {
     this.geoServiceProvider.getPlaceFromLatLng(lat, lng)
     .subscribe( (places) => {
       this.userLocation = places[0];
-      this.originSearch.searchControl.setValue(this.userLocation.formatted_address);
+      this.originSearch.query = this.userLocation.formatted_address;
       this.zoomToOriginLocation(latLng);
       // Set the origin to the user location
       this.originSearch.place = this.userLocation;
@@ -313,7 +318,7 @@ export class UserLocatorPage implements OnInit {
     this.geoServiceProvider.getPlaceFromLatLng(lat, lng)
     .subscribe( (places) => {
       //this.userLocation = places[0];
-      this.destinationSearch.searchControl.setValue(places[0].formatted_address);
+      this.destinationSearch.query = places[0].formatted_address;
       this.zoomToDestinationLocation(latLng);
       // Set the origin to the user location
       //this.destinationSearch.place = places[0];

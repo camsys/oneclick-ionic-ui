@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { OneClickServiceModel } from 'src/app/models/one-click-service';
 import { TripResponseModel } from 'src/app/models/trip-response';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { HelpMeFindPage } from '../help-me-find/help-me-find.page';
 
 @Component({
   selector: 'app-taxi-services',
@@ -16,12 +19,9 @@ export class TaxiServicesPage implements OnInit {
   trip_id: number;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public oneClick: OneClickService) {
-
-    this.trip_id = parseInt(navParams.data.trip_id);
-
-  }
+              private route: ActivatedRoute,
+              private router: Router,
+              public oneClick: OneClickService) {}
 
   // Loads the page with trip response data
   loadTrip(trip: TripResponseModel) {
@@ -34,14 +34,23 @@ export class TaxiServicesPage implements OnInit {
   }
 
   ngOnInit() {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.trip_id = +params.get('trip_id'); 
 
-    if(this.navParams.data.trip_response) {
-      this.loadTrip(this.navParams.data.trip_response);
+      if (this.router.getCurrentNavigation().extras.state) {
+        let state = this.router.getCurrentNavigation().extras.state;
+
+        this.trip = state.trip_response;
+      }
+    });
+
+    if (this.trip) {
+      this.loadTrip(this.trip);
     } else if (this.trip_id) {
       this.oneClick.getTrip(this.trip_id)
       .subscribe((tripResp) => this.loadTrip(tripResp));
     } else {
-      this.navCtrl.setRoot(HelpMeFindPage); // If necessary navParams aren't present, go back to the home page
+      this.navCtrl.navigateRoot(HelpMeFindPage.routePath); // If necessary navParams aren't present, go back to the home page
     }
   }
 

@@ -1,21 +1,21 @@
 import { ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { debounceTime } from 'rxjs/operators';
 import { GooglePlaceModel } from 'src/app/models/google-place';
 import { SearchResultModel } from 'src/app/models/search-result';
 import { GeocodeService } from 'src/app/services/google/geocode.service';
+import { LoaderService } from 'src/app/services/loader.service';
 import { OneClickService } from 'src/app/services/one-click.service';
 
 @Component({
-  selector: 'app-place-search',
+  selector: 'place-search',
   templateUrl: './place-search.component.html',
   styleUrls: ['./place-search.component.scss'],
 })
 export class PlaceSearchComponent implements OnInit {
 
   query: string;
-  searchControl: FormControl;
   @Input() placeholder: string;
   autocompleteItems: SearchResultModel[];
   googleAutocompleteItems: SearchResultModel[];
@@ -26,6 +26,7 @@ export class PlaceSearchComponent implements OnInit {
   @Output() onBlur: EventEmitter<any> = new EventEmitter<any>();
   @Output() onFocus: EventEmitter<any> = new EventEmitter<any>();
   @Output() onSelect: EventEmitter<GooglePlaceModel> = new EventEmitter<GooglePlaceModel>();
+  @Output() onChange: EventEmitter<any> = new EventEmitter<any>();
 
   @HostListener('keydown', ['$event'])
   keyboardInput(event: KeyboardEvent) {
@@ -36,26 +37,25 @@ export class PlaceSearchComponent implements OnInit {
 
   constructor(public geoServiceProvider: GeocodeService,
               public oneClickProvider: OneClickService,
-              public events: Events,
               public toastCtrl: ToastController,
               private translate: TranslateService,
-              public changeDetector: ChangeDetectorRef) {
+              public changeDetector: ChangeDetectorRef,
+              private loader: LoaderService) {
     this.query = '';
-    this.searchControl = new FormControl;
     this.placeholder = this.placeholder || "Search";
     this.googleAutocompleteItems = [];
     this.oneClickAutocompleteItems = [];
     this.autocompleteItems = [];
     this.place = null;
-
-    this.searchControl.valueChanges.pipe(debounceTime(500))
-                      .subscribe((query) => {
-      this.updateAddressSearch(query);
-    });
   }
 
 
   ngOnInit() {}
+
+  handleSearchChange(event) {
+    const query = event.target.value;
+    this.updateAddressSearch(query);
+  }
 
   // Updates the search items list based on the response from OneClick and Google
   updateAddressSearch(query) {
@@ -95,7 +95,7 @@ export class PlaceSearchComponent implements OnInit {
   private refresh() {
     // Set autocomplete results to the combination of the google and oneclick place searches
     this.autocompleteItems = this.oneClickAutocompleteItems.concat(this.googleAutocompleteItems);
-    this.events.publish('place-search:change');
+    this.onChange.emit();
   }
 
   // Empties the search results array
@@ -107,15 +107,15 @@ export class PlaceSearchComponent implements OnInit {
   // Hides the spinner, clears the search results, and emits the onSelect output event.
   setPlace(place: GooglePlaceModel) {
     this.place = place;
-    this.searchControl.setValue(this.place.name || this.place.formatted_address, {emitEvent: false});
+    this.query = this.place.name || this.place.formatted_address;
     this.clear(); // Clear the autocomplete results
-    this.events.publish('spinner:hide'); // Hide spinner once places are returned
+    this.loader.hideLoader();// Hide spinner once places are returned
     this.onSelect.emit(this.place); // Emit the onSelect output event
   }
 
   // Select an item from the search results list
   chooseItem(item: any, viewType: string) {
-    this.events.publish('spinner:show'); // Show spinner until geocoding call returns
+    this.loader.showLoader(); // Show spinner until geocoding call returns
 
     // If the item already has a lat/lng, save it as the selected place.
     if(item && item.result && new GooglePlaceModel(item.result).isGeocoded()) {
@@ -133,21 +133,19 @@ export class PlaceSearchComponent implements OnInit {
   private checkIfZipcodeOutOfArea(place: GooglePlaceModel, viewType: string) : void {
     if (viewType == 'services') {
         if (this.geoServiceProvider.isZipcodeOutOfAreaForServices(place)) {
-          let toast = this.toastCtrl.create({
+          this.toastCtrl.create({
             message: this.translate.instant('find_services_out_of_area_message'),
             position: 'bottom',
             duration: 3000
-          });
-          toast.present();
+          }).then(toast => toast.present());
         }
     } else {
       if (this.geoServiceProvider.isZipcodeOutOfAreaForTransportation(place)) {
-          let toast = this.toastCtrl.create({
+          this.toastCtrl.create({
             message: this.translate.instant('find_transportation_out_of_area_message'),
             position: 'bottom',
             duration: 3000
-          });
-          toast.present();
+          }).then(toast => toast.present());
       }
     }
   }

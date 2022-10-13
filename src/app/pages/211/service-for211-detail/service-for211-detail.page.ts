@@ -1,4 +1,6 @@
 import { ChangeDetectorRef, Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ModalController, NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AutocompleteResultsComponent } from 'src/app/components/autocomplete-results/autocomplete-results.component';
 import { PlaceSearchComponent } from 'src/app/components/place-search/place-search.component';
@@ -11,7 +13,11 @@ import { Session } from 'src/app/models/session';
 import { TripRequestModel } from 'src/app/models/trip-request';
 import { TripResponseModel } from 'src/app/models/trip-response';
 import { ExternalNavigationService } from 'src/app/services/external-navigation.service';
+import { LoaderService } from 'src/app/services/loader.service';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { EmailModalPage } from '../../email-modal/email-modal.page';
+import { HelpMeFindPage } from '../../help-me-find/help-me-find.page';
+import { TripResponsePage } from '../../trip-response/trip-response.page';
 
 @Component({
   selector: 'app-service-for211-detail',
@@ -19,20 +25,14 @@ import { OneClickService } from 'src/app/services/one-click.service';
   styleUrls: ['./service-for211-detail.page.scss'],
 })
 export class ServiceFor211DetailPage implements OnInit {
+  static routePath:string = '/service_detail';
 
-  // Detect when the screen is resized and resize the content based on the
-  // new header bar height.
-  @ViewChild(Content) content: Content;
 
   @ViewChild('originSearch') originSearch: PlaceSearchComponent;
   @ViewChild('destinationSearch') destinationSearch: PlaceSearchComponent;
 
   @ViewChild('originResults') originResults: AutocompleteResultsComponent;
   @ViewChild('destinationResults') destinationResults: AutocompleteResultsComponent;
-
-  @HostListener('window:resize') onResize() {
-    this.content && this.content.resize();
-  }
 
   service: ServiceModel = {} as ServiceModel;
   origin: GooglePlaceModel = new GooglePlaceModel({});
@@ -42,7 +42,7 @@ export class ServiceFor211DetailPage implements OnInit {
   returnedModes:string[] = [] // All the basic modes returned from the plan call
   tripRequest: TripRequestModel;
   tripResponse: TripResponseModel = new TripResponseModel({});
-  tripPlanSubscription: any;
+  //tripPlanSubscription: any;
   detailKeys: string[] = []; // Array of the non-null detail keys in the details hash
   arriveBy: boolean;
 
@@ -60,27 +60,35 @@ export class ServiceFor211DetailPage implements OnInit {
   departureDateTime: string;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
+              public route: ActivatedRoute,
+              public router: Router,
               public oneClick: OneClickService,
-              public events: Events,
               public changeDetector: ChangeDetectorRef,
-              public toastCtrl: ToastController,
+              //public toastCtrl: ToastController,
               public modalCtrl: ModalController,
               private translate: TranslateService,
+              private loader: LoaderService,
               public exNav: ExternalNavigationService,
               private location: Location) {
 
-    this.trip_id = parseInt(this.navParams.data.trip_id);
-    this.service_id = this.navParams.data.service_id;
-    this.location_id = this.navParams.data.location_id;
-    this.arriveBy = this.navParams.data.arriveBy;
-
-    this.events.subscribe('place-search:change', () => {
-      this.changeDetector.markForCheck();
-    });
   }
   
   ngOnInit() {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.service_id = params.get('service_id'); 
+      this.location_id = params.get('location_id');
+
+      if (this.router.getCurrentNavigation().extras.state) {
+        let state = this.router.getCurrentNavigation().extras.state;
+
+        this.trip_id = +state.trip_id;
+        this.arriveBy = state.arrive_by;
+        this.service = state.service;
+        this.origin = state.origin;
+        this.destination = state.destination;
+        this.departureDateTime = state.departureDateTime;
+      }
+    });
   }
 
   /**
@@ -102,12 +110,12 @@ export class ServiceFor211DetailPage implements OnInit {
     // If a service_id and location_id are passed, get its details and load it into the page
     if(this.service_id && this.location_id) {
       this.oneClick
-        .get211ServiceDetails(this.navParams.data.service_id, this.navParams.data.location_id)
+        .get211ServiceDetails(+this.service_id, +this.location_id)
         .subscribe((svc) => this.loadServiceDetails(svc));
 
       // If a service is passed in the navParams, load it onto the page
-    } else if(this.navParams.data.service) {
-      this.loadServiceDetails(this.navParams.data.service);
+    } else if (this.service) {
+      this.loadServiceDetails(this.service);
     }
 
     // NOTE: This might be dead code, warrants investigation into OCNUI, OCC, and OTP
@@ -118,18 +126,11 @@ export class ServiceFor211DetailPage implements OnInit {
 
     //   // If an origin and destination are passed, make a trip request based on those
     // } else if( this.navParams.data.origin && (this.navParams.data.destination|| this.service) ) {
-     if( this.navParams.data.origin && (this.navParams.data.destination|| this.service) ) {
-      if (this.navParams.data.departureDateTime) {
-        this.departureDateTime = this.navParams.data.departureDateTime;
-      }
-
-      // Set origin and destination places
-      this.origin = new GooglePlaceModel(this.navParams.data.origin);
-      if (this.navParams.data.destination){
-        this.destination = new GooglePlaceModel(this.navParams.data.destination);
-      }
+     if (this.origin && (this.destination || this.service) ) {
+      
+      
       // NOTE: this is probably redundant if we're fetching service details from OCC and loading it in anyways
-      else if (this.service){
+      if (!this.destination && this.service) {
         this.destination = new GooglePlaceModel({
           address_components: this.service.address_components,
           geometry: {location: {lat: this.service.lat, lng: this.service.lng}},
@@ -151,71 +152,65 @@ export class ServiceFor211DetailPage implements OnInit {
 
       // Otherwise, go to home page
     } else {
-      this.navCtrl.setRoot(HelpMeFindPage);
+      this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
     }
-
-    this.content.resize(); // Make sure content isn't covered by navbar
-
-
 
   }
 
   // On page leave, unsubscribe from the trip plan call so it doesn't trigger errors when it resolves
   ionViewWillLeave() {
-    if(this.tripPlanSubscription) {
-      this.tripPlanSubscription.unsubscribe();
-    }
+    // if(this.tripPlanSubscription) {
+    //   this.tripPlanSubscription.unsubscribe();
+    // }
+  }
 
-    // on leaving the page, unsubscribe from the place-search events to avoid
-    // detecting changes on destroyed views
-    this.events.unsubscribe('place-search:change');
-    this.events.unsubscribe('place-search:keypress');
+  placeSearchChanged() {
+    this.changeDetector.markForCheck();
   }
 
   // Populates the URL based on the trip and service ids
-  updateURL() {
+  // updateURL() {
 
-    this.trip_id = this.tripResponse && this.tripResponse.id;
+  //   this.trip_id = this.tripResponse && this.tripResponse.id;
 
-    if (this.service) {
-      this.service_id = this.service.service_id;
-      this.location_id = this.service.location_id;
-    }
+  //   if (this.service) {
+  //     this.service_id = this.service.service_id;
+  //     this.location_id = this.service.location_id;
+  //   }
 
-    let path = "/service_detail/";
+  //   let path = "/service_detail/";
 
-    // If service is also present, add it as well.
-    if(this.service_id && this.location_id) {
-      path += this.service_id + "/" + this.location_id;
-    }
+  //   // If service is also present, add it as well.
+  //   if(this.service_id && this.location_id) {
+  //     path += this.service_id + "/" + this.location_id;
+  //   }
 
-    // Update the URL with the path string.
-    //this.location.replaceState(path);
-    // DEREK removed this because it was causing the back button to disappear.
+  //   // Update the URL with the path string.
+  //   //this.location.replaceState(path);
+  //   // DEREK removed this because it was causing the back button to disappear.
 
-  }
+  // }
 
   // Loads the page from a OneClick trip response
-  loadTripResponse(tripResponse: TripResponseModel) {
-    this.tripResponse = new TripResponseModel(tripResponse);
-    this.updateTravelTimesFromTripResponse(this.tripResponse);
-    this.updateReturnedModes(this.tripResponse);
-    this.updateTripPlaces(this.tripResponse);
+  // loadTripResponse(tripResponse: TripResponseModel) {
+  //   this.tripResponse = new TripResponseModel(tripResponse);
+  //   this.updateTravelTimesFromTripResponse(this.tripResponse);
+  //   this.updateReturnedModes(this.tripResponse);
+  //   this.updateTripPlaces(this.tripResponse);
 
-    this.itineraries = this.tripResponse.itineraries.map(function(itin) {
-      if (itin.legs) {
-        itin.legs = itin.legs.map(function(legAttrs) {
-          return new LegModel().assignAttributes(legAttrs);
-        });
-      }
-      return itin;
-    });
+  //   this.itineraries = this.tripResponse.itineraries.map(function(itin) {
+  //     if (itin.legs) {
+  //       itin.legs = itin.legs.map(function(legAttrs) {
+  //         return new LegModel().assignAttributes(legAttrs);
+  //       });
+  //     }
+  //     return itin;
+  //   });
 
-    this.content.resize(); // Make sure content isn't covered by navbar
-    this.updateURL();
-    this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
-    this.events.publish('spinner:hide');
-  }
+  //   this.updateURL();
+  //   this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
+  //   this.loader.hideLoader();
+  // }
 
   // Loads the page's service details based on a service object
   loadServiceDetails(service: ServiceModel) {
@@ -223,7 +218,7 @@ export class ServiceFor211DetailPage implements OnInit {
     // Set the service (if present)
     this.service = service as ServiceModel;
 
-    if(this.service) {
+    if (this.service) {
       // Set the detail keys to the non-null details
       this.detailKeys = Object.keys(this.service.details)
                               .filter((k) => this.service.details[k] !== null);
@@ -233,8 +228,8 @@ export class ServiceFor211DetailPage implements OnInit {
       this.updateOriginDestinationSearch()
     }
 
-    // Update the URL now that the service ID is present
-    this.updateURL();
+    // Update the URL now that the service ID is present (10/12/22 doesn't seem to actually do anything so remove)
+    //this.updateURL();
     this.changeDetector.markForCheck();
   }
 
@@ -242,81 +237,83 @@ export class ServiceFor211DetailPage implements OnInit {
   findTransportation(origin: GooglePlaceModel,
                      destination: GooglePlaceModel, time: string) {
 
-    this.navCtrl.push(TripResponsePage, {
-      origin: origin,
-      destination: destination,
-      tripRequest: this.tripRequest
+    this.router.navigate([TripResponsePage.routePath], {
+      state: {
+        origin: origin,
+        destination: destination,
+        tripRequest: this.tripRequest
+      }
     });
   }
 
-  openOtherTransportationOptions(){
-    this.navCtrl.push(TransportationEligibilityPage, {
-      trip_request: this.tripRequest,
-      trip_id: this.trip_id,
-      origin: this.origin,
-      destination: this.destination
-    });
-  }
+  // openOtherTransportationOptions(){
+  //   this.navCtrl.push(TransportationEligibilityPage, {
+  //     trip_request: this.tripRequest,
+  //     trip_id: this.trip_id,
+  //     origin: this.origin,
+  //     destination: this.destination
+  //   });
+  // }
 
   // Builds a trip request based on the passed mode, stored origin/destination,
   // and current time
-  buildTripRequest(modes: string[]) {
-    let tripRequest = this.tripRequest = new TripRequestModel();
+  // buildTripRequest(modes: string[]) {
+  //   let tripRequest = this.tripRequest = new TripRequestModel();
 
-    // Set origin and destination
-    tripRequest.trip.origin_attributes = this.origin.toOneClickPlace();
-    tripRequest.trip.destination_attributes = this.destination.toOneClickPlace();
+  //   // Set origin and destination
+  //   tripRequest.trip.origin_attributes = this.origin.toOneClickPlace();
+  //   tripRequest.trip.destination_attributes = this.destination.toOneClickPlace();
 
-    // Set trip time to now by default, in ISO 8601 format
-    if (this.departureDateTime == undefined) {
-      tripRequest.trip.trip_time = new Date().toISOString();
-    } else {
-      tripRequest.trip.trip_time = this.departureDateTime;
-    }
+  //   // Set trip time to now by default, in ISO 8601 format
+  //   if (this.departureDateTime == undefined) {
+  //     tripRequest.trip.trip_time = new Date().toISOString();
+  //   } else {
+  //     tripRequest.trip.trip_time = this.departureDateTime;
+  //   }
 
-    // Set arrive_by to true by default
-    tripRequest.trip.arrive_by = this.arriveBy;
+  //   // Set arrive_by to true by default
+  //   tripRequest.trip.arrive_by = this.arriveBy;
 
-    // Set trip types to the mode passed to this method
-    tripRequest.trip_types = modes;
+  //   // Set trip types to the mode passed to this method
+  //   tripRequest.trip_types = modes;
 
-    // Don't filter by schedule, because we aren't letting the user pick a time for paratransit or taxi
-    // Also don't filter by eligibility, as doing so may exclude relevant results from the fare preview
-    this.tripRequest.except_filters = ["schedule", "eligibility"];
+  //   // Don't filter by schedule, because we aren't letting the user pick a time for paratransit or taxi
+  //   // Also don't filter by eligibility, as doing so may exclude relevant results from the fare preview
+  //   this.tripRequest.except_filters = ["schedule", "eligibility"];
 
-    return tripRequest;
-  }
+  //   return tripRequest;
+  // }
 
   // Updates transit and drive time based on a trip response
-  updateTravelTimesFromTripResponse(tripResponse: TripResponseModel) {
-    let transitItin = tripResponse.itinerariesByTripType('transit')[0];
-    if(transitItin && transitItin.duration) {
-      this.transitTime = transitItin.duration;
-    }
+  // updateTravelTimesFromTripResponse(tripResponse: TripResponseModel) {
+  //   let transitItin = tripResponse.itinerariesByTripType('transit')[0];
+  //   if(transitItin && transitItin.duration) {
+  //     this.transitTime = transitItin.duration;
+  //   }
 
-    let driveItin = tripResponse.itinerariesByTripType('car')[0];
-    if(driveItin && driveItin.duration) {
-      this.driveTime = driveItin.duration;
-    }
+  //   let driveItin = tripResponse.itinerariesByTripType('car')[0];
+  //   if(driveItin && driveItin.duration) {
+  //     this.driveTime = driveItin.duration;
+  //   }
 
-    let bicycleItin = tripResponse.itinerariesByTripType('bicycle')[0];
-    if(bicycleItin && bicycleItin.duration) {
-      this.bicycleTime = bicycleItin.duration;
-    }
-  }
+  //   let bicycleItin = tripResponse.itinerariesByTripType('bicycle')[0];
+  //   if(bicycleItin && bicycleItin.duration) {
+  //     this.bicycleTime = bicycleItin.duration;
+  //   }
+  // }
 
   // Updates the returned modes list with the modes returned from the given response
-  updateReturnedModes(tripResponse: TripResponseModel) {
-    this.returnedModes = this.basicModes.filter((mode) => {
-      return tripResponse.includesTripType(mode);
-    })
-  }
+  // updateReturnedModes(tripResponse: TripResponseModel) {
+  //   this.returnedModes = this.basicModes.filter((mode) => {
+  //     return tripResponse.includesTripType(mode);
+  //   })
+  // }
 
   // Updates the origin and destination based on the trip response
-  updateTripPlaces(tripResponse: TripResponseModel) {
-    this.originSearch.setPlace(this.origin);
-    this.destinationSearch.setPlace(this.destination);
-  }
+  // updateTripPlaces(tripResponse: TripResponseModel) {
+  //   this.originSearch.setPlace(this.origin);
+  //   this.destinationSearch.setPlace(this.destination);
+  // }
 
   updateOriginDestinationSearch() {
     this.originSearch.setPlace(this.origin);
@@ -360,23 +357,27 @@ export class ServiceFor211DetailPage implements OnInit {
     }
   }
 
-  rateService(service: ServiceModel) {
-    FeedbackModalPage.createModal(this.modalCtrl,
-                                  this.toastCtrl,
-                                  this.translate,
-                                { subject: service, type: "OneclickRefernet::Service" })
-                     .present();
-  }
+  // rateService(service: ServiceModel) {
+  //   FeedbackModalPage.createModal(this.modalCtrl,
+  //                                 this.toastCtrl,
+  //                                 this.translate,
+  //                               { subject: service, type: "OneclickRefernet::Service" })
+  //                    .present();
+  // }
 
   openEmailModal(service: ServiceModel) {
-    let emailModal = this.modalCtrl.create(EmailModalPage, {service: service});
-    emailModal.present();
+    this.modalCtrl.create({
+      component: EmailModalPage,
+      componentProps: { 
+        service: service 
+      }
+    }).then(emailModel => emailModel.present());
   }
 
-  openSmsModal(service: ServiceModel) {
-    let smsModal = this.modalCtrl.create(SmsModalPage, {service: service});
-    smsModal.present();
-  }
+  // openSmsModal(service: ServiceModel) {
+  //   let smsModal = this.modalCtrl.create(SmsModalPage, {service: service});
+  //   smsModal.present();
+  // }
 
   // Pulls the current session from local storage
   session(): Session {

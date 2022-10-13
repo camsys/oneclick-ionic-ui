@@ -3,7 +3,7 @@ import { OneClickServiceModel } from 'src/app/models/one-click-service';
 import { HelpersService } from 'src/app/services/helpers.service';
 
 @Component({
-  selector: 'app-service-details',
+  selector: 'service-details',
   templateUrl: './service-details.component.html',
   styleUrls: ['./service-details.component.scss'],
 })

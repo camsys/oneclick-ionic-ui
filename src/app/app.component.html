@@ -1,7 +1,7 @@
 <ion-app>
 
 <!-- SIDEBAR MENU -->
-<ion-menu class="lynx-menu" side="right" persistent="true">
+<ion-menu class="lynx-menu" side="end" persistent="true" contentId="main-content">
 
   <ion-content>
 
@@ -73,7 +73,7 @@
 
 </ion-menu>
 
-<ion-router-outlet></ion-router-outlet>
+<ion-router-outlet id="main-content"></ion-router-outlet>
 
 <div #spinnerContainer id="ion-spinner-container" text-center *ngIf="showSpinner">
   <ion-spinner name="crescent"></ion-spinner>

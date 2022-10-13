@@ -3,45 +3,42 @@ import { Platform } from '@ionic/angular';
 import { HelpersService } from 'src/app/services/helpers.service';
 
 @Component({
-  selector: 'app-responsive-datepicker',
+  selector: 'responsive-datepicker',
   templateUrl: './responsive-datepicker.component.html',
   styleUrls: ['./responsive-datepicker.component.scss'],
 })
 export class ResponsiveDatepickerComponent implements OnInit {
 
   // Reference the ionic datepicker element (only used in browsers)
-  @ViewChild('browserDatepicker') browserDatepicker: any;
+  //@ViewChild('browserDatepicker') browserDatepicker: any;
 
   // Component accepts a date input to initialize it. Defaults to the current date and time.
   @Input() date: string = this.helpers.dateISOStringWithTimeZoneOffset(new Date());
-  @Input() hideBool: boolean = true;
-  @Input() dateTimeFormat: string = "MMM DD, YYYY";
 
   // Emits output events whenever the date changes.
   @Output() change = new EventEmitter<string>();
 
   constructor(/*private nativeDatePicker: DatePicker,*/
-              public platform: Platform,
               public helpers: HelpersService) {
   }
 
   ngOnInit() {}
 
   // Shows the datepicker.
-  open() {
+  //open() {
     // Wait for platform to be ready...
-    this.platform.ready()
-    .then(() => {
+    //this.platform.ready()
+    //.then(() => {
       // ...then check if we're actually on a mobile device (as opposed to browser)
       // to determine which datepicker to open.
       //if(this.platform.is('cordova')) {
       //  this.openNativeDatepicker();
       //} else {
-        this.openBrowserDatepicker();
+       // this.openBrowserDatepicker();
       //}
 
-    })
-  }
+    //})
+  //}
 
   // Opens the native datepicker in ios or android, or defaults to the ionic datepicker in windows.
   // openNativeDatepicker() {
@@ -70,9 +67,9 @@ export class ResponsiveDatepickerComponent implements OnInit {
   // }
 
   // Opens the ionic datepicker.
-  openBrowserDatepicker() {
-    this.browserDatepicker.open();
-  }
+  // openBrowserDatepicker() {
+  //   this.browserDatepicker.open();
+  // }
 
   // Whenever the date is changed, emit a change event with the new value.
   dateChange() {

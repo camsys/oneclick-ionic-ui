@@ -7,12 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { ResendEmailConfirmationPageRoutingModule } from './resend-email-confirmation-routing.module';
 
 import { ResendEmailConfirmationPage } from './resend-email-confirmation.page';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    ComponentsModule,
+    TranslateModule,
     ResendEmailConfirmationPageRoutingModule
   ],
   declarations: [ResendEmailConfirmationPage]

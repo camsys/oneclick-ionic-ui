@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController, NavParams, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { OneClickServiceModel } from 'src/app/models/one-click-service';
 
@@ -11,10 +12,8 @@ export class ServiceFor211ModalPage implements OnInit {
 
   service: OneClickServiceModel;
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public viewCtrl: ViewController,
-              public events: Events,
+  constructor(public navParams: NavParams,
+              private modalCtrl: ModalController,
               public translate: TranslateService) {
 
     // Pull the subject(service) and subject type out of the navParams
@@ -25,7 +24,7 @@ export class ServiceFor211ModalPage implements OnInit {
   }
 
   cancel() {
-    this.viewCtrl.dismiss(null);
+    this.modalCtrl.dismiss(null);
   }
 
   // submit() {
@@ -57,18 +56,23 @@ export namespace ServiceFor211ModalPage {
                               subjectData: {
                                 service?: OneClickServiceModel;
                               } = {}) {
-    let serviceFor211Modal = modalCtrl.create(ServiceFor211ModalPage, subjectData);
-    serviceFor211Modal.onDidDismiss(data => {
-      if(data) {
-        let toast = toastCtrl.create({
-          message: (data.status === 200 ? translate.instant("oneclick.pages.feedback.success_message") :
-                                          translate.instant("oneclick.pages.feedback.error_message")),
-          position: 'bottom',
-          duration: 3000
+    let serviceFor211Modal = modalCtrl.create({
+      component: ServiceFor211ModalPage, 
+      componentProps: subjectData
+    }).then(modal => {
+      modal.onDidDismiss().then(resp => {
+          if(resp && resp.data) {
+            toastCtrl.create({
+              message: (resp.data.status === 200 ? translate.instant("oneclick.pages.feedback.success_message") :
+                                              translate.instant("oneclick.pages.feedback.error_message")),
+              position: 'bottom',
+              duration: 3000
+            }).then(toast => toast.present());
+          }
         });
-        toast.present();
-      }
-    })
+      return modal;
+    });
+
     return serviceFor211Modal;
   }
 }

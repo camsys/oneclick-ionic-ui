@@ -9,7 +9,8 @@
                     placeholder="{{ origin.label() }}"
                     (onArrowDown)="originResults.focus()"
                     (onFocus)="originResults.show()"
-                    (onFocus)="destinationResults.hide()">
+                    (onFocus)="destinationResults.hide()"
+                    (onChange)="placeSearchChanged()">
       </place-search>
     </div>
 
@@ -18,7 +19,8 @@
                     placeholder="{{ destination.label() }}"
                     (onArrowDown)="destinationResults.focus()"
                     (onFocus)="destinationResults.show()"
-                    (onFocus)="originResults.hide()">
+                    (onFocus)="originResults.hide()"
+                    (onChange)="placeSearchChanged()">
       </place-search>
     </div>
 
@@ -28,8 +30,8 @@
                col-sm-6 text-center>
         <ion-item>
           <ion-select [(ngModel)]="arriveBy">
-            <ion-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-option>
-            <ion-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-option>
+            <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
+            <ion-select-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
@@ -40,7 +42,6 @@
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
         <responsive-datepicker #tripTimeDatepicker
                                [date]="departureDateTime"
-                               [hideBool]='false'
                                [dateTimeFormat]="'MMM DD, YYYY hh:mm A'">
         </responsive-datepicker>
 

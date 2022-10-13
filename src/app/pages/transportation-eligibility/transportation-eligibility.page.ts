@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Accommodation } from 'src/app/models/accommodation';
 import { Eligibility } from 'src/app/models/eligibility';
@@ -9,7 +10,10 @@ import { TripResponseModel } from 'src/app/models/trip-response';
 import { TripType } from 'src/app/models/trip-type';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { LoaderService } from 'src/app/services/loader.service';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { HelpMeFindPage } from '../help-me-find/help-me-find.page';
+import { TripResponsePage } from '../trip-response/trip-response.page';
 
 @Component({
   selector: 'app-transportation-eligibility',
@@ -17,6 +21,7 @@ import { OneClickService } from 'src/app/services/one-click.service';
   styleUrls: ['./transportation-eligibility.page.scss'],
 })
 export class TransportationEligibilityPage implements OnInit {
+  static routePath:string = '/transportation_eligibility';
 
   origin: GooglePlaceModel = new GooglePlaceModel({});
   destination: GooglePlaceModel = new GooglePlaceModel({});
@@ -33,33 +38,42 @@ export class TransportationEligibilityPage implements OnInit {
   user_preferences_disabled: boolean = false;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
+              private route: ActivatedRoute,
+              private router: Router,
               public toastCtrl: ToastController,
               public alertCtrl: AlertController,
               private auth: AuthService,
               public oneClick: OneClickService,
               private changeDetector: ChangeDetectorRef,
               private translate: TranslateService,
-              public events: Events) {
+              private loader: LoaderService) {
 
-    this.events.publish('spinner:show');
-    this.trip_id = parseInt(navParams.data.trip_id);
 
   }
 
   ngOnInit() {
+    this.loader.showLoader();
 
-    // Set origin and destination places
-    this.origin = new GooglePlaceModel(this.navParams.data.origin);
-    this.destination = new GooglePlaceModel(this.navParams.data.destination);
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.trip_id = +params.get('trip_id'); 
 
-    if(this.navParams.data.trip_request) {
+      if (this.router.getCurrentNavigation().extras.state) {
+        let state = this.router.getCurrentNavigation().extras.state;
+
+        this.origin = state.origin;
+        this.destination = state.destination;
+        this.tripRequest = state.trip_request;
+      }
+    });
+
+
+    if(this.tripRequest) {
 
       this.loadTripResponse();
-      this.loadTripRequest(this.navParams.data.trip_request);
+      this.loadTripRequest(this.tripRequest);
     } else {
-      // If necessary NavParams are not present, go to home page
-      this.navCtrl.setRoot(HelpMeFindPage);
+      // If necessary params are not present, go to home page
+      this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
     }
 
     // reset hiding this page since user opened it
@@ -94,7 +108,7 @@ export class TransportationEligibilityPage implements OnInit {
         }
     });
 
-    this.events.publish("spinner:hide");
+    this.loader.hideLoader();
     this.changeDetector.markForCheck();
   }
 
@@ -145,13 +159,15 @@ export class TransportationEligibilityPage implements OnInit {
 
   // Shows all available paratransit options based on selected accommodations and eligibilities
   viewParatransitOptions() {
-    this.events.publish('spinner:show');
+    this.loader.showLoader();
     this.buildUserProfileParams();
-    this.navCtrl.push(TripResponsePage, {
-      tripRequest: this.tripRequest,
-      origin: this.origin,
-      destination: this.destination,
-      skipPreferences: true
+    this.router.navigate([TripResponsePage.routePath], {
+      state: {
+        tripRequest: this.tripRequest,
+        origin: this.origin,
+        destination: this.destination,
+        skipPreferences: true
+      }
     });
   }
 
@@ -163,7 +179,7 @@ export class TransportationEligibilityPage implements OnInit {
     this.toastCtrl.create({
       message: "Session updated",
       duration: 5000}
-    ).present();
+    ).then(toast => toast.present());
   }
   storeUserPreferencesDisabledInSessionByButton() {
     this.user_preferences_disabled = !this.user_preferences_disabled;

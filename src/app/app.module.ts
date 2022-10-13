@@ -18,6 +18,7 @@ import { PrettyTimePipe } from './pipes/pretty-time.pipe';
 import { ScheduleDayPipe } from './pipes/schedule-day.pipe';
 import { ScheduleTimePipe } from './pipes/schedule-time.pipe';
 import { ToStringPipe } from './pipes/to-string.pipe';
+import { LanguageSelectorModalPageModule } from './pages/language-selector-modal/language-selector-modal.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "/assets/i18n/", ".json");
@@ -30,6 +31,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     IonicModule.forRoot(), 
     AppRoutingModule, 
     HttpClientModule,
+    LanguageSelectorModalPageModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

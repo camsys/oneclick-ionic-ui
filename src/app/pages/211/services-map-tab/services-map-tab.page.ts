@@ -1,9 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { GooglePlaceModel } from 'src/app/models/google-place';
 import { ServiceModel } from 'src/app/models/service';
 import { Session } from 'src/app/models/session';
 import { GoogleMapsHelpersService } from 'src/app/services/google/google-maps-helpers.service';
+import { ServiceFor211DetailPage } from '../service-for211-detail/service-for211-detail.page';
 
 @Component({
   selector: 'app-services-map-tab',
@@ -19,21 +21,31 @@ export class ServicesMapTabPage implements OnInit {
   markerSelected: boolean;
 
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public platform: Platform,
+  constructor(public platform: Platform,
+              private route: ActivatedRoute,
+              private router: Router,
               public geolocation: Geolocation,
               private googleMapsHelpers: GoogleMapsHelpersService,
-              public events: Events,
               private changeDetector: ChangeDetectorRef) {
+
     this.service_map = null;
-    this.services = navParams.data.services;
     this.selectedService = null;
     this.markerSelected = false;
   }
 
   ngOnInit() {
-    this.platform.ready().then(() => { this.initializeMap();});
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      
+      if (this.router.getCurrentNavigation().extras.state) {
+        let state = this.router.getCurrentNavigation().extras.state;
+
+        this.services = state.services;
+      }
+    });
+
+    this.platform.ready().then(() => { 
+      this.initializeMap();
+    });
   }
 
   initializeMap(): void {
@@ -106,7 +118,15 @@ export class ServicesMapTabPage implements OnInit {
     let departureDateTime = this.session().user_departure_datetime;
     let arriveBy = this.session().user_arrive_by;
 
-    this.navCtrl.parent.viewCtrl._nav.push(ServiceFor211DetailPage, {service_id: match.service_id, location_id: match.location_id, origin: startLocation, destination: destination_location, departureDateTime: departureDateTime, arriveBy: arriveBy});
+    this.router.navigate(
+      [ServiceFor211DetailPage.routePath, match.service_id, match.location_id],
+      {state : { 
+        origin: startLocation, 
+        destination: destination_location, 
+        departureDateTime: departureDateTime, 
+        arriveBy: arriveBy
+      }
+    });
   }
 
   // Pulls the current session from local storage

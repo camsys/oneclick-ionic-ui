@@ -1,5 +1,6 @@
-import { ChangeDetectorRef, Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { IonSelect, NavController } from '@ionic/angular';
 import { AutocompleteResultsComponent } from 'src/app/components/autocomplete-results/autocomplete-results.component';
 import { PlaceSearchComponent } from 'src/app/components/place-search/place-search.component';
 import { GooglePlaceModel } from 'src/app/models/google-place';
@@ -9,9 +10,13 @@ import { Session } from 'src/app/models/session';
 import { TripRequestModel } from 'src/app/models/trip-request';
 import { TripResponseModel } from 'src/app/models/trip-response';
 import { AuthService } from 'src/app/services/auth.service';
-import { ExternalNavigationService } from 'src/app/services/external-navigation.service';
 import { HelpersService } from 'src/app/services/helpers.service';
+import { LoaderService } from 'src/app/services/loader.service';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { DirectionsPage } from '../directions/directions.page';
+import { HelpMeFindPage } from '../help-me-find/help-me-find.page';
+import { ParatransitServicesPage } from '../paratransit-services/paratransit-services.page';
+import { TransportationEligibilityPage } from '../transportation-eligibility/transportation-eligibility.page';
 
 @Component({
   selector: 'app-trip-response',
@@ -19,10 +24,7 @@ import { OneClickService } from 'src/app/services/one-click.service';
   styleUrls: ['./trip-response.page.scss'],
 })
 export class TripResponsePage implements OnInit {
-
-  // Detect when the screen is resized and resize the content based on the
-  // new header bar height.
-  @ViewChild(Content) content: Content;
+  static routePath:string = "/trip_options";
 
   @ViewChild('originSearch') originSearch: PlaceSearchComponent;
   @ViewChild('destinationSearch') destinationSearch: PlaceSearchComponent;
@@ -30,11 +32,7 @@ export class TripResponsePage implements OnInit {
   @ViewChild('originResults') originResults: AutocompleteResultsComponent;
   @ViewChild('destinationResults') destinationResults: AutocompleteResultsComponent;
 
-  @ViewChild('orderBySelect') orderBySelect: Select;
-
-  @HostListener('window:resize') onResize() {
-    this.content && this.content.resize();
-  }
+  @ViewChild('orderBySelect') orderBySelect: IonSelect;
 
   origin: GooglePlaceModel = new GooglePlaceModel({});
   destination: GooglePlaceModel = new GooglePlaceModel({});
@@ -62,56 +60,48 @@ export class TripResponsePage implements OnInit {
   can_plan_trips: boolean = false;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
+              private route: ActivatedRoute,
+              private router: Router,
               public oneClick: OneClickService,
-              public events: Events,
               public changeDetector: ChangeDetectorRef,
-              public toastCtrl: ToastController,
-              public modalCtrl: ModalController,
               private helpers: HelpersService,
               private auth: AuthService,
-              private translate: TranslateService,
-              public exNav: ExternalNavigationService,
-              private location: Location) {
+              private loader: LoaderService) {
 
-    this.trip_id = parseInt(this.navParams.data.trip_id);
-    this.location_id = this.navParams.data.location_id;
-    this.arriveBy = this.navParams.data.arriveBy;
-
-    this.skipPreferences = this.navParams.data.skipPreferences;
-
-    this.events.subscribe('place-search:change', () => {
-      this.changeDetector.markForCheck();
-    });
   }
 
   ngOnInit() {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.trip_id = +params.get('trip_id');
+      this.location_id = params.get('location_id');
+      
+      if (this.router.getCurrentNavigation().extras.state) {
+
+        this.arriveBy = this.router.getCurrentNavigation().extras.state.arriveBy;
+        this.skipPreferences = this.router.getCurrentNavigation().extras.state.skipPreferences;
+        this.tripRequest = this.router.getCurrentNavigation().extras.state.tripRequest;
+        this.origin = this.router.getCurrentNavigation().extras.state.origin;
+        this.destination = this.router.getCurrentNavigation().extras.state.destination;
+      } 
+    });
   }
 
   ionViewDidEnter() {
     // Show the spinner until a trip is present
-    this.events.publish('spinner:show');
+    this.loader.showLoader();
 
     // If a Trip ID is present, use that to fetch the already-planned trip
-    if (!this.trip_id && this.navParams.data.tripRequest) {
-      this.tripRequest = this.navParams.data.tripRequest;
+    if (!this.trip_id && this.tripRequest) {
       this.departureDateTime = this.tripRequest.trip.trip_time;
       this.arriveBy = this.tripRequest.trip.arrive_by;
 
-      // Set origin and destination places
-      this.origin = new GooglePlaceModel(this.navParams.data.origin);
-      this.destination = new GooglePlaceModel(this.navParams.data.destination);
-
-
       if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
-        let this_pg_idx = this.navCtrl.length() - 1;
-        this.navCtrl.remove(this_pg_idx).then(() => {
-          this.navCtrl.push(TransportationEligibilityPage, {
+        this.router.navigate([TransportationEligibilityPage.routePath, this.trip_id], {
+          state: {
             trip_request: this.tripRequest,
-            trip_id: this.trip_id,
             origin: this.origin,
             destination: this.destination
-          })
+          }
         });
       } else {
         // Plan a trip and store the result.
@@ -129,28 +119,19 @@ export class TripResponsePage implements OnInit {
         .subscribe((tripResponse) => this.loadTripResponse(tripResponse))
 
       // If an origin and destination are passed, make a trip request based on those
-    } else if( this.navParams.data.origin && this.navParams.data.destination ) {
+    } else if (this.origin && this.destination) {
 
-      if (this.navParams.data.departureDateTime) {
-        this.departureDateTime = this.navParams.data.departureDateTime;
-      }
-
-      // Set origin and destination places
-      this.origin = new GooglePlaceModel(this.navParams.data.origin);
-      this.destination = new GooglePlaceModel(this.navParams.data.destination);
-      this.buildTripRequest(this.allModes)
-
+      this.buildTripRequest(this.allModes);
 
       if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
-        let this_pg_idx = this.navCtrl.length() - 1;
-        this.navCtrl.remove(this_pg_idx).then(() => {
-          this.navCtrl.push(TransportationEligibilityPage, {
-            trip_request: this.tripRequest,
-            trip_id: this.trip_id,
-            origin: this.origin,
-            destination: this.destination
-          })
-        });
+        
+        this.router.navigate([TransportationEligibilityPage.routePath, this.trip_id], {
+            state: {
+              trip_request: this.tripRequest,
+              origin: this.origin,
+              destination: this.destination
+            }
+          });
       } else {
         // Plan a trip and store the result.
         // Once response comes in, update the UI with travel times and allow
@@ -165,12 +146,8 @@ export class TripResponsePage implements OnInit {
 
       // Otherwise, go to home page
     } else {
-      this.navCtrl.setRoot(HelpMeFindPage);
+      this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
     }
-
-    this.content.resize(); // Make sure content isn't covered by navbar
-
-
 
   }
 
@@ -179,11 +156,10 @@ export class TripResponsePage implements OnInit {
     if(this.tripPlanSubscription) {
       this.tripPlanSubscription.unsubscribe();
     }
+  }
 
-    // on leaving the page, unsubscribe from the place-search events to avoid
-    // detecting changes on destroyed views
-    this.events.unsubscribe('place-search:change');
-    this.events.unsubscribe('place-search:keypress');
+  placeSearchChanged() {
+    this.changeDetector.markForCheck();
   }
 
   // Orders the match list based on the passed string
@@ -307,9 +283,8 @@ export class TripResponsePage implements OnInit {
     });
     this.orderItinList('trip_type');
 
-    this.content.resize(); // Make sure content isn't covered by navbar
     this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
-    this.events.publish('spinner:hide');
+    this.loader.hideLoader();
   }
 
   // Plans a trip based on origin and destination
@@ -348,16 +323,22 @@ export class TripResponsePage implements OnInit {
 
   viewParatransitOptions(itinerary: ItineraryModel) {
     let tripResponse = this.tripResponse;
-    this.navCtrl.push(ParatransitServicesPage, { trip_id: tripResponse.id, trip_response: tripResponse, itinerary: itinerary });
+    this.router.navigate([ParatransitServicesPage.routePath, tripResponse.id], {
+      state: {
+        trip_response: tripResponse, 
+        itinerary: itinerary 
+      }
+    });
   }
 
   openDirectionsPageForItinerary(itinerary: ItineraryModel) {
     let tripResponse = this.tripResponse;
 
-    this.navCtrl.push(DirectionsPage, {
-      trip_response: tripResponse,
-      trip_id: tripResponse.id,
-      itinerary: itinerary
+    this.router.navigate([DirectionsPage.routePath, tripResponse.id], {
+      state: {
+        trip_response: tripResponse,
+        itinerary: itinerary
+      }
     });
   }
 
@@ -367,11 +348,12 @@ export class TripResponsePage implements OnInit {
     // user to select a mode to view directions.
 
     this.buildTripRequest(this.allModes);
-    this.navCtrl.push(TransportationEligibilityPage, {
-      trip_request: this.tripRequest,
-      trip_id: this.trip_id,
-      origin: this.origin,
-      destination: this.destination
+    this.router.navigate([TransportationEligibilityPage.routePath, this.trip_id], {
+      state: {
+        trip_request: this.tripRequest,
+        origin: this.origin,
+        destination: this.destination
+      }
     });
 
 

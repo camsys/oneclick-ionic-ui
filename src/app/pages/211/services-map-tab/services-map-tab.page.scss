@@ -28,7 +28,7 @@
     }
     
     &:hover {
-      background-color: transparentize(var(--lynxPink), 0.5);
+      background-color: rgba(var(--lynxPink), 0.5);//same as transparentize($lynxPink, 0.5)
     }
     
     ion-title .toolbar-title {

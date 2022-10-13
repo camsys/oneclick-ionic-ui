@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { UserLocatorPageRoutingModule } from './user-locator-routing.module';
 
 import { UserLocatorPage } from './user-locator.page';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    UserLocatorPageRoutingModule
+    ComponentsModule,
+    UserLocatorPageRoutingModule,
+    TranslateModule
   ],
   declarations: [UserLocatorPage]
 })

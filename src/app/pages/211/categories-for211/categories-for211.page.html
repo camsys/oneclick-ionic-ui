@@ -8,7 +8,7 @@
   <app-navbar headerTitle="{{ 'oneclick.pages.categories.resources_search.label' | translate }}"></app-navbar>
   <ion-toolbar class="lynx-toolbar" text-center>
     <ion-searchbar placeholder="{{ 'oneclick.pages.categories.resources_search.placeholder' | translate}}"
-                   [formControl]="searchControl"
+
                    (ionFocus)="searchResultsList.show()">
     </ion-searchbar>
   </ion-toolbar>

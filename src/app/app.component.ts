@@ -67,7 +67,7 @@ export class AppComponent implements OnDestroy {
 
     // When a server error occurs, show an error message and return to the home page.
     this.oneClickProvider.httpError.pipe(takeUntil(this.unsubscribe)).subscribe((error) => {
-      if(error.status == 500)
+      if (error && error.status == 500)
         this.handleError(error);
     });
 
@@ -144,9 +144,11 @@ export class AppComponent implements OnDestroy {
   // Updates this component's user model based on the information stored in the session
   updateUserInfo(usr) {
     this.user = usr;
-    this.user_name = { user: usr.first_name || (usr.email || '').split('@')[0] };
-    this.eligibilities = this.user.eligibilities;
-    this.accommodations = this.user.accommodations;
+    if (usr) {
+      this.user_name = { user: usr.first_name || (usr.email || '').split('@')[0] };
+      this.eligibilities = this.user.eligibilities;
+      this.accommodations = this.user.accommodations;
+    }
   }
 
   // Set up the menu with pages for signed in and signed out scenarios
@@ -268,8 +270,8 @@ export class AppComponent implements OnDestroy {
   setupSpinner() {
     this.loader.loaderStatus.subscribe((loaderStatus:boolean) => {
       this.showSpinner = loaderStatus;
-      if (loaderStatus) this.changeDetector.markForCheck(); // Makes sure spinner doesn't lag
-      else this.changeDetector.detectChanges(); // Makes sure spinner doesn't lag
+      //if (loaderStatus) this.changeDetector.markForCheck(); // Makes sure spinner doesn't lag
+      //else this.changeDetector.detectChanges(); // Makes sure spinner doesn't lag
     });
   }
 

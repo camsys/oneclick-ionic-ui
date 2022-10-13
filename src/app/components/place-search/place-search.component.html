@@ -1,6 +1,7 @@
 <!-- Generated template for the PlaceSearchComponent component -->
-<ion-searchbar  [ngModel]="query"
-                [formControl]="searchControl"
+<ion-searchbar  [value]="query"
+                [debounce]="500" 
+                (ionChange)="handleSearchChange($event)"
                 [showCancelButton]="true"
                 [placeholder]="placeholder"
                 (ionFocus)="ionFocus()"

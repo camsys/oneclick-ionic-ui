@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ItineraryModel } from 'src/app/models/itinerary';
 import { TripResponseModel } from 'src/app/models/trip-response';
 import { GeocodeService } from 'src/app/services/google/geocode.service';
@@ -21,26 +22,32 @@ export class DirectionsMapTabPage implements OnInit {
   startMarker: google.maps.Marker;
   endMarker: google.maps.Marker;
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
+  constructor(private route: ActivatedRoute,
+              private router: Router,
               public geoServiceProvider: GeocodeService,
               private googleMapsHelpers: GoogleMapsHelpersService,
               public changeDetector: ChangeDetectorRef) {
-    this.trip = navParams.data.trip;
-    //this.mode = navParams.data.mode;
-
-    if (navParams.data.itinerary) {
-      this.itinerary = navParams.data.itinerary;
-      this.itineraries = this.trip.itineraries.slice(0).filter((itin) => itin === this.itinerary);
-    } else {
-      this.itineraries = this.trip.itineraries;
-    }
 
     this.selectedItinerary = "0";
     this.routeLines = [];
   }
 
   ngOnInit() {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        let state = this.router.getCurrentNavigation().extras.state;
+
+        this.trip = state.trip;
+        this.itinerary = state.itinerary;
+      }
+    });
+
+    if (this.itinerary) {
+      this.itineraries = this.trip.itineraries.slice(0).filter((itin) => itin === this.itinerary);
+    } else {
+      this.itineraries = this.trip.itineraries;
+    }
+    
     this.initializeMap();
   }
 

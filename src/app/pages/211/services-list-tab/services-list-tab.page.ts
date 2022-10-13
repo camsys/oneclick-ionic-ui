@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { GooglePlaceModel } from 'src/app/models/google-place';
 import { ServiceModel } from 'src/app/models/service';
 import { Session } from 'src/app/models/session';
 import { HelpersService } from 'src/app/services/helpers.service';
+import { EmailModalPage } from '../../email-modal/email-modal.page';
+import { ServiceFor211DetailPage } from '../service-for211-detail/service-for211-detail.page';
 
 @Component({
   selector: 'app-services-list-tab',
@@ -15,17 +19,25 @@ export class ServicesListTabPage implements OnInit {
   service_count: number;
   orderBy: String;
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
+  constructor(private route: ActivatedRoute,
+              private router: Router,
               public modalCtrl: ModalController,
-              private helpers: HelpersService,
-              public events: Events) {
-    this.services = navParams.data.services;
-    this.service_count = navParams.data.service_count;
+              private helpers: HelpersService) {
+
     this.orderMatchList("drive_time");
   }
 
   ngOnInit() {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      
+      if (this.router.getCurrentNavigation().extras.state) {
+        let state = this.router.getCurrentNavigation().extras.state;
+
+        this.services = state.services;
+        this.service_count = state.services_count;
+      }
+    });
+
   }
 
   // Orders the match list based on the passed string
@@ -70,12 +82,24 @@ export class ServicesListTabPage implements OnInit {
     let departureDateTime = this.session().user_departure_datetime;
     let arriveBy = this.session().user_arrive_by;
 
-    this.navCtrl.parent.viewCtrl._nav.push(ServiceFor211DetailPage, {service_id: match.service_id, location_id: match.location_id, origin: startLocation, destination: destination_location, departureDateTime: departureDateTime, arriveBy: arriveBy});
+    this.router.navigate(
+      [ServiceFor211DetailPage.routePath, match.service_id, match.location_id],
+      {state : { 
+        origin: startLocation, 
+        destination: destination_location, 
+        departureDateTime: departureDateTime, 
+        arriveBy: arriveBy
+      }
+    });
   }
 
   openEmailModal(services: ServiceModel[]) {
-    let emailModal = this.modalCtrl.create(EmailModalPage, {services: services});
-    emailModal.present();
+    this.modalCtrl.create({
+      component: EmailModalPage, 
+      componentProps: {
+        services: services
+      }
+    }).then(emailModal => emailModal.present());
   }
 
   // Pulls the current session from local storage

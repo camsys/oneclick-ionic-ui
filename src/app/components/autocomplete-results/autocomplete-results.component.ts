@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Outpu
 import { SearchResultModel } from 'src/app/models/search-result';
 
 @Component({
-  selector: 'app-autocomplete-results',
+  selector: 'autocomplete-results',
   templateUrl: './autocomplete-results.component.html',
   styleUrls: ['./autocomplete-results.component.scss'],
 })

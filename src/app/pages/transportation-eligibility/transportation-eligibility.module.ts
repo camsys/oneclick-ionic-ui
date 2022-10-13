@@ -7,12 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { TransportationEligibilityPageRoutingModule } from './transportation-eligibility-routing.module';
 
 import { TransportationEligibilityPage } from './transportation-eligibility.page';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    ComponentsModule,
+    TranslateModule,
     TransportationEligibilityPageRoutingModule
   ],
   declarations: [TransportationEligibilityPage]

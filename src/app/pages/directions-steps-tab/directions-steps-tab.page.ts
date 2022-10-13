@@ -1,4 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ModalController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { ItineraryModel } from 'src/app/models/itinerary';
 import { LegModel } from 'src/app/models/leg';
@@ -6,7 +8,11 @@ import { OneClickPlaceModel } from 'src/app/models/one-click-place';
 import { TripRequestModel } from 'src/app/models/trip-request';
 import { TripResponseModel } from 'src/app/models/trip-response';
 import { HelpersService } from 'src/app/services/helpers.service';
+import { LoaderService } from 'src/app/services/loader.service';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { ServiceFor211ModalPage } from '../211/service-for211-modal/service-for211-modal.page';
+import { DirectionsPage } from '../directions/directions.page';
+import { EmailItineraryModalPage } from '../email-itinerary-modal/email-itinerary-modal.page';
 
 @Component({
   selector: 'app-directions-steps-tab',
@@ -25,21 +31,42 @@ export class DirectionsStepsTabPage implements OnInit {
   arriveByTime: string; // For storing user-defined arrive by time (including date)
   tripDate: string; // For storing the user-defined trip date (including time)
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
+  constructor(private route: ActivatedRoute,
+              private router: Router,
               public oneClickProvider: OneClickService,
-              private app: App,
-              public events: Events,
               public helpers: HelpersService,
               public changeDetector: ChangeDetectorRef,
               public toastCtrl: ToastController,
               public modalCtrl: ModalController,
-              private translate: TranslateService
+              private translate: TranslateService,
+              private loader: LoaderService
   ) {
 
-    this.trip = navParams.data.trip;
-    if (navParams.data.itinerary) {
-      this.itinerary = navParams.data.itinerary;
+    
+    //this.mode = navParams.data.mode;
+    this.selectedItinerary = "0";
+    this.tripRequest = new TripRequestModel;
+    //this.tripRequest.trip_types = [this.mode]
+    this.tripRequest.trip = JSON.parse(JSON.stringify(this.trip)); // Copy the trip into the tripRequest
+    this.tripRequest.trip.origin_attributes = new OneClickPlaceModel(this.trip.origin);
+    this.tripRequest.trip.destination_attributes = new OneClickPlaceModel(this.trip.destination);
+
+    // Sets trip date, arrive_by and depart_at time
+    this.tripDate = this.trip.trip_time;
+    this.setArriveByAndDepartAtTimes();
+  }
+
+  ngOnInit() { 
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        let state = this.router.getCurrentNavigation().extras.state;
+
+        this.trip = state.trip;
+        this.itinerary = state.itinerary;
+      }
+    });
+
+    if (this.itinerary) {
       this.itineraries = this.trip.itineraries.slice(0).filter((itin) => itin === this.itinerary).map(function(itin) {
         itin.legs = itin.legs.map(function(legAttrs) {
           return new LegModel().assignAttributes(legAttrs);
@@ -55,25 +82,15 @@ export class DirectionsStepsTabPage implements OnInit {
       });
 
     }
-    //this.mode = navParams.data.mode;
-    this.selectedItinerary = "0";
-    this.tripRequest = new TripRequestModel;
-    //this.tripRequest.trip_types = [this.mode]
-    this.tripRequest.trip = JSON.parse(JSON.stringify(this.trip)); // Copy the trip into the tripRequest
-    this.tripRequest.trip.origin_attributes = new OneClickPlaceModel(this.trip.origin);
-    this.tripRequest.trip.destination_attributes = new OneClickPlaceModel(this.trip.destination);
-
-    // Sets trip date, arrive_by and depart_at time
-    this.tripDate = this.trip.trip_time;
-    this.setArriveByAndDepartAtTimes();
   }
-
-  ngOnInit() { }
 
   openEmailModal() {
     if (this.itinerary) {
-      let emailModal = this.modalCtrl.create(EmailItineraryModalPage, {itinerary: this.itinerary});
-      emailModal.present();
+      this.modalCtrl.create({
+        component: EmailItineraryModalPage, 
+        componentProps: {
+          itinerary: this.itinerary
+        }}).then(emailModal => emailModal.present());
     }
   }
 
@@ -84,8 +101,7 @@ export class DirectionsStepsTabPage implements OnInit {
         ServiceFor211ModalPage.createModal(this.modalCtrl,
           this.toastCtrl,
           this.translate,
-          { service: svc })
-          .present();
+          { service: svc }).then(m => m.present());
       });
 
   }
@@ -117,19 +133,17 @@ export class DirectionsStepsTabPage implements OnInit {
 
   // Makes a new trip request and reloads the Directions page.
   replanTrip() {
-    this.events.publish('spinner:show');
+    this.loader.showLoader();
 
     this.oneClickProvider.planTrip(this.tripRequest)
     .subscribe((resp) => {
-      let nav = this.app.getRootNav();
+      this.loader.hideLoader();
 
-      // Insert the new directions page underneat the root page, then pop off the old page.
-      nav.insert(nav.length() - 1, DirectionsPage, {
-        trip_response: resp,
-        mode: this.mode
-      }).then(() => {
-        nav.pop();
-        this.events.publish('spinner:hide');
+      this.router.navigate([DirectionsPage.routePath], {
+        state: {
+          trip_response: resp,
+          mode: this.mode
+        }
       });
     });
   }

@@ -1,8 +1,12 @@
-<ion-datetime #browserDatepicker
-              [(displayFormat)]="dateTimeFormat"
-              [(pickerFormat)]="dateTimeFormat"
-              yearValues="{{yearValues()}}"
-              [(ngModel)]="date"
-              (ngModelChange)="dateChange()"
-              [(hidden)] = "hideBool">
+<ion-datetime-button datetime="dt-date"></ion-datetime-button>
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime id="dt-date"
+              showDefaultButtons="true"
+              presentation="date"
+              preferWheel="true"
+              yearValues="{{ yearValues() }}"
+              [(value)]="date"
+              (ionChange)="dateChange()">
 </ion-datetime>

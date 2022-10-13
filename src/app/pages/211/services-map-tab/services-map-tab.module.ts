@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { ServicesMapTabPageRoutingModule } from './services-map-tab-routing.module';
 
 import { ServicesMapTabPage } from './services-map-tab.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    TranslateModule,
     ServicesMapTabPageRoutingModule
   ],
   declarations: [ServicesMapTabPage]
