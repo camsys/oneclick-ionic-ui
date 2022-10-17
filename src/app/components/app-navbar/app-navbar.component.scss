@@ -10,10 +10,16 @@ ion-title.header-title {
     margin-top: 10px;
 }
 
-button.nav-icon-button {
+a.nav-icon-button {
     background: transparent;
     margin: 0;
 }
+
+
+  
+ion-button.bar-button-menutoggle {
+    color: #f6b77c;
+  }
 
 ion-button.nav-icon-button {
     background: transparent;

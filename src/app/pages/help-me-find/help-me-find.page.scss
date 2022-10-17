@@ -1,4 +1,4 @@
-ion-navbar {
+ion-toolbar {
 
     .helper{
       font-family: 'MyFontFamily';
@@ -7,11 +7,11 @@ ion-navbar {
       background: blue;
     }
   
-    button.bar-button-menutoggle {
+    ion-button.bar-button-menutoggle {
       color: #f6b77c;
     }
   
-    button.lynx-button-primary {
+    ion-button.lynx-button-primary {
       background-color: var(--lynxTranslucentPink);
     }
   

@@ -1,35 +1,22 @@
 <ion-toolbar class="lynx-toolbar lynx-toolbar-black">
-  <ion-row>
-    <ion-col col-sm-2>
-      <ng-container *ngIf="!isHomePage()">
-        <ion-title class="header-logo-title">
-          <button class="lynx-button-link nav-icon-button" (click)="goHome()">
-            <img class="lynx-logo-sm" src="assets/img/211-ride@1x.png" alt="211Ride Logo">
-          </button>
-        </ion-title>
-      </ng-container>
-    </ion-col>
-    <ion-col col-sm-8>
-      <ion-title class="header-title" *ngIf="headerTitle" text-center>{{headerTitle}}</ion-title>
-    </ion-col>
-    <ion-col col-sm-2>
-      <ion-row>
-        <ion-col col-sm-10>
-          <ion-button float-right class="lynx-button-link nav-icon-button bar-button-menutoggle" (click)="openLanguageSelectorModal();">
-            <ion-icon class="padded" name="globe"></ion-icon> {{ "oneclick.global.languages.native." + i18n.currentLocale() | translate }}
-          </ion-button>
-        </ion-col>
-        <ion-col col-sm-2>
-          <ion-button float-right menuToggle>
-            <ion-icon name="menu"></ion-icon>
-          </ion-button>
-        </ion-col>
-      </ion-row>
 
+      <ion-buttons slot="start" >
+        <a class="lynx-button-link header-logo-title nav-icon-button" routerLink="/home" routerDirection="forward">
+          <img class="lynx-logo-sm"  src='assets/img/211-ride@1x.png' alt="211Ride Logo" />
+      </a>
+      </ion-buttons>
 
-    </ion-col>
+      <ion-title class="header-title">{{headerTitle}}</ion-title>
 
-  </ion-row>
+      <ion-buttons slot="end">
+        <ion-button class="lynx-button-link nav-icon-button bar-button-menutoggle" (click)="openLanguageSelectorModal()">
+          <ion-icon class="padded" name="globe"></ion-icon> 
+          {{ "oneclick.global.languages.native." + i18n.currentLocale() | translate }}
+        </ion-button>
+        <ion-menu-button auto-hide="false"></ion-menu-button>
+      </ion-buttons>
+          
+
 
 </ion-toolbar>
 
