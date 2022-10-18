@@ -2,7 +2,7 @@
 <ion-searchbar  [value]="query"
                 [debounce]="500" 
                 (ionChange)="handleSearchChange($event)"
-                [showCancelButton]="true"
+                [showClearButton]="always"
                 [placeholder]="placeholder"
                 (ionFocus)="ionFocus()"
                 (ionBlur)="ionBlur()">
