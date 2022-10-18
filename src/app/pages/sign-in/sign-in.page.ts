@@ -42,10 +42,10 @@ export class SignInPage implements OnInit {
                   this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
                 });
           },
-          (error) => {
+          (httpErr) => {
             // On failed response, display a pop-up error message and remain on page.
-            console.error(error.json().data.errors);
-            let errorBody = error.json().data.errors;
+            console.error(httpErr.error.data.errors);
+            let errorBody = httpErr.error.data.errors;
 
             // Based on which log in attempt this is, customize the error message
             let errorCode = '';

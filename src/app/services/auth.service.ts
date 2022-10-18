@@ -117,7 +117,7 @@ export class AuthService {
         map((response : any) => {
 
         // Pull the session hash (user email and auth token) out of the response
-        let data = response.json().data;
+        let data = response.data;
         let session = data.session || {};
 
         // Store session info in local storage to keep user logged in
@@ -143,9 +143,8 @@ export class AuthService {
     return this.http
         .post(uri, body, options).pipe(
         map((response: any) => {
-
           // Pull the session hash (user email and auth token) out of the response
-          let data = response.json().data;
+          let data = response.data;
           let session = data.session || {};
 
           // Store session info in local storage to keep user logged in

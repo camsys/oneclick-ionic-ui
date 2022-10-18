@@ -77,39 +77,39 @@ export class SignUpPage implements OnInit {
           () => {
             this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
           },
-          error => {
+          httpErr => {
             let errors: string = '';
             errors = this.translate.instant("oneclick.pages.sign_up.error_messages.default");
 
-            if(error.json().data.errors.email == 'is invalid')
+            if(httpErr.error.data.errors.email == 'is invalid')
             {
               errors += this.translate.instant("oneclick.pages.sign_up.error_messages.email_bad");
             }
-            if(error.json().data.errors.email == 'has already been taken')
+            if(httpErr.error.data.errors.email == 'has already been taken')
             {
               errors += this.translate.instant("oneclick.pages.sign_up.error_messages.email_used");
             }
-            if(error.json().data.errors.email == 'is too short (minimum is 6 characters)')
+            if(httpErr.error.data.errors.email == 'is too short (minimum is 6 characters)')
             {
               errors += this.translate.instant("oneclick.pages.sign_up.error_messages.password_bad");
             }
-            if(error.json().data.errors.password_confirmation == "doesn't match Password")
+            if(httpErr.error.data.errors.password_confirmation == "doesn't match Password")
             {
               errors += this.translate.instant("oneclick.pages.sign_up.error_messages.password_mismatch");
             }
-            if(error.json().data.errors.password == "must include at least one letter and one digit")
+            if(httpErr.error.data.errors.password == "must include at least one letter and one digit")
             {
               errors += this.translate.instant("oneclick.pages.sign_up.error_messages.password_not_complex");
             }
-            if(error.json().data.errors.email == "can't be blank")
+            if(httpErr.error.data.errors.email == "can't be blank")
             {
               errors += this.translate.instant("oneclick.pages.sign_up.error_messages.email_cant_be_blank");
             }
-            if(error.json().data.errors.password == "can't be blank")
+            if(httpErr.error.data.errors.password == "can't be blank")
             {
               errors += this.translate.instant("oneclick.pages.sign_up.error_messages.password_cant_be_blank");
             }
-            if(error.json().data.errors.password_confirmation == "can't be blank")
+            if(httpErr.error.data.errors.password_confirmation == "can't be blank")
             {
               errors += this.translate.instant("oneclick.pages.sign_up.error_messages.password_confirmation_cant_be_blank");
             }
