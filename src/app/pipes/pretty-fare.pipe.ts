@@ -35,7 +35,7 @@ export class PrettyFarePipe implements PipeTransform {
     // Formats a number as USD, with no cents.
     formatFare(fare: number): string {
     return new CurrencyPipe(this.i18n.currentLocale())
-        .transform(fare, 'USD', true, '1.0-0');
+        .transform(fare, 'USD', 'symbol', '1.0-0');
     }
 
 
