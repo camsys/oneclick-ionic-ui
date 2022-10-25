@@ -123,10 +123,10 @@
           
           <ion-label>{{"oneclick.pages.user_profile.language" | translate}}</ion-label>
           <ion-select ion-start name="preferred_locale" [(ngModel)]="user.preferred_locale">
-            <ion-option *ngFor="let locale of available_locales"
+            <ion-select-option *ngFor="let locale of available_locales"
                         value="{{locale}}">
               {{ "oneclick.global.languages.native." + locale | translate }}
-            </ion-option>
+            </ion-select-option>
           </ion-select>
         
         </ion-item>
@@ -198,7 +198,8 @@
     <ion-button round 
             class="lynx-button-dark center" 
             form="ngForm"
-            [disabled]="!updateProfileForm.valid">
+            [disabled]="!updateProfileForm.valid"
+            (click)="updateProfile()">
       {{ "oneclick.pages.user_profile.update_button" | translate }}
     </ion-button>
   </ion-toolbar>
