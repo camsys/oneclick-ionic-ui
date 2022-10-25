@@ -4,27 +4,25 @@ import { Routes, RouterModule } from '@angular/router';
 import { DirectionsPage } from './directions.page';
 
 const routes: Routes = [
+ 
+  {
+    path: 'tabs',
+    component: DirectionsPage,
+    children: [
+      {
+        path: 'steps-tab',
+        loadChildren: () => import('../directions-steps-tab/directions-steps-tab.module').then(m => m.DirectionsStepsTabPageModule)
+      },
+      {
+        path: 'map-tab',
+        loadChildren: () => import('../directions-map-tab/directions-map-tab.module').then(m => m.DirectionsMapTabPageModule)
+      }
+    ]
+  },
   {
     path: '',
-    component: DirectionsPage
-  },
-  {
-    path: 'steps-tab',
-    children: [
-      {
-        path: '',
-        loadChildren: () => import('../directions-steps-tab/directions-steps-tab.module').then( m => m.DirectionsStepsTabPageModule)
-      }
-    ]
-  },
-  {
-    path: 'map-tab',
-    children: [
-      {
-        path: '',
-        loadChildren: () => import('../directions-map-tab/directions-map-tab.module').then( m => m.DirectionsMapTabPageModule)
-      }
-    ]
+    redirectTo: 'tabs/steps-tab',
+    pathMatch: 'full'
   }
 ];
 
