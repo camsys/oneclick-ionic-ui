@@ -1,10 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { GooglePlaceModel } from 'src/app/models/google-place';
 import { ServiceModel } from 'src/app/models/service';
 import { Session } from 'src/app/models/session';
 import { GoogleMapsHelpersService } from 'src/app/services/google/google-maps-helpers.service';
+import { ServicesParamsService } from 'src/app/services/services-params.service';
 import { ServiceFor211DetailPage } from '../service-for211-detail/service-for211-detail.page';
 
 @Component({
@@ -12,7 +14,8 @@ import { ServiceFor211DetailPage } from '../service-for211-detail/service-for211
   templateUrl: './services-map-tab.page.html',
   styleUrls: ['./services-map-tab.page.scss'],
 })
-export class ServicesMapTabPage implements OnInit {
+export class ServicesMapTabPage implements OnInit, OnDestroy {
+  private unsubscribe:Subject<any> = new Subject<any>();
 
   // This is needed to dynamically change the div containing the marker's information
   service_map: google.maps.Map;
@@ -21,11 +24,9 @@ export class ServicesMapTabPage implements OnInit {
   markerSelected: boolean;
 
 
-  constructor(public platform: Platform,
-              private route: ActivatedRoute,
-              private router: Router,
-              public geolocation: Geolocation,
+  constructor(private router: Router,
               private googleMapsHelpers: GoogleMapsHelpersService,
+              private servicesParamsService: ServicesParamsService,
               private changeDetector: ChangeDetectorRef) {
 
     this.service_map = null;
@@ -34,19 +35,17 @@ export class ServicesMapTabPage implements OnInit {
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      
-      if (this.router.getCurrentNavigation().extras.state) {
-        let state = this.router.getCurrentNavigation().extras.state;
+    this.servicesParamsService.params$.pipe(takeUntil(this.unsubscribe)).subscribe(
+      (params: any) => {
+        if (params) {
+          this.services = params.services;
+        }
 
-        this.services = state.services;
+        this.initializeMap();
       }
-    });
-
-    this.platform.ready().then(() => { 
-      this.initializeMap();
-    });
+    );
   }
+
 
   initializeMap(): void {
     this.service_map = this.googleMapsHelpers.buildGoogleMap('service-results-map-canvas');
@@ -132,6 +131,11 @@ export class ServicesMapTabPage implements OnInit {
   // Pulls the current session from local storage
   session(): Session {
     return (JSON.parse(localStorage.session || null) as Session);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
 }

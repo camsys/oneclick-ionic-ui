@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { NavController, Platform } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { ServiceModel } from 'src/app/models/service';
 import { SubSubcategoryFor211Model } from 'src/app/models/sub-subcategory-for-211';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { ServicesParamsService } from 'src/app/services/services-params.service';
 import { HelpMeFindPage } from '../../help-me-find/help-me-find.page';
 
 @Component({
@@ -21,8 +22,6 @@ export class ServicesPage implements OnInit {
   subSubCategory: SubSubcategoryFor211Model;
   services: ServiceModel[] = [];
 
-  servicesParams: any;
-
 
   constructor(public navCtrl: NavController,
               private route: ActivatedRoute,
@@ -30,7 +29,7 @@ export class ServicesPage implements OnInit {
               private auth: AuthService,
               private oneClick: OneClickService,
               private loader: LoaderService,
-              public platform: Platform) {
+              private servicesParamsService: ServicesParamsService) {
                 
   }
 
@@ -40,25 +39,31 @@ export class ServicesPage implements OnInit {
       
       if (this.router.getCurrentNavigation().extras.state &&
           this.router.getCurrentNavigation().extras.state.sub_sub_category) {
-
+        
         this.subSubCategory = this.router.getCurrentNavigation().extras.state.sub_sub_category as SubSubcategoryFor211Model;
+      
       } else if (this.code) { // Otherwise, get subsubcategory details based on the code
+        
         this.oneClick.getSubSubCategoryByCode(this.code)
             .subscribe(subsubcat => this.subSubCategory = subsubcat);
+
       } else { // Or, if necessary nav params not passed, go home.
+        
         this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
       }
+
+      this.loader.showLoader();// Show spinner while results are loading
+      let userLocation = this.auth.userLocation();
+
+      this.oneClick.getServicesFromSubSubCategoryName(this.code, userLocation.lat(), userLocation.lng())
+        .then((svcs) => {
+          this.loader.hideLoader();// Hide spinner once results come back
+          this.services = svcs;
+          
+          //update for tabs
+          this.servicesParamsService.setParams(this.services, this.subSubCategory.service_count);
+        });
     });
-
-    this.loader.showLoader();// Show spinner while results are loading
-    let userLocation = this.auth.userLocation();
-
-    this.oneClick.getServicesFromSubSubCategoryName(this.code, userLocation.lat(), userLocation.lng())
-      .then((svcs) => {
-        this.loader.hideLoader();// Hide spinner once results come back
-        this.services = svcs;
-        this.servicesParams = {services: this.services, service_count: this.subSubCategory.service_count}
-      });
   }
 
   // ionViewWillEnter() {

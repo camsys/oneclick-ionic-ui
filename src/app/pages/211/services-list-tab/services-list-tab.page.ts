@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { GooglePlaceModel } from 'src/app/models/google-place';
 import { ServiceModel } from 'src/app/models/service';
 import { Session } from 'src/app/models/session';
 import { HelpersService } from 'src/app/services/helpers.service';
+import { ServicesParamsService } from 'src/app/services/services-params.service';
 import { EmailModalPage } from '../../email-modal/email-modal.page';
 import { ServiceFor211DetailPage } from '../service-for211-detail/service-for211-detail.page';
 
@@ -13,30 +16,32 @@ import { ServiceFor211DetailPage } from '../service-for211-detail/service-for211
   templateUrl: './services-list-tab.page.html',
   styleUrls: ['./services-list-tab.page.scss'],
 })
-export class ServicesListTabPage implements OnInit {
+export class ServicesListTabPage implements OnInit, OnDestroy {
+  private unsubscribe:Subject<any> = new Subject<any>();
 
   services: ServiceModel[];
   service_count: number;
   orderBy: String;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
+  constructor(private router: Router,
               public modalCtrl: ModalController,
-              private helpers: HelpersService) {
+              private helpers: HelpersService,
+              private servicesParamsService: ServicesParamsService) {
 
-    this.orderMatchList("drive_time");
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      
-      if (this.router.getCurrentNavigation().extras.state) {
-        let state = this.router.getCurrentNavigation().extras.state;
 
-        this.services = state.services;
-        this.service_count = state.services_count;
+    this.servicesParamsService.params$.pipe(takeUntil(this.unsubscribe)).subscribe(
+      (params: any) => {
+        if (params) {
+          this.services = params.services;
+          this.service_count = params.service_count;
+        }
+
+        if (this.services) this.orderMatchList("drive_time");
       }
-    });
+    );
 
   }
 
@@ -105,6 +110,11 @@ export class ServicesListTabPage implements OnInit {
   // Pulls the current session from local storage
   session(): Session {
     return (JSON.parse(localStorage.session || null) as Session);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
 }
