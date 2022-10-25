@@ -8,7 +8,7 @@ import { ServiceFor211ModalPageRoutingModule } from './service-for211-modal-rout
 
 import { ServiceFor211ModalPage } from './service-for211-modal.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    TranslateModule,
+    SharedModule,
     ServiceFor211ModalPageRoutingModule
   ],
   declarations: [ServiceFor211ModalPage]

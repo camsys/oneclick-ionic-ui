@@ -8,7 +8,7 @@ import { SignUpPageRoutingModule } from './sign-up-routing.module';
 
 import { SignUpPage } from './sign-up.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -17,7 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     IonicModule,
     ComponentsModule,
-    TranslateModule,
+    SharedModule,
     SignUpPageRoutingModule
   ],
   declarations: [SignUpPage]

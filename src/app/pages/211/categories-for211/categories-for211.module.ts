@@ -8,7 +8,7 @@ import { CategoriesFor211PageRoutingModule } from './categories-for211-routing.m
 
 import { CategoriesFor211Page } from './categories-for211.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    TranslateModule,
+    SharedModule,
     CategoriesFor211PageRoutingModule
   ],
   declarations: [CategoriesFor211Page]

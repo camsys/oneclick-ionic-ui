@@ -8,7 +8,7 @@ import { ServiceFor211DetailPageRoutingModule } from './service-for211-detail-ro
 
 import { ServiceFor211DetailPage } from './service-for211-detail.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    TranslateModule,
+    SharedModule,
     ServiceFor211DetailPageRoutingModule
   ],
   declarations: [ServiceFor211DetailPage]

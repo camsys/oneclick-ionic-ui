@@ -8,7 +8,7 @@ import { FeedbackModalPageRoutingModule } from './feedback-modal-routing.module'
 
 import { FeedbackModalPage } from './feedback-modal.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    TranslateModule,
+    SharedModule,
     FeedbackModalPageRoutingModule
   ],
   declarations: [FeedbackModalPage]

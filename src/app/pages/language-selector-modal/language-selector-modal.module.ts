@@ -7,8 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { LanguageSelectorModalPageRoutingModule } from './language-selector-modal-routing.module';
 
 import { LanguageSelectorModalPage } from './language-selector-modal.page';
-import { TranslateModule } from '@ngx-translate/core';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -17,8 +17,8 @@ import { ComponentsModule } from 'src/app/components/components.module';
     ReactiveFormsModule,
     IonicModule,
     ComponentsModule,
-    LanguageSelectorModalPageRoutingModule,
-    TranslateModule
+    SharedModule,
+    LanguageSelectorModalPageRoutingModule
   ],
   declarations: [LanguageSelectorModalPage]
 })

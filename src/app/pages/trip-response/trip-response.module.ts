@@ -8,9 +8,8 @@ import { TripResponsePageRoutingModule } from './trip-response-routing.module';
 
 import { TripResponsePage } from './trip-response.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TranslateModule } from '@ngx-translate/core';
-import { PrettyTimePipe } from 'src/app/pipes/pretty-time.pipe';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -18,7 +17,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    TranslateModule,
+    SharedModule,
     PipesModule,
     TripResponsePageRoutingModule
   ],

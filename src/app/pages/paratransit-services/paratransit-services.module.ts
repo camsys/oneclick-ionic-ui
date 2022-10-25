@@ -8,7 +8,7 @@ import { ParatransitServicesPageRoutingModule } from './paratransit-services-rou
 
 import { ParatransitServicesPage } from './paratransit-services.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    TranslateModule,
+    SharedModule,
     ParatransitServicesPageRoutingModule
   ],
   declarations: [ParatransitServicesPage]

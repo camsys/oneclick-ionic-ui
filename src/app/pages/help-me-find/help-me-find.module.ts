@@ -8,7 +8,7 @@ import { HelpMeFindPageRoutingModule } from './help-me-find-routing.module';
 
 import { HelpMeFindPage } from './help-me-find.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -17,7 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
     IonicModule,
     HelpMeFindPageRoutingModule,
     ComponentsModule,
-    TranslateModule
+    SharedModule
   ],
   declarations: [HelpMeFindPage]
 })

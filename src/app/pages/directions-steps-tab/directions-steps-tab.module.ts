@@ -8,7 +8,8 @@ import { DirectionsStepsTabPageRoutingModule } from './directions-steps-tab-rout
 
 import { DirectionsStepsTabPage } from './directions-steps-tab.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { PipesModule } from 'src/app/pipes/pipes.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    TranslateModule,
+    PipesModule,
+    SharedModule,
     DirectionsStepsTabPageRoutingModule
   ],
   declarations: [DirectionsStepsTabPage]

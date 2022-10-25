@@ -8,7 +8,8 @@ import { EmailModalPageRoutingModule } from './email-modal-routing.module';
 
 import { EmailModalPage } from './email-modal.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TranslateModule } from '@ngx-translate/core';
+
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    TranslateModule,
+    SharedModule,
     EmailModalPageRoutingModule
   ],
   declarations: [EmailModalPage]
