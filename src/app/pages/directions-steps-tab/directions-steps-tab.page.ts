@@ -1,12 +1,14 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ItineraryModel } from 'src/app/models/itinerary';
 import { LegModel } from 'src/app/models/leg';
-import { OneClickPlaceModel } from 'src/app/models/one-click-place';
 import { TripRequestModel } from 'src/app/models/trip-request';
 import { TripResponseModel } from 'src/app/models/trip-response';
+import { DirectionsParamsService } from 'src/app/services/directions-params.service';
 import { HelpersService } from 'src/app/services/helpers.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { OneClickService } from 'src/app/services/one-click.service';
@@ -19,11 +21,12 @@ import { EmailItineraryModalPage } from '../email-itinerary-modal/email-itinerar
   templateUrl: './directions-steps-tab.page.html',
   styleUrls: ['./directions-steps-tab.page.scss'],
 })
-export class DirectionsStepsTabPage implements OnInit {
+export class DirectionsStepsTabPage implements OnInit, OnDestroy {
+  private unsubscribe:Subject<any> = new Subject<any>();
 
   trip:TripResponseModel;
   mode:string;
-  itineraries: ItineraryModel[];
+  itineraries: ItineraryModel[] = [];
   itinerary: ItineraryModel;
   selectedItinerary: string; // Index of selected itinerary within the itineraries array
   tripRequest:TripRequestModel;
@@ -31,49 +34,44 @@ export class DirectionsStepsTabPage implements OnInit {
   arriveByTime: string; // For storing user-defined arrive by time (including date)
   tripDate: string; // For storing the user-defined trip date (including time)
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
+  constructor(private router: Router,
               public oneClickProvider: OneClickService,
               public helpers: HelpersService,
               public changeDetector: ChangeDetectorRef,
               public toastCtrl: ToastController,
               public modalCtrl: ModalController,
               private translate: TranslateService,
-              private loader: LoaderService
+              private loader: LoaderService,
+              private dirParamsService: DirectionsParamsService
   ) {
 
     
-    //this.mode = navParams.data.mode;
-    this.selectedItinerary = "0";
-    this.tripRequest = new TripRequestModel;
-    //this.tripRequest.trip_types = [this.mode]
-    this.tripRequest.trip = JSON.parse(JSON.stringify(this.trip)); // Copy the trip into the tripRequest
-    this.tripRequest.trip.origin_attributes = new OneClickPlaceModel(this.trip.origin);
-    this.tripRequest.trip.destination_attributes = new OneClickPlaceModel(this.trip.destination);
-
-    // Sets trip date, arrive_by and depart_at time
-    this.tripDate = this.trip.trip_time;
-    this.setArriveByAndDepartAtTimes();
+    
   }
 
   ngOnInit() { 
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      if (this.router.getCurrentNavigation().extras.state) {
-        let state = this.router.getCurrentNavigation().extras.state;
+    this.dirParamsService.params$.pipe(takeUntil(this.unsubscribe)).subscribe(
+      (params: any) => {
+        if (params) {
+          this.trip = params.trip;
+          this.itinerary = params.itinerary;
 
-        this.trip = state.trip;
-        this.itinerary = state.itinerary;
+          this.finishInitialization();
+        }
       }
-    });
+    );
 
-    if (this.itinerary) {
+  }
+
+  finishInitialization() {
+    if (this.trip && this.itinerary) {
       this.itineraries = this.trip.itineraries.slice(0).filter((itin) => itin === this.itinerary).map(function(itin) {
         itin.legs = itin.legs.map(function(legAttrs) {
           return new LegModel().assignAttributes(legAttrs);
         });
         return itin;
       });
-    } else {
+    } else if (this.trip) {
       this.itineraries = this.trip.itineraries.map(function(itin) {
         itin.legs = itin.legs.map(function(legAttrs) {
           return new LegModel().assignAttributes(legAttrs);
@@ -81,6 +79,17 @@ export class DirectionsStepsTabPage implements OnInit {
         return itin;
       });
 
+    }
+    //else this.itineraries = [];
+
+    this.selectedItinerary = "0";
+
+    if (this.trip) {
+      this.tripRequest = this.trip.buildTripRequest();
+      
+      // Sets trip date, arrive_by and depart_at time
+      this.tripDate = this.trip.trip_time;
+      if (this.itineraries) this.setArriveByAndDepartAtTimes();
     }
   }
 
@@ -97,15 +106,27 @@ export class DirectionsStepsTabPage implements OnInit {
   selectService(id: number) {
     this.oneClickProvider.getServiceDetails(id)
       .subscribe((svc) => {
-
-        ServiceFor211ModalPage.createModal(this.modalCtrl,
-          this.toastCtrl,
-          this.translate,
-          { service: svc }).then(m => m.present());
+        this.modalCtrl.create({
+          component: ServiceFor211ModalPage,
+          componentProps: { 
+            service: svc 
+          }
+        }).then(modal => {
+          modal.onDidDismiss().then(resp => {
+            if (resp && resp.data) {
+              this.toastCtrl.create({
+                message: (resp.data.status === 200 ? this.translate.instant("oneclick.pages.feedback.success_message") :
+                                                this.translate.instant("oneclick.pages.feedback.error_message")),
+                position: 'bottom',
+                duration: 3000
+              }).then(toast => toast.present());
+            }
+          });
+          return modal;
+        }).then(serviceModal => serviceModal.present());    
       });
 
   }
-
 
 
   // When depart at time is updated, submit new trip plan request with arrive_by = false
@@ -186,5 +207,9 @@ export class DirectionsStepsTabPage implements OnInit {
     this.departAtTime = this.trip.arrive_by ? itinStartTime : tripDepartAtTime;
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
 
 }

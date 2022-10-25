@@ -3,6 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { ItineraryModel } from 'src/app/models/itinerary';
 import { TripResponseModel } from 'src/app/models/trip-response';
+import { DirectionsParamsService } from 'src/app/services/directions-params.service';
 import { OneClickService } from 'src/app/services/one-click.service';
 import { HelpMeFindPage } from '../help-me-find/help-me-find.page';
 
@@ -23,18 +24,21 @@ export class DirectionsPage implements OnInit {
   constructor(public navCtrl: NavController,
               private route: ActivatedRoute,
               private router: Router,
-              private oneClick: OneClickService) {
+              private oneClick: OneClickService,
+              private dirParamsService: DirectionsParamsService) {
   }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.trip_id = +params.get('trip_id'); 
-
+      
       if (this.router.getCurrentNavigation().extras.state) {
         let state = this.router.getCurrentNavigation().extras.state;
 
         this.trip = state.trip_response;
         this.itinerary = state.itinerary;
+
+        this.dirParamsService.setParams(this.trip, this.itinerary);
       }
     });
 

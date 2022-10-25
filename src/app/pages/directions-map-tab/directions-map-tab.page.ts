@@ -1,7 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ItineraryModel } from 'src/app/models/itinerary';
 import { TripResponseModel } from 'src/app/models/trip-response';
+import { DirectionsParamsService } from 'src/app/services/directions-params.service';
 import { GeocodeService } from 'src/app/services/google/geocode.service';
 import { GoogleMapsHelpersService } from 'src/app/services/google/google-maps-helpers.service';
 
@@ -10,7 +12,9 @@ import { GoogleMapsHelpersService } from 'src/app/services/google/google-maps-he
   templateUrl: './directions-map-tab.page.html',
   styleUrls: ['./directions-map-tab.page.scss'],
 })
-export class DirectionsMapTabPage implements OnInit {
+export class DirectionsMapTabPage implements OnInit, OnDestroy {
+  private unsubscribe:Subject<any> = new Subject<any>();
+
 
   trip:TripResponseModel;
   mode:string;
@@ -22,10 +26,9 @@ export class DirectionsMapTabPage implements OnInit {
   startMarker: google.maps.Marker;
   endMarker: google.maps.Marker;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              public geoServiceProvider: GeocodeService,
+  constructor(public geoServiceProvider: GeocodeService,
               private googleMapsHelpers: GoogleMapsHelpersService,
+              private dirParamsService: DirectionsParamsService,
               public changeDetector: ChangeDetectorRef) {
 
     this.selectedItinerary = "0";
@@ -33,27 +36,27 @@ export class DirectionsMapTabPage implements OnInit {
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      if (this.router.getCurrentNavigation().extras.state) {
-        let state = this.router.getCurrentNavigation().extras.state;
+    this.dirParamsService.params$.pipe(takeUntil(this.unsubscribe)).subscribe(
+      (params: any) => {
+        if (params) {
+          this.trip = params.trip;
+          this.itinerary = params.itinerary;
 
-        this.trip = state.trip;
-        this.itinerary = state.itinerary;
+          if (this.itinerary) {
+            this.itineraries = this.trip.itineraries.slice(0).filter((itin) => itin === this.itinerary);
+          } else {
+            this.itineraries = this.trip.itineraries;
+          }
+          
+          this.initializeMap();
+        }
       }
-    });
+    );
 
-    if (this.itinerary) {
-      this.itineraries = this.trip.itineraries.slice(0).filter((itin) => itin === this.itinerary);
-    } else {
-      this.itineraries = this.trip.itineraries;
-    }
-    
-    this.initializeMap();
   }
 
   // Sets up the google map
   initializeMap() {
-
     this.map = this.googleMapsHelpers.buildGoogleMap('directions-route-map-canvas');
 
     this.googleMapsHelpers.addParticipatingCountiesLayer(this.map);
@@ -75,8 +78,6 @@ export class DirectionsMapTabPage implements OnInit {
       return legLines;
 
     });
-
-    this.drawSelectedRoute();
 
     // TODO: Get start and end icons to look good
     // Set the start and end markers
@@ -110,6 +111,10 @@ export class DirectionsMapTabPage implements OnInit {
 
   }
 
+  ionViewDidEnter() {
+    if (this.map) this.drawSelectedRoute();
+  }
+
   drawSelectedRoute() {
 
     // Remove all routeLines from the map
@@ -124,5 +129,9 @@ export class DirectionsMapTabPage implements OnInit {
 
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
 
 }
