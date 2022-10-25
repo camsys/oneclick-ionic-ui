@@ -48,7 +48,6 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
       }
     }).then(modal => {
       modal.onDidDismiss().then(resp => {
-        console.log("BECKY resp=", resp)
         if(resp && resp.data && resp.data.locale) {
             // If a new locale was selected, store it as the preferred locale in the session
           this.user = this.auth.setPreferredLocale(resp.data.locale);
