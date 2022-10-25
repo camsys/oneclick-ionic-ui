@@ -65,10 +65,10 @@ export class CategoriesFor211Page implements OnInit {
   }
 
   openToSubcategory(category: CategoryFor211Model){
-    this.router.navigate([SubcategoriesFor211Page.routePath], { 
+    this.router.navigate([SubcategoriesFor211Page.routePath, category.code], { 
       state: { 
-        category: category, 
-        code: category.code }
+        category: category
+       }
     } );
   }
   
