@@ -14,6 +14,7 @@ import { LanguageSelectorModalPageModule } from './pages/language-selector-modal
 import { PipesModule } from './pipes/pipes.module';
 import { ComponentsModule } from './components/components.module';
 import { CommonModule } from '@angular/common';
+import { ServiceFor211ModalPageModule } from './pages/211/service-for211-modal/service-for211-modal.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "/assets/i18n/", ".json");
@@ -28,6 +29,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule, 
     HttpClientModule,
     LanguageSelectorModalPageModule,
+    ServiceFor211ModalPageModule,
     ComponentsModule,
     PipesModule,
     TranslateModule.forRoot({
