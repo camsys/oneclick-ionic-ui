@@ -161,7 +161,7 @@ export class AppComponent implements OnDestroy {
       { title: 'contact_us', component: ContactUsPage },
       // Disabling transportation options based on feedback.
       //{ title: 'transportation', component: ParatransitServicesPage },
-      { title: 'resources', component: UserLocatorPage, params: { viewType: 'services'}},
+      { title: 'resources', component: UserLocatorPage, urlParams: 'services'},
       //{ title: 'language_selector', component: "language_selector" },
       //{ title: 'privacy_policy', component: "privacy_policy" },
       // Disabling chat based on feedback.
@@ -209,11 +209,16 @@ export class AppComponent implements OnDestroy {
       //                    .present();
       //   break;
       default:
-        // Reset the content nav to have just this page
-        // we wouldn't want the back button to show in this scenario
-        this.router.navigate([page.component.routePath],{
-            state: page.params,
+        if (page.urlParams) {
+          this.router.navigate([page.component.routePath, page.urlParams],{
+            state: page.stateParams,
           });
+        }
+        else {
+          this.router.navigate([page.component.routePath],{
+            state: page.stateParams,
+          });
+        }
     }
 
   }
