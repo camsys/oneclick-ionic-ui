@@ -3,7 +3,7 @@
 
   <!-- TRIP OPTION SELECTORS -->
   <ion-segment [(ngModel)]="selectedItinerary"
-               *ngIf="itineraries.length > 1"
+               *ngIf="itineraries?.length > 1"
                (ngModelChange)="selectItinerary($event)">
     <ion-segment-button *ngFor="let itin of itineraries; let i = index"
                         value="{{ i | toString }}">
@@ -125,7 +125,7 @@
                         translate:{
                           service_name: leg.serviceName,
                           route: leg.route,
-                          stops: leg.intermediateStops.length + 1
+                          stops: leg.intermediateStops?.length + 1
                         }
                       }}
                     </div>
@@ -162,7 +162,7 @@
                     {{ "oneclick.global.directions.arrive_by" | translate }}
                   </div>
                   <div class="leg-time-header-content-time">
-                    {{ itin.legs[itin.legs.length - 1].endTime | date:'shortTime' }}
+                    {{ itin.legs[itin.legs?.length - 1].endTime | date:'shortTime' }}
                   </div>
                 </ion-col>
               </ion-row>
