@@ -7,7 +7,7 @@
   <ion-grid>
     <ion-row>
       <ion-tabs *ngIf="trip">
-        <ion-tab-bar slot="top">
+        <ion-tab-bar slot="top" selectedTab="steps-tab">
           <ion-tab-button tab="steps-tab">
             <ion-icon mode="md" name="list"></ion-icon>
             <ion-label>{{ 'oneclick.pages.directions.steps_tab.header' | translate }}</ion-label>
@@ -17,7 +17,7 @@
             <ion-label>{{ 'oneclick.pages.directions.map_tab.header' | translate }}</ion-label>
           </ion-tab-button>
         </ion-tab-bar>
-        
+
     
       </ion-tabs>
       <!-- <ion-tabs *ngIf="trip" tabsPlacement="top" tabsHighlight="true">
