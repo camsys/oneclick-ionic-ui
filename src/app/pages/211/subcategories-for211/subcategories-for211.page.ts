@@ -30,6 +30,9 @@ export class SubcategoriesFor211Page implements OnInit {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.code = params.get('code');
 
+      // Fetch the subcategories based on the passed category code
+      this.getSubcategories(this.code);
+
       if (this.router.getCurrentNavigation().extras.state &&
           this.router.getCurrentNavigation().extras.state.category) {
 
