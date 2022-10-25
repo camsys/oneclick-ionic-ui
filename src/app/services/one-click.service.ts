@@ -256,7 +256,7 @@ export class OneClickService {
   }
 
   // Gets ReferNET 211 service details
-  get211ServiceDetails(serviceId: number, locationId: number): Observable<ServiceModel> {
+  get211ServiceDetails(serviceId: string, locationId: string): Observable<ServiceModel> {
     let url = encodeURI(
       this.oneClickUrl +
       'oneclick_refernet/services/details?' +
@@ -479,7 +479,7 @@ export class OneClickService {
 
   private unpackServiceResponse(response: any): OneClickServiceModel {
 
-    let data = response.json().data;
+    let data = response.data;
 
     if (data.transit) {
       return (data.transit as OneClickServiceModel);
