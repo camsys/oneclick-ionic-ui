@@ -38,3 +38,8 @@
 @import './theme/spinner';   // SPINNERS
 @import './theme/misc';      // MISCELLANEOUS STYLES AND PATCHES
 @import './theme/narrative';
+
+/*added to make pinch or browser zoom work for accessibility*/
+ion-content::part(scroll) {
+    touch-action: pan-y pinch-zoom;
+}
