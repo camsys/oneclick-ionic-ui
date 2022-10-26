@@ -32,8 +32,6 @@ export class TripResponsePage implements OnInit {
   @ViewChild('originResults') originResults: AutocompleteResultsComponent;
   @ViewChild('destinationResults') destinationResults: AutocompleteResultsComponent;
 
-  @ViewChild('orderBySelect') orderBySelect: IonSelect;
-
   origin: GooglePlaceModel = new GooglePlaceModel({});
   destination: GooglePlaceModel = new GooglePlaceModel({});
   basicModes:string[] = ['transit', 'car', 'taxi', 'lyft', 'bicycle'] // All available modes except paratransit
@@ -44,6 +42,7 @@ export class TripResponsePage implements OnInit {
   detailKeys: string[] = []; // Array of the non-null detail keys in the details hash
   arriveBy: boolean;
   departureDateTime: string;
+  departureDateTimeParam: string;
 
   itineraries: ItineraryModel[];
   orderBy: String;
@@ -74,7 +73,7 @@ export class TripResponsePage implements OnInit {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.trip_id = +params.get('trip_id');
       this.location_id = params.get('location_id');
-      
+
       if (this.router.getCurrentNavigation().extras.state) {
 
         this.arriveBy = this.router.getCurrentNavigation().extras.state.arriveBy;
@@ -82,7 +81,8 @@ export class TripResponsePage implements OnInit {
         this.tripRequest = this.router.getCurrentNavigation().extras.state.tripRequest;
         this.origin = this.router.getCurrentNavigation().extras.state.origin;
         this.destination = this.router.getCurrentNavigation().extras.state.destination;
-      } 
+        this.departureDateTimeParam = this.router.getCurrentNavigation().extras.state.departureDateTime;
+      }
     });
   }
 
@@ -121,10 +121,12 @@ export class TripResponsePage implements OnInit {
       // If an origin and destination are passed, make a trip request based on those
     } else if (this.origin && this.destination) {
 
+      if (this.departureDateTimeParam) this.departureDateTime = this.departureDateTimeParam;
+
       this.buildTripRequest(this.allModes);
 
       if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
-        
+
         this.router.navigate([TransportationEligibilityPage.routePath, this.trip_id], {
             state: {
               trip_request: this.tripRequest,
@@ -163,21 +165,21 @@ export class TripResponsePage implements OnInit {
   }
 
   // Orders the match list based on the passed string
-  orderItinList(orderBy: String) {
-    if(orderBy == "duration") {
+  orderItinList() {
+    if(this.orderBy == "duration") {
       this.orderByDuration();
-    } else if(orderBy == "walk_distance") {
+    } else if(this.orderBy == "walk_distance") {
       this.orderByWalkDistance();
-    } else if(orderBy == 'cost') {
+    } else if(this.orderBy == 'cost') {
       this.orderByCost();
-    } else if(orderBy == 'endTime') {
+    } else if(this.orderBy == 'endTime') {
       this.orderByEndTime();
-    } else if(orderBy == 'wait_time') {
+    } else if(this.orderBy == 'wait_time') {
       this.orderByWaitTime();
     } else {
       this.orderByParatransit();
     }
-    this.orderBy = orderBy;
+    //this.orderBy = orderBy;
   }
 
   orderByDuration()
@@ -281,7 +283,8 @@ export class TripResponsePage implements OnInit {
       }
       return itin;
     });
-    this.orderItinList('trip_type');
+    this.orderBy = "trip_type";
+    this.orderItinList();
 
     this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
     this.loader.hideLoader();
@@ -325,8 +328,8 @@ export class TripResponsePage implements OnInit {
     let tripResponse = this.tripResponse;
     this.router.navigate([ParatransitServicesPage.routePath, tripResponse.id], {
       state: {
-        trip_response: tripResponse, 
-        itinerary: itinerary 
+        trip_response: tripResponse,
+        itinerary: itinerary
       }
     });
   }

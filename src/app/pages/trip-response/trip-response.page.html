@@ -34,8 +34,7 @@
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col col-sm-3 text-center
-               (click)="tripDatepicker.open()">
+      <ion-col col-sm-3 text-center>
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
         <responsive-datepicker #tripDatepicker
@@ -44,8 +43,7 @@
         </responsive-datepicker>
 
       </ion-col>
-      <ion-col col-sm-3 text-center
-               (click)="tripTimepicker.open()">
+      <ion-col col-sm-3 text-center>
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
         <responsive-timepicker #tripTimepicker
@@ -74,64 +72,30 @@
                         (onSelect)="destinationSearch.chooseItem($event); updateTransportationOptionsButton();">
   </autocomplete-results>
 
-  <!-- PLAN TRIP BUTTON -->
   <ion-row text-center id="find-transportation-button-container">
-    <!--<ion-row>-->
-      <!--<ion-col offset-sm-3 col-sm-4>-->
-        <!--<button ion-button ion-start round-->
-                <!--class="lynx-button-primary"-->
-                <!--id="transportation-options-button"-->
-                <!--*ngIf="originSearch.place && destinationSearch.place"-->
-                <!--[disabled]="!can_plan_trips"-->
-                <!--(click)="findTransportation(originSearch.place, destinationSearch.place)">-->
-          <!--{{ "oneclick.pages.trip_response.transportation_button" | translate }}-->
-        <!--</button>-->
-        <!--<button ion-button ion-end round default-->
-                <!--class="lynx-button-primary mode-trip-plan-button"-->
-                <!--(click)="openOtherTransportationOptions()">-->
-          <!--{{ "oneclick.global.modes.find_other_options" | translate }}-->
-        <!--</button>-->
-      <!--</ion-col>-->
-      <!--<ion-col col-sm-2>-->
-        <!--<ion-select class="select-full-width" [(ngModel)]="orderBy" (ionChange)="orderItinList($event)" #orderBySelect>-->
-          <!--<ion-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-option>-->
-          <!--<ion-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-option>-->
-          <!--<ion-option value="duration">{{"sort_by" | translate}} {{"travel_time_sorter" | translate }}</ion-option>-->
-          <!--<ion-option value="endTime">{{"sort_by" | translate}} {{ "arrival_time_sorter" | translate }}</ion-option>-->
-          <!--<ion-option value="wait_time">{{"sort_by" | translate}} {{"wait_time_sorter" | translate}}</ion-option>-->
-          <!--<ion-option value="walk_distance">{{"sort_by" | translate}} {{"walk_distance_sorter" | translate}}</ion-option>-->
-        <!--</ion-select>-->
-      <!--</ion-col>-->
-    <!--</ion-row>-->
 
     <ion-button ion-start round
-            class="lynx-button-primary"
-            id="transportation-options-button"
-            *ngIf="originSearch.place && destinationSearch.place"
-            [disabled]="!can_plan_trips"
-            (click)="findTransportation(originSearch.place, destinationSearch.place)">
-      {{ "oneclick.pages.trip_response.transportation_button" | translate }}
+      class="lynx-button-primary"
+      id="transportation-options-button"
+      *ngIf="originSearch.place && destinationSearch.place"
+      [disabled]="!can_plan_trips"
+      (click)="findTransportation(originSearch.place, destinationSearch.place)">
+    {{ "oneclick.pages.trip_response.transportation_button" | translate }}
     </ion-button>
     <ion-button ion-end round default
             class="lynx-button-primary mode-trip-plan-button"
             (click)="openOtherTransportationOptions()">
       {{ "oneclick.global.modes.find_other_options" | translate }}
     </ion-button>
-    <ion-row>
-      <ion-col col-sm-12>
-        <ion-select [(ngModel)]="orderBy" (ionChange)="orderItinList($event)" #orderBySelect>
-          <ion-select-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-select-option>
-          <ion-select-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-select-option>
-          <ion-select-option value="duration">{{"sort_by" | translate}} {{"travel_time_sorter" | translate }}</ion-select-option>
-          <ion-select-option value="endTime">{{"sort_by" | translate}} {{ "arrival_time_sorter" | translate }}</ion-select-option>
-          <ion-select-option value="wait_time">{{"sort_by" | translate}} {{"wait_time_sorter" | translate}}</ion-select-option>
-          <ion-select-option value="walk_distance">{{"sort_by" | translate}} {{"walk_distance_sorter" | translate}}</ion-select-option>
-        </ion-select>
-      </ion-col>
-    </ion-row>
 
-
-
+    <ion-select [(ngModel)]="orderBy" (ionChange)="orderItinList()">
+      <ion-select-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-select-option>
+      <ion-select-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-select-option>
+      <ion-select-option value="duration">{{"sort_by" | translate}} {{"travel_time_sorter" | translate }}</ion-select-option>
+      <ion-select-option value="endTime">{{"sort_by" | translate}} {{ "arrival_time_sorter" | translate }}</ion-select-option>
+      <ion-select-option value="wait_time">{{"sort_by" | translate}} {{"wait_time_sorter" | translate}}</ion-select-option>
+      <ion-select-option value="walk_distance">{{"sort_by" | translate}} {{"walk_distance_sorter" | translate}}</ion-select-option>
+    </ion-select>
   </ion-row>
 
   <ion-grid>
