@@ -28,12 +28,6 @@ export class ServiceFor211DetailPage implements OnInit {
   static routePath:string = '/service_detail';
 
 
-  @ViewChild('originSearch') originSearch: PlaceSearchComponent;
-  @ViewChild('destinationSearch') destinationSearch: PlaceSearchComponent;
-
-  @ViewChild('originResults') originResults: AutocompleteResultsComponent;
-  @ViewChild('destinationResults') destinationResults: AutocompleteResultsComponent;
-
   service: ServiceModel = {} as ServiceModel;
   origin: GooglePlaceModel = new GooglePlaceModel({});
   destination: GooglePlaceModel = new GooglePlaceModel({});
@@ -68,8 +62,7 @@ export class ServiceFor211DetailPage implements OnInit {
               public modalCtrl: ModalController,
               private translate: TranslateService,
               private loader: LoaderService,
-              public exNav: ExternalNavigationService,
-              private location: Location) {
+              public exNav: ExternalNavigationService) {
 
   }
   
@@ -77,6 +70,8 @@ export class ServiceFor211DetailPage implements OnInit {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.service_id = params.get('service_id'); 
       this.location_id = params.get('location_id');
+
+      console.log("BECKY state servicefor211detail", this.router.getCurrentNavigation().extras.state)
 
       if (this.router.getCurrentNavigation().extras.state) {
         let state = this.router.getCurrentNavigation().extras.state;
@@ -88,6 +83,7 @@ export class ServiceFor211DetailPage implements OnInit {
         this.destination = state.destination;
         this.departureDateTime = state.departureDateTime;
       }
+
     });
   }
 
@@ -109,9 +105,13 @@ export class ServiceFor211DetailPage implements OnInit {
 
     // If a service_id and location_id are passed, get its details and load it into the page
     if(this.service_id && this.location_id) {
+      console.log("BECKY service_id & location_id=", this.service_id, this.location_id)
       this.oneClick
-        .get211ServiceDetails(+this.service_id, +this.location_id)
-        .subscribe((svc) => this.loadServiceDetails(svc));
+        .get211ServiceDetails(this.service_id, this.location_id)
+        .subscribe((svc) => {
+          console.log("BECKY got svc=", svc)
+          this.loadServiceDetails(svc)
+        });
 
       // If a service is passed in the navParams, load it onto the page
     } else if (this.service) {
@@ -164,9 +164,9 @@ export class ServiceFor211DetailPage implements OnInit {
     // }
   }
 
-  placeSearchChanged() {
-    this.changeDetector.markForCheck();
-  }
+  // placeSearchChanged() {
+  //   this.changeDetector.markForCheck();
+  // }
 
   // Populates the URL based on the trip and service ids
   // updateURL() {
@@ -225,7 +225,7 @@ export class ServiceFor211DetailPage implements OnInit {
       // Update destination address components with the Refernet returned service's address components
       this.destination.setAddressComponents(service.address_components);
 
-      this.updateOriginDestinationSearch()
+      //this.updateOriginDestinationSearch()
     }
 
     // Update the URL now that the service ID is present (10/12/22 doesn't seem to actually do anything so remove)
@@ -315,10 +315,10 @@ export class ServiceFor211DetailPage implements OnInit {
   //   this.destinationSearch.setPlace(this.destination);
   // }
 
-  updateOriginDestinationSearch() {
-    this.originSearch.setPlace(this.origin);
-    this.destinationSearch.setPlace(this.destination);
-  }
+  // updateOriginDestinationSearch() {
+  //   this.originSearch.setPlace(this.origin);
+  //   this.destinationSearch.setPlace(this.destination);
+  // }
 
   // Returns duration in seconds for the given mode
   durationFor(mode:string): number {
