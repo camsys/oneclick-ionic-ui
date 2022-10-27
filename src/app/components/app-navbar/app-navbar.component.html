@@ -10,8 +10,8 @@
       <ion-title class="header-title">{{headerTitle}}</ion-title>
 
       <ion-buttons slot="end">
-        <ion-button class="lynx-button-link nav-icon-button bar-button-menutoggle" (click)="openLanguageSelectorModal()">
-          <ion-icon class="padded" name="globe"></ion-icon> 
+        <ion-button aria-label="language translation selection" class="lynx-button-link nav-icon-button bar-button-menutoggle" (click)="openLanguageSelectorModal()">
+          <ion-icon aria-hidden="true" class="padded" name="globe"></ion-icon> 
           {{ "oneclick.global.languages.native." + i18n.currentLocale() | translate }}
         </ion-button>
         <ion-menu-button auto-hide="false"></ion-menu-button>
