@@ -12,20 +12,20 @@
             (click)="viewParatransitOptions()">
       {{ "oneclick.pages.transportation_eligibility.plan_trip_button" | translate }}
     </ion-button>
-    <ion-button item-end middle round class="lynx-button-primary">
+    <div item-end middle round class="lynx-button-primary">
       <ion-checkbox [(ngModel)]="user_preferences_disabled"
                     [checked]="true"
                     (ionChange)="storeUserPreferencesDisabledInSession()">
       </ion-checkbox>
       {{"oneclick.pages.session_user_preference_disabled_text" | translate }}
+      
       <button class="transportation-eligibility-info-button" (click)="showRegistrationPopup()">
         <ion-icon
-          class="ion-md-information-circle info-white"
+          class="ion-md-information-circle info-blue"
           name="information-circle"
-          (click)="showRegistrationPopup"
         ></ion-icon>
       </button>
-    </ion-button>
+    </div>
   </div>
 
   <!-- ELIGIBILITIES -->
@@ -102,7 +102,7 @@
             (click)="viewParatransitOptions()">
       {{ "oneclick.pages.transportation_eligibility.plan_trip_button" | translate }}
     </ion-button>
-    <ion-button item-end middle round class="lynx-button-primary">
+    <div item-end middle round class="lynx-button-primary">
       <ion-checkbox [(ngModel)]="user_preferences_disabled"
                     [checked]="true"
                     (ionChange)="storeUserPreferencesDisabledInSession()">
@@ -110,12 +110,11 @@
       {{"oneclick.pages.session_user_preference_disabled_text" | translate }}
       <button class="transportation-eligibility-info-button" (click)="showRegistrationPopup()">
         <ion-icon
-          class="ion-md-information-circle info-white"
+          class="ion-md-information-circle info-blue"
           name="information-circle"
-          (click)="showRegistrationPopup"
         ></ion-icon>
       </button>
-    </ion-button>
+    </div>
   </div>
 
 </ion-content>
