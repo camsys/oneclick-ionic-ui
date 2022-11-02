@@ -1,9 +1,20 @@
 <!-- Generated template for the PlaceSearchComponent component -->
-<ion-searchbar  [value]="query"
-                [debounce]="500" 
-                (ionChange)="handleSearchChange($event)"
-                [showClearButton]="always"
-                [placeholder]="placeholder"
-                (ionFocus)="ionFocus()"
-                (ionBlur)="ionBlur()">
-</ion-searchbar>
+<search (clear)="clear()">
+    <input [formControl]="searchControl" 
+        type="search"
+        class="input-field"
+        [class.has-focus]="hasFocus"
+        [value]="query"
+        [placeholder]="placeholder"
+        (focus)="ionFocus()"
+        (blur)="ionBlur()"
+        aria-autocomplete="list"
+        [attr.aria-invalid]="isInvalid"
+        [attr.aria-controls]="resultsListId"
+        [attr.aria-expanded]="resultsExpanded"
+        aria-haspopup="listbox"
+        attr.aria-label="{{uniqueLabel}}"
+        [attr.aria-activedescendant]="activeResultId"
+        role="combobox"
+    />
+</search>

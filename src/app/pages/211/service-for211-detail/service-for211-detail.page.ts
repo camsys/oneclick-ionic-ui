@@ -71,8 +71,6 @@ export class ServiceFor211DetailPage implements OnInit {
       this.service_id = params.get('service_id'); 
       this.location_id = params.get('location_id');
 
-      console.log("BECKY state servicefor211detail", this.router.getCurrentNavigation().extras.state)
-
       if (this.router.getCurrentNavigation().extras.state) {
         let state = this.router.getCurrentNavigation().extras.state;
 
@@ -105,11 +103,9 @@ export class ServiceFor211DetailPage implements OnInit {
 
     // If a service_id and location_id are passed, get its details and load it into the page
     if(this.service_id && this.location_id) {
-      console.log("BECKY service_id & location_id=", this.service_id, this.location_id)
       this.oneClick
         .get211ServiceDetails(this.service_id, this.location_id)
         .subscribe((svc) => {
-          console.log("BECKY got svc=", svc)
           this.loadServiceDetails(svc)
         });
 

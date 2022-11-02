@@ -6,20 +6,27 @@
 
     <div id="origin-search-container">
       <place-search #originSearch
-                    placeholder="{{ origin.label() }}"
-                    (onArrowDown)="originResults.focus()"
-                    (onFocus)="originResults.show()"
-                    (onFocus)="destinationResults.hide()"
+                    uniqueLabel="Origin"
+                    resultsListId="origin-results"
+                    [isInvalid]="originInvalid"
+                    placeholder="{{ origin.label() }}"(onArrowDown)="originResults.focus()"
+                    (onFocus)="originResults.show(); destinationResults.hide()"
+                    (onBlur)="originResults.hide()"
+                    (onSelect)="originInvalid = false"
                     (onChange)="placeSearchChanged()">
       </place-search>
     </div>
 
     <div id="destination-search-container" [hidden]="viewType === 'services'">
       <place-search #destinationSearch
+                    uniqueLabel="Destination"
+                    resultsListId="destination-results"
+                    [isInvalid]="destinationInvalid"
                     placeholder="{{ destination.label() }}"
                     (onArrowDown)="destinationResults.focus()"
-                    (onFocus)="destinationResults.show()"
-                    (onFocus)="originResults.hide()"
+                    (onFocus)="destinationResults.show(); originResults.hide();"
+                    (onBlur)="destinationResults.hide();"
+                    (onSelect)="destinationInvalid = false"
                     (onChange)="placeSearchChanged()">
       </place-search>
     </div>
@@ -28,7 +35,7 @@
     <ion-row class="trip-date-row">
       <ion-col col-sm-6 text-center>
         <ion-item>
-          <ion-select id="arriveBySelector" [(ngModel)]="arriveBy" (ionChange)="updateTransportationOptionsButton()">
+          <ion-select id="arriveBySelector" value="{{arriveBy}}" (ionChange)="arriveBySelectChanged($event); updateTransportationOptionsButton()">
             <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
             <ion-select-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-select-option>
           </ion-select>
@@ -39,7 +46,7 @@
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
         <responsive-datepicker #tripDatepicker
                                [date]="departureDateTime"
-                               (change)="updateDepartureDateTime($event);updateTransportationOptionsButton();">
+                               (change)="updateDate($event); updateTransportationOptionsButton();">
         </responsive-datepicker>
 
       </ion-col>
@@ -48,7 +55,7 @@
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
         <responsive-timepicker #tripTimepicker
                                [time]="departureDateTime"
-                               (change)="updateDepartureDateTime($event);updateTransportationOptionsButton();">
+                               (change)="updateTime($event); updateTransportationOptionsButton();">
         </responsive-timepicker>
 
       </ion-col>
@@ -64,12 +71,16 @@
 
   <!-- ORIGIN AND DESTINATION AUTOCOMPLETE RESULTS LISTS -->
   <autocomplete-results #originResults
-                        [items]="originSearch.autocompleteItems"
-                        (onSelect)="originSearch.chooseItem($event); updateTransportationOptionsButton();">
+    [items]="originSearch.autocompleteItems"
+    uniqueId="origin-results"
+    (onChangeFocus)="originSearch.changeAriaFocusItem($event)"
+    (onSelect)="originSearch.chooseItem($event, viewType); updateTransportationOptionsButton();">
   </autocomplete-results>
   <autocomplete-results #destinationResults
-                        [items]="destinationSearch.autocompleteItems"
-                        (onSelect)="destinationSearch.chooseItem($event); updateTransportationOptionsButton();">
+    [items]="destinationSearch.autocompleteItems"
+    uniqueId="destination-results"
+    (onChangeFocus)="destinationSearch.changeAriaFocusItem($event)"
+    (onSelect)="destinationSearch.chooseItem($event, viewType); updateTransportationOptionsButton();">
   </autocomplete-results>
 
   <ion-row text-center id="find-transportation-button-container">
@@ -77,8 +88,6 @@
     <ion-button ion-start round
       class="lynx-button-primary"
       id="transportation-options-button"
-      *ngIf="originSearch.place && destinationSearch.place"
-      [disabled]="!can_plan_trips"
       (click)="findTransportation(originSearch.place, destinationSearch.place)">
     {{ "oneclick.pages.trip_response.transportation_button" | translate }}
     </ion-button>
@@ -88,6 +97,7 @@
       {{ "oneclick.global.modes.find_other_options" | translate }}
     </ion-button>
 
+    <ion-item>
     <ion-select [(ngModel)]="orderBy" (ionChange)="orderItinList()">
       <ion-select-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-select-option>
       <ion-select-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-select-option>
@@ -96,6 +106,7 @@
       <ion-select-option value="wait_time">{{"sort_by" | translate}} {{"wait_time_sorter" | translate}}</ion-select-option>
       <ion-select-option value="walk_distance">{{"sort_by" | translate}} {{"walk_distance_sorter" | translate}}</ion-select-option>
     </ion-select>
+  </ion-item>
   </ion-row>
 
   <ion-grid>

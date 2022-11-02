@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { IonSelect, NavController } from '@ionic/angular';
+import { AlertController, IonSelect, NavController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { AutocompleteResultsComponent } from 'src/app/components/autocomplete-results/autocomplete-results.component';
 import { PlaceSearchComponent } from 'src/app/components/place-search/place-search.component';
 import { GooglePlaceModel } from 'src/app/models/google-place';
@@ -40,9 +41,15 @@ export class TripResponsePage implements OnInit {
   tripResponse: TripResponseModel = new TripResponseModel({});
   tripPlanSubscription: any;
   detailKeys: string[] = []; // Array of the non-null detail keys in the details hash
-  arriveBy: boolean;
+  arriveBy: boolean =true;
   departureDateTime: string;
   departureDateTimeParam: string;
+
+  departureDate: Date;
+  departureTime: Date;
+
+  originInvalid: boolean = false;
+  destinationInvalid: boolean = false;
 
   itineraries: ItineraryModel[];
   orderBy: String;
@@ -65,12 +72,16 @@ export class TripResponsePage implements OnInit {
               public changeDetector: ChangeDetectorRef,
               private helpers: HelpersService,
               private auth: AuthService,
-              private loader: LoaderService) {
+              private loader: LoaderService,
+              public alertController: AlertController,
+              private translate: TranslateService,
+              private changeDetectorRef: ChangeDetectorRef) {
 
   }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
+      
       this.trip_id = +params.get('trip_id');
       this.location_id = params.get('location_id');
 
@@ -82,6 +93,9 @@ export class TripResponsePage implements OnInit {
         this.origin = this.router.getCurrentNavigation().extras.state.origin;
         this.destination = this.router.getCurrentNavigation().extras.state.destination;
         this.departureDateTimeParam = this.router.getCurrentNavigation().extras.state.departureDateTime;
+
+        //to make sure select for depart/arrive updates correctly
+        this.changeDetectorRef.detectChanges();
       }
     });
   }
@@ -92,6 +106,7 @@ export class TripResponsePage implements OnInit {
 
     // If a Trip ID is present, use that to fetch the already-planned trip
     if (!this.trip_id && this.tripRequest) {
+      
       this.departureDateTime = this.tripRequest.trip.trip_time;
       this.arriveBy = this.tripRequest.trip.arrive_by;
 
@@ -150,7 +165,8 @@ export class TripResponsePage implements OnInit {
     } else {
       this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
     }
-
+    //to make sure select for arrive/depart updates correctly
+    this.changeDetectorRef.detectChanges();
   }
 
   // On page leave, unsubscribe from the trip plan call so it doesn't trigger errors when it resolves
@@ -158,6 +174,10 @@ export class TripResponsePage implements OnInit {
     if(this.tripPlanSubscription) {
       this.tripPlanSubscription.unsubscribe();
     }
+  }
+
+  arriveBySelectChanged(e) {
+    this.arriveBy = e.detail.value;
   }
 
   placeSearchChanged() {
@@ -256,8 +276,12 @@ export class TripResponsePage implements OnInit {
     })
   }
 
-  updateDepartureDateTime(time: string) {
-    this.departureDateTime = time;
+  updateDate(date: string) {
+    this.departureDate = new Date(date);
+  }
+
+  updateTime(time: string) {
+    this.departureTime = new Date(time);
   }
 
   updateTransportationOptionsButton() {
@@ -294,34 +318,55 @@ export class TripResponsePage implements OnInit {
   findTransportation(origin: GooglePlaceModel,
                      destination: GooglePlaceModel) {
 
-    this.can_plan_trips = false;
-
-    this.origin = new GooglePlaceModel(origin);
-    this.destination = new GooglePlaceModel(destination);
-
-
-    // Set origin and destination
-    this.tripRequest.trip.origin_attributes = this.origin.toOneClickPlace();
-    this.tripRequest.trip.destination_attributes = this.destination.toOneClickPlace();
-
-    // Set trip time to now by default, in ISO 8601 format
-    if (this.departureDateTime == undefined) {
-      this.tripRequest.trip.trip_time = new Date().toISOString();
-    } else {
-      this.tripRequest.trip.trip_time = this.departureDateTime;
+    if (!origin || !destination) {
+      if (!origin) this.originInvalid = true;
+      if (!destination) this.destinationInvalid = true;
+      this.alertController.create({
+        header: this.translate.instant("oneclick.global.missing_fields"),
+        message: this.translate.instant("oneclick.pages.user_locator.origin_destination_search.required"),
+        buttons: [this.translate.instant("oneclick.global.ok")],
+      }).then(alert => alert.present());
     }
+    else {
+      this.originInvalid = false;
+      this.destinationInvalid = false;
+      let combinedDateTime: Date = new Date(this.departureDateTime);
+      if (this.departureDate) {
+        combinedDateTime = new Date(this.departureDate);
+      }
+      if (this.departureTime) {
+        combinedDateTime.setHours(this.departureTime.getHours());
+        combinedDateTime.setMinutes(this.departureTime.getMinutes());
+      }
 
-    // Set arrive_by to true by default
-    this.tripRequest.trip.arrive_by = this.arriveBy;
+      this.can_plan_trips = false;
 
-    // Plan a trip and store the result.
-    // Once response comes in, update the UI with travel times and allow
-    // user to select a mode to view directions.
-    this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
-      .planTrip(this.tripRequest)
-      .subscribe((tripResponse) => {
-        this.loadTripResponse(tripResponse);
-      });
+      this.origin = new GooglePlaceModel(origin);
+      this.destination = new GooglePlaceModel(destination);
+
+      // Set origin and destination
+      this.tripRequest.trip.origin_attributes = this.origin.toOneClickPlace();
+      this.tripRequest.trip.destination_attributes = this.destination.toOneClickPlace();
+
+      // Set trip time to now by default, in ISO 8601 format
+      if (this.departureDateTime == undefined) {
+        this.tripRequest.trip.trip_time = new Date().toISOString();
+      } else {
+        this.tripRequest.trip.trip_time = this.helpers.dateISOStringWithTimeZoneOffset(combinedDateTime);
+      }
+
+      // Set arrive_by to true by default
+      this.tripRequest.trip.arrive_by = this.arriveBy;
+
+      // Plan a trip and store the result.
+      // Once response comes in, update the UI with travel times and allow
+      // user to select a mode to view directions.
+      this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
+        .planTrip(this.tripRequest)
+        .subscribe((tripResponse) => {
+          this.loadTripResponse(tripResponse);
+        });
+    }
   }
 
   viewParatransitOptions(itinerary: ItineraryModel) {

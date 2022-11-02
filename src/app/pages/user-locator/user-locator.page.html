@@ -6,22 +6,28 @@
   <ion-toolbar class="lynx-toolbar" text-center>
     <div id="origin-search-container">
       <place-search #originSearch
+                    uniqueLabel="Origin"
+                    resultsListId="origin-results"
+                    [isInvalid]="originInvalid"
                     placeholder="{{ 'oneclick.pages.user_locator.origin_search.placeholder_pending' | translate }}"
                     (onArrowDown)="originResults.focus()"
-                    (onFocus)="originResults.show()"
-                    (onFocus)="destinationResults.hide()"
-                    (onSelect)="centerMapOnPlace($event, 'origin')"
+                    (onFocus)="originResults.show(); destinationResults.hide()"
+                    (onBlur)="originResults.hide()"
+                    (onSelect)="originInvalid = false; centerMapOnPlace($event, 'origin')"
                     (onChange)="placeSearchChanged()">
       </place-search>
     </div>
 
     <div id="destination-search-container" [hidden]="viewType === 'services'">
       <place-search #destinationSearch
+                    unique-label="Destination"
+                    resultsListId="destination-results"
+                    [isInvalid]="destinationInvalid"
                     placeholder="{{ 'oneclick.pages.user_locator.destination_search.placeholder' | translate }}"
                     (onArrowDown)="destinationResults.focus()"
-                    (onFocus)="destinationResults.show()"
-                    (onFocus)="originResults.hide()"
-                    (onSelect)="centerMapOnPlace($event, 'destination')"
+                    (onFocus)="destinationResults.show(); originResults.hide();"
+                    (onBlur)="destinationResults.hide();"
+                    (onSelect)="destinationInvalid = false; centerMapOnPlace($event, 'destination')"
                     (onChange)="placeSearchChanged()">
       </place-search>
     </div>
@@ -30,7 +36,7 @@
     <ion-row class="trip-date-row" [hidden]="viewType === 'services'">
       <ion-col col-sm-6 text-center>
         <ion-item>
-          <ion-select id="arriveBySelector" [(ngModel)]="arriveBy">
+          <ion-select id="arriveBySelector" value="{{arriveBy}}" (ionChange)="arriveBySelectChanged($event)">
             <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
             <ion-select-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-select-option>
           </ion-select>
@@ -42,7 +48,7 @@
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
         <responsive-datepicker #tripDatepicker
                                [date]="departureDateTime"
-                               (change)="updateDepartureDateTime($event)">
+                               (change)="updateDate($event)">
         </responsive-datepicker>
 
       </ion-col>
@@ -51,7 +57,7 @@
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
         <responsive-timepicker #tripTimepicker
                                [time]="departureDateTime"
-                               (change)="updateDepartureDateTime($event)">
+                               (change)="updateTime($event)">
         </responsive-timepicker>
 
       </ion-col>
@@ -68,10 +74,14 @@
   <!-- ORIGIN AND DESTINATION AUTOCOMPLETE RESULTS LISTS -->
   <autocomplete-results #originResults
     [items]="originSearch.autocompleteItems"
+    uniqueId="origin-results"
+    (onChangeFocus)="originSearch.changeAriaFocusItem($event)"
     (onSelect)="originSearch.chooseItem($event, viewType)">
   </autocomplete-results>
   <autocomplete-results #destinationResults
     [items]="destinationSearch.autocompleteItems"
+    uniqueId="destination-results"
+    (onChangeFocus)="destinationSearch.changeAriaFocusItem($event)"
     (onSelect)="destinationSearch.chooseItem($event, viewType)">
   </autocomplete-results>
 
@@ -80,8 +90,7 @@
     <ion-button large round
             class="lynx-button-primary"
             id="find-services-button"
-            (click)="searchForServices(originSearch.place)"
-            *ngIf="!!userLocation || originSearch.place">
+            (click)="searchForServices(originSearch.place)">
       {{ "oneclick.pages.user_locator.resources_button" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
     </ion-button>
@@ -92,7 +101,6 @@
     <ion-button large round
             class="lynx-button-primary"
             id="find-transportation-button"
-            *ngIf="originSearch.place && destinationSearch.place"
             (click)="findTransportation(originSearch.place, destinationSearch.place)">
         {{ "oneclick.pages.user_locator.transportation_button" | translate }}
       <ion-icon pull-right name="arrow-forward"></ion-icon>
@@ -100,6 +108,6 @@
   </div>
 
   <!-- MAP CANVAS -->
-  <div id="user-locator-map-canvas" (click)="originSearch.clear()"></div>
+  <div id="user-locator-map-canvas" (click)="originSearch.clearAutocomplete()"></div>
 
 </ion-content>

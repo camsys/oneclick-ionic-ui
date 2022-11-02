@@ -1,6 +1,6 @@
 <ion-datetime-button datetime="dt-date"></ion-datetime-button>
 
-<ion-modal [keepContentsMounted]="true">
+<ion-modal keepContentsMounted="true">
   <ng-template>
     <ion-datetime id="dt-date"
               showDefaultButtons="true"
@@ -8,5 +8,7 @@
               preferWheel="true"
               yearValues="{{ yearValues() }}"
               [(value)]="date"
-              (ionChange)="dateChange()">
+              (ionChange)="dateChange($event)">
 </ion-datetime>
+</ng-template>
+</ion-modal>
