@@ -1,11 +1,13 @@
 <ion-datetime-button datetime="dt-time"></ion-datetime-button>
 
-<ion-modal [keepContentsMounted]="true">
+<ion-modal keepContentsMounted="true">
   <ng-template>
     <ion-datetime id="dt-time"
               showDefaultButtons="true"
               presentation="time"
               preferWheel="true"
               [(value)]="time"
-              (ionChange)="timeChange()">
+              (ionChange)="timeChange($event)">
 </ion-datetime>
+</ng-template>
+</ion-modal>

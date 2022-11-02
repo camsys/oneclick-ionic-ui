@@ -1,12 +1,16 @@
 <div class="lynx-autocomplete-results-container"
-     [hidden]="hidden || items.length <= 0"
-     (click)="hide()">
-  <ion-list class="lynx-autocomplete-results">
+     [hidden]="hidden || items.length <= 0">
+  <ion-list class="lynx-autocomplete-results"
+      role="listbox"
+      [id]="uniqueId">
     <ion-item *ngFor="let item of items; let i = index"
-              tappable text-wrap
-              [class.focus]="focusItem === i"
+              tappable text-wrap button
+              role="option"
+              [attr.aria-selected]="focusIndex === i"
+              [id]="uniqueId +'-item' + i"
+              [class.focus]="focusIndex === i"
               (click)="selectItem(item, $event)">
       <b *ngIf="item.title">{{item.title}}</b><b *ngIf="item.title && item.label && distinctTitleAndLabel(item)">: </b><span *ngIf="!item.title || distinctTitleAndLabel(item)">{{ item.label }}</span>
-    </ion-item>
-  </ion-list>
+</ion-item>
+</ion-list>
 </div>

@@ -28,8 +28,8 @@ export class ResponsiveTimepickerComponent implements OnInit {
 
 
   // Whenever the time is changed, emit a change event with the new value.
-  timeChange() {
-    this.change.emit(this.time);
+  timeChange(e) {
+    this.change.emit(e.detail.value);
   }
 
   // Compares date objects to minute-level precision. Assumes same month and year.

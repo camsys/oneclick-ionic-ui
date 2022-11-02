@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
-import { Platform, ToastController } from '@ionic/angular';
+import { AlertController, Platform, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AutocompleteResultsComponent } from 'src/app/components/autocomplete-results/autocomplete-results.component';
 import { PlaceSearchComponent } from 'src/app/components/place-search/place-search.component';
@@ -38,6 +38,11 @@ export class UserLocatorPage implements OnInit {
   //myLatLng: google.maps.LatLng = null;
   arriveBy: boolean;
   departureDateTime: string;
+  departureDate: Date;
+  departureTime: Date;
+
+  originInvalid: boolean = true;
+  destinationInvalid: boolean = true;
 
   constructor(public router: Router,
               private route: ActivatedRoute,
@@ -48,7 +53,8 @@ export class UserLocatorPage implements OnInit {
               private changeDetector: ChangeDetectorRef,
               private auth: AuthService,
               private translate: TranslateService,
-              public toastCtrl: ToastController
+              public toastCtrl: ToastController,
+              public alertController: AlertController
             ) {
 
     this.map = null;
@@ -69,6 +75,10 @@ export class UserLocatorPage implements OnInit {
     // Initialize the map once device is ready
     this.platform.ready()
     .then(() => this.initializeMap());
+  }
+
+  arriveBySelectChanged(e) {
+    this.arriveBy = e.detail.value;
   }
 
   // Sets up the google map and geolocation services
@@ -212,28 +222,64 @@ export class UserLocatorPage implements OnInit {
 
   // Goes on to the categories/services page, using the given location as the center point
   searchForServices(place: GooglePlaceModel){
-    this.storePlaceInSession(place);
-    this.storeDepartureDateTime(this.helpers.dateISOStringWithTimeZoneOffset(new Date()));
-    this.storeArriveBy(this.arriveBy);
-    this.router.navigate([CategoriesFor211Page.routePath]);
+    if (!place) {
+      this.originInvalid = true;
+      this.alertController.create({
+        header: this.translate.instant("oneclick.global.missing_fields"),
+        message: this.translate.instant("oneclick.pages.user_locator.origin_search.required"),
+        buttons: [this.translate.instant("oneclick.global.ok")],
+      }).then(alert => alert.present());
+    }
+    else {
+      this.originInvalid = false;
+      this.storePlaceInSession(place);
+      this.storeDepartureDateTime(this.helpers.dateISOStringWithTimeZoneOffset(new Date()));
+      this.storeArriveBy(this.arriveBy);
+      this.router.navigate([CategoriesFor211Page.routePath]);
+    }
   }
 
-  updateDepartureDateTime(time: string) {
-    this.departureDateTime = time;
+  updateDate(date: string) {
+    this.departureDate = new Date(date);
+  }
+
+  updateTime(time: string) {
+    this.departureTime = new Date(time);
   }
 
   // Plans a trip based on origin and destination
   findTransportation(origin: GooglePlaceModel,
                      destination: GooglePlaceModel) {
-    this.router.navigate([TripResponsePage.routePath], {
-      state: {
-        origin: origin,
-        destination: destination,
-        departureDateTime: this.departureDateTime,
-        arriveBy: this.arriveBy 
+    if (!origin || !destination) {
+      if (!origin) this.originInvalid = true;
+      if (!destination) this.destinationInvalid = true;
+      this.alertController.create({
+        header: this.translate.instant("oneclick.global.missing_fields"),
+        message: this.translate.instant("oneclick.pages.user_locator.origin_destination_search.required"),
+        buttons: [this.translate.instant("oneclick.global.ok")],
+      }).then(alert => alert.present());
+    }
+    else {
+      this.originInvalid = false;
+      this.destinationInvalid = false;
+      let combinedDateTime: Date = new Date(this.departureDateTime);
+      if (this.departureDate) {
+        combinedDateTime = new Date(this.departureDate);
       }
-    });
+      if (this.departureTime) {
+        combinedDateTime.setHours(this.departureTime.getHours());
+        combinedDateTime.setMinutes(this.departureTime.getMinutes());
+      }
 
+      this.router.navigate([TripResponsePage.routePath], {
+        state: {
+          origin: origin,
+          destination: destination,
+          departureDateTime: this.helpers.dateISOStringWithTimeZoneOffset(combinedDateTime),
+          arriveBy: this.arriveBy 
+        }
+      });
+    }
   }
 
   // After device geolocation, update the userLocation property
@@ -255,7 +301,7 @@ export class UserLocatorPage implements OnInit {
   }
 
   // Centers map on a place
-  private centerMapOnPlace(place: GooglePlaceModel, originOrDestination: string) {
+  centerMapOnPlace(place: GooglePlaceModel, originOrDestination: string) {
     place = new GooglePlaceModel(place);
     if(originOrDestination == 'origin') {
       this.zoomToOriginLocation(new google.maps.LatLng(place.lat(), place.lng()));

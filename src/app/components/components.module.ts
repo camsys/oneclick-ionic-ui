@@ -11,11 +11,14 @@ import { ServiceDetailsComponent } from './service-details/service-details.compo
 import { ExternalLinkComponent } from './external-link/external-link.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { SharedModule } from '../shared/shared.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
     imports: [
         CommonModule,
         IonicModule,
+        ReactiveFormsModule,
         RouterModule,
         PipesModule,
         SharedModule
@@ -27,7 +30,8 @@ import { SharedModule } from '../shared/shared.module';
         ResponsiveDatepickerComponent,
         ResponsiveTimepickerComponent,
         ServiceDetailsComponent,
-        AutocompleteResultsComponent
+        AutocompleteResultsComponent,
+        SearchComponent
     ],
     exports: [
         AppNavbarComponent,
@@ -36,7 +40,8 @@ import { SharedModule } from '../shared/shared.module';
         ResponsiveDatepickerComponent,
         ResponsiveTimepickerComponent,
         ServiceDetailsComponent,
-        AutocompleteResultsComponent
+        AutocompleteResultsComponent,
+        SearchComponent
     ]
 })
 export class ComponentsModule {

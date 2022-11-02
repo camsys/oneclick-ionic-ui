@@ -72,8 +72,8 @@ export class ResponsiveDatepickerComponent implements OnInit {
   // }
 
   // Whenever the date is changed, emit a change event with the new value.
-  dateChange() {
-    this.change.emit(this.date);
+  dateChange(e) {
+    this.change.emit(e.detail.value);
   }
 
   // Gets a list of the next few years for populating the datepicker
