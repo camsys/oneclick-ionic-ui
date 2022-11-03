@@ -15,7 +15,7 @@
   --lynxWhiteRGB:    244, 244, 244;
   --lynxLtGray:      #dbdbdb; //darken(#f4f4f4, 10%);
   --lynxMdGray:      darken(var(--lynxWhite), 35%);
-  --lynxDkGray:      darken(var(--lynxWhite), 60%);
+  --lynxDkGray:      #5b5b5b; //darken(var(--lynxWhite), 60%);
   --lynxShadow:      rgba(var(--lynxBlackRGB), 0.3);//transparentize($lynxBlack, 0.7);
   --lynxTranslucentPink: rgba(var(--lynxPinkRGB), 0.8);//transparentize($lynxPink, 0.2);
 
