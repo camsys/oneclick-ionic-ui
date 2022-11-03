@@ -3,7 +3,6 @@
     z-index: 1000;
     width: 100%;
     height: 100%;
-    background-color: var(--lynxShadow);
 
     //@include offset-sm-1;
     //@include offset-md-2;
@@ -12,13 +11,14 @@
   ion-list.lynx-autocomplete-results {
 
     ion-item {
+      --background: var(--lynxShadow);
       // If item is hovered over, selected, etc. highlight it.
       &:hover,
       &:focus,
       &:active,
       &.focus {
-        //--background: var(--lynxLtGray);
-        --background: gray;
+        --background: var(--lynxLtGray);
+        //--background: gray;
       }
 
     }

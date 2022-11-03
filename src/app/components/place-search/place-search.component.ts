@@ -87,7 +87,7 @@ export class PlaceSearchComponent implements OnInit {
   updateAddressSearch(query) {
 
     // Only get 1-Click places if a query is present.
-    if(query && query.length > 0) {
+    if(query && query.trim().length > 0) {
       this.oneClickProvider
       .getPlaces(query)
       .subscribe(places => {
@@ -101,7 +101,7 @@ export class PlaceSearchComponent implements OnInit {
     }
 
     // Only get google places if a query is present.
-    if(query && query.length > 0) {
+    if(query && query.trim().length > 0) {
       this.geoServiceProvider
       .getGooglePlaces(query)
       .subscribe(places => {

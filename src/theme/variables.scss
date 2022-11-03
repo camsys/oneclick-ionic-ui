@@ -2,34 +2,44 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
+
 :root {
   /* ONECLICK COLOR VARIABLES */
 
+  --lynxOrange:      #f6b77c;
   --lynxPink:        #005191; //##DB0F7D;
+  --lynxPinkRGB:     0, 81, 145;
   --lynxDarkPink:    #133182; //#9A0959;
   --lynxBlack:       #000000;
   --lynxWhite:       #f4f4f4;
-  --lynxLtGray:      darken(var(--lynxWhite), 10%);
+  --lynxWhiteRGB:    244, 244, 244;
+  --lynxLtGray:      #dbdbdb; //darken(#f4f4f4, 10%);
   --lynxMdGray:      darken(var(--lynxWhite), 35%);
   --lynxDkGray:      darken(var(--lynxWhite), 60%);
-  --lynxShadow:      transparentize(var(--lynxBlack), 0.7);
-  --lynxTranslucentPink: transparentize(var(--lynxPink), 0.2);
+  --lynxShadow:      rgba(var(--lynxBlackRGB), 0.3);//transparentize($lynxBlack, 0.7);
+  --lynxTranslucentPink: rgba(var(--lynxPinkRGB), 0.8);//transparentize($lynxPink, 0.2);
 
   /*Ionic theme*/
   /** primary **/
-  --ion-color-primary: #488aff;
-	--ion-color-primary-rgb: 72,138,255;
-	--ion-color-primary-contrast: #000000;
-	--ion-color-primary-contrast-rgb: 0,0,0;
-	--ion-color-primary-shade: #3f79e0;
-	--ion-color-primary-tint: #5a96ff;
+  --ion-color-primary: #005191;
+	--ion-color-primary-rgb: 0,81,145;
+	--ion-color-primary-contrast: #ffffff;
+	--ion-color-primary-contrast-rgb: 255,255,255;
+	--ion-color-primary-shade: #004780;
+	--ion-color-primary-tint: #1a629c;
+  // --ion-color-primary: #488aff;
+	// --ion-color-primary-rgb: 72,138,255;
+	// --ion-color-primary-contrast: #000000;
+	// --ion-color-primary-contrast-rgb: 0,0,0;
+	// --ion-color-primary-shade: #3f79e0;
+	// --ion-color-primary-tint: #5a96ff;
 
-	--ion-color-secondary: #32db64;
-	--ion-color-secondary-rgb: 50,219,100;
+	--ion-color-secondary: #f4f4f4;
+	--ion-color-secondary-rgb: 244,244,244;
 	--ion-color-secondary-contrast: #000000;
 	--ion-color-secondary-contrast-rgb: 0,0,0;
-	--ion-color-secondary-shade: #2cc158;
-	--ion-color-secondary-tint: #47df74;
+	--ion-color-secondary-shade: #d7d7d7;
+	--ion-color-secondary-tint: #f5f5f5;
 
   /** tertiary NOT USED**/
   --ion-color-tertiary: #5260ff;

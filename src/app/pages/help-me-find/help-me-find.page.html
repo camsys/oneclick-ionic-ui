@@ -4,7 +4,7 @@
   <app-navbar></app-navbar>
 </ion-header>
 
-<ion-content fullscreen padding [style.background-image]="awsImageLocation">
+<ion-content fullscreen padding>
   <ion-grid>
     <ion-row align-items-center text-center center>
       <ion-col align-self-center>
@@ -26,15 +26,15 @@
 
         <ion-card class="lynx-card-help-me-find">
 
-          <ion-card-header text-wrap text-center>
+          <ion-card-header class="ion-text-center ion-text-wrap">
 
             <img class="lynx-logo-md" src="assets/img/211-ride@1x.png" alt="logo" />
-            {{ "oneclick.pages.home.welcome_message_1" | translate }}
+            <ion-card-title>{{ "oneclick.pages.home.welcome_message_1" | translate }}</ion-card-title>
 
           </ion-card-header>
 
 
-          <ion-card-content text-wrap text-center>
+          <ion-card-content class="ion-text-center ion-text-wrap">
 
             <div class="lynx-welcome-message-2">
             {{ "oneclick.pages.home.welcome_message_2" | translate }}
@@ -43,10 +43,8 @@
             <div class="lynx-help-me-find-buttons">
 
               <!-- TRANSPORTATION FINDER -->
-              <ion-button
-                      large round full
+              <ion-button shape="round" color="secondary" expand="full"
                       class="lynx-button-white"
-                      menuClose
                       (click)="openTransportationPage()">
                 {{ "oneclick.pages.home.transportation_button" | translate }}
               </ion-button>
@@ -56,10 +54,8 @@
               <br>
 
               <!-- 211 RESOURCES FINDER -->
-              <ion-button
-                      large round full
+              <ion-button shape="round" color="secondary" expand="full"
                       class="lynx-button-white"
-                      menuClose
                       (click)="openResourcesPage()">
                 <ion-row>
                 {{ "oneclick.pages.home.resources_button" | translate }}

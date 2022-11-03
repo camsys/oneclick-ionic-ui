@@ -24,7 +24,6 @@ export class HelpMeFindPage implements OnInit {
   alerts: Alert[];
   user: User;
 
-  awsImageLocation;
 
   constructor(public router: Router,
               private platform: Platform,
@@ -39,8 +38,7 @@ export class HelpMeFindPage implements OnInit {
   }
 
   ionViewDidLoad() {
-    this.awsImageLocation = this.sanitizer.bypassSecurityTrustStyle('url(' + '../assets/img/GettyImages-930896740_sized.png)');
-
+    
     // Wait until after platform is ready, so we have the user's preferred locale
     this.platform.ready().then(() => {
       this.oneClickProvider.getAlerts()

@@ -86,9 +86,9 @@
   </autocomplete-results>
 
   <!-- 211 SERVICE FINDER BUTTON -->
-  <div text-center id="find-services-button-container" *ngIf="viewType === 'services'">
-    <ion-button large round
-            class="lynx-button-primary"
+  <div id="find-services-button-container" *ngIf="viewType === 'services'"
+    class="ion-justify-content-center">
+    <ion-button shape="round" color="primary" class="ion-margin"
             id="find-services-button"
             (click)="searchForServices(originSearch.place)">
       {{ "oneclick.pages.user_locator.resources_button" | translate }}
@@ -97,13 +97,13 @@
   </div>
 
   <!-- PLAN TRIP BUTTON -->
-  <div text-center id="find-transportation-button-container" *ngIf="viewType === 'transportation'">
-    <ion-button large round
-            class="lynx-button-primary"
+  <div id="find-transportation-button-container" *ngIf="viewType === 'transportation'"
+  class="ion-justify-content-center">
+    <ion-button  shape="round" color="primary" class="ion-margin"
             id="find-transportation-button"
             (click)="findTransportation(originSearch.place, destinationSearch.place)">
         {{ "oneclick.pages.user_locator.transportation_button" | translate }}
-      <ion-icon pull-right name="arrow-forward"></ion-icon>
+      <ion-icon class="ion-padding-start" name="arrow-forward"></ion-icon>
     </ion-button>
   </div>
 

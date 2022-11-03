@@ -25,19 +25,20 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+
 /* oneclick project related themes */
-@import './theme/helpers';   // HELPER FUNCTIONS AND MIXINS
-@import './theme/menu';      // MENU
-@import './theme/bars';      // NAVBARS, TOOLBARS, AND TABS
-@import './theme/lists';     // LISTS
-@import './theme/forms';     // FORMS AND INPUTS
-@import './theme/buttons';   // BUTTONS
-@import './theme/badges';    // BADGES
-@import './theme/logos';     // LOGOS, ICONS, AND OTHER IMAGES
-@import './theme/alerts';    // TOASTS, POPUPS, MODALS, etc.
-@import './theme/spinner';   // SPINNERS
-@import './theme/misc';      // MISCELLANEOUS STYLES AND PATCHES
-@import './theme/narrative';
+// @import './theme/helpers';   // HELPER FUNCTIONS AND MIXINS
+// @import './theme/menu';      // MENU
+// @import './theme/bars';      // NAVBARS, TOOLBARS, AND TABS
+// @import './theme/lists';     // LISTS
+// @import './theme/forms';     // FORMS AND INPUTS
+//@import './theme/buttons';   // BUTTONS
+// @import './theme/badges';    // BADGES
+// @import './theme/logos';     // LOGOS, ICONS, AND OTHER IMAGES
+// @import './theme/alerts';    // TOASTS, POPUPS, MODALS, etc.
+// @import './theme/spinner';   // SPINNERS
+// @import './theme/misc';      // MISCELLANEOUS STYLES AND PATCHES
+// @import './theme/narrative';
 
 /*added to make pinch or browser zoom work for accessibility*/
 ion-content::part(scroll) {

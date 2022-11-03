@@ -1,3 +1,23 @@
+ion-toolbar {
+    --color: var(--lynxWhite);
+    --background: var(--lynxBlack);
+}
+
+
+.lynx-logo-sm {
+    display: block;
+    margin: 0 auto;
+    max-height: 2.6rem;
+    padding: 0;
+    width: auto;
+  }
+
+
+
+
+
+
+
 ion-title {
     flex: 1 0 auto;
     text-align: left;
@@ -18,13 +38,23 @@ a.nav-icon-button {
 
   
 ion-button.bar-button-menutoggle {
-    color: #f6b77c;
+    --color: var(--lynxOrange); 
+
+    &:hover,&:focus {
+        --color: var(--lynxWhite)
+    }
   }
 
-ion-button.nav-icon-button {
-    background: transparent;
-    margin: 0;
-}
+  ion-menu-button {
+    --color: var(--lynxOrange);
+    --color-hover: var(--lynxWhite);
+    --color-focused: var(--lynxWhite);
+  }
+
+// ion-button.nav-icon-button {
+//     background: transparent;
+//     margin: 0;
+// }
 
 .toolbar-content > ion-row > ion-col.col:nth-child(2) {
     margin-left: -22px;

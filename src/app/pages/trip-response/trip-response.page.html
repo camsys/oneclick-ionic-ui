@@ -85,13 +85,13 @@
 
   <ion-row text-center id="find-transportation-button-container">
 
-    <ion-button ion-start round
+    <ion-button round shape="round"
       class="lynx-button-primary"
       id="transportation-options-button"
       (click)="findTransportation(originSearch.place, destinationSearch.place)">
     {{ "oneclick.pages.trip_response.transportation_button" | translate }}
     </ion-button>
-    <ion-button ion-end round default
+    <ion-button shape="round"
             class="lynx-button-primary mode-trip-plan-button"
             (click)="openOtherTransportationOptions()">
       {{ "oneclick.global.modes.find_other_options" | translate }}

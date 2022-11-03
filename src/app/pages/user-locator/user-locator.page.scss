@@ -1,3 +1,6 @@
+ion-toolbar {
+  --background: var(--lynxPink);
+}
 
   #user-locator-map-canvas{
     width: 100%;
@@ -12,18 +15,20 @@
 
   #find-services-button-container,
   #find-transportation-button-container {
-    padding: size(2);
+    //padding: size(2);
     position: absolute;
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    //width: 100%;
     z-index: 500;
 
-    #find-services-button,
-    #find-transportation-button {
-      padding-right: size(1);
-      ion-icon {
-        margin-left: size(1);
-      }
-    }
+    // #find-services-button,
+    // #find-transportation-button {
+    //    padding-right: size(1);
+    //    ion-icon {
+    //      margin-left: size(1);
+    //    }
+    // }
   }
 
   ion-select#arriveBySelector {
@@ -31,6 +36,6 @@
     width: 100%;
   }
 
-  ion-select#arriveBySelector .select-text {
-    width: -webkit-fill-available;
-  }
+  // ion-select#arriveBySelector .select-text {
+  //   width: -webkit-fill-available;
+  // }

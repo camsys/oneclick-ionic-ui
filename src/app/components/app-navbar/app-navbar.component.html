@@ -1,6 +1,6 @@
 <ion-toolbar class="lynx-toolbar lynx-toolbar-black">
 
-      <ion-buttons slot="start" >
+      <ion-buttons *ngIf="!isHomePage()" slot="start" >
         <ion-back-button defaultHref="home"></ion-back-button>
         <a class="lynx-button-link header-logo-title nav-icon-button" routerLink="/home" routerDirection="forward">
           <img class="lynx-logo-sm"  src='assets/img/211-ride@1x.png' alt="211Ride Logo" />
@@ -10,8 +10,8 @@
       <ion-title class="header-title">{{headerTitle}}</ion-title>
 
       <ion-buttons slot="end">
-        <ion-button aria-label="language translation selection" class="lynx-button-link nav-icon-button bar-button-menutoggle" (click)="openLanguageSelectorModal()">
-          <ion-icon aria-hidden="true" class="padded" name="globe"></ion-icon> 
+        <ion-button mode="md" aria-label="language translation selection" class="bar-button-menutoggle" (click)="openLanguageSelectorModal()">
+          <ion-icon slot="start" aria-hidden="true" class="padded" name="globe"></ion-icon> 
           {{ "oneclick.global.languages.native." + i18n.currentLocale() | translate }}
         </ion-button>
         <ion-menu-button auto-hide="false"></ion-menu-button>
