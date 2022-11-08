@@ -1,9 +1,0 @@
-<!-- ionic datepicker for browsers (i.e. if native datepicker not available) -->
-<ion-datetime #browserDatepicker
-              [(displayFormat)]="dateTimeFormat"
-              [(pickerFormat)]="dateTimeFormat"
-              yearValues="{{yearValues()}}"
-              [(ngModel)]="date"
-              (ngModelChange)="dateChange()"
-              [(hidden)] = "hideBool">
-</ion-datetime>

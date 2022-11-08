@@ -1,0 +1,51 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+
+/* oneclick project related themes */
+// @import './theme/helpers';   // HELPER FUNCTIONS AND MIXINS
+// @import './theme/menu';      // MENU
+// @import './theme/bars';      // NAVBARS, TOOLBARS, AND TABS
+// @import './theme/lists';     // LISTS
+// @import './theme/forms';     // FORMS AND INPUTS
+//@import './theme/buttons';   // BUTTONS
+// @import './theme/badges';    // BADGES
+// @import './theme/logos';     // LOGOS, ICONS, AND OTHER IMAGES
+// @import './theme/alerts';    // TOASTS, POPUPS, MODALS, etc.
+// @import './theme/spinner';   // SPINNERS
+// @import './theme/misc';      // MISCELLANEOUS STYLES AND PATCHES
+ @import './theme/narrative';
+
+/*added to make pinch or browser zoom work for accessibility*/
+ion-content::part(scroll) {
+    touch-action: pan-y pinch-zoom;
+}
+
+//need this here since the contact and about us pages use it dynamically with [innerHTML] so it has to be defined high enough for it to apply
+.sm-agency-logo {
+    height: 75px; 
+  }

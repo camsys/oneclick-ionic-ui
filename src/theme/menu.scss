@@ -1,8 +1,8 @@
 ion-menu.lynx-menu ion-content {
-  background-color: $lynxBlack;
+  background-color: var(--lynxBlack);
   
   #menu-sign-in-button,#menu-welcome-button {
-    font-size: $font-size-lg;
+    font-size: var(--font-size-lg);
     
     .item-inner {
       border: none;

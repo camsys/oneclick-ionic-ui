@@ -1,0 +1,24 @@
+
+<ion-header>
+  <app-navbar headerTitle="{{ 'oneclick.pages.taxi_services.header' | translate }}"></app-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
+        <ion-list class="lynx-list">
+
+          <!-- For each available taxi service, display contact info -->
+          <ion-item class="service-details" *ngFor="let taxiService of taxiServices">
+
+            <!-- Service name, url, phone, etc. found in ServiceDetailsComponent -->
+            <service-details [service]="taxiService"></service-details>
+
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

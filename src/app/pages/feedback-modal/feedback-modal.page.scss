@@ -1,0 +1,35 @@
+#feedback-modal-title {
+    margin-top: size(3);
+    margin-bottom: size(1);
+    height: size(6);
+  }
+  
+  #subject-picker-container {
+    margin-top: size(3);
+    margin-bottom: size(1);
+    height: size(6);
+  }
+  
+  #feedback-modal-rating {
+    li {
+      font-size: var(--font-size-xl);
+      
+      ion-icon {
+      }
+    }
+  }
+  
+  #feedback-modal-review {
+  
+    ion-textarea {
+      textarea {
+        margin-left: 0;
+        height: size(4);
+      }
+    }
+    
+  }
+  
+  #feedback-modal-buttons {
+    margin-top: size(2);
+  }

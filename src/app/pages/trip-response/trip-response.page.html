@@ -1,0 +1,294 @@
+
+<ion-header>
+  <app-navbar headerTitle="{{ 'oneclick.global.transportation.help' | translate }}"></app-navbar>
+
+  <ion-toolbar class="lynx-toolbar" text-center>
+
+    <div id="origin-search-container">
+      <place-search #originSearch
+                    uniqueLabel="Origin"
+                    resultsListId="origin-results"
+                    [isInvalid]="originInvalid"
+                    placeholder="{{ origin.label() }}"(onArrowDown)="originResults.focus()"
+                    (onFocus)="originResults.show(); destinationResults.hide()"
+                    (onBlur)="originResults.hide()"
+                    (onSelect)="originInvalid = false"
+                    (onChange)="placeSearchChanged()">
+      </place-search>
+    </div>
+
+    <div id="destination-search-container" [hidden]="viewType === 'services'">
+      <place-search #destinationSearch
+                    uniqueLabel="Destination"
+                    resultsListId="destination-results"
+                    [isInvalid]="destinationInvalid"
+                    placeholder="{{ destination.label() }}"
+                    (onArrowDown)="destinationResults.focus()"
+                    (onFocus)="destinationResults.show(); originResults.hide();"
+                    (onBlur)="destinationResults.hide();"
+                    (onSelect)="destinationInvalid = false"
+                    (onChange)="placeSearchChanged()">
+      </place-search>
+    </div>
+
+    <!-- Header row with editable trip date -->
+    <ion-row class="trip-date-row">
+      <ion-col col-sm-6 text-center>
+        <ion-item>
+          <ion-select id="arriveBySelector" value="{{arriveBy}}" (ionChange)="arriveBySelectChanged($event); updateTransportationOptionsButton()">
+            <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
+            <ion-select-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col col-sm-3 text-center>
+
+        <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
+        <responsive-datepicker #tripDatepicker
+                               [date]="departureDateTime"
+                               (change)="updateDate($event); updateTransportationOptionsButton();">
+        </responsive-datepicker>
+
+      </ion-col>
+      <ion-col col-sm-3 text-center>
+
+        <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
+        <responsive-timepicker #tripTimepicker
+                               [time]="departureDateTime"
+                               (change)="updateTime($event); updateTransportationOptionsButton();">
+        </responsive-timepicker>
+
+      </ion-col>
+
+
+    </ion-row>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <!-- ORIGIN AND DESTINATION AUTOCOMPLETE RESULTS LISTS -->
+  <autocomplete-results #originResults
+    [items]="originSearch.autocompleteItems"
+    uniqueId="origin-results"
+    (onChangeFocus)="originSearch.changeAriaFocusItem($event)"
+    (onSelect)="originSearch.chooseItem($event, viewType); updateTransportationOptionsButton();">
+  </autocomplete-results>
+  <autocomplete-results #destinationResults
+    [items]="destinationSearch.autocompleteItems"
+    uniqueId="destination-results"
+    (onChangeFocus)="destinationSearch.changeAriaFocusItem($event)"
+    (onSelect)="destinationSearch.chooseItem($event, viewType); updateTransportationOptionsButton();">
+  </autocomplete-results>
+
+  <ion-row class="ion-justify-content-center" id="find-transportation-button-container">
+
+    <ion-button round shape="round"
+      class="lynx-button-primary"
+      id="transportation-options-button"
+      (click)="findTransportation(originSearch.place, destinationSearch.place)">
+    {{ "oneclick.pages.trip_response.transportation_button" | translate }}
+    </ion-button>
+    <ion-button shape="round"
+            class="lynx-button-primary mode-trip-plan-button"
+            (click)="openOtherTransportationOptions()">
+      {{ "oneclick.global.modes.find_other_options" | translate }}
+    </ion-button>
+
+    <ion-item lines="none">
+    <ion-select [(ngModel)]="orderBy" (ionChange)="orderItinList()">
+      <ion-select-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-select-option>
+      <ion-select-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-select-option>
+      <ion-select-option value="duration">{{"sort_by" | translate}} {{"travel_time_sorter" | translate }}</ion-select-option>
+      <ion-select-option value="endTime">{{"sort_by" | translate}} {{ "arrival_time_sorter" | translate }}</ion-select-option>
+      <ion-select-option value="wait_time">{{"sort_by" | translate}} {{"wait_time_sorter" | translate}}</ion-select-option>
+      <ion-select-option value="walk_distance">{{"sort_by" | translate}} {{"walk_distance_sorter" | translate}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  </ion-row>
+
+  
+        <ion-list class="lynx-list">
+
+          <!-- For each mode other than paratransit, build a button -->
+          <ion-item class="itinerary-item" *ngFor="let itin of itineraries">
+            <ion-grid *ngIf="itin.trip_type == 'transit'">
+              <ion-row>
+                <ion-col col-sm-6>
+                  <ng-container *ngFor="let leg of itin.legs; index as i">
+                    <div class="otp-legMode-icon otp-legMode-icon-{{ leg.mode }}"></div>
+                    <div *ngIf="i != itin.legs.length-1" class="otp-legMode-icon otp-legMode-icon-arrow-right" style="margin-left: 4px;"></div>
+                  </ng-container>
+                </ion-col>
+                <ion-col col-sm-6>
+                  <div item-end>
+                    <ng-container *ngFor="let leg of itin.legs; index as i">
+                      <img *ngIf="leg.serviceFullLogoUrl" class="ride-mode-service-icon" src="{{ leg.serviceFullLogoUrl }}" alt="{{ leg.serviceName }}" height="50">
+                      <h6 *ngIf="!leg.serviceFullLogoUrl">{{ leg.serviceName }}</h6>
+                    </ng-container>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h3 item-start class="item-heading">
+                    {{ itin.legs[0].startTime | date:'shortTime' }} {{ "oneclick.global.common.to" | translate }}
+                    {{ itin.legs[itin.legs.length-1].endTime | date:'shortTime' }}
+                  </h3>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h5 class="item-subheading">{{ itin.duration | prettyTime }} ({{'oneclick.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</h5>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h2 *ngIf="itin.cost"><b>
+                    {{ [itin.cost] | prettyFare }}
+                  </b></h2>
+                  <h2 *ngIf="!itin.cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                </ion-col>
+                <ion-col col-sm-6>
+                  <ion-button shape="round"
+                          class="lynx-button-primary mode-trip-plan-button"
+                          (click)="openDirectionsPageForItinerary(itin)">
+                    {{ "oneclick.pages.trip_response.go_button" | translate }}
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <ion-grid *ngIf="itin.trip_type == 'paratransit'">
+              <ion-row >
+                <ion-col col-sm-6>
+                  <h3 item-start class="item-heading "><div class="otp-legMode-icon otp-legMode-icon-paratransit"></div><b>{{ itin.service.name }}</b></h3>
+                </ion-col>
+                <ion-col col-sm-6 *ngIf="itin.service.full_logo">
+                  <div>
+                    <img class="ride-mode-service-icon" src="{{ itin.service.full_logo }}" alt="{{ itin.service.name }}" height="50">
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h3 item-start class="item-heading">{{ "oneclick.pages.trip_response.call_to_schedule" | translate}}</h3>
+                </ion-col>
+                <ion-col col-sm-6>
+                  <p class="item-body service-details-section" *ngIf="itin.service.purposes.length > 0" style="background-color:yellow;">
+                    <b>{{ "oneclick.pages.trip_response.purposes_header" | translate }}: </b>
+                  </p>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h5 class="item-subheading">{{itin.duration | prettyTime}} {{'oneclick.global.modes.paratransit' | translate}} ({{'oneclick.global.modes.paratransit_estimated' | translate}})</h5>
+                </ion-col>
+                <ion-col col-sm-6>
+                  <p class="item-body service-details-section" *ngIf="itin.service.purposes.length > 0" style="background-color:yellow;">
+                    {{ purposeList(itin) }}
+                  </p>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h2 *ngIf="itin.cost"><b>
+                    {{ [itin.cost] | prettyFare }}
+                  </b></h2>
+                  <h2 *ngIf="!itin.cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                </ion-col>
+                <ion-col col-sm-6>
+                  <ion-button shape="round"
+                          class="lynx-button-primary mode-trip-plan-button"
+                          (click)="viewParatransitOptions(itin)">
+                    {{ "oneclick.pages.trip_response.go_button" | translate }}
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <ion-grid *ngIf="(itin.trip_type == 'taxi' || itin.trip_type == 'uber' || itin.trip_type == 'lyft')">
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h3 item-start class="item-heading "><div class="otp-legMode-icon otp-legMode-icon-{{ itin.trip_type }}"></div><b>{{ itin.service.name }}</b></h3>
+                </ion-col>
+                <ion-col col-sm-6>
+                  <div item-end>
+                    <img  *ngIf="itin.service.full_logo" class="ride-mode-service-icon" src="{{ itin.service.full_logo }}" alt="{{ itin.service.name }}" height="50">
+                  </div>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h3 item-start class="item-heading" *ngIf="itin.trip_type == 'taxi'">
+                    {{ "oneclick.pages.trip_response.call_to_schedule" | translate}}
+                  </h3>
+                  <h3 item-start class="item-heading " *ngIf="itin.trip_type != 'taxi'">
+                    {{ "oneclick.pages.trip_response.connect_to_app." + itin.trip_type | translate}}
+                  </h3>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h5 class="item-subheading">{{"oneclick.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</h5>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h2 *ngIf="itin.cost"><b>{{ [itin.cost] | prettyFare }}</b></h2>
+                  <h2 *ngIf="!itin.cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                </ion-col>
+                <ion-col col-sm-6>
+                  <ion-button shape="round"
+                          class="lynx-button-primary mode-trip-plan-button"
+                          (click)="openDirectionsPageForItinerary(itin)">
+                    {{ "oneclick.pages.trip_response.go_button" | translate }}
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <ion-grid *ngIf="(itin.trip_type == 'car' || itin.trip_type == 'walk' || itin.trip_type == 'bicycle')">
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h3 item-start class="item-heading "><div class="otp-legMode-icon otp-legMode-icon-{{ itin.legs[0].mode }}"></div><b>{{ "oneclick.pages.trip_response." + itin.trip_type + ".only_label" | translate}}</b></h3>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h3 item-start class="item-heading ">
+                    {{ itin.legs[0].startTime | date:'shortTime' }} {{ "oneclick.global.common.to" | translate }}
+                    {{ itin.legs[itin.legs.length-1].endTime | date:'shortTime' }}
+                  </h3>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-sm-6>
+                  <h5 class="item-subheading">{{"oneclick.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</h5>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-sm-6>
+                </ion-col>
+                <ion-col col-sm-6>
+                  <ion-button shape="round"
+                          class="lynx-button-primary mode-trip-plan-button"
+                          (click)="openDirectionsPageForItinerary(itin)">
+                    {{ "oneclick.pages.trip_response.go_button" | translate }}
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+          </ion-item>
+
+        </ion-list>
+
+
+</ion-content>
+

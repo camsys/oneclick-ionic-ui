@@ -1,0 +1,139 @@
+
+<ion-header>
+  <app-navbar headerTitle="{{ 'oneclick.pages.transportation_eligibility.header' | translate }}"></app-navbar>
+</ion-header>
+
+<ion-content>
+  <!-- PLAN TRIP -->
+  <ion-row class="ion-justify-content-center" id="view-paratransit-options-button-container" >
+    
+      <ion-button shape="round" color="primary"
+            class="lynx-button-primary"
+            id="view-paratransit-options-button"
+            (click)="viewParatransitOptions()">
+      {{ "oneclick.pages.transportation_eligibility.plan_trip_button" | translate }}
+    </ion-button>
+  </ion-row>
+
+  <ion-item lines="none" (ionFocus)="prefSaveTopInFocus = true" (ionBlur)="prefSaveTopInFocus = false"
+            [class.has-focus]="prefSaveTopInFocus">
+    <ion-checkbox slot="start" class="custom-checkbox"
+                  [(ngModel)]="user_preferences_disabled"
+                  [checked]="true"
+                  (ionChange)="storeUserPreferencesDisabledInSession()">
+    </ion-checkbox>
+    <ion-label color="primary" class="small-label">{{"oneclick.pages.session_user_preference_disabled_text" | translate }}
+      <button class="transportation-eligibility-info-button" (click)="showRegistrationPopup()">
+        <ion-icon color="primary" size="small"
+          name="information-circle"
+        ></ion-icon>
+      </button>
+    </ion-label>
+  </ion-item>
+
+  <!-- ELIGIBILITIES -->
+  <ion-list text-wrap class="lynx-list" [hidden]="eligibilities.length === 0">
+    <ion-list-header color="tertiary">
+      <ion-label class="ion-text-center">{{ "oneclick.pages.transportation_eligibility.eligibilities_header" | translate }}
+        <button class="transportation-eligibility-info-button" (click)="showEligibilitiesPopup()">
+          <ion-icon color="primary" name="information-circle" size="small"></ion-icon></button>
+      </ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let elig of eligibilities">
+      <ion-checkbox slot="start" 
+                    [(ngModel)]="elig.value"
+                    (ionChange)="updateCharacteristic()">
+      </ion-checkbox>
+      <ion-label>{{elig.note}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- AGE -->
+  <ion-list text-wrap class="lynx-list">
+    <ion-list-header color="tertiary">
+      <ion-label class="ion-text-center">{{ "oneclick.pages.transportation_eligibility.age_header" | translate }}
+      <button class="transportation-eligibility-info-button" (click)="showAgePopup()">
+        <ion-icon color="primary" name="information-circle" size="small"></ion-icon></button>
+      </ion-label>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-label position="fixed" id="age-label">{{"oneclick.pages.user_profile.age" | translate}}</ion-label>
+      <ion-input  [class.has-focus]="ageInFocus"
+                  type="number"
+                  placeholder=""
+                  name="age"
+                  [(ngModel)]="age"
+                  min="0"
+                  (ionFocus)="ageInFocus = true"
+                  (ionBlur)="ageInFocus = false">
+      </ion-input>
+    </ion-item>
+
+  <!-- ACCOMMODATIONS -->
+  <ion-list text-wrap class="lynx-list" [hidden]="accommodations.length === 0">
+    <ion-list-header color="tertiary">
+      <ion-label class="ion-text-center">{{ "oneclick.pages.transportation_eligibility.accommodations_header" | translate }}
+      <button large class="transportation-eligibility-info-button" (click)="showAccommodationsPopup()">
+        <ion-icon color="primary" name="information-circle" size="small"></ion-icon></button>
+      </ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let acc of accommodations">
+      <ion-checkbox [(ngModel)]="acc.value" slot="start"
+                    (ionChange)="updateCharacteristic()">
+      </ion-checkbox>
+      <ion-label>{{acc.note}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- TRIP TYPES -->
+  <ion-list text-wrap class="lynx-list" >
+    <ion-list-header color="tertiary">
+      <ion-label class="ion-text-center">{{"oneclick.pages.transportation_eligibility.trip_types_header" | translate}}
+      <button class="transportation-eligibility-info-button" (click)="showTripTypesPopup()">
+        <ion-icon color="primary" name="information-circle" size="small"></ion-icon></button>
+      </ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let trip_type of trip_types">
+      <ion-checkbox [(ngModel)]=trip_type.value slot="start"
+                    (ionChange)="updateCharacteristic()">
+      </ion-checkbox>
+      <ion-label>{{trip_type.name}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  </ion-list>
+
+
+  <!-- PLAN TRIP -->
+  <ion-row class="ion-justify-content-center" id="view-paratransit-options-button-container" >
+    
+      <ion-button shape="round" color="primary"
+            class="lynx-button-primary"
+            id="view-paratransit-options-button"
+            (click)="viewParatransitOptions()">
+      {{ "oneclick.pages.transportation_eligibility.plan_trip_button" | translate }}
+    </ion-button>
+  </ion-row>
+
+  <ion-item lines="none" (ionFocus)="prefSaveBottomInFocus = true" (ionBlur)="prefSaveBottomInFocus = false"
+            [class.has-focus]="prefSaveBottomInFocus">
+    <ion-checkbox slot="start" class="custom-checkbox"
+                  [(ngModel)]="user_preferences_disabled"
+                  [checked]="true"
+                  (ionChange)="storeUserPreferencesDisabledInSession()">
+    </ion-checkbox>
+    <ion-label color="primary" class="small-label">{{"oneclick.pages.session_user_preference_disabled_text" | translate }}
+      <button class="transportation-eligibility-info-button" (click)="showRegistrationPopup()">
+        <ion-icon color="primary" size="small"
+          name="information-circle"
+        ></ion-icon>
+      </button>
+    </ion-label>
+  </ion-item>
+
+</ion-content>
+

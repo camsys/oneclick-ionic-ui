@@ -1,0 +1,36 @@
+<ion-header>
+
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">{{ "oneclick.pages.language_selector_modal.header" | translate }}</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content class="ion-text-center">
+
+  <h2 id="language-selector-modal-title">{{ "oneclick.pages.language_selector_modal.form_title" | translate }}</h2>
+
+  <!-- LOCALE SELECTOR RADIO BUTTONS -->
+
+  <ion-list id="language-selector-container">
+    <ion-radio-group [formControl]="radioLocaleControl" [value]="locale">
+
+        <ion-item *ngFor="let locale of available_locales">
+          <ion-label>{{ "oneclick.global.languages.native." + locale | translate }}</ion-label>
+          <ion-radio value="{{locale}}"></ion-radio>
+        </ion-item>
+
+      
+    </ion-radio-group>
+  </ion-list>
+
+  <!-- CANCEL BUTTON -->
+  <div id="language-selector-modal-buttons">
+    <ion-button shape="round" color="primary"
+            class="lynx-button-white"
+            type="button"
+            (click)="cancel()">{{ "oneclick.pages.feedback.cancel_button" | translate }}</ion-button>
+  </div>
+
+</ion-content>

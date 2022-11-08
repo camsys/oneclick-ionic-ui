@@ -1,0 +1,37 @@
+<ion-header>
+  <app-navbar headerTitle="{{headerTitle}}"></app-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid no-padding>
+    <ion-row>
+      <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
+      <h3 *ngIf="transportationServices && (transportationServices.length > 0)" class="item-heading">
+        {{ "paratransit_services.title" | translate }}
+      </h3>
+      <h3 *ngIf="transportationServices && (transportationServices.length == 0)" class="item-heading">
+        {{ "paratransit_services.no_services_found" | translate }}
+      </h3>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
+
+        <ion-list class="lynx-list">
+
+          <!-- SERVICE DETAILS -->
+          <ion-item class="service-details" text-wrap *ngFor="let svc of transportationServices">
+
+            <!-- Service name, url, schedules, etc. found in ServiceDetailsComponent -->
+            <service-details [service]="svc"></service-details>
+
+          </ion-item>
+        </ion-list>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

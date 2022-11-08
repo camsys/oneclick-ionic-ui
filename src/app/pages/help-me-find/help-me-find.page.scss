@@ -1,0 +1,74 @@
+.lynx-logo-md {
+
+  display: block;
+  margin: 0 auto;
+  max-height: 4rem;
+  padding: 0;
+  width: auto;
+}
+
+// ion-toolbar {
+
+//     .helper{
+//       font-family: 'MyFontFamily';
+//       text-transform: uppercase;
+//       letter-spacing: 0.14em;
+//       background: blue;
+//     }
+  
+//     ion-button.lynx-button-primary {
+//       background-color: var(--lynxTranslucentPink);
+//     }
+  
+//   }
+
+  ion-content {
+    --background: url(../../../assets/img/GettyImages-930896740_sized.png) 0 0/100% 100% no-repeat;
+  }
+
+  .lynx-card-help-me-find {
+    --background: var(--lynxTranslucentPink);
+
+    //ion-card-header.card-header {
+      //padding: size(3) size(6) size(2);
+
+      // img.lynx-logo-md {
+      //   margin: size(1) auto;
+      // }
+    //}
+
+    ion-card-title {
+      color: var(--lynxWhite);
+    }
+
+    a.ieuw-hipaa-notice-link:link,a.ieuw-hipaa-notice-link:visited {
+      color:#fbb255;
+    }
+
+    a.ieuw-hipaa-notice-link:hover,a.ieuw-hipaa-notice-link:focus,a.ieuw-hipaa-notice-link:active {
+      color:darken(#fbb255, 20%);
+    }
+
+    ion-card-content.card-content-md {
+
+      color: var(--lynxWhite);
+      //padding: size(2) size(4) size(1);
+
+      .lynx-welcome-message-2 {
+        font-size: x-large;
+      }
+
+      //.lynx-help-me-find-buttons {
+
+       // margin: size(2) 0 size(4);
+
+
+      //}
+      //.lynx-help-me-find-buttons-subtitle {
+        //text-align: center !important;
+      //}
+
+    }
+
+
+  }

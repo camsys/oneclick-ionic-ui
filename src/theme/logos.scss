@@ -36,15 +36,15 @@ ion-icon.icon-md,
 ion-icon.icon-ios,
 ion-icon.icon-wp {
   &.icon-sm {
-    font-size: $font-size-md;
+    font-size: var(--font-size-md);
   }
   
   &.icon-med {
-    font-size: $font-size-lg;
+    font-size: var(--font-size-lg);
   }
   
   &.icon-lg {
-    font-size: $font-size-xl;
+    font-size: var(--font-size-xl);
   }
 }
 
@@ -59,7 +59,7 @@ rating.lynx-rating {
     li {
       margin: 0;
       padding: 0 !important;
-      font-size: $font-size-lg;
+      font-size: var(--font-size-lg);
       
       ion-icon.icon {
         width: initial !important;
@@ -69,7 +69,7 @@ rating.lynx-rating {
   
   &.lynx-rating-sm {
     ul.rating > li {
-      font-size: $font-size-sm;
+      font-size: var(--font-size-sm);
     }
   }
 }

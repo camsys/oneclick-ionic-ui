@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-cp ./src/app/environment.ts ./src/app/environment.ts.bak
-cp ./src/environments/environment.dev.ts ./src/app/environment.ts
-ionic cordova build browser
+cp ./src/environments/environment.ts ./src/environments/environment.ts.bak
+cp ./src/environments/environment.dev.ts ./src/environments/environment.ts
+ionic build
 aws s3 sync ./www/ s3://ui-lynx-dev --acl public-read  --region us-east-2 --profile lynx
-mv ./src/app/environment.ts.bak ./src/app/environment.ts
+mv ./src/environments/environment.ts.bak ./src/environments/environment.ts

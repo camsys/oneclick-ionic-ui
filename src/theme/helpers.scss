@@ -10,7 +10,7 @@
     }
   } @else if $exponent < 0 {
     @for $i from 1 through -$exponent {
-      $value: $value / $number;
+      $value: calc($value / $number);
     }
   }
 
@@ -42,23 +42,25 @@ $scale-increment: 1.333;
 
 // Styles text to look clickable
 .clickable {
-  color: $lynxDarkPink;
+  color: var(--lynxDarkPink);
   cursor: pointer;
 }
 
+
 // Mimics offset-md-2 gutters
 @mixin offset-md-2 {
-  @media (min-width: #{map-get($grid-breakpoints, md)}) {
-    padding-left: 16.7%;
-    padding-right: 16.7%;
-  }
+  // @media (min-width: #{map-get($grid-breakpoints, md)}) {
+  //   padding-left: 16.7%;
+  //   padding-right: 16.7%;
+  // }
 }
 
 // Mimics offset-sm-1 gutters
 @mixin offset-sm-1 {
-  @media (min-width: #{map-get($grid-breakpoints, sm)}) and
-         (max-width: #{map-get($grid-breakpoints, md)}) {
-    padding-left: 8.3%;
-    padding-right: 8.3%;
-  }  
+  // @media (min-width: #{map-get($grid-breakpoints, sm)}) and
+  //        (max-width: #{map-get($grid-breakpoints, md)}) {
+  //   padding-left: 8.3%;
+  //   padding-right: 8.3%;
+  // }  
 }
+
