@@ -17,8 +17,8 @@ export class ContactUsPage implements OnInit {
   agencies: AgencyModel[];
 
   ngOnInit() {
-    this.oneClickProvider.getAllAgencies()
-      .then(agencies => this.agencies = agencies);
+    // this.oneClickProvider.getAllAgencies()
+    //   .then(agencies => this.agencies = agencies);
   }
 
 }

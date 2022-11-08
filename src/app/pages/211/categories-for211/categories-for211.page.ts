@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { debounceTime } from 'rxjs/operators';
 import { AutocompleteResultsComponent } from 'src/app/components/autocomplete-results/autocomplete-results.component';
 import { CategoryFor211Model } from 'src/app/models/category-for-211';
+import { GooglePlaceModel } from 'src/app/models/google-place';
 import { SearchResultModel } from 'src/app/models/search-result';
 import { AuthService } from 'src/app/services/auth.service';
 import { OneClickService } from 'src/app/services/one-click.service';
@@ -76,7 +77,7 @@ export class CategoriesFor211Page implements OnInit {
   updateKeywordSearch(query: string) {
     if(query) {
       this.oneClickProvider.refernetKeywordSearch(query)
-          .subscribe((results) => {
+          .subscribe((results: SearchResultModel[]) => {
             this.searchResults = results.map((r) => this.translateSearchResult(r));
             if(this.searchResults.length === 0) {
               this.searchResults = [ this.emptySearchResult() ];
@@ -117,15 +118,19 @@ export class CategoriesFor211Page implements OnInit {
       case "OneclickRefernet::Service":
         let service = result.result;
         // service.url = null;
+        let destination_location = new GooglePlaceModel({
+          address_components: null,
+          geometry: { location: { lat: service.lat, lng: service.lng } },
+          formatted_address: null,
+          id: null,
+          name: service.site_name
+        });
       
         this.router.navigate([ServiceFor211DetailPage.routePath], {
           state : {
             service: service,
             origin: this.auth.userLocation(),
-            destination: {
-              name: service.site_name,
-              geometry: { location: { lat: service.lat, lng: service.lng } }
-            }
+            destination: destination_location
           }
         });
         break;

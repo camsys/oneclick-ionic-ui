@@ -5,25 +5,27 @@
 <ion-content padding>
 
   <ion-grid>
-    <form (ngSubmit)="signIn()" #signInForm="ngForm">
+    <form (ngSubmit)="signIn(signInForm.form.valid)" #signInForm="ngForm">
 
       <ion-row>
-        <ion-col>
+        <ion-col class="ion-text-center">
           <img class="lynx-logo-md" src="assets/img/211-ride@1x.png" alt="logo"/>
         </ion-col>
       </ion-row>
 
       <ion-row>
         <ion-col no-padding col-sm-10 offset-sm-1 col-md-8 offset-md-2>
-          <ion-input  class="lynx-input"
-                      type="text"
+          <ion-input  type="text"
                       placeholder="Email"
                       name="email"
                       [(ngModel)]="user.email"
                       required>
           </ion-input>
-          <ion-input  class="lynx-input"
-                      type="password"
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col no-padding col-sm-10 offset-sm-1 col-md-8 offset-md-2>
+          <ion-input  type="password"
                       placeholder="Password"
                       name="password"
                       [(ngModel)]="user.password"
@@ -33,25 +35,25 @@
       </ion-row>
 
       <ion-row>
-        <ion-col>
-          <ion-button round class="lynx-button-dark center" type="submit" [disabled]="!signInForm.form.valid">
+        <ion-col class="ion-text-center">
+          <ion-button shape="round" expand="full" color="primary" type="submit">
             {{ "oneclick.pages.sign_in.sign_in_button" | translate }}
           </ion-button>
         </ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col text-center>
-          <button role="link" type="button" class="lynx-button-link link-white link-white-high-contrast" (click)="signUp()">
+        <ion-col class="ion-text-center">
+          <a [routerLink]="signUpPath">
             {{ "oneclick.pages.menu.sign_up" | translate }}
-          </button>
+          </a>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col text-center>
-          <button role="link" type="button" class="lynx-button-link link-white link-white-high-contrast" (click)="resetPassword()">
+        <ion-col class="ion-text-center">
+          <a [routerLink]="resetPasswordPath">
             {{ "oneclick.pages.sign_in.reset_password_button" | translate }}
-          </button>
+          </a>
         </ion-col>
       </ion-row>
       <!-- Disable confirmation

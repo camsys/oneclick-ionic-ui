@@ -97,7 +97,7 @@
       {{ "oneclick.global.modes.find_other_options" | translate }}
     </ion-button>
 
-    <ion-item>
+    <ion-item lines="none">
     <ion-select [(ngModel)]="orderBy" (ionChange)="orderItinList()">
       <ion-select-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-select-option>
       <ion-select-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-select-option>

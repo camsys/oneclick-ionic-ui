@@ -10,8 +10,8 @@
 
 
   <!-- PLAN TRIP BUTTON -->
-  <div text-center id="find-transportation-button-container">
-    <ion-button middle round
+  <div id="find-transportation-button-container" class="ion-text-center">
+    <ion-button middle shape="round"
             class="lynx-button-primary"
             id="transportation-options-button"
             *ngIf="origin && destination"
@@ -26,7 +26,7 @@
     <!-- SERVICE DETAILS -->
 
     <!-- Show service details only if service is present -->
-    <ion-row *ngIf="service_id && location_id">
+    <ion-row *ngIf="service">
       <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
         <h3>{{ "oneclick.pages.service_details.details_header" | translate }}</h3>
 
@@ -82,9 +82,9 @@
       <!--</ion-col>-->
 
       <!-- Email button -->
-      <ion-col col-12 col-sm text-center>
+      <ion-col col-12 col-sm class="ion-text-center">
         <h3>{{ "oneclick.pages.service_details.email_header" | translate }}</h3>
-        <ion-button round
+        <ion-button shape="round"
                 class="lynx-button-primary"
                 (click)="openEmailModal(service)">
           {{ "oneclick.pages.service_details.email_button" | translate }}

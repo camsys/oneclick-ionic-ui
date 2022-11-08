@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { AlertController, IonSelect, NavController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AutocompleteResultsComponent } from 'src/app/components/autocomplete-results/autocomplete-results.component';
 import { PlaceSearchComponent } from 'src/app/components/place-search/place-search.component';
@@ -75,7 +76,8 @@ export class TripResponsePage implements OnInit {
               private loader: LoaderService,
               public alertController: AlertController,
               private translate: TranslateService,
-              private changeDetectorRef: ChangeDetectorRef) {
+              private changeDetectorRef: ChangeDetectorRef,
+              private title: Title) {
 
   }
 
@@ -101,6 +103,9 @@ export class TripResponsePage implements OnInit {
   }
 
   ionViewDidEnter() {
+    //need to reset this here because sometimes the title gets lost when the customize transportation options is used
+    this.title.setTitle(this.translate.instant('oneclick.global.transportation.help'));
+
     // Show the spinner until a trip is present
     this.loader.showLoader();
 

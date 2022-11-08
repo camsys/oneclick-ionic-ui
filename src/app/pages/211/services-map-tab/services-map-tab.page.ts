@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GooglePlaceModel } from 'src/app/models/google-place';
@@ -27,7 +28,8 @@ export class ServicesMapTabPage implements OnInit, OnDestroy {
   constructor(private router: Router,
               private googleMapsHelpers: GoogleMapsHelpersService,
               private servicesParamsService: ServicesParamsService,
-              private changeDetector: ChangeDetectorRef) {
+              private changeDetector: ChangeDetectorRef,
+              private platform:Platform) {
 
     this.service_map = null;
     this.selectedService = null;
@@ -40,10 +42,14 @@ export class ServicesMapTabPage implements OnInit, OnDestroy {
         if (params) {
           this.services = params.services;
         }
-
-        this.initializeMap();
       }
     );
+  }
+
+  ionViewDidEnter() {
+    // Initialize the map once device is ready
+    this.platform.ready()
+    .then(() => this.initializeMap());
   }
 
 

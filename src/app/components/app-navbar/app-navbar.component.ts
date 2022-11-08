@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
@@ -28,7 +29,10 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
           private router: Router,
   			  private modalCtrl: ModalController,
   			  private i18n: I18nService,
-  			  private auth: AuthService) {
+  			  private auth: AuthService,
+          private title: Title) {
+
+            this.title.setTitle("211 Ride");
   }
 
   ngOnInit(): void {
@@ -37,6 +41,8 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
            {
               this.currentRoute = event.url;  
            });
+
+    if (this.headerTitle) this.title.setTitle(this.headerTitle);
   }
 
   // Creates and presents a modal for changing the locale.

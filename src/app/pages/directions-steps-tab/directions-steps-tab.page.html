@@ -16,10 +16,9 @@
 
     <!-- Header row with editable trip date -->
     <ion-row class="trip-date-row">
-      <ion-col class="trip-date-col"
-               col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 text-center>
+      <ion-col class="trip-date-col ion-text-center">
         <h3>
-          {{ "oneclick.pages.directions.steps_tab.trip_date_label" | translate }} {{tripDate | date: 'mediumDate'}}
+          {{ "oneclick.pages.directions.steps_tab.trip_date_label" | translate }} {{tripDate | date}}
         </h3>
       </ion-col>
 
@@ -29,22 +28,22 @@
 
       <!-- Itinerary Rows -->
       <ion-row class="itinerary-row" *ngFor="let itin of itineraries; let i = index">
-        <ion-col class="itinerary-col" col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 *ngSwitchCase="i.toString()">
+        <ion-col class="itinerary-col" *ngSwitchCase="i.toString()">
 
           <!-- Leg Rows -->
           <ion-row class="leg-row" *ngFor="let leg of itin.legs; let j = index">
 
             <!-- Leg Time Column -->
-            <ion-col no-padding col-3 class="leg-time-col">
+            <ion-col no-padding size="3" class="leg-time-col">
               <ion-row class="leg-header-container">
-                <ion-col col-12 no-padding text-center class="leg-header-container">
+                <ion-col col-12 no-padding class="leg-header-container ion-text-center">
                   {{leg.startTime | date:'shortTime'}}
                 </ion-col>
               </ion-row>
             </ion-col>
 
             <!-- Leg Icon Column -->
-            <ion-col no-padding col-1 class="leg-icon-col">
+            <ion-col no-padding size="1" class="leg-icon-col">
               <div class="leg-header-container">
                 <div class="leg-header-content">
                   <ion-icon class="icon-med" name="{{leg.modeIconName()}}"></ion-icon>
@@ -56,11 +55,11 @@
             </ion-col>
 
             <!-- Leg Details Column -->
-            <ion-col no-padding col-8 class="leg-details-col">
+            <ion-col no-padding size="8" class="leg-details-col">
 
               <!-- Leg Origin -->
               <ion-row class="leg-header-row">
-                <ion-col no-padding col-12>
+                <ion-col no-padding>
                   <div class="leg-header-container">
                     <div class="leg-header-content">
                       <!-- Display the trip origin if it's the first leg. -->
@@ -82,7 +81,7 @@
               <!-- Step Rows (Walk, Bike, Drive) -->
               <div *ngIf="!leg.isTransit()">
                 <ion-row class="step-row" *ngFor="let step of leg.steps; let k = index">
-                  <ion-col no-padding col-12>
+                  <ion-col no-padding>
 
                     <!-- for first step, give absolute direction -->
                     <div class="step-details-container" *ngIf="k === 0">
@@ -117,7 +116,7 @@
               <!-- Step Rows (Transit) -->
               <div *ngIf="leg.isTransit()">
                 <ion-row class="step-row">
-                  <ion-col no-padding col-12>
+                  <ion-col no-padding>
                     <div class="step-details-container">
                       <!-- BOARD {{service_name}} Route {{route}} and ride it {{stops}} stops. -->
                       {{
@@ -132,7 +131,7 @@
                   </ion-col>
                 </ion-row>
                 <ion-row class="step-row">
-                  <ion-col no-padding col-12>
+                  <ion-col no-padding>
                     <div class="step-details-container">
                       <!-- GET OFF at stop: {{destination}} -->
                       {{
@@ -153,10 +152,10 @@
           <ion-row class="leg-row">
 
             <!-- Leg Time Column -->
-            <ion-col no-padding col-3 class="leg-time-col">
+            <ion-col no-padding size="3" class="leg-time-col">
               <ion-row class="leg-header-container">
 
-                <ion-col col-12 no-padding text-center class="leg-header-content">
+                <ion-col col-12 no-padding class="leg-header-content ion-text-center">
 
                   <div *ngIf="trip.arrive_by" class="leg-time-header-content-description">
                     {{ "oneclick.global.directions.arrive_by" | translate }}
@@ -169,7 +168,7 @@
             </ion-col>
 
             <!-- Leg Icon Column -->
-            <ion-col no-padding col-1 class="leg-icon-col">
+            <ion-col no-padding size="1" class="leg-icon-col">
               <div class="leg-header-container">
                 <div class="leg-header-content">
                   <ion-icon class="icon-med" name="radio-button-on"></ion-icon>
@@ -178,7 +177,7 @@
             </ion-col>
 
             <!-- Leg Details Column -->
-            <ion-col no-padding col-8 class="leg-details-col">
+            <ion-col no-padding size="8" class="leg-details-col">
               <ion-row class="leg-header-row">
                 <ion-col no-padding col-12>
                   <div class="leg-header-container">
@@ -203,9 +202,9 @@
 
       <ion-row>
         <!-- Email button -->
-        <ion-col col-12 col-sm text-center>
+        <ion-col class="ion-text-center">
           <h3>{{ "email_your_ride_details" | translate }}</h3>
-          <ion-button round
+          <ion-button shape="round"
                   class="lynx-button-primary"
                   (click)="openEmailModal()">
             {{ "oneclick.pages.service_details.email_button" | translate }}

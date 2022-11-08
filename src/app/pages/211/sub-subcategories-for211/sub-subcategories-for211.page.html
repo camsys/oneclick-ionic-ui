@@ -13,10 +13,9 @@
                     text-wrap
                     *ngFor="let subSubCategory of subSubCategories"
                     (click)="openToServices(subSubCategory)">
-            <ion-label>
-              <h3 class="item-heading">{{subSubCategory.name}}</h3>
+            <ion-label>{{subSubCategory.name}}
             </ion-label>
-            <ion-badge item-end>{{subSubCategory.service_count}}</ion-badge>
+            <ion-badge mode="ios">{{subSubCategory.service_count}}</ion-badge>
           </ion-item>
         </ion-list>
       </ion-col>

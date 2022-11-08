@@ -8,7 +8,7 @@
   <app-navbar headerTitle="{{ 'oneclick.pages.categories.resources_search.label' | translate }}"></app-navbar>
   <ion-toolbar class="lynx-toolbar" text-center>
     <ion-searchbar placeholder="{{ 'oneclick.pages.categories.resources_search.placeholder' | translate}}"
-
+                    [formControl]="searchControl"
                    (ionFocus)="searchResultsList.show()">
     </ion-searchbar>
   </ion-toolbar>
@@ -27,9 +27,9 @@
 
     <ion-row>
       <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
-      <h3 class="item-heading">
+      <h5>
         {{ "categories.help" | translate }}
-      </h3>
+      </h5>
       </ion-col>
     </ion-row>
 
@@ -44,9 +44,9 @@
                     *ngFor="let category of categories"
                     (click)="openToSubcategory(category)">
             <ion-label>
-              <h3 class="item-heading">{{category.name}}</h3>
+              {{category.name}}
             </ion-label>
-            <ion-badge class="lynx-badge" item-end>{{category.service_count}}</ion-badge>
+            <ion-badge mode="ios">{{category.service_count}}</ion-badge>
           </ion-item>
         </ion-list>
       </ion-col>

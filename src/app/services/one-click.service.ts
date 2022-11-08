@@ -82,14 +82,20 @@ export class OneClickService {
       '&locale=' + this.i18n.currentLocale()
     );
 
-    return this.http.get<AgencyModel[]>(uri)
+    return this.http.get<any>(uri)
+      .pipe(
+        map(result => result.data)
+      )
       .toPromise()
       .catch(error => this.handleError(error).toPromise());
   }
 
   public getCounties(): Promise<County[]> {
      var uri: string = encodeURI(this.oneClickUrl + 'counties');
-     return this.http.get<County[]>(uri, this.requestOptions())
+     return this.http.get<any>(uri, this.requestOptions())
+      .pipe(
+        map(result => result.data)
+      )
       .toPromise()
       .catch(error => this.handleError(error).toPromise());
   }
@@ -391,7 +397,11 @@ export class OneClickService {
       '&locale=' + this.i18n.currentLocale() +
       '&type=' + typeFilter);
 
-    return this.http.get<SearchResultModel[]>(uri);
+    return this.http.get<any>(uri).pipe(
+      map(incoming => { 
+        return incoming.results;
+      })
+      );
   }
 
   emailItinerary(email: string, itinerary_id: number): Promise<any> {

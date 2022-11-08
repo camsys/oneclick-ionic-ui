@@ -11,10 +11,15 @@
       margin-right: size(2);
     }
   }
+
+  ion-toolbar {
+    --color: var(--lynxWhite);
+    --background: var(--lynxBlack);
+}
   
   #go-toolbar {
     cursor: pointer;
-    min-height: size(9);
+    //min-height: size(9);
     @media (min-width: 0em) {
       padding: 0 5%;
     }
@@ -27,12 +32,18 @@
       padding: 0 25%;
     }
     
-    &:hover {
-      background-color: rgba(var(--lynxPink), 0.5);//same as transparentize($lynxPink, 0.5)
+    &:hover, &:focus {
+      --background: rgba(0,0,0, 0.5);//same as transparentize($lynxPink, 0.5)
     }
     
     ion-title .toolbar-title {
       font-size: var(--font-size-lg);
       white-space: initial !important;
+    }
+
+    ion-button {
+      &:hover, &:focus {
+        --color: orange;
+      }
     }
   }

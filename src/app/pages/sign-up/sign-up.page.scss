@@ -9,9 +9,12 @@
   .toast-message {
     white-space: pre;
   }
-  ion-label {
-    color: var(--lynxWhite);
+  ion-input {
+    --background: var(--lynxWhite);
+    //border: solid 5px rgba(var(--lynxPinkRGB), 1);
+    font-size: medium;
   }
-  ion-label, ion-input, .button-md {
-    font-size: var(--font-size-md);
+
+  .has-focus {
+    border: solid 1px rgba(var(--lynxPinkRGB), 1);
   }
