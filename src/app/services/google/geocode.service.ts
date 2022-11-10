@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AddressComponentModel } from 'src/app/models/address-component';
 import { GooglePlaceModel } from 'src/app/models/google-place';
+import { appConfig } from 'src/environments/appConfig';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -18,8 +19,8 @@ export class GeocodeService {
   transportationZipcodes: number[] = [];
 
   constructor() {
-    this.servicesZipcodes = environment.SERVICES_ZIPCODES;
-    this.transportationZipcodes = environment.TRANSPORTATION_ZIPCODES;
+    this.servicesZipcodes = appConfig.SERVICES_ZIPCODES;
+    this.transportationZipcodes = appConfig.TRANSPORTATION_ZIPCODES;
   }
 
   public getGooglePlaces(address_query: string): Observable<GooglePlaceModel[]>{

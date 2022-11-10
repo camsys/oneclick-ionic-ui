@@ -1,7 +1,8 @@
 
 
 <ion-header no-border>
-  <app-navbar></app-navbar>
+  <app-navbar headerTitle="{{ 'oneclick.global.application_name' | translate}}"
+  [showTitle]="false"></app-navbar>
 </ion-header>
 
 <ion-content fullscreen padding>
@@ -28,7 +29,7 @@
 
           <ion-card-header class="ion-text-center ion-text-wrap">
 
-            <img class="lynx-logo-md" src="assets/img/211-ride@1x.png" alt="logo" />
+            <img class="lynx-logo-md" src="assets/img/main-logo.png" alt="logo" />
             <ion-card-title>{{ "oneclick.pages.home.welcome_message_1" | translate }}</ion-card-title>
 
           </ion-card-header>
@@ -77,7 +78,7 @@
                 class="ieuw-hipaa-notice-link"
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://ieuw-bin.s3.us-east-2.amazonaws.com/211-Ride-HIPAA-Privacy-Notice.pdf">
+                [href]="hipaa_privacy_url">
                   HIPAA Privacy Notice
               </a>
             </div>

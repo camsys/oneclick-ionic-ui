@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ModalController, NavParams } from '@ionic/angular';
+import { appConfig } from 'src/environments/appConfig';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -20,7 +21,7 @@ export class LanguageSelectorModalPage implements OnInit {
 
     // Include all available locales (including translation keys)
     // TODO: Set this to filter out keys locale unless admin user is logged in.
-    this.available_locales = environment.AVAILABLE_LOCALES;
+    this.available_locales = appConfig.AVAILABLE_LOCALES;
 
   }
 

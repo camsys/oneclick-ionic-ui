@@ -28,10 +28,10 @@
   <ion-buttons *ngIf="!isHomePage()" slot="start" >
     <ion-back-button defaultHref="home"></ion-back-button>
     <a class="lynx-button-link header-logo-title nav-icon-button" routerLink="/home" routerDirection="forward">
-      <img class="lynx-logo-sm"  src='assets/img/211-ride@1x.png' alt="211Ride Logo" />
+      <img class="lynx-logo-sm"  src='assets/img/main-logo.png' alt="211Ride Logo" />
   </a>
   </ion-buttons>
-  <ion-title class="header-title">{{headerTitle}}</ion-title>
+  <ion-title *ngIf="showTitle" class="header-title">{{headerTitle}}</ion-title>
 
   <ion-buttons slot="end">
     <ion-button mode="md" aria-label="language translation selection" class="bar-button-menutoggle" (click)="openLanguageSelectorModal()">

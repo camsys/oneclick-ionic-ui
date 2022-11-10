@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { appConfig } from 'src/environments/appConfig';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
 import { LoaderService } from './loader.service';
@@ -17,8 +18,8 @@ export class I18nService {
   initializeApp() {
     //console.log('start loading translations');
     this.loader.showLoader();
-    this.translate.addLangs(environment.AVAILABLE_LOCALES);
-    this.translate.setDefaultLang(environment.DEFAULT_LOCALE);
+    this.translate.addLangs(appConfig.AVAILABLE_LOCALES);
+    this.translate.setDefaultLang(appConfig.DEFAULT_LOCALE);
 
     // If on mobile, try to get the device's preferred locale
     // if(this.platform.is('cordova')) {
@@ -42,16 +43,16 @@ export class I18nService {
   // use the default locale.
   getSuitableLanguage(language) {
   language = language.substring(0, 2).toLowerCase();
-  if(environment.AVAILABLE_LOCALES.some(loc => loc == language)) {
+  if(appConfig.AVAILABLE_LOCALES.some(loc => loc == language)) {
   return language;
   } else {
-  return environment.DEFAULT_LOCALE;
+  return appConfig.DEFAULT_LOCALE;
   }
   }
 
   // Returns the current locale being used (or the default one)
   currentLocale(): string {
-  return this.translate.currentLang || this.translate.getDefaultLang() || environment.DEFAULT_LOCALE;
+  return this.translate.currentLang || this.translate.getDefaultLang() || appConfig.DEFAULT_LOCALE;
   }
 
   // Sets the locale, defaulting to default language.

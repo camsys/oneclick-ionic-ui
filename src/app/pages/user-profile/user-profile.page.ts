@@ -7,6 +7,7 @@ import { Eligibility } from 'src/app/models/eligibility';
 import { TripType } from 'src/app/models/trip-type';
 import { User } from 'src/app/models/user';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { appConfig } from 'src/environments/appConfig';
 import { environment } from 'src/environments/environment';
 import { SignInPage } from '../sign-in/sign-in.page';
 
@@ -34,7 +35,7 @@ export class UserProfilePage implements OnInit {
               public toastCtrl: ToastController,
               public oneClickProvider: OneClickService,
               private translate: TranslateService) {
-    this.available_locales = environment.AVAILABLE_LOCALES;
+    this.available_locales = appConfig.AVAILABLE_LOCALES;
   }
 
   ngOnInit() {

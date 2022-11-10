@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AlertController, Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,6 +9,7 @@ import { Alert } from 'src/app/models/alert';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { appConfig } from 'src/environments/appConfig';
 import { UserLocatorPage } from '../user-locator/user-locator.page';
 
 @Component({
@@ -24,6 +25,7 @@ export class HelpMeFindPage implements OnInit {
   alerts: Alert[];
   user: User;
 
+  hipaa_privacy_url: string;
 
   constructor(public router: Router,
               private platform: Platform,
@@ -31,10 +33,17 @@ export class HelpMeFindPage implements OnInit {
               public oneClickProvider: OneClickService,
               public sanitizer: DomSanitizer,
               public translate: TranslateService,
-              public auth: AuthService) {
+              public auth: AuthService,
+              private title: Title) {
+                             
+    this.hipaa_privacy_url = appConfig.HIPAA_PRIVACY_NOTICE_URL;
   }
   
   ngOnInit() {
+  }
+
+  ionViewDidEnter() {
+    this.title.setTitle(this.translate.instant('oneclick.global.application_name'));
   }
 
   ionViewDidLoad() {

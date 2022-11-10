@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 import { GooglePlaceModel } from '../models/google-place';
 import { Session } from '../models/session';
+import { appConfig } from 'src/environments/appConfig';
 
 @Injectable({
   providedIn: 'root'
@@ -213,7 +214,7 @@ export class AuthService {
   userLocation(): GooglePlaceModel {
     return new GooglePlaceModel(
       this.session().user_starting_location ||
-      { geometry: { location: environment.DEFAULT_LOCATION } }
+      { geometry: { location: appConfig.DEFAULT_LOCATION } }
     );
   }
 

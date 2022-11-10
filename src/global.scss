@@ -49,3 +49,13 @@ ion-content::part(scroll) {
 .sm-agency-logo {
     height: 75px; 
   }
+
+  //used in multiple places
+  .lynx-logo-md {
+
+    display: block;
+    margin: 0 auto;
+    max-height: 4rem;
+    padding: 0;
+    width: auto;
+  }

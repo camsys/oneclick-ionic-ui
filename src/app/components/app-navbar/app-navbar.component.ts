@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/models/user';
@@ -23,6 +24,7 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
   user: User;
 
   @Input() headerTitle: string; // If no title is provided, display the logo.
+  @Input() showTitle: boolean = true;//usually we do want to show the title of the page on the top toolbar
 
   constructor(public oneClickProvider: OneClickService,
           public navCtrl: NavController,
@@ -30,9 +32,10 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
   			  private modalCtrl: ModalController,
   			  private i18n: I18nService,
   			  private auth: AuthService,
+          private translate: TranslateService,
           private title: Title) {
 
-            this.title.setTitle("211 Ride");
+            this.title.setTitle(this.translate.instant("oneclick.global.application_name"));
   }
 
   ngOnInit(): void {

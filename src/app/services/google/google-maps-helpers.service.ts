@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { appConfig } from 'src/environments/appConfig';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,7 +13,7 @@ export class GoogleMapsHelpersService {
   // Sets up a map element with default options, and returns it
   buildGoogleMap(mapDivId: string): google.maps.Map {
     // Create the Map with default settings
-    let latLng = new google.maps.LatLng(environment.DEFAULT_LOCATION.lat, environment.DEFAULT_LOCATION.lng);
+    let latLng = new google.maps.LatLng(appConfig.DEFAULT_LOCATION.lat, appConfig.DEFAULT_LOCATION.lng);
     let mapOptions = {
       center: latLng,
       zoom: this.minZoom,
