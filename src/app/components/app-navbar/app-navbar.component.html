@@ -28,7 +28,7 @@
   <ion-buttons *ngIf="!isHomePage()" slot="start" >
     <ion-back-button defaultHref="home"></ion-back-button>
     <a class="lynx-button-link header-logo-title nav-icon-button" routerLink="/home" routerDirection="forward">
-      <img class="lynx-logo-sm"  src='assets/img/main-logo.png' alt="211Ride Logo" />
+      <img class="lynx-logo-sm"  src='assets/img/main-logo.png' alt="{{ 'oneclick.global.application_name' | translate}}" />
   </a>
   </ion-buttons>
   <ion-title *ngIf="showTitle" class="header-title">{{headerTitle}}</ion-title>
