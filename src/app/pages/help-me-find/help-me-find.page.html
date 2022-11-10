@@ -43,28 +43,33 @@
 
             <div class="lynx-help-me-find-buttons">
 
-              <!-- TRANSPORTATION FINDER -->
-              <ion-button shape="round" color="tertiary" expand="full"
-                      class="lynx-button-white"
-                      (click)="openTransportationPage()">
-                {{ "oneclick.pages.home.transportation_button" | translate }}
-              </ion-button>
-              <div class="lynx-help-me-find-buttons-subtitle">
-                {{ "oneclick.pages.home.transportation_subtitle" | translate }}
+              <div *ngIf="showTransportationFinder">
+
+                <!-- TRANSPORTATION FINDER -->
+                <ion-button shape="round" color="tertiary" expand="full"
+                        class="lynx-button-white"
+                        (click)="openTransportationPage()">
+                  {{ "oneclick.pages.home.transportation_button" | translate }}
+                </ion-button>
+                <div class="lynx-help-me-find-buttons-subtitle">
+                  {{ "oneclick.pages.home.transportation_subtitle" | translate }}
+                </div>
+                <br>
               </div>
-              <br>
 
-              <!-- 211 RESOURCES FINDER -->
-              <ion-button shape="round" color="tertiary" expand="full"
-                      class="lynx-button-white"
-                      (click)="openResourcesPage()">
-                <ion-row>
-                {{ "oneclick.pages.home.resources_button" | translate }}
-                </ion-row>
+              <div *ngIf="showResourcesFinder">
+                <!-- 211 RESOURCES FINDER -->
+                <ion-button shape="round" color="tertiary" expand="full"
+                        class="lynx-button-white"
+                        (click)="openResourcesPage()">
+                  <ion-row>
+                  {{ "oneclick.pages.home.resources_button" | translate }}
+                  </ion-row>
 
-              </ion-button>
-              <div class="lynx-help-me-find-buttons-subtitle">
-                {{ "oneclick.pages.home.resources_subtitle" | translate }}
+                </ion-button>
+                <div class="lynx-help-me-find-buttons-subtitle">
+                  {{ "oneclick.pages.home.resources_subtitle" | translate }}
+                </div>
               </div>
 
             </div>

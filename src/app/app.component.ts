@@ -4,6 +4,7 @@ import { NavController, Platform, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { appConfig } from 'src/environments/appConfig';
 import { Accommodation } from './models/accommodation';
 import { Eligibility } from './models/eligibility';
 import { PageModel } from './models/page';
@@ -161,13 +162,17 @@ export class AppComponent implements OnDestroy {
       { title: 'contact_us', component: ContactUsPage },
       // Disabling transportation options based on feedback.
       //{ title: 'transportation', component: ParatransitServicesPage },
-      { title: 'resources', component: UserLocatorPage, urlParams: 'services'},
+      ///{ title: 'resources', component: UserLocatorPage, urlParams: 'services'},//only when included in config (see below)
       //{ title: 'language_selector', component: "language_selector" },
       //{ title: 'privacy_policy', component: "privacy_policy" },
       // Disabling chat based on feedback.
       //{ title: 'live_211_chat', component: "live_211_chat" },
       //{ title: 'feedback', component: "feedback" }
     ] as PageModel[];
+
+    if (appConfig.INCLUDE_RESOURCES_FINDER) {
+      this.universalPages.push({ title: 'resources', component: UserLocatorPage, urlParams: 'services'});
+    }
 
     // Pages to display if user is signed in
     this.signedInPages = this.universalPages.concat([

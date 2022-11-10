@@ -27,6 +27,9 @@ export class HelpMeFindPage implements OnInit {
 
   hipaa_privacy_url: string;
 
+  showTransportationFinder: boolean;
+  showResourcesFinder: boolean;
+
   constructor(public router: Router,
               private platform: Platform,
               private alertCtrl: AlertController,
@@ -37,6 +40,8 @@ export class HelpMeFindPage implements OnInit {
               private title: Title) {
                              
     this.hipaa_privacy_url = appConfig.HIPAA_PRIVACY_NOTICE_URL;
+    this.showTransportationFinder = appConfig.INCLUDE_TRANSPORTATION_FINDER;
+    this.showResourcesFinder = appConfig.INCLUDE_RESOURCES_FINDER;
   }
   
   ngOnInit() {

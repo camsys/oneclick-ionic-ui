@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ModalController, NavParams, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, NavParams, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { ServiceModel } from 'src/app/models/service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -23,7 +23,8 @@ export class EmailModalPage implements OnInit {
               private formBuilder: FormBuilder,
               private toastCtrl: ToastController,
               private translate: TranslateService,
-              private auth: AuthService) {
+              private auth: AuthService,
+              private alertController:AlertController) {
                 
      this.service = navParams.data.service;
      this.services = navParams.data.services;
@@ -37,31 +38,39 @@ export class EmailModalPage implements OnInit {
   }
 
   async send(){
+    if (!this.emailForm.value['email'] || this.emailForm.value['email'].trim() == "") {
+      this.alertController.create({
+        header: this.translate.instant("oneclick.global.missing_fields"),
+        message: this.translate.instant("oneclick.pages.sign_up.error_messages.email_cant_be_blank"),
+        buttons: [this.translate.instant("oneclick.global.ok")],
+      }).then(alert => alert.present());
+    }
+    else {
 
-    var ids = new Array();
+      var ids = new Array();
 
-    // Get Ids of Services Array if it was passed
-    if (this.services) {
-      for (var i = 0; i < this.services.length; i++) {
-        ids.push(this.services[i].id);
+      // Get Ids of Services Array if it was passed
+      if (this.services) {
+        for (var i = 0; i < this.services.length; i++) {
+          ids.push(this.services[i].id);
+        }
       }
+
+      // Get ID of a single service if it was passed
+      if (this.service) {
+        ids.push(this.service.id);
+      }
+
+      this.oneClick.email211Service(this.emailForm.value['email'],ids);
+      
+      await this.modalCtrl.dismiss(null);
+
+      this.toastCtrl.create({
+        message: this.translate.instant('oneclick.pages.email.email_sent'),
+        position: 'bottom',
+        duration: 3000
+      }).then(toast => toast.present());
     }
-
-    // Get ID of a single service if it was passed
-    if (this.service) {
-      ids.push(this.service.id);
-    }
-
-    this.oneClick.email211Service(this.emailForm.value['email'],ids);
-    
-    await this.modalCtrl.dismiss(null);
-
-    this.toastCtrl.create({
-      message: this.translate.instant('oneclick.pages.email.email_sent'),
-      position: 'bottom',
-      duration: 3000
-    }).then(toast => toast.present());
-
   }
 
   ngOnInit() {

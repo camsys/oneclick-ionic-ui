@@ -8,6 +8,7 @@ import { SearchResultModel } from 'src/app/models/search-result';
 import { GeocodeService } from 'src/app/services/google/geocode.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { appConfig } from 'src/environments/appConfig';
 
 @Component({
   selector: 'place-search',
@@ -87,7 +88,7 @@ export class PlaceSearchComponent implements OnInit {
   updateAddressSearch(query) {
 
     // Only get 1-Click places if a query is present.
-    if(query && query.trim().length > 0) {
+    if(appConfig.INCLUDE_RESOURCES_FINDER && query && query.trim().length > 0) {
       this.oneClickProvider
       .getPlaces(query)
       .subscribe(places => {
@@ -101,7 +102,7 @@ export class PlaceSearchComponent implements OnInit {
     }
 
     // Only get google places if a query is present.
-    if(query && query.trim().length > 0) {
+    if(appConfig.INCLUDE_TRANSPORTATION_FINDER && query && query.trim().length > 0) {
       this.geoServiceProvider
       .getGooglePlaces(query)
       .subscribe(places => {

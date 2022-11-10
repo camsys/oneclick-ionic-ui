@@ -15,6 +15,7 @@ import { TripResponseModel } from 'src/app/models/trip-response';
 import { ExternalNavigationService } from 'src/app/services/external-navigation.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { appConfig } from 'src/environments/appConfig';
 import { EmailModalPage } from '../../email-modal/email-modal.page';
 import { HelpMeFindPage } from '../../help-me-find/help-me-find.page';
 import { TripResponsePage } from '../../trip-response/trip-response.page';
@@ -53,6 +54,8 @@ export class ServiceFor211DetailPage implements OnInit {
 
   departureDateTime: string;
 
+  showTransportationFinder: boolean;
+
   constructor(public navCtrl: NavController,
               public route: ActivatedRoute,
               public router: Router,
@@ -64,6 +67,7 @@ export class ServiceFor211DetailPage implements OnInit {
               private loader: LoaderService,
               public exNav: ExternalNavigationService) {
 
+                this.showTransportationFinder = appConfig.INCLUDE_TRANSPORTATION_FINDER;
   }
   
   ngOnInit() {

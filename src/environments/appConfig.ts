@@ -1,5 +1,7 @@
 /* Client related data/config */
 export const appConfig = {
+    INCLUDE_TRANSPORTATION_FINDER: false,
+    INCLUDE_RESOURCES_FINDER: true,
     HIPAA_PRIVACY_NOTICE_URL: "https://ieuw-bin.s3.us-east-2.amazonaws.com/211-Ride-HIPAA-Privacy-Notice.pdf",
 
     DEFAULT_LOCATION: {
