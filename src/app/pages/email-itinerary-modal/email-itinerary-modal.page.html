@@ -1,8 +1,8 @@
-<<ion-header>
+<ion-header>
 
-  <ion-navbar>
-    <ion-title text-center>{{ "oneclick.pages.email.header" | translate}}</ion-title>
-  </ion-navbar>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">{{ "oneclick.pages.email.header" | translate}}</ion-title>
+  </ion-toolbar>
 
 </ion-header>
 
@@ -21,21 +21,18 @@
     </ion-item>
 
     <!-- Submit button creates a feedback, cancel discards data without leaving feedback-->
-    <div id="email-modal-buttons">
-      <ion-col col-md-6 text-center>
-        <ion-button round
+    <ion-toolbar id="email-modal-buttons" class="ion-text-center">
+        <ion-button shape="round"
                 type="submit"
                 class="lynx-button-dark">{{ "oneclick.pages.email.submit_button" | translate }}</ion-button>
-      </ion-col>
-      <ion-col col-md-6 text-center>
+     
         <!-- Submit button creates a feedback, cancel discards data without leaving feedback-->
-        <ion-button round
+        <ion-button shape="round"
                 class="lynx-button-white"
                 type="button"
                 (click)="cancel()">{{ "oneclick.pages.email.cancel_button" | translate }}
         </ion-button>
-      </ion-col>
-    </div>
+      </ion-toolbar>
   </form>
 
 

@@ -16,6 +16,7 @@ import { ComponentsModule } from './components/components.module';
 import { CommonModule } from '@angular/common';
 import { ServiceFor211ModalPageModule } from './pages/211/service-for211-modal/service-for211-modal.module';
 import { EmailModalPageModule } from './pages/email-modal/email-modal.module';
+import { EmailItineraryModalPageModule } from './pages/email-itinerary-modal/email-itinerary-modal.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "/assets/i18n/", ".json");
@@ -32,6 +33,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LanguageSelectorModalPageModule,
     ServiceFor211ModalPageModule,
     EmailModalPageModule,
+    EmailItineraryModalPageModule,
     ComponentsModule,
     PipesModule,
     TranslateModule.forRoot({
