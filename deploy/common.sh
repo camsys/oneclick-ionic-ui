@@ -1,10 +1,20 @@
 
+cp ../../src/assets/img/main-logo.png ../../src/assets/img/main-logo.png.bak
+cp ./assets/$iconimagename ../../src/assets/img/main-logo.png
+cp ../../src/assets/img/home-background-image.png ../../src/assets/img/home-background-image.png.bak
+cp ./assets/$backgroundimagename ../../src/assets/img/home-background-image.png
 
-cp ../src/environments/appConfig.ts ../src/environments/appConfig.ts.bak
-cp ../src/environments/appConfig-$client.ts ../src/environments/appConfig.ts
-cp ../src/environments/environment.ts ../src/environments/environment.ts.bak
-cp ../src/environments/environment.$environment.ts ../src/app/environment.ts
+
+cp ../../src/environments/appConfig.ts ../../src/environments/appConfig.ts.bak
+cp ./appConfig-$client.ts ../../src/environments/appConfig.ts
+cp ../../src/environments/environment.ts ../../src/environments/environment.ts.bak
+cp ../../src/environments/environment.$environment.ts ../../src/app/environment.ts
+
 ionic build $prodflag
 aws s3 sync ../www/ $s3bucket --acl public-read  --region us-east-2 --profile $awsprofile
-mv ../src/environments/appConfig.ts.bak ../src/environments/appConfig.ts
-mv ../src/environments/environment.ts.bak ../src/environments/environment.ts
+
+mv ../../src/environments/appConfig.ts.bak ../../src/environments/appConfig.ts
+mv ../../src/environments/environment.ts.bak ../../src/environments/environment.ts
+mv ../../src/assets/img/main-logo.png.bak ../../src/assets/img/main-logo.png
+mv ../../src/assets/img/home-background-image.png.bak ../../src/assets/img/home-background-image.png
+
