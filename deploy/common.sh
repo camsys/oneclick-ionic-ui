@@ -3,6 +3,8 @@ cp ../../src/assets/img/main-logo.png ../../src/assets/img/main-logo.png.bak
 cp ./assets/$iconimagename ../../src/assets/img/main-logo.png
 cp ../../src/assets/img/home-background-image.png ../../src/assets/img/home-background-image.png.bak
 cp ./assets/$backgroundimagename ../../src/assets/img/home-background-image.png
+cp ../../src/assets/data/counties.geojson ../../src/assets/data/counties.geojson.bak
+cp ./assets/$client-counties.geojson ../../src/assets/data/counties.geojson
 
 
 cp ../../src/environments/appConfig.ts ../../src/environments/appConfig.ts.bak
@@ -20,4 +22,5 @@ mv ../../src/environments/environment.ts.bak ../../src/environments/environment.
 mv ../../src/theme/variables.scss.bak ../../src/theme/variables.scss
 mv ../../src/assets/img/main-logo.png.bak ../../src/assets/img/main-logo.png
 mv ../../src/assets/img/home-background-image.png.bak ../../src/assets/img/home-background-image.png
+mv ../../src/assets/data/counties.geojson.bak ../../src/assets/data/counties.geojson.png
 
