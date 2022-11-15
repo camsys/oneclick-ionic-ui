@@ -66,7 +66,7 @@
                       <h3>
                         {{ j === 0 ? (trip.origin.name || trip.origin.formatted_address)  : leg.from.name }}
                         {{ leg.mode }}
-                        <ion-button round *ngIf="leg.mode != 'WALK' && leg.mode != 'CAR' && leg.mode != 'BICYCLE'"
+                        <ion-button shape="round" *ngIf="leg.mode != 'WALK' && leg.mode != 'CAR' && leg.mode != 'BICYCLE'"
                           class="lynx-button-primary"
                           (click)="selectService(leg.serviceId)">
                           {{ "oneclick.pages.directions.steps_tab.service_info_button" | translate }}
