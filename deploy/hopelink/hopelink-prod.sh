@@ -7,7 +7,7 @@ iconimagename=hopelink_icon.png
 backgroundimagename=hopelink_background.png
 
 s3bucket=s3://UNKNOWN
-awsprofile=ieuw
+awsprofile=hope
 prodflag=--prod
 
 source ../common.sh
