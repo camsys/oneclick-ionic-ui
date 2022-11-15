@@ -7,6 +7,8 @@ cp ./assets/$backgroundimagename ../../src/assets/img/home-background-image.png
 
 cp ../../src/environments/appConfig.ts ../../src/environments/appConfig.ts.bak
 cp ./appConfig-$client.ts ../../src/environments/appConfig.ts
+cp ../../src/environments/environment.ts ../../src/environments/environment.ts.bak
+cp ./environments/environment-$client.$environment.ts ../../src/environments/environment.ts
 
 cp ../../src/theme/variables.scss ../../src/theme/variables.scss.bak
 cp ./variables-$client.scss ../../src/theme/variables.scss
