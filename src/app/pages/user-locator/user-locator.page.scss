@@ -31,6 +31,10 @@ ion-toolbar {
     // }
   }
 
+  ion-item.select-wrapper {
+    --ion-background-color: var(--lynxWhite);
+  }
+
   ion-select#arriveBySelector {
     max-width:100%;
     width: 100%;

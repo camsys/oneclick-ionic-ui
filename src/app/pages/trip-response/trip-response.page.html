@@ -34,7 +34,7 @@
     <!-- Header row with editable trip date -->
     <ion-row class="trip-date-row">
       <ion-col col-sm-6 text-center>
-        <ion-item>
+        <ion-item class="select-wrapper">
           <ion-select id="arriveBySelector" value="{{arriveBy}}" (ionChange)="arriveBySelectChanged($event); updateTransportationOptionsButton()">
             <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
             <ion-select-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-select-option>

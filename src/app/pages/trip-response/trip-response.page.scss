@@ -2,6 +2,10 @@ ion-toolbar {
   --background: var(--lynxPink);
 }
 
+ion-item.select-wrapper {
+  --ion-background-color: var(--lynxWhite);
+}
+
 ion-select#arriveBySelector {
   max-width:100%;
   width: 100%;
@@ -16,7 +20,7 @@ ion-select#arriveBySelector {
 }
 
 .item-body {
-  color: var(--lynxBlack);
+  //color: var(--lynxBlack);
   
   b {
     font-weight: 500;

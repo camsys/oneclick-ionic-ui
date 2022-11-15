@@ -35,11 +35,11 @@
     }
 
     a.ieuw-hipaa-notice-link:link,a.ieuw-hipaa-notice-link:visited {
-      color:#fbb255;
+      color:var(--lynxOrange);
     }
 
     a.ieuw-hipaa-notice-link:hover,a.ieuw-hipaa-notice-link:focus,a.ieuw-hipaa-notice-link:active {
-      color:darken(#fbb255, 20%);
+      color:var(--lynxDkOrange);
     }
 
     ion-card-content.card-content-md {
