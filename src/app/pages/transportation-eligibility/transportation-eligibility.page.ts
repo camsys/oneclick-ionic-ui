@@ -48,7 +48,7 @@ export class TransportationEligibilityPage implements OnInit {
               private auth: AuthService,
               public oneClick: OneClickService,
               private changeDetector: ChangeDetectorRef,
-              private translate: TranslateService,
+              public translate: TranslateService,
               private loader: LoaderService) {
 
 

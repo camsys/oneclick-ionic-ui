@@ -23,8 +23,9 @@
                   (ionChange)="storeUserPreferencesDisabledInSession()">
     </ion-checkbox>
     <ion-label color="primary" class="small-label">{{"oneclick.pages.session_user_preference_disabled_text" | translate }}
-      <button class="transportation-eligibility-info-button" (click)="showRegistrationPopup()">
-        <ion-icon color="primary" size="small"
+      <button class="transportation-eligibility-info-button" (click)="showRegistrationPopup()"
+      [attr.aria-label]="translate.instant('oneclick.pages.session_user_preference_disabled_info')" >
+        <ion-icon aria-hidden="true" color="primary" size="small"
           name="information-circle"
         ></ion-icon>
       </button>
@@ -32,11 +33,12 @@
   </ion-item>
 
   <!-- ELIGIBILITIES -->
-  <ion-list text-wrap class="lynx-list" [hidden]="eligibilities.length === 0">
+  <ion-list text-wrap class="lynx-list" *ngIf="eligibilities.length > 0">
     <ion-list-header color="tertiary">
       <ion-label class="ion-text-center">{{ "oneclick.pages.transportation_eligibility.eligibilities_header" | translate }}
-        <button class="transportation-eligibility-info-button" (click)="showEligibilitiesPopup()">
-          <ion-icon color="primary" name="information-circle" size="small"></ion-icon></button>
+        <button class="transportation-eligibility-info-button" [attr.aria-label]="translate.instant('oneclick.pages.transportation_eligibility.eligibilities_info_header')"
+         (click)="showEligibilitiesPopup()">
+          <ion-icon aria-hidden="true" color="primary" name="information-circle" size="small"></ion-icon></button>
       </ion-label>
     </ion-list-header>
 
@@ -53,8 +55,9 @@
   <ion-list text-wrap class="lynx-list">
     <ion-list-header color="tertiary">
       <ion-label class="ion-text-center">{{ "oneclick.pages.transportation_eligibility.age_header" | translate }}
-      <button class="transportation-eligibility-info-button" (click)="showAgePopup()">
-        <ion-icon color="primary" name="information-circle" size="small"></ion-icon></button>
+      <button class="transportation-eligibility-info-button" [attr.aria-label]="translate.instant('oneclick.pages.transportation_eligibility.age_info_header')"
+      (click)="showAgePopup()">
+        <ion-icon aria-hidden="true" color="primary" name="information-circle" size="small"></ion-icon></button>
       </ion-label>
     </ion-list-header>
 
@@ -69,11 +72,12 @@
     </ion-item>
 
   <!-- ACCOMMODATIONS -->
-  <ion-list text-wrap class="lynx-list" [hidden]="accommodations.length === 0">
+  <ion-list text-wrap class="lynx-list" *ngIf="accommodations.length > 0">
     <ion-list-header color="tertiary">
       <ion-label class="ion-text-center">{{ "oneclick.pages.transportation_eligibility.accommodations_header" | translate }}
-      <button large class="transportation-eligibility-info-button" (click)="showAccommodationsPopup()">
-        <ion-icon color="primary" name="information-circle" size="small"></ion-icon></button>
+      <button class="transportation-eligibility-info-button" [attr.aria-label]="translate.instant('oneclick.pages.transportation_eligibility.accommodations_info_header')"
+      (click)="showAccommodationsPopup()">
+        <ion-icon aria-hidden="true" color="primary" name="information-circle" size="small"></ion-icon></button>
       </ion-label>
     </ion-list-header>
 
@@ -89,8 +93,9 @@
   <ion-list text-wrap class="lynx-list" >
     <ion-list-header color="tertiary">
       <ion-label class="ion-text-center">{{"oneclick.pages.transportation_eligibility.trip_types_header" | translate}}
-      <button class="transportation-eligibility-info-button" (click)="showTripTypesPopup()">
-        <ion-icon color="primary" name="information-circle" size="small"></ion-icon></button>
+      <button class="transportation-eligibility-info-button" [attr.aria-label]="translate.instant('oneclick.pages.transportation_eligibility.trip_types_info_header')"
+      (click)="showTripTypesPopup()">
+        <ion-icon aria-hidden="true" color="primary" name="information-circle" size="small"></ion-icon></button>
       </ion-label>
     </ion-list-header>
 
@@ -124,8 +129,9 @@
                   (ionChange)="storeUserPreferencesDisabledInSession()">
     </ion-checkbox>
     <ion-label color="primary" class="small-label">{{"oneclick.pages.session_user_preference_disabled_text" | translate }}
-      <button class="transportation-eligibility-info-button" (click)="showRegistrationPopup()">
-        <ion-icon color="primary" size="small"
+      <button class="transportation-eligibility-info-button" (click)="showRegistrationPopup()"
+      [attr.aria-label]="translate.instant('oneclick.pages.session_user_preference_disabled_info')" >
+        <ion-icon aria-hidden="true" color="primary" size="small"
           name="information-circle"
         ></ion-icon>
       </button>
