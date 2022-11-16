@@ -37,7 +37,6 @@ export class TransportationEligibilityPage implements OnInit {
 
   user_preferences_disabled: boolean = false;
 
-  ageInFocus: boolean;
   prefSaveTopInFocus: boolean;
   prefSaveBottomInFocus: boolean;
 

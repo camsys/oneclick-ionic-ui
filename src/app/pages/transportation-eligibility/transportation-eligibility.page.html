@@ -60,14 +60,11 @@
 
     <ion-item>
       <ion-label position="fixed" id="age-label">{{"oneclick.pages.user_profile.age" | translate}}</ion-label>
-      <ion-input  [class.has-focus]="ageInFocus"
-                  type="number"
+      <ion-input  type="number"
                   placeholder=""
                   name="age"
                   [(ngModel)]="age"
-                  min="0"
-                  (ionFocus)="ageInFocus = true"
-                  (ionBlur)="ageInFocus = false">
+                  min="0">
       </ion-input>
     </ion-item>
 
