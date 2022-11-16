@@ -12,6 +12,8 @@ export const appConfig = {
     AVAILABLE_LOCALES: [ 'en', 'es', 'pt', 'vi', 'ht', 'zh', 'fa'],
     DEFAULT_LOCALE: 'en',
 
+    PARTICIPATING_COUNTIES_BORDER_COLOR: '#0000ff',
+
     SERVICES_ZIPCODES: [ ],
     TRANSPORTATION_ZIPCODES: [ ]
 };

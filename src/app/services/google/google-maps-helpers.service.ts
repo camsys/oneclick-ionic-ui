@@ -176,7 +176,7 @@ export class GoogleMapsHelpersService {
     map.data.setStyle({
       clickable: true,
       fillOpacity: 0,
-      strokeColor: 'blue',
+      strokeColor: appConfig.PARTICIPATING_COUNTIES_BORDER_COLOR,
       strokeWeight: 1
     });
   }
