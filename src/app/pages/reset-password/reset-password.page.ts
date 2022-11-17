@@ -21,24 +21,33 @@ export class ResetPasswordPage implements OnInit {
   ngOnInit() {
   }
 
-  resetPassword() {
-    this.auth.resetPassword(this.email).subscribe(
-        () => {
-          this.toastCtrl.create({
-            message: this.translate.instant("oneclick.pages.reset_password.success_message", { email: this.email }),
-            position: "top",
-            duration: 3000
-          }).then(successToast => successToast.present());
-        },
-        (error) => {
-          console.error(error);
-          this.toastCtrl.create({
-            message: this.translate.instant("oneclick.pages.reset_password.error_message"),
-            position: "top",
-            duration: 3000
-          }).then(errorToast => errorToast.present());
-        }
-      );
+  resetPassword(formIsValid:boolean) {
+    if (formIsValid) {
+      this.auth.resetPassword(this.email).subscribe(
+          () => {
+            this.toastCtrl.create({
+              message: this.translate.instant("oneclick.pages.reset_password.success_message", { email: this.email }),
+              position: "top",
+              duration: 3000
+            }).then(successToast => successToast.present());
+          },
+          (error) => {
+            console.error(error);
+            this.toastCtrl.create({
+              message: this.translate.instant("oneclick.pages.reset_password.error_message"),
+              position: "top",
+              duration: 3000
+            }).then(errorToast => errorToast.present());
+          }
+        );
+    }
+    else {
+      this.toastCtrl.create({
+        message: this.translate.instant("reset_password_instructions"),
+        position: "top",
+        duration: 3000
+      }).then(errorToast => errorToast.present());
+    }
   }
 
 
