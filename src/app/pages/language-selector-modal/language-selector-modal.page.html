@@ -14,7 +14,7 @@
   <!-- LOCALE SELECTOR RADIO BUTTONS -->
 
   <ion-list id="language-selector-container">
-    <ion-radio-group [formControl]="radioLocaleControl" [value]="locale">
+    <ion-radio-group [formControl]="radioLocaleControl">
 
         <ion-item *ngFor="let locale of available_locales">
           <ion-label>{{ "oneclick.global.languages.native." + locale | translate }}</ion-label>
@@ -26,11 +26,17 @@
   </ion-list>
 
   <!-- CANCEL BUTTON -->
-  <div id="language-selector-modal-buttons">
+  <ion-row id="language-selector-modal-buttons" class="ion-justify-content-center">
+   
+    <ion-button shape="round" color="primary"
+            class="lynx-button-white"
+            type="submit"
+            (click)="onLocaleChange()">{{ "oneclick.global.ok" | translate }}</ion-button>
     <ion-button shape="round" color="primary"
             class="lynx-button-white"
             type="button"
             (click)="cancel()">{{ "oneclick.pages.feedback.cancel_button" | translate }}</ion-button>
-  </div>
+    
+  </ion-row>
 
 </ion-content>

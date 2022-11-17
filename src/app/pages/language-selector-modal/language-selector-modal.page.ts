@@ -28,11 +28,11 @@ export class LanguageSelectorModalPage implements OnInit {
   // Set the selected locale based on the passed nav params
   ngOnInit() {
     this.locale = this.navParams.data.locale;
+    this.radioLocaleControl.setValue(this.locale);
 
     this.radioLocaleControl.valueChanges.subscribe(
       (value:string) => {
         this.locale = value;
-        this.onLocaleChange();
       }
     );
   }
