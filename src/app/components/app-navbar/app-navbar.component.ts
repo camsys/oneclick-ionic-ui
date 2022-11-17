@@ -80,7 +80,7 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
   }
 
   isHomePage(): boolean {
-    return this.currentRoute === HelpMeFindPage.routePath;
+    return this.currentRoute === HelpMeFindPage.routePath || this.currentRoute === "/";
   }
 
   ngOnDestroy() {
