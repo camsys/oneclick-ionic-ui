@@ -58,6 +58,7 @@ export class I18nService {
   // Sets the locale, defaulting to default language.
   setLocale(locale: string) {
   this.translate.use(locale || this.currentLocale());
+  document.documentElement.setAttribute("lang", locale);//make sure <html> attribute "lang" is updated with new locale
   this.loader.hideLoader();
   //console.log('finish loading translations');
   }

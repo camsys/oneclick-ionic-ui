@@ -17,7 +17,7 @@
     <ion-radio-group [formControl]="radioLocaleControl">
 
         <ion-item *ngFor="let locale of available_locales">
-          <ion-label>{{ "oneclick.global.languages.native." + locale | translate }}</ion-label>
+          <ion-label [attr.lang]="locale">{{ "oneclick.global.languages.native." + locale | translate }}</ion-label>
           <ion-radio value="{{locale}}"></ion-radio>
         </ion-item>
 
