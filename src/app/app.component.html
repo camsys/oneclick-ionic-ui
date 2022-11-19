@@ -1,7 +1,7 @@
 <ion-app>
 
 <!-- SIDEBAR MENU -->
-<ion-menu class="lynx-menu" side="end" contentId="main-content">
+<ion-menu class="lynx-menu" side="end" contentId="main-content" (ionDidClose)="menuClosed()">
 
   <ion-content>
 
@@ -9,7 +9,6 @@
 
 
     <ion-list class="lynx-list lynx-list-contrast">
-      <ion-menu-toggle auto-hide="true" >
       <!-- If signed in... -->
       <div *ngIf="auth.isRegisteredUser(); else notRegistered">
 
@@ -61,7 +60,6 @@
         </ion-item>
 
       </ng-template>
-</ion-menu-toggle>
     </ion-list>
 
   </ion-content>

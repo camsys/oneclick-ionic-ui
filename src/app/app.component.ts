@@ -19,6 +19,7 @@ import { UserProfilePage } from './pages/user-profile/user-profile.page';
 import { AuthService } from './services/auth.service';
 import { I18nService } from './services/i18n.service';
 import { LoaderService } from './services/loader.service';
+import { MenuService } from './services/menu.service';
 import { OneClickService } from './services/one-click.service';
 
 @Component({
@@ -56,7 +57,8 @@ export class AppComponent implements OnDestroy {
               //private modalCtrl: ModalController,
               private toastCtrl: ToastController,
               private translate: TranslateService,
-              private i18n: I18nService) {
+              private i18n: I18nService,
+              private menuService: MenuService) {
 
     this.initializeApp();
 
@@ -104,6 +106,10 @@ export class AppComponent implements OnDestroy {
       position: 'top',
       duration: 3000
     }).then(errorToast => errorToast.present());
+  }
+
+  menuClosed() {
+    this.menuService.setMenuIsOpen(false);
   }
 
   initializeApp() {

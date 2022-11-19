@@ -29,16 +29,29 @@ ion-button.bar-button-menutoggle {
     }
   }
 
-  ion-menu-button {
-    --color: var(--lynxOrange);
-    --color-hover: var(--lynxWhite);
-    --color-focused: var(--lynxWhite);
+  /* can't use ion-menu-button because it doesn't support aria-expanded attribute*/
+  // ion-menu-button {
+  //   --color: var(--lynxOrange);
+  //   --color-hover: var(--lynxWhite);
+  //   --color-focused: var(--lynxWhite);
+  // }
+
+  ion-back-button      {
+    --color: var(--lynxWhite);
+    &:hover,&:focus {
+      --color: var(--lynxOrange)
+  }
   }
 
-// ion-button.nav-icon-button {
-//     background: transparent;
-//     margin: 0;
-// }
+  .menu-button {
+    
+    background-color: transparent;
+    color: var(--lynxOrange);
+
+    &:hover,&:focus {
+      color: var(--lynxWhite);
+    }
+  }
 
 .toolbar-content > ion-row > ion-col.col:nth-child(2) {
     margin-left: -22px;

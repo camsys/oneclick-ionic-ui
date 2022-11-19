@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { ModalController, NavController } from '@ionic/angular';
+import { MenuController, ModalController, NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { HelpMeFindPage } from 'src/app/pages/help-me-find/help-me-find.page';
 import { LanguageSelectorModalPage } from 'src/app/pages/language-selector-modal/language-selector-modal.page';
 import { AuthService } from 'src/app/services/auth.service';
 import { I18nService } from 'src/app/services/i18n.service';
+import { MenuService } from 'src/app/services/menu.service';
 import { OneClickService } from 'src/app/services/one-click.service';
 
 @Component({
@@ -23,6 +24,8 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
   currentRoute:string;
   user: User;
 
+  ariaExpanded: boolean = false;
+
   @Input() headerTitle: string; // If no title is provided, display the logo.
   @Input() showTitle: boolean = true;//usually we do want to show the title of the page on the top toolbar
 
@@ -33,7 +36,9 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
   			  private i18n: I18nService,
   			  private auth: AuthService,
           private translate: TranslateService,
-          private title: Title) {
+          private title: Title,
+          private menuService: MenuService,
+          private menuCtrl: MenuController) {
 
             this.title.setTitle(this.translate.instant("oneclick.global.application_name"));
   }
@@ -44,6 +49,11 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
            {
               this.currentRoute = event.url;  
            });
+
+    this.menuService.menuIsOpen.pipe(takeUntil(this.unsubscribe)).subscribe(
+      (isOpen: boolean) => {
+        this.ariaExpanded = isOpen;
+      });
 
     if (this.headerTitle) this.title.setTitle(this.headerTitle);
   }
@@ -71,6 +81,10 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
     }).then(languageSelectorModal => languageSelectorModal.present());
   }
 
+  menuOpened() {
+    this.menuService.setMenuIsOpen(true);
+    this.menuCtrl.open();//need to manually open the menu
+  }
   // Check if we're already at the home page; if not, go there.
 
   goHome() {
