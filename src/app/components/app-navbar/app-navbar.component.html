@@ -31,7 +31,9 @@
       <img class="lynx-logo-sm"  src='assets/img/main-logo.png' alt="{{ 'oneclick.global.application_name' | translate}}" />
   </a>
   </ion-buttons>
-  <ion-title *ngIf="showTitle" class="header-title">{{headerTitle}}</ion-title>
+  <ion-title *ngIf="showTitle" class="header-title">
+    <h1>{{headerTitle}}</h1>
+  </ion-title>
 
   <ion-buttons slot="end">
     <ion-button mode="md" aria-label="language translation selection" class="bar-button-menutoggle" (click)="openLanguageSelectorModal()">
