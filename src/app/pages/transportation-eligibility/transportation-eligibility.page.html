@@ -47,7 +47,7 @@
                     [(ngModel)]="elig.value"
                     (ionChange)="updateCharacteristic()">
       </ion-checkbox>
-      <ion-label>{{elig.note}}</ion-label>
+      <ion-label class="ion-text-wrap">{{elig.note}}</ion-label>
     </ion-item>
   </ion-list>
 
@@ -85,14 +85,14 @@
       <ion-checkbox [(ngModel)]="acc.value" slot="start"
                     (ionChange)="updateCharacteristic()">
       </ion-checkbox>
-      <ion-label>{{acc.note}}</ion-label>
+      <ion-label class="ion-text-wrap">{{acc.note}}</ion-label>
     </ion-item>
   </ion-list>
 
   <!-- TRIP TYPES -->
   <ion-list text-wrap class="lynx-list" >
     <ion-list-header color="tertiary">
-      <ion-label class="ion-text-center">{{"oneclick.pages.transportation_eligibility.trip_types_header" | translate}}
+      <ion-label class="ion-text-center ion-text-wrap">{{"oneclick.pages.transportation_eligibility.trip_types_header" | translate}}
       <button class="transportation-eligibility-info-button" [attr.aria-label]="translate.instant('oneclick.pages.transportation_eligibility.trip_types_info_header')"
       (click)="showTripTypesPopup()">
         <ion-icon aria-hidden="true" color="primary" name="information-circle" size="small"></ion-icon></button>
@@ -103,7 +103,7 @@
       <ion-checkbox [(ngModel)]=trip_type.value slot="start"
                     (ionChange)="updateCharacteristic()">
       </ion-checkbox>
-      <ion-label>{{trip_type.name}}</ion-label>
+      <ion-label class="ion-text-wrap">{{trip_type.name}}</ion-label>
     </ion-item>
   </ion-list>
 
