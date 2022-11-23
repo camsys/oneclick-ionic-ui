@@ -1,5 +1,6 @@
 
 <ion-header>
+  <mark>becky</mark>
   <app-navbar headerTitle="{{ 'oneclick.global.transportation.help' | translate }}"></app-navbar>
 
   <ion-toolbar class="lynx-toolbar" text-center>
@@ -177,19 +178,16 @@
                   <h3 item-start class="item-heading">{{ "oneclick.pages.trip_response.call_to_schedule" | translate}}</h3>
                 </ion-col>
                 <ion-col col-sm-6>
-                  <p class="item-body service-details-section" *ngIf="itin.service.purposes.length > 0" style="background-color:yellow;">
-                    <b>{{ "oneclick.pages.trip_response.purposes_header" | translate }}: </b>
+                  <p class="item-body service-details-section" *ngIf="itin.service.purposes.length > 0" >
+                    <mark>
+                    <b>{{ "oneclick.pages.trip_response.purposes_header" | translate }}: </b> {{ purposeList(itin) }}
+                    </mark>
                   </p>
                 </ion-col>
               </ion-row>
               <ion-row>
-                <ion-col col-sm-6>
+                <ion-col size="12">
                   <h5 class="item-subheading">{{itin.duration | prettyTime}} {{'oneclick.global.modes.paratransit' | translate}} ({{'oneclick.global.modes.paratransit_estimated' | translate}})</h5>
-                </ion-col>
-                <ion-col col-sm-6>
-                  <p class="item-body service-details-section" *ngIf="itin.service.purposes.length > 0" style="background-color:yellow;">
-                    {{ purposeList(itin) }}
-                  </p>
                 </ion-col>
               </ion-row>
               <ion-row>
