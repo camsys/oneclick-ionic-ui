@@ -13,6 +13,7 @@ import { PipesModule } from '../pipes/pipes.module';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SearchComponent } from './search/search.component';
+import { ShowHidePasswordComponent } from './show-hide-password/show-hide-password.component';
 
 @NgModule({
     imports: [
@@ -31,7 +32,8 @@ import { SearchComponent } from './search/search.component';
         ResponsiveTimepickerComponent,
         ServiceDetailsComponent,
         AutocompleteResultsComponent,
-        SearchComponent
+        SearchComponent,
+        ShowHidePasswordComponent
     ],
     exports: [
         AppNavbarComponent,
@@ -41,7 +43,8 @@ import { SearchComponent } from './search/search.component';
         ResponsiveTimepickerComponent,
         ServiceDetailsComponent,
         AutocompleteResultsComponent,
-        SearchComponent
+        SearchComponent,
+        ShowHidePasswordComponent
     ]
 })
 export class ComponentsModule {

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NavController, ToastController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Accommodation } from 'src/app/models/accommodation';
 import { Eligibility } from 'src/app/models/eligibility';
@@ -8,7 +8,6 @@ import { TripType } from 'src/app/models/trip-type';
 import { User } from 'src/app/models/user';
 import { OneClickService } from 'src/app/services/one-click.service';
 import { appConfig } from 'src/environments/appConfig';
-import { environment } from 'src/environments/environment';
 import { SignInPage } from '../sign-in/sign-in.page';
 
 @Component({
@@ -33,6 +32,7 @@ export class UserProfilePage implements OnInit {
 
   constructor(public navCtrl: NavController,
               public toastCtrl: ToastController,
+              public alertCtrl: AlertController,
               public oneClickProvider: OneClickService,
               private translate: TranslateService) {
     this.available_locales = appConfig.AVAILABLE_LOCALES;
@@ -44,16 +44,25 @@ export class UserProfilePage implements OnInit {
     .catch((error) => this.handleError(error))
   }
 
-  updateProfile() {
-    this.user.eligibilities = this.eligibilities;
-    this.user.accommodations = this.accommodations;
-    this.user.trip_types = this.trip_types;
-    if(this.user.password && this.user.password.length > 0) {
-      this.user.password_confirmation = this.user.password;
+  updateProfile(valid:boolean) {
+    if (valid) {
+      this.user.eligibilities = this.eligibilities;
+      this.user.accommodations = this.accommodations;
+      this.user.trip_types = this.trip_types;
+      if(this.user.password && this.user.password.length > 0) {
+        this.user.password_confirmation = this.user.password;
+      }
+      this.oneClickProvider.updateProfile(this.user)
+      .then((user) => this.updateUserDataAndShowMessage(user))
+      .catch((error) => this.handleError(error))
     }
-    this.oneClickProvider.updateProfile(this.user)
-    .then((user) => this.updateUserDataAndShowMessage(user))
-    .catch((error) => this.handleError(error))
+    else {
+      this.alertCtrl.create({
+        header: this.translate.instant("oneclick.global.missing_fields"),
+        message: this.translate.instant("oneclick.pages.sign_up.error_messages.email_cant_be_blank"),
+        buttons: [this.translate.instant("oneclick.global.ok")],
+      }).then(alert => alert.present());
+    }
   }
 
   showSuccess() {
