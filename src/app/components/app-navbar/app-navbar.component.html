@@ -38,7 +38,7 @@
       <ion-icon slot="start" aria-hidden="true" class="padded" name="globe"></ion-icon> 
       {{ "oneclick.global.languages.native." + i18n.currentLocale() | translate }}
     </ion-button>
-    <button class="menu-button" [attr.aria-expanded]="ariaExpanded" (click)="menuOpened()">
+    <button class="menu-button" aria-label="main-menu" [attr.aria-expanded]="ariaExpanded" (click)="menuOpened()">
         <ion-icon size="small" name="menu"></ion-icon>
     </button>
   </ion-buttons>   
