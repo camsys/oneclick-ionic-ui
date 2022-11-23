@@ -9,6 +9,7 @@
 
 
     <ion-list class="lynx-list lynx-list-contrast">
+      <ion-menu-toggle auto-hide="true" >
       <!-- If signed in... -->
       <div *ngIf="auth.isRegisteredUser(); else notRegistered">
 
@@ -60,6 +61,7 @@
         </ion-item>
 
       </ng-template>
+    </ion-menu-toggle>
     </ion-list>
 
   </ion-content>
