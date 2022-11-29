@@ -1,27 +1,5 @@
-<ion-toolbar class="mobile-header">
-<!--    
-  <ion-buttons *ngIf="!isHomePage()" slot="start" >
-    <ion-back-button defaultHref="home"></ion-back-button>
-    
-  </ion-buttons>
- 
-      <ion-buttons slot="end">
-        <ion-button mode="md" aria-label="language translation selection" class="bar-button-menutoggle" (click)="openLanguageSelectorModal()">
-          <ion-icon slot="start" aria-hidden="true" class="padded" name="globe"></ion-icon>
-        </ion-button>
-        <ion-menu-button auto-hide="false"></ion-menu-button>
-      </ion-buttons>   
-   
 
-</ion-toolbar>
-<ion-toolbar class="mobile-header">
-   
-      
-  <ion-title class="header-title">{{headerTitle}}</ion-title>
- 
-
-
-</ion-toolbar> -->
+<a class="skip-link" [href]="skipLinkPath">Skip to main content</a>
 
 <ion-toolbar class="header">
    
@@ -47,4 +25,5 @@
 
 
 </ion-toolbar>
+<div id="{{skipId}}" tabIndex="-1"></div>
 

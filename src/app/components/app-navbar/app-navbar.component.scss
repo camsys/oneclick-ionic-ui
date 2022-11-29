@@ -1,3 +1,18 @@
+.skip-link {
+  background: var(--lynxBlack);
+  color: #fff;
+  font-weight: 700;
+  left: 50%;
+  padding: 4px;
+  position: absolute;
+  transform: translateY(-100%);
+  z-index: 10000;//should be on top no matter what
+}
+
+.skip-link:focus {
+  transform: translateY(0%);
+}
+
 ion-toolbar {
     --color: var(--lynxWhite);
     --background: var(--lynxBlack);

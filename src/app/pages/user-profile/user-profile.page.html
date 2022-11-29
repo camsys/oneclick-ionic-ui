@@ -1,7 +1,7 @@
 
 
 <!-- <ion-header> -->
-  <app-navbar headerTitle="{{ 'oneclick.pages.user_profile.header' | translate }}"></app-navbar>  
+  <app-navbar headerTitle="{{ 'oneclick.pages.user_profile.header' | translate }}" skipId="skip-user-profile"></app-navbar>  
   <ion-toolbar color="primary" id="profile-subheader" class="lynx-toolbar ion-text-center">
     <h1 *ngIf="user.first_name && user.last_name">{{user.first_name}} {{user.last_name}}</h1>
     <h1 *ngIf="!user.first_name || !user.last_name">{{user.email}}</h1>

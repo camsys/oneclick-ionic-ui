@@ -1,8 +1,9 @@
 
 <ion-header>
 
-  <app-navbar *ngIf="viewType === 'services'" headerTitle="{{ 'oneclick.pages.user_locator.services_help' | translate }}"></app-navbar>
-  <app-navbar *ngIf="viewType != 'services'" headerTitle="{{ 'oneclick.pages.user_locator.plan_a_trip_header' | translate }}"></app-navbar>
+  <app-navbar *ngIf="viewType === 'services'" headerTitle="{{ 'oneclick.pages.user_locator.services_help' | translate }}" skipId="skip-user-locator"></app-navbar>
+  <app-navbar *ngIf="viewType != 'services'" headerTitle="{{ 'oneclick.pages.user_locator.plan_a_trip_header' | translate }}" skipId="skip-user-locator"></app-navbar>
+</ion-header>
   <ion-toolbar class="lynx-toolbar" text-center>
     <div id="origin-search-container">
       <place-search #originSearch
@@ -53,24 +54,20 @@
 
       </ion-col>
       <ion-col col-sm-3 text-center>
-
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
         <responsive-timepicker #tripTimepicker
                                [time]="departureDateTime"
                                (change)="updateTime($event)">
         </responsive-timepicker>
-
       </ion-col>
 
     </ion-row>
 
   </ion-toolbar>
 
-</ion-header>
 
 
 <ion-content>
-
   <!-- ORIGIN AND DESTINATION AUTOCOMPLETE RESULTS LISTS -->
   <autocomplete-results #originResults
     [items]="originSearch.autocompleteItems"

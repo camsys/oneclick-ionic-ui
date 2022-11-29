@@ -23,9 +23,11 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
 
   currentRoute:string;
   user: User;
+  skipLinkPath: string;
 
   ariaExpanded: boolean = false;
 
+  @Input() skipId: string;// the id to use as the skip to content anchor
   @Input() headerTitle: string; // If no title is provided, display the logo.
   @Input() showTitle: boolean = true;//usually we do want to show the title of the page on the top toolbar
 
@@ -47,7 +49,9 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
     this.router.events.pipe(takeUntil(this.unsubscribe), filter(event => event instanceof NavigationEnd))
           .subscribe((event : NavigationEnd) => 
            {
-              this.currentRoute = event.url;  
+              this.currentRoute = event.url;
+              let routePieces = this.router.url.split('#');
+              this.skipLinkPath = routePieces[0] + '#' + this.skipId;  
            });
 
     this.menuService.menuIsOpen.pipe(takeUntil(this.unsubscribe)).subscribe(
@@ -94,7 +98,9 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
   }
 
   isHomePage(): boolean {
-    return this.currentRoute === HelpMeFindPage.routePath || this.currentRoute === "/";
+    if (!this.currentRoute) return true;
+    let routePieces = this.currentRoute.split('#');
+    return routePieces[0] === HelpMeFindPage.routePath || routePieces[0] === "/";
   }
 
   ngOnDestroy() {

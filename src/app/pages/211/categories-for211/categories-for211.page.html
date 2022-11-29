@@ -5,7 +5,7 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <app-navbar headerTitle="{{ 'oneclick.pages.categories.resources_search.label' | translate }}"></app-navbar>
+  <app-navbar headerTitle="{{ 'oneclick.pages.categories.resources_search.label' | translate }}" skipId="skip-categories"></app-navbar>
   <ion-toolbar class="lynx-toolbar" text-center>
     <ion-searchbar placeholder="{{ 'oneclick.pages.categories.resources_search.placeholder' | translate}}"
                     [formControl]="searchControl"
