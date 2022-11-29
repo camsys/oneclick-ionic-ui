@@ -14,6 +14,7 @@ export class ServiceModel {
   address_components: AddressComponentModel[];
   drive_time: number;
   transit_time: number;
+  phones: string[];
   phone: string;
   url: string;
   email: string;

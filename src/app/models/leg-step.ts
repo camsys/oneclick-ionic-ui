@@ -2,7 +2,7 @@ export class LegStepModel{
   distance:number;
   relativeDirection:string;
   streetName:string;
-  absoluteDirections:string;
+  absoluteDirection:string;
   stayOn:boolean;
   area:boolean;
   bogusName:boolean;

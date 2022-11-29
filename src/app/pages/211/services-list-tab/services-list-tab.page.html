@@ -5,7 +5,7 @@
         <ion-list class="lynx-list">
           <ion-list-header color="driveTime">{{ "oneclick.pages.services.list_tab.sort_by_header" | translate }}</ion-list-header>
            
-          <ion-radio-group [value]="orderBy" (ionChange)="orderMatchList($event.detail.value)"> 
+          <ion-radio-group [value]="orderBy" (ionChange)="orderMatchList($event)"> 
             <ion-item class="sort-by-header">
               <ion-icon name="car" slot="start"></ion-icon>
               <ion-label >{{ "oneclick.global.modes.car" | translate }}</ion-label>

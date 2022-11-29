@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { UnsubscribePageRoutingModule } from './unsubscribe-routing.module';
 
 import { UnsubscribePage } from './unsubscribe.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     UnsubscribePageRoutingModule
   ],
   declarations: [UnsubscribePage]

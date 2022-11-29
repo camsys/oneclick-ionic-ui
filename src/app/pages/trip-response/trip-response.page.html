@@ -17,7 +17,7 @@
       </place-search>
     </div>
 
-    <div id="destination-search-container" [hidden]="viewType === 'services'">
+    <div id="destination-search-container">
       <place-search #destinationSearch
                     uniqueLabel="Destination"
                     resultsListId="destination-results"
@@ -74,13 +74,13 @@
     [items]="originSearch.autocompleteItems"
     uniqueId="origin-results"
     (onChangeFocus)="originSearch.changeAriaFocusItem($event)"
-    (onSelect)="originSearch.chooseItem($event, viewType); updateTransportationOptionsButton();">
+    (onSelect)="originSearch.chooseItem($event, null); updateTransportationOptionsButton();">
   </autocomplete-results>
   <autocomplete-results #destinationResults
     [items]="destinationSearch.autocompleteItems"
     uniqueId="destination-results"
     (onChangeFocus)="destinationSearch.changeAriaFocusItem($event)"
-    (onSelect)="destinationSearch.chooseItem($event, viewType); updateTransportationOptionsButton();">
+    (onSelect)="destinationSearch.chooseItem($event, null); updateTransportationOptionsButton();">
   </autocomplete-results>
 
   <ion-row class="ion-justify-content-center" id="find-transportation-button-container">

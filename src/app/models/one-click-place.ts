@@ -6,6 +6,7 @@ export class OneClickPlaceModel {
   state?: string;
   zip?: string;
   county?: string;
+  formatted_address?: string;
   lat: number; // REQUIRED
   lng: number; // REQUIRED
   

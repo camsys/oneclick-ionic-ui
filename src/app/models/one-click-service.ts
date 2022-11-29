@@ -15,6 +15,7 @@ export class OneClickServiceModel {
   formatted_phone?: string;
   description?: string;
   logo?: string;
+  full_logo?: string;
   schedules?: any[];
   fare?: number; // Not on OneClick service model, but helps for storing associated itinerary info on the service
   purposes?: Purpose[];

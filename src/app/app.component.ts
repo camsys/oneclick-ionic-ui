@@ -48,7 +48,7 @@ export class AppComponent implements OnDestroy {
 
   constructor(public platform: Platform,
               //public exNav: ExternalNavigationService,
-              private auth: AuthService,
+              public auth: AuthService,
               private loader: LoaderService,
               private oneClickProvider: OneClickService,
               private changeDetector: ChangeDetectorRef,

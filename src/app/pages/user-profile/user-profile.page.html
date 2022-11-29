@@ -206,7 +206,7 @@
     <ion-button shape="round" expand="full" 
             class="lynx-button-dark center" 
             form="ngForm"
-            (click)="updateProfile()">
+            (click)="updateProfile(updateProfileForm.valid)">
       {{ "oneclick.pages.user_profile.update_button" | translate }}
     </ion-button>
   </ion-toolbar>

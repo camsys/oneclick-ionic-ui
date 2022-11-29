@@ -35,7 +35,7 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
           public navCtrl: NavController,
           private router: Router,
   			  private modalCtrl: ModalController,
-  			  private i18n: I18nService,
+  			  public i18n: I18nService,
   			  private auth: AuthService,
           private translate: TranslateService,
           private title: Title,
