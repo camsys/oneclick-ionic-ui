@@ -3,6 +3,6 @@
 client=hopelink
 iconimagename=hopelink_icon.png
 backgroundimagename=hopelink_background.png
-environment=dev
+environment=local
 
 source ../local-common.sh
