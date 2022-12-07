@@ -14,6 +14,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SearchComponent } from './search/search.component';
 import { ShowHidePasswordComponent } from './show-hide-password/show-hide-password.component';
+import { ParatransitServicesDetailComponent } from './paratransit-services-detail/paratransit-services-detail.component';
 
 @NgModule({
     imports: [
@@ -33,7 +34,8 @@ import { ShowHidePasswordComponent } from './show-hide-password/show-hide-passwo
         ServiceDetailsComponent,
         AutocompleteResultsComponent,
         SearchComponent,
-        ShowHidePasswordComponent
+        ShowHidePasswordComponent,
+        ParatransitServicesDetailComponent
     ],
     exports: [
         AppNavbarComponent,
@@ -44,7 +46,8 @@ import { ShowHidePasswordComponent } from './show-hide-password/show-hide-passwo
         ServiceDetailsComponent,
         AutocompleteResultsComponent,
         SearchComponent,
-        ShowHidePasswordComponent
+        ShowHidePasswordComponent,
+        ParatransitServicesDetailComponent
     ]
 })
 export class ComponentsModule {
