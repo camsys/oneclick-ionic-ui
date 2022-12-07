@@ -66,19 +66,22 @@ export class DirectionsStepsTabPage implements OnInit, OnDestroy {
   finishInitialization() {
     if (this.trip && this.itinerary) {
       this.itineraries = this.trip.itineraries.slice(0).filter((itin) => itin === this.itinerary).map(function(itin) {
-        itin.legs = itin.legs.map(function(legAttrs) {
-          return new LegModel().assignAttributes(legAttrs);
-        });
+        if (itin.legs) {
+          itin.legs = itin.legs.map(function(legAttrs) {
+            return new LegModel().assignAttributes(legAttrs);
+          });
+        }
         return itin;
       });
     } else if (this.trip) {
       this.itineraries = this.trip.itineraries.map(function(itin) {
-        itin.legs = itin.legs.map(function(legAttrs) {
-          return new LegModel().assignAttributes(legAttrs);
-        });
+        if (itin.legs) {
+          itin.legs = itin.legs.map(function(legAttrs) {
+            return new LegModel().assignAttributes(legAttrs);
+          });
+        }
         return itin;
       });
-
     }
     //else this.itineraries = [];
 
@@ -183,14 +186,17 @@ export class DirectionsStepsTabPage implements OnInit, OnDestroy {
     let itin = this.itineraries[parseInt(this.selectedItinerary)];
 
     // Have to do some funky math to get these to show up in the proper time zone...
-    let itinStartTime:any = new Date(itin.legs[0].startTime).valueOf(); // Convert itinerary start time to milliseconds since epoch
-    itinStartTime = h.roundDownToNearest(itinStartTime, 60000 * 15); // Round down to nearest 15 min.
-    itinStartTime = h.dateISOStringWithTimeZoneOffset(new Date(itinStartTime)); // Format as ISO String with TZ offset
+    let itinStartTime;
+    let itinEndTime;
+    if (itin && itin.legs) {
+      itinStartTime = new Date(itin.legs[0].startTime).valueOf(); // Convert itinerary start time to milliseconds since epoch
+      itinStartTime = h.roundDownToNearest(itinStartTime, 60000 * 15); // Round down to nearest 15 min.
+      itinStartTime = h.dateISOStringWithTimeZoneOffset(new Date(itinStartTime)); // Format as ISO String with TZ offset
 
-    let itinEndTime:any = new Date(itin.legs[itin.legs.length - 1].endTime).valueOf(); // Convert itinerary end time to milliseconds since epoch
-    itinEndTime = h.roundUpToNearest(itinEndTime, 15 * 60000);  // Round up to nearest 15 min.
-    itinEndTime = h.dateISOStringWithTimeZoneOffset(new Date(itinEndTime)); // Format as ISO String with TZ offset
-
+      itinEndTime = new Date(itin.legs[itin.legs.length - 1].endTime).valueOf(); // Convert itinerary end time to milliseconds since epoch
+      itinEndTime = h.roundUpToNearest(itinEndTime, 15 * 60000);  // Round up to nearest 15 min.
+      itinEndTime = h.dateISOStringWithTimeZoneOffset(new Date(itinEndTime)); // Format as ISO String with TZ offset
+    }
     // TRIP TIMES
     // Trip's trip_time in milliseconds since epoch
     let tripTimeInMS:any = Date.parse(this.trip.trip_time);

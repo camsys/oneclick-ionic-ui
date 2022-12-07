@@ -2,17 +2,19 @@
 
 
   <!-- TRIP OPTION SELECTORS -->
-  <ion-segment [(ngModel)]="selectedItinerary"
+  <!-- <ion-segment [(ngModel)]="selectedItinerary"
                *ngIf="itineraries?.length > 1"
                (ngModelChange)="selectItinerary($event)">
     <ion-segment-button *ngFor="let itin of itineraries; let i = index"
                         value="{{ i | toString }}">
       {{ "oneclick.pages.directions.steps_tab.option" | translate }} {{i + 1}}
     </ion-segment-button>
-  </ion-segment>
+  </ion-segment> -->
 
-  <!-- TRIP OPTION RESULTS -->
-  <ion-grid>
+  
+
+  <!-- TRIP OPTION RESULTS for all other modes besides pure paratransit-->
+  <ion-grid *ngIf="itinerary.trip_type != 'paratransit'">
 
     <!-- Header row with editable trip date -->
     <ion-row class="trip-date-row">
@@ -24,11 +26,12 @@
 
     </ion-row>
 
-    <div [ngSwitch]="selectedItinerary">
+    <!-- <div [ngSwitch]="selectedItinerary"> -->
 
       <!-- Itinerary Rows -->
       <ion-row class="itinerary-row" *ngFor="let itin of itineraries; let i = index">
-        <ion-col class="itinerary-col" *ngSwitchCase="i.toString()">
+        <!-- <ion-col class="itinerary-col" *ngSwitchCase="i.toString()"> -->
+        <ion-col class="itinerary-col">
 
           <!-- Leg Rows -->
           <ion-row class="leg-row" *ngFor="let leg of itin.legs; let j = index">
@@ -212,7 +215,7 @@
         </ion-col>
       </ion-row>
 
-    </div>
+    <!-- </div> -->
 
   </ion-grid>
 
