@@ -11,9 +11,12 @@
     </ion-segment-button>
   </ion-segment> -->
 
-  
+  <!--TODO BECKY for now for all paratransit itineraries, show the service detail - will change possibly-->
+  <app-paratransit-services-detail *ngIf="itinerary.trip_type == 'paratransit'"
+    [transportationServices]="transportationServices"></app-paratransit-services-detail>
 
   <!-- TRIP OPTION RESULTS for all other modes besides pure paratransit-->
+  <!--TODO BECKY in future, this section may also need to consider the deviated fixed route-->
   <ion-grid *ngIf="itinerary.trip_type != 'paratransit'">
 
     <!-- Header row with editable trip date -->

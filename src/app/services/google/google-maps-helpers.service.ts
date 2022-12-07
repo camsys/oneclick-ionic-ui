@@ -96,6 +96,65 @@ export class GoogleMapsHelpersService {
     return reticleElement;
   }
 
+  // create or update an arc (used to show travel from origin to destination without a specific route plotted)
+  createUpdateArc(arc: google.maps.Marker, map: google.maps.Map, start: google.maps.LatLng, end: google.maps.LatLng): google.maps.Marker {
+   
+    var curvature = 0.5; // how curvy to make the arc
+    var projection = map.getProjection();
+
+    //check to be sure projection was found
+    if (projection) {
+      var p1 = projection.fromLatLngToPoint(start);
+      var p2 = projection.fromLatLngToPoint(end);
+    } else {
+      console.error("No projection of map provided");
+      return arc;
+    }
+
+    // Calculate the arc.
+    // To simplify the math, these points 
+    // are all relative to p1:
+    var e = new google.maps.Point(p2.x - p1.x, p2.y - p1.y), // endpoint (p2 relative to p1)
+        m = new google.maps.Point(e.x / 2, e.y / 2), // midpoint
+        o = new google.maps.Point(e.y, -e.x), // orthogonal
+        c = new google.maps.Point( // curve control point
+            m.x + curvature * o.x,
+            m.y + curvature * o.y);
+
+    var pathDef = 'M 0,0 ' + 'q ' + c.x + ',' + c.y + ' ' + e.x + ',' + e.y;
+
+    var zoom = map.getZoom(),
+        scale = 1 / (Math.pow(2, -zoom));
+
+        //create similar symbol as bus routes, driving routes
+    var symbol = {
+        path: pathDef,
+        scale: scale,
+        strokeColor: '#133182', // Lynx Dark Pink
+        strokeOpacity: 0.7,
+        strokeWeight: 6,
+        fillColor: 'none'
+    };
+
+    // Create the polyline, passing the symbol in the 'icons' property.
+    if (arc) {//arc already exists so just adjust the existing one
+      arc.setOptions({
+        position: start,
+        icon: symbol,
+    });
+    }
+    else {//new arc is created
+      arc = new google.maps.Marker({
+          position: start,
+          clickable: false,
+          icon: symbol,
+          zIndex: 0, // behind the other markers
+      });
+    }
+
+    return arc;
+  }
+
   // Builds a routeline with default formatting, and returns it. Takes an array
   // of google maps latlngs and a string of the leg's mode
   drawRouteLine(routePoints: google.maps.LatLng[],

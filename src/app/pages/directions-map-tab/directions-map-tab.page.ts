@@ -23,6 +23,7 @@ export class DirectionsMapTabPage implements OnInit, OnDestroy {
   selectedItinerary: string;
   map: google.maps.Map;
   routeLines: google.maps.Polyline[][];
+  arc: google.maps.Marker;
   startMarker: google.maps.Marker;
   endMarker: google.maps.Marker;
 
@@ -55,6 +56,17 @@ export class DirectionsMapTabPage implements OnInit, OnDestroy {
 
   }
 
+  //TODO: BECKY eventually there may be more than one arc (like for deviated fixed route) - will need to refactor this
+  updateArcMarker(start: google.maps.LatLng, end: google.maps.LatLng): Function {
+    return (): void  => {
+      this.arc = this.googleMapsHelpers.createUpdateArc(
+        this.arc,
+        this.map, 
+        start,
+        end);
+    }
+  }
+
   // Sets up the google map
   initializeMap() {
     this.map = this.googleMapsHelpers.buildGoogleMap('directions-route-map-canvas');
@@ -63,17 +75,29 @@ export class DirectionsMapTabPage implements OnInit, OnDestroy {
 
     let me = this;
 
+
+    //TODO: BECKY determining when to use the arc symbol will need to change
+    if (this.itinerary && this.itinerary.trip_type == 'paratransit') {
+      let start = new google.maps.LatLng(this.trip.origin.lat, this.trip.origin.lng);//for now this will be the start of the arc
+      let end = new google.maps.LatLng(this.trip.destination.lat, this.trip.destination.lng);//for now this will be the end of the arc
+      google.maps.event.addListener(this.map, 'projection_changed', this.updateArcMarker(start, end).bind(this));
+      google.maps.event.addListener(this.map, 'zoom_changed', this.updateArcMarker(start, end).bind(this));
+    }
+
     // Create and store google maps polyLines for each itinerary's legs
     this.routeLines = this.itineraries.map(function(itin) {
 
-      let legLines = itin.legs.map(function(leg) {
+      let legLines;
+      if (itin.legs) {//TODO: BECKY eventually there may be paratransit legs so this section won't apply to those
+        legLines = itin.legs.map(function(leg) {
 
-        let routePoints = google.maps.geometry.encoding
-                          .decodePath(leg.legGeometry.points); // Convert the itinerary's leg geometry into an array of google latlngs
-        let routeLine = me.googleMapsHelpers.drawRouteLine(routePoints, leg.mode); // Build the route line object
+          let routePoints = google.maps.geometry.encoding
+                            .decodePath(leg.legGeometry.points); // Convert the itinerary's leg geometry into an array of google latlngs
+          let routeLine = me.googleMapsHelpers.drawRouteLine(routePoints, leg.mode); // Build the route line object
 
-        return routeLine;
-      })
+          return routeLine;
+        })
+      }
 
       return legLines;
 
@@ -118,15 +142,34 @@ export class DirectionsMapTabPage implements OnInit, OnDestroy {
   drawSelectedRoute() {
 
     // Remove all routeLines from the map
-    this.routeLines.forEach((rls) => rls.forEach((rl) => rl.setMap(null)));
+    if (this.routeLines && this.routeLines[0]) this.routeLines.forEach((rls) => rls.forEach((rl) => rl.setMap(null)));
+    //TODO: BECKY eventually there may be more than one arc so it will have to be more like the routeLines
+    if (this.arc) this.arc.setMap(null);
 
     // Draw the selected route lines on the map
-    let selectedRouteLines = this.routeLines[parseInt(this.selectedItinerary)];
-    selectedRouteLines.forEach((rl) => rl.setMap(this.map));
+    let selectedRouteLines = [];
+    if (this.routeLines && this.routeLines[0]) {
+      selectedRouteLines = this.routeLines[parseInt(this.selectedItinerary)];
+      selectedRouteLines.forEach((rl) => rl.setMap(this.map));
+    }
+
+    //TODO: BECKY eventually there may be more than one arc so it will have to be more like the routeLines
+    if (this.arc) this.arc.setMap(this.map);
 
     // Zoom the map extent to the route line
-    this.googleMapsHelpers.zoomToObjects(this.map, selectedRouteLines);
+    let includedThings = [];
+    //TODO: BECKY eventually there may be more than one arc
+    if (this.arc) {
+      includedThings.push(this.arc);
+      includedThings.push(new google.maps.LatLng(this.trip.origin.lat, this.trip.origin.lng));
+      includedThings.push(new google.maps.LatLng(this.trip.destination.lat, this.trip.destination.lng));
 
+    }
+    
+    if (selectedRouteLines && selectedRouteLines.length > 0) {
+      includedThings = includedThings.concat(selectedRouteLines);
+    }
+    this.googleMapsHelpers.zoomToObjects(this.map, includedThings);
   }
 
   ngOnDestroy(): void {

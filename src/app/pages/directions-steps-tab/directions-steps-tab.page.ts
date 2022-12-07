@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ItineraryModel } from 'src/app/models/itinerary';
 import { LegModel } from 'src/app/models/leg';
+import { OneClickServiceModel } from 'src/app/models/one-click-service';
 import { TripRequestModel } from 'src/app/models/trip-request';
 import { TripResponseModel } from 'src/app/models/trip-response';
 import { DirectionsParamsService } from 'src/app/services/directions-params.service';
@@ -34,6 +35,8 @@ export class DirectionsStepsTabPage implements OnInit, OnDestroy {
   arriveByTime: string; // For storing user-defined arrive by time (including date)
   tripDate: string; // For storing the user-defined trip date (including time)
 
+  transportationServices: OneClickServiceModel[];
+
   constructor(private router: Router,
               public oneClickProvider: OneClickService,
               public helpers: HelpersService,
@@ -55,6 +58,14 @@ export class DirectionsStepsTabPage implements OnInit, OnDestroy {
         if (params) {
           this.trip = params.trip;
           this.itinerary = params.itinerary;
+
+          //get the transportation service from the itinerary
+          this.transportationServices = [];
+          if (this.itinerary.service) {
+            let svc = new OneClickServiceModel(this.itinerary.service);
+            svc.fare = this.itinerary.cost;
+            this.transportationServices.push(svc);
+          }
 
           this.finishInitialization();
         }
