@@ -117,6 +117,7 @@ export class TripResponsePage implements OnInit {
 
       if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
         this.router.navigate([TransportationEligibilityPage.routePath, this.trip_id], {
+          replaceUrl: true,
           state: {
             trip_request: this.tripRequest,
             origin: this.origin,
@@ -148,6 +149,7 @@ export class TripResponsePage implements OnInit {
       if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
 
         this.router.navigate([TransportationEligibilityPage.routePath, this.trip_id], {
+            replaceUrl: true,
             state: {
               trip_request: this.tripRequest,
               origin: this.origin,
