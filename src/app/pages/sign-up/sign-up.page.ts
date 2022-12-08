@@ -83,47 +83,47 @@ export class SignUpPage implements OnInit {
             this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
           },
           httpErr => {
-            let errors: string = '';
-            errors = this.translate.instant("oneclick.pages.sign_up.error_messages.default");
+            let errors: string[] = [];
+            errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.default"));
 
             if(httpErr.error.data.errors.email == 'is invalid')
             {
-              errors += this.translate.instant("oneclick.pages.sign_up.error_messages.email_bad");
+              errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.email_bad"));
             }
             if(httpErr.error.data.errors.email == 'has already been taken')
             {
-              errors += this.translate.instant("oneclick.pages.sign_up.error_messages.email_used");
+              errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.email_used"));
             }
             if(httpErr.error.data.errors.email == 'is too short (minimum is 6 characters)')
             {
-              errors += this.translate.instant("oneclick.pages.sign_up.error_messages.password_bad");
+              errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.password_bad"));
             }
             if(httpErr.error.data.errors.password_confirmation == "doesn't match Password")
             {
-              errors += this.translate.instant("oneclick.pages.sign_up.error_messages.password_mismatch");
+              errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.password_mismatch"));
             }
             if(httpErr.error.data.errors.password == "must include at least one letter and one digit")
             {
-              errors += this.translate.instant("oneclick.pages.sign_up.error_messages.password_not_complex");
+              errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.password_not_complex"));
             }
             if(httpErr.error.data.errors.email == "can't be blank")
             {
-              errors += this.translate.instant("oneclick.pages.sign_up.error_messages.email_cant_be_blank");
+              errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.email_cant_be_blank"));
             }
             if(httpErr.error.data.errors.password == "can't be blank")
             {
-              errors += this.translate.instant("oneclick.pages.sign_up.error_messages.password_cant_be_blank");
+              errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.password_cant_be_blank"));
             }
             if(httpErr.error.data.errors.password_confirmation == "can't be blank")
             {
-              errors += this.translate.instant("oneclick.pages.sign_up.error_messages.password_confirmation_cant_be_blank");
+              errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.password_confirmation_cant_be_blank"));
             }
 
             this.toastCtrl.dismiss().catch(()=>{
               //this will catch the error if there is no toast to dismiss
             }).finally(()=>{
               this.toastCtrl.create({
-                message: errors,
+                message: errors.join(". ").replace("..", "."),//join all error messages with period and space but remove any double periods just in case
                 position: "top",
                 duration: 10000
               }).then(errorToast => errorToast.present());
