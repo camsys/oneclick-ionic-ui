@@ -32,7 +32,6 @@ export class UserLocatorPage implements OnInit {
   viewType: string; // Flag for showing the find svcs view vs. the direct transportation finder view. Can be set to 'services' or 'transportation'
   originMarker: google.maps.Marker;
   destinationMarker: google.maps.Marker;
-  imageForDestinationMarker: string;
   selectedOriginItem: number = null;
   lastClicked: string; // used for the map clicking logic
   //myLatLng: google.maps.LatLng = null;
@@ -90,8 +89,8 @@ export class UserLocatorPage implements OnInit {
     this.setMapClickListener();
 
     if ((this.originMarker) && (this.destinationMarker)) {
-      this.googleMapsHelpers.dropUserLocationPin(this.map, this.originMarker.getPosition());
-      this.googleMapsHelpers.dropUserLocationPin(this.map, this.destinationMarker.getPosition());
+      this.setOriginMarker(this.originMarker.getPosition());
+      this.setDestinationMarker(this.destinationMarker.getPosition());
       this.setMapCenter();
     }
 
@@ -103,6 +102,16 @@ export class UserLocatorPage implements OnInit {
     //} else {
       this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
     //}
+  }
+
+  setOriginMarker(latLng: google.maps.LatLng) {
+    this.originMarker = this.googleMapsHelpers.dropUserLocationPin(this.map, latLng);
+    this.originMarker.setLabel('A');
+  }
+
+  setDestinationMarker(latLng: google.maps.LatLng) {
+    this.destinationMarker = this.googleMapsHelpers.dropUserLocationPin(this.map, latLng);
+    this.destinationMarker.setLabel('B');
   }
 
   placeSearchChanged() {
@@ -189,8 +198,7 @@ export class UserLocatorPage implements OnInit {
       this.originMarker.setMap(null);
     }
 
-    this.originMarker = this.googleMapsHelpers.dropUserLocationPin(this.map, latLng);
-    this.originMarker.setLabel('A');
+    this.setOriginMarker(latLng);
     this.setMapCenter();
   }
 
@@ -199,9 +207,7 @@ export class UserLocatorPage implements OnInit {
       this.destinationMarker.setMap(null);
     }
 
-    this.destinationMarker = this.googleMapsHelpers.dropUserLocationPin(this.map, latLng);
-    this.destinationMarker.setIcon(this.imageForDestinationMarker);
-    this.destinationMarker.setLabel('B');
+    this.setDestinationMarker(latLng);
     this.setMapCenter();
   }
 
