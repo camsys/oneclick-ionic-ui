@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { appConfig } from 'deploy/211ride/appConfig-211ride';
 import { County } from 'src/app/models/county';
 import { AuthService } from 'src/app/services/auth.service';
 import { ExternalNavigationService } from 'src/app/services/external-navigation.service';
@@ -25,6 +26,8 @@ export class SignUpPage implements OnInit {
   submitAttempt: boolean = false;
   counties: string[];
 
+  oneClickPrivacyPolicyURL: string;
+
   constructor(public navCtrl: NavController,
               public formBuilder: FormBuilder,
               private authProvider: AuthService,
@@ -32,6 +35,8 @@ export class SignUpPage implements OnInit {
               public oneClickProvider: OneClickService,
               private translate: TranslateService,
               public exNav: ExternalNavigationService) {
+
+                this.oneClickPrivacyPolicyURL = appConfig.ONE_CLICK_PRIVACY_POLICY_URL;
 
     this.signUpFormGroup = formBuilder.group({
       formControlEmail: ['', Validators.compose([Validators.required, EmailAddressValidator.isValid, Validators.maxLength(30),])],
