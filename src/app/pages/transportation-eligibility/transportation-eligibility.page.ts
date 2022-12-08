@@ -1,7 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, ParamMap, Router } from '@angular/router';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 import { Accommodation } from 'src/app/models/accommodation';
 import { Eligibility } from 'src/app/models/eligibility';
 import { GooglePlaceModel } from 'src/app/models/google-place';
@@ -20,8 +22,10 @@ import { TripResponsePage } from '../trip-response/trip-response.page';
   templateUrl: './transportation-eligibility.page.html',
   styleUrls: ['./transportation-eligibility.page.scss'],
 })
-export class TransportationEligibilityPage implements OnInit {
+export class TransportationEligibilityPage implements OnInit, OnDestroy {
   static routePath:string = '/transportation_eligibility';
+
+  private unsubscribe:Subject<any> = new Subject<any>();
 
   origin: GooglePlaceModel = new GooglePlaceModel({});
   destination: GooglePlaceModel = new GooglePlaceModel({});
@@ -40,6 +44,8 @@ export class TransportationEligibilityPage implements OnInit {
   prefSaveTopInFocus: boolean;
   prefSaveBottomInFocus: boolean;
 
+  currentRoute: string;
+
   constructor(public navCtrl: NavController,
               private route: ActivatedRoute,
               private router: Router,
@@ -51,7 +57,15 @@ export class TransportationEligibilityPage implements OnInit {
               public translate: TranslateService,
               private loader: LoaderService) {
 
+              this.router.events.pipe(takeUntil(this.unsubscribe), filter(event => event instanceof NavigationEnd))
+                .subscribe((event : NavigationEnd) =>  
+                {
+                  this.currentRoute = event.url; 
+                });
 
+              this.translate.onLangChange.pipe(takeUntil(this.unsubscribe)).subscribe((event: LangChangeEvent) => {
+                if (this.currentRoute.startsWith(TransportationEligibilityPage.routePath)) this.loadTripResponse();
+              });
   }
 
   ngOnInit() {
@@ -257,5 +271,9 @@ export class TransportationEligibilityPage implements OnInit {
     await alert.present();
   }
 
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
 
 }
