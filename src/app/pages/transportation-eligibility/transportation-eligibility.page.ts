@@ -193,10 +193,11 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
     session.user_preferences_disabled = this.user_preferences_disabled;
     this.auth.setSession(session);
 
-    this.toastCtrl.create({
-      message: "Session updated",
-      duration: 5000}
-    ).then(toast => toast.present());
+    //OCNUI-412 message no longer required
+    // this.toastCtrl.create({
+    //   message: "Session updated",
+    //   duration: 5000}
+    // ).then(toast => toast.present());
   }
   storeUserPreferencesDisabledInSessionByButton() {
     this.user_preferences_disabled = !this.user_preferences_disabled;
