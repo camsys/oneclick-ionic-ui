@@ -64,7 +64,8 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
                 });
 
               this.translate.onLangChange.pipe(takeUntil(this.unsubscribe)).subscribe((event: LangChangeEvent) => {
-                if (this.currentRoute && this.currentRoute.startsWith(TransportationEligibilityPage.routePath)) this.loadTripResponse();
+                //refresh even if not currently in view so if back button is hit, it will be correct
+                this.loadTripResponse();
               });
   }
 
