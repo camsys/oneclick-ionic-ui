@@ -16,7 +16,7 @@
       <ion-row>
         <ion-col no-padding col-sm-10 offset-sm-1 col-md-8 offset-md-2>
           <ion-input  type="text"
-                      placeholder="Email"
+                      placeholder="{{ 'email' | translate }}"
                       name="email"
                       aria-label="email"
                       [(ngModel)]="user.email"
@@ -27,7 +27,7 @@
       <ion-row>
         <ion-col no-padding col-sm-10 offset-sm-1 col-md-8 offset-md-2>
           <ion-input  type="password"
-                      placeholder="Password"
+                      placeholder="{{'password' | translate}}"
                       name="password"
                       aria-label="password"
                       [(ngModel)]="user.password"
