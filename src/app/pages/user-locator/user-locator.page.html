@@ -37,7 +37,7 @@
     <ion-row class="trip-date-row" [hidden]="viewType === 'services'">
       <ion-col col-sm-6 text-center>
         <ion-item class="select-wrapper">
-          <ion-select id="arriveBySelector" value="{{arriveBy}}" (ionChange)="arriveBySelectChanged($event)">
+          <ion-select id="arriveBySelector" value="{{arriveBy}}" placeholder="{{ 'oneclick.global.directions.depart_at' | translate }}" (ionChange)="arriveBySelectChanged($event)">
             <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
             <ion-select-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-select-option>
           </ion-select>
@@ -47,7 +47,7 @@
       <ion-col col-sm-3 text-center>
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
-        <responsive-datepicker #tripDatepicker
+        <responsive-datepicker #tripDatepicker [locale]="translate.currentLang"
                                [date]="departureDateTime"
                                (change)="updateDate($event)">
         </responsive-datepicker>
@@ -55,7 +55,7 @@
       </ion-col>
       <ion-col col-sm-3 text-center>
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
-        <responsive-timepicker #tripTimepicker
+        <responsive-timepicker #tripTimepicker [locale]="translate.currentLang"
                                [time]="departureDateTime"
                                (change)="updateTime($event)">
         </responsive-timepicker>

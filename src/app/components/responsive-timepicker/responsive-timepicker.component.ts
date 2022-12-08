@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { appConfig } from 'deploy/211ride/appConfig-211ride';
 import { HelpersService } from 'src/app/services/helpers.service';
 
 @Component({
@@ -11,6 +12,7 @@ export class ResponsiveTimepickerComponent implements OnInit {
 
   // Component accepts a date input to initialize it. Defaults to the current date and time.
   @Input() time: string = this.helpers.dateISOStringWithTimeZoneOffset(new Date());
+  @Input() locale: string = appConfig.DEFAULT_LOCALE;
 
   // Emits output events whenever the date changes.
   @Output() change = new EventEmitter<string>();

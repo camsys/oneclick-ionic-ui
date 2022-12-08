@@ -1,8 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AutocompleteResultsComponent } from 'src/app/components/autocomplete-results/autocomplete-results.component';
 import { PlaceSearchComponent } from 'src/app/components/place-search/place-search.component';
 import { GooglePlaceModel } from 'src/app/models/google-place';
@@ -25,8 +27,10 @@ import { TransportationEligibilityPage } from '../transportation-eligibility/tra
   templateUrl: './trip-response.page.html',
   styleUrls: ['./trip-response.page.scss'],
 })
-export class TripResponsePage implements OnInit {
+export class TripResponsePage implements OnInit, OnDestroy {
   static routePath:string = "/trip_options";
+
+  private unsubscribe:Subject<any> = new Subject<any>();
 
   @ViewChild('originSearch') originSearch: PlaceSearchComponent;
   @ViewChild('destinationSearch') destinationSearch: PlaceSearchComponent;
@@ -75,7 +79,7 @@ export class TripResponsePage implements OnInit {
               private auth: AuthService,
               private loader: LoaderService,
               public alertController: AlertController,
-              private translate: TranslateService,
+              public translate: TranslateService,
               private changeDetectorRef: ChangeDetectorRef,
               private title: Title) {
 
@@ -99,6 +103,12 @@ export class TripResponsePage implements OnInit {
         //to make sure select for depart/arrive updates correctly
         this.changeDetectorRef.detectChanges();
       }
+    });
+
+    this.translate.onLangChange.pipe(takeUntil(this.unsubscribe)).subscribe(event => {
+      //refresh even if not currently in view so if back button is hit, it will be correct
+      this.oneClick.getTrip(this.trip_id)
+        .subscribe((tripResponse) => this.loadTripResponse(tripResponse));
     });
   }
 
@@ -545,5 +555,8 @@ export class TripResponsePage implements OnInit {
     return tripArriveByTime;
   }
 
-
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
 }
