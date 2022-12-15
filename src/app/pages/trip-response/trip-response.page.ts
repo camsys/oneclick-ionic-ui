@@ -202,7 +202,9 @@ export class TripResponsePage implements OnInit, OnDestroy {
   }
 
   // Orders the match list based on the passed string
-  orderItinList() {
+  orderItinList(event?:any) {
+    if (event) this.orderBy = event.detail.value;//from UI
+    
     if(this.orderBy == "duration") {
       this.orderByDuration();
     } else if(this.orderBy == "walk_distance") {
@@ -386,15 +388,15 @@ export class TripResponsePage implements OnInit, OnDestroy {
     }
   }
 
-  viewParatransitOptions(itinerary: ItineraryModel) {
-    let tripResponse = this.tripResponse;
-    this.router.navigate([ParatransitServicesPage.routePath, tripResponse.id], {
-      state: {
-        trip_response: tripResponse,
-        itinerary: itinerary
-      }
-    });
-  }
+  // viewParatransitOptions(itinerary: ItineraryModel) {
+  //   let tripResponse = this.tripResponse;
+  //   this.router.navigate([ParatransitServicesPage.routePath, tripResponse.id], {
+  //     state: {
+  //       trip_response: tripResponse,
+  //       itinerary: itinerary
+  //     }
+  //   });
+  // }
 
   openDirectionsPageForItinerary(itinerary: ItineraryModel) {
     let tripResponse = this.tripResponse;

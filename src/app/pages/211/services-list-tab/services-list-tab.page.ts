@@ -47,7 +47,10 @@ export class ServicesListTabPage implements OnInit, OnDestroy {
 
   // Orders the match list based on the passed string
   orderMatchList(event) {
-    let orderBy = event.detail.value;
+    let orderBy;
+    if (event.detail) orderBy = event.detail.value;//comes from UI
+    else orderBy = event;//comes from initialization
+
     if(orderBy == "transit_time") {
       this.orderByTransitTime();
     } else if(orderBy == "drive_time") {

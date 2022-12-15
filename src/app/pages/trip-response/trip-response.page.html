@@ -98,7 +98,7 @@
     </ion-button>
 
     <ion-item lines="none">
-    <ion-select value="{{orderBy}}" (ionChange)="orderItinList()" placeholder="{{ 'paratransit_sorter' | translate }}">
+    <ion-select value="{{orderBy}}" (ionChange)="orderItinList($event)" placeholder="{{ 'paratransit_sorter' | translate }}">
       <ion-select-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-select-option>
       <ion-select-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-select-option>
       <ion-select-option value="duration">{{"sort_by" | translate}} {{"travel_time_sorter" | translate }}</ion-select-option>
@@ -109,7 +109,7 @@
   </ion-item>
   </ion-row>
 
-  
+
         <ion-list class="lynx-list">
 
           <!-- For each mode other than paratransit, build a button -->
@@ -200,7 +200,6 @@
                   <ion-button shape="round"
                           class="lynx-button-primary mode-trip-plan-button"
                           (click)="openDirectionsPageForItinerary(itin)">
-                          <!-- (click)="viewParatransitOptions(itin)"> -->
                     {{ "oneclick.pages.trip_response.go_button" | translate }}
                   </ion-button>
                 </ion-col>
