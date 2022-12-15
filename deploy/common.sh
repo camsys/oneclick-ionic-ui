@@ -27,7 +27,7 @@ cp ../../src/theme/variables.scss ../../src/theme/variables.scss.bak
 cp ./variables-$client.scss ../../src/theme/variables.scss
 
 ionic build $prodflag
-#aws s3 sync ../../www/ $s3bucket --acl public-read --profile $awsprofile
+aws s3 sync ../../www/ $s3bucket --acl public-read --profile $awsprofile
 
 mv ../../src/environments/appConfig.ts.bak ../../src/environments/appConfig.ts
 
