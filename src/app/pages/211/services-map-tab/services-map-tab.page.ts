@@ -111,14 +111,23 @@ export class ServicesMapTabPage implements OnInit, OnDestroy {
   }
 
   selectService(match : ServiceModel){
-    let startLocation = this.session().user_starting_location;
+    //need to create a new GooglePlaceModel for the user location since the methods (like label()) will be lost otherwise
+    let user_starting_location = this.session().user_starting_location;
+    let startLocation = new GooglePlaceModel({
+      address_components: user_starting_location.address_components,
+      geometry: user_starting_location.geometry,
+      formatted_address: user_starting_location.formatted_address,
+      place_id: user_starting_location.place_id,
+      name: user_starting_location.name,
+      types: user_starting_location.types
+    });
 
     let destination_location = new GooglePlaceModel({
       address_components: null,
       geometry: {location: {lat: match.lat, lng: match.lng}},
       formatted_address: null,
       id: null,
-      name: null
+      name: match.address
     });
     let departureDateTime = this.session().user_departure_datetime;
     let arriveBy = this.session().user_arrive_by;
