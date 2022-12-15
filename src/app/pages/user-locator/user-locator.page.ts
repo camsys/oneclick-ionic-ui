@@ -51,7 +51,7 @@ export class UserLocatorPage implements OnInit {
               private helpers: HelpersService,
               private changeDetector: ChangeDetectorRef,
               private auth: AuthService,
-              private translate: TranslateService,
+              public translate: TranslateService,
               public toastCtrl: ToastController,
               public alertController: AlertController
             ) {
