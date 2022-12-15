@@ -15,4 +15,8 @@ export class ExternalLinkComponent implements OnInit {
 
   ngOnInit() {}
 
+  clickUrl(event) {
+    event.preventDefault();
+    this.exNav.goTo(this.url);
+  }
 }
