@@ -26,6 +26,16 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 
+/* Used by Hopelink but needs to be here (doesn't work in the variables.scss */
+@font-face {
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./assets/fonts/BebasNeue-Regular.ttf');
+}
+
+
+
 /* oneclick project related themes */
 // @import './theme/helpers';   // HELPER FUNCTIONS AND MIXINS
 // @import './theme/menu';      // MENU

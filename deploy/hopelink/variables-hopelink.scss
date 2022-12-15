@@ -84,8 +84,11 @@
   /** used by the datetime buttons as background color **/
   --ion-color-step-300: var(--lynxWhite);
 
+
+  //@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
   /* TYPOGRAPHY */
-  --font-family-base: "Avenir", 'avenir next', "Helvetica Neue", "Roboto", sans-serif;
+  --ion-font-family: "Bebas Neue", "Avenir", 'avenir next', "Helvetica Neue", "Roboto", sans-serif;
   --text-color: var(--lynxBlack);
 
 @import 'helpers'; // for size() helper function
