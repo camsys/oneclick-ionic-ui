@@ -11,6 +11,10 @@ export class LegModel {
   pathway:boolean;
   mode:string;
   route:string;
+  //allow the incoming value for route to come as routeShortName
+  set routeShortName(v: string) {
+    this.route = v;
+  }
   agencyTimeZoneOffset:number;
   interlineWithPreviousLeg:boolean;
   from:any;
@@ -41,6 +45,8 @@ export class LegModel {
 
   // Returns the proper Ionic mode icon name based on the OTP mode code
   public modeIconName():string {
+    if(this.isFlex()) return 'bus';
+
     switch(this.mode) {
       case 'WALK':
         return 'walk';
@@ -63,6 +69,11 @@ export class LegModel {
     return  this.mode === 'BUS' ||
             this.mode === 'TRAM' ||
             this.mode === 'SUBWAY';
+  }
+
+  //Returns true/false based on whether the leg has a Flex mode code
+  public isFlex():Boolean {
+    return this.mode.includes('FLEX');
   }
 
 }

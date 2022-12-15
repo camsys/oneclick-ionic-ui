@@ -11,13 +11,12 @@
     </ion-segment-button>
   </ion-segment> -->
 
-  <!--TODO BECKY for now for all paratransit itineraries, show the service detail - will change possibly-->
-  <app-paratransit-services-detail *ngIf="itinerary?.trip_type == 'paratransit'"
+  <!-- TRIP OPTION RESULTS no legs provided-->
+  <app-paratransit-services-detail *ngIf="!itinerary.legs || itinerary.legs.length == 0"
     [transportationServices]="transportationServices"></app-paratransit-services-detail>
 
-  <!-- TRIP OPTION RESULTS for all other modes besides pure paratransit-->
-  <!--TODO BECKY in future, this section may also need to consider the deviated fixed route-->
-  <ion-grid *ngIf="itinerary?.trip_type != 'paratransit'">
+  <!-- TRIP OPTION RESULTS when there are legs-->
+  <ion-grid *ngIf="itinerary.legs && itinerary.legs.length > 0">
 
     <!-- Header row with editable trip date -->
     <ion-row class="trip-date-row">
@@ -32,12 +31,12 @@
     <!-- <div [ngSwitch]="selectedItinerary"> -->
 
       <!-- Itinerary Rows -->
-      <ion-row class="itinerary-row" *ngFor="let itin of itineraries; let i = index">
+      <ion-row class="itinerary-row">
         <!-- <ion-col class="itinerary-col" *ngSwitchCase="i.toString()"> -->
         <ion-col class="itinerary-col">
 
           <!-- Leg Rows -->
-          <ion-row class="leg-row" *ngFor="let leg of itin.legs; let j = index">
+          <ion-row class="leg-row" *ngFor="let leg of itinerary.legs; let j = index">
 
             <!-- Leg Time Column -->
             <ion-col no-padding size="3" class="leg-time-col">
@@ -71,7 +70,7 @@
                       <!-- Display the trip origin if it's the first leg. -->
                       <h3>
                         {{ j === 0 ? (trip.origin.name || trip.origin.formatted_address)  : leg.from.name }}
-                        {{ leg.mode }}
+                        {{ leg.isFlex() ? leg.serviceName.toUpperCase() : leg.mode }}
                         <ion-button shape="round" *ngIf="leg.mode != 'WALK' && leg.mode != 'CAR' && leg.mode != 'BICYCLE'"
                           class="lynx-button-primary"
                           (click)="selectService(leg.serviceId)">
@@ -85,7 +84,7 @@
 
 
               <!-- Step Rows (Walk, Bike, Drive) -->
-              <div *ngIf="!leg.isTransit()">
+              <div *ngIf="!leg.isTransit() && !leg.isFlex()">
                 <ion-row class="step-row" *ngFor="let step of leg.steps; let k = index">
                   <ion-col no-padding>
 
@@ -149,6 +148,33 @@
                 </ion-row>
               </div>
 
+              <div *ngIf="leg.isFlex()">
+                <ion-row class="step-row">
+                  <ion-col no-padding>
+                    <div class="step-details-container">
+                      <!-- BOARD {{service_name}} Route {{route}} and ride it {{stops}} stops. -->
+                      {{
+                        "oneclick.pages.directions.steps_tab.flex_step" |
+                        translate:{
+                          service_name: leg.route ? leg.route : leg.serviceName
+                        }
+                      }}
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="step-row">
+                  <ion-col no-padding>
+                    <div class="step-details-container">
+                      <!-- GET OFF at stop: {{destination}} -->
+                      {{
+                        "oneclick.pages.directions.steps_tab.last_flex_step" |
+                        translate:{destination: leg.to.name}
+                      }}
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </div>
+
               <!-- END step rows -->
 
             </ion-col>
@@ -167,7 +193,7 @@
                     {{ "oneclick.global.directions.arrive_by" | translate }}
                   </div>
                   <div class="leg-time-header-content-time">
-                    {{ itin.legs[itin.legs?.length - 1].endTime | date:'shortTime' }}
+                    {{ itinerary.legs[itinerary.legs?.length - 1].endTime | date:'shortTime' }}
                   </div>
                 </ion-col>
               </ion-row>

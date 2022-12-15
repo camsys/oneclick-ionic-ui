@@ -27,9 +27,7 @@ export class DirectionsStepsTabPage implements OnInit, OnDestroy {
 
   trip:TripResponseModel;
   mode:string;
-  itineraries: ItineraryModel[] = [];
   itinerary: ItineraryModel;
-  selectedItinerary: string; // Index of selected itinerary within the itineraries array
   tripRequest:TripRequestModel;
   departAtTime: string; // For storing user-defined depart at time (including date)
   arriveByTime: string; // For storing user-defined arrive by time (including date)
@@ -66,7 +64,6 @@ export class DirectionsStepsTabPage implements OnInit, OnDestroy {
             svc.fare = this.itinerary.cost;
             this.transportationServices.push(svc);
           }
-
           this.finishInitialization();
         }
       }
@@ -75,35 +72,19 @@ export class DirectionsStepsTabPage implements OnInit, OnDestroy {
   }
 
   finishInitialization() {
-    if (this.trip && this.itinerary) {
-      this.itineraries = this.trip.itineraries.slice(0).filter((itin) => itin === this.itinerary).map(function(itin) {
-        if (itin.legs) {
-          itin.legs = itin.legs.map(function(legAttrs) {
-            return new LegModel().assignAttributes(legAttrs);
-          });
-        }
-        return itin;
-      });
-    } else if (this.trip) {
-      this.itineraries = this.trip.itineraries.map(function(itin) {
-        if (itin.legs) {
-          itin.legs = itin.legs.map(function(legAttrs) {
-            return new LegModel().assignAttributes(legAttrs);
-          });
-        }
-        return itin;
+
+    if (this.itinerary.legs) {
+      this.itinerary.legs = this.itinerary.legs.map(function(legAttrs) {
+        return new LegModel().assignAttributes(legAttrs);
       });
     }
-    //else this.itineraries = [];
-
-    this.selectedItinerary = "0";
 
     if (this.trip) {
       this.tripRequest = this.trip.buildTripRequest();
       
       // Sets trip date, arrive_by and depart_at time
       this.tripDate = this.trip.trip_time;
-      if (this.itineraries) this.setArriveByAndDepartAtTimes();
+      this.setArriveByAndDepartAtTimes();
     }
   }
 
@@ -183,28 +164,27 @@ export class DirectionsStepsTabPage implements OnInit, OnDestroy {
     });
   }
 
-  // Fires every time a new itinerary is selected
-  selectItinerary(evt) {
-    this.setArriveByAndDepartAtTimes(); // Update datepicker times based on newly selected itinerary
-    this.changeDetector.markForCheck();
-  }
+  // // Fires every time a new itinerary is selected
+  // selectItinerary(evt) {
+  //   this.setArriveByAndDepartAtTimes(); // Update datepicker times based on newly selected itinerary
+  //   this.changeDetector.markForCheck();
+  // }
 
   // Sets the arrive by and depart at times in the time pickers based on trip and selected itinerary
   setArriveByAndDepartAtTimes() {
     let h = this.helpers; // for date manipulation methods
 
     // ITINERARY TIMES
-    let itin = this.itineraries[parseInt(this.selectedItinerary)];
 
     // Have to do some funky math to get these to show up in the proper time zone...
     let itinStartTime;
     let itinEndTime;
-    if (itin && itin.legs) {
-      itinStartTime = new Date(itin.legs[0].startTime).valueOf(); // Convert itinerary start time to milliseconds since epoch
+    if (this.itinerary && this.itinerary.legs) {
+      itinStartTime = new Date(this.itinerary.legs[0].startTime).valueOf(); // Convert itinerary start time to milliseconds since epoch
       itinStartTime = h.roundDownToNearest(itinStartTime, 60000 * 15); // Round down to nearest 15 min.
       itinStartTime = h.dateISOStringWithTimeZoneOffset(new Date(itinStartTime)); // Format as ISO String with TZ offset
 
-      itinEndTime = new Date(itin.legs[itin.legs.length - 1].endTime).valueOf(); // Convert itinerary end time to milliseconds since epoch
+      itinEndTime = new Date(this.itinerary.legs[this.itinerary.legs.length - 1].endTime).valueOf(); // Convert itinerary end time to milliseconds since epoch
       itinEndTime = h.roundUpToNearest(itinEndTime, 15 * 60000);  // Round up to nearest 15 min.
       itinEndTime = h.dateISOStringWithTimeZoneOffset(new Date(itinEndTime)); // Format as ISO String with TZ offset
     }

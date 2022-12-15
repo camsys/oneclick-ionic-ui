@@ -109,7 +109,7 @@
   </ion-item>
   </ion-row>
 
-
+  
         <ion-list class="lynx-list">
 
           <!-- For each mode other than paratransit, build a button -->
@@ -161,15 +161,69 @@
               </ion-row>
             </ion-grid>
 
-            <ion-grid *ngIf="itin.trip_type == 'paratransit'"><!--TODO BECKY need to consider deviated fixed route and how to show here-->
+              <ion-grid *ngIf="itin.trip_type == 'paratransit_mixed'">
+                <ion-row>
+                  <ion-col col-sm-6>
+                    <ng-container *ngFor="let leg of itin.legs; index as i">
+                      <div *ngIf="!leg.isFlex()" class="otp-legMode-icon otp-legMode-icon-{{ leg.mode }}"></div>
+                      <div *ngIf="leg.isFlex()" class="otp-legMode-icon otp-legMode-icon-paratransit"></div>
+                      <div *ngIf="i != itin.legs.length-1" class="otp-legMode-icon otp-legMode-icon-arrow-right" style="margin-left: 4px;"></div>
+                    </ng-container>
+                  </ion-col>
+                  <ion-col col-sm-6>
+                    <div item-end>
+                      <ng-container *ngFor="let leg of itin.legs; index as i">
+                        <img *ngIf="leg.serviceFullLogoUrl" class="ride-mode-service-icon" src="{{ leg.serviceFullLogoUrl }}" alt="{{ leg.serviceName }}" height="50">
+                        <h6 *ngIf="!leg.serviceFullLogoUrl">{{ leg.serviceName }}</h6>
+                      </ng-container>
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col col-sm-6>
+                    <h3 item-start class="item-heading">
+                      {{ itin.legs[0].startTime | date:'shortTime' }} {{ "oneclick.global.common.to" | translate }}
+                      {{ itin.legs[itin.legs.length-1].endTime | date:'shortTime' }}
+                    </h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col col-sm-6>
+                    <h5 class="item-subheading">{{ itin.duration | prettyTime }} ({{'oneclick.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</h5>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col col-sm-6>
+                    <h2 *ngIf="itin.cost"><b>
+                      {{ [itin.cost] | prettyFare }}
+                    </b></h2>
+                    <h2 *ngIf="!itin.cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                  </ion-col>
+                  <ion-col col-sm-6>
+                    <ion-button shape="round"
+                            class="lynx-button-primary mode-trip-plan-button"
+                            (click)="openDirectionsPageForItinerary(itin)">
+                      {{ "oneclick.pages.trip_response.go_button" | translate }}
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+
+            <ion-grid *ngIf="itin.trip_type == 'paratransit'">
               <ion-row >
                 <ion-col col-sm-6>
-                  <h3 item-start class="item-heading "><div class="otp-legMode-icon otp-legMode-icon-paratransit"></div><b>{{ itin.service.name }}</b></h3>
+                  <h3 item-start class="item-heading "><div class="otp-legMode-icon otp-legMode-icon-paratransit"></div>
+                    <b>{{ itin.service.name }}</b></h3>
                 </ion-col>
                 <ion-col col-sm-6 *ngIf="itin.service.full_logo">
                   <div>
                     <img class="ride-mode-service-icon" src="{{ itin.service.full_logo }}" alt="{{ itin.service.name }}" height="50">
                   </div>
+                </ion-col>
+              </ion-row>
+              <ion-row *ngFor="let leg of itin.legs; index as i">
+                <ion-col *ngIf="leg.isFlex()">
+                  <h3 item-start class="item-heading ">{{ leg.route }}</h3>
                 </ion-col>
               </ion-row>
               <ion-row>
