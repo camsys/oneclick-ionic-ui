@@ -8,6 +8,6 @@ backgroundimagename=finger-lakes_background.png
 
 s3bucket=s3://???
 awsprofile=???
-prodflag=--prod
+prodflag=--prod?????
 
 source ../common.sh
