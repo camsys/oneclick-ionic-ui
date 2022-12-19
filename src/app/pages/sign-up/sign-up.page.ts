@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { appConfig } from 'deploy/211ride/appConfig-211ride';
+import { appConfig } from '../../../environments/appConfig';
 import { County } from 'src/app/models/county';
 import { AuthService } from 'src/app/services/auth.service';
 import { ExternalNavigationService } from 'src/app/services/external-navigation.service';

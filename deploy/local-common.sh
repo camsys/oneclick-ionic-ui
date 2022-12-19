@@ -5,6 +5,7 @@ cp ../../src/assets/img/home-background-image.png ../../src/assets/img/home-back
 cp ./assets/$backgroundimagename ../../src/assets/img/home-background-image.png
 
 cp ./assets/img/* ../../src/assets/img/
+cp ./assets/doc/* ../../src/assets/doc/
 
 cp ../../src/assets/data/counties.geojson ../../src/assets/data/counties.geojson.bak
 cp ./assets/$client-counties.geojson ../../src/assets/data/counties.geojson

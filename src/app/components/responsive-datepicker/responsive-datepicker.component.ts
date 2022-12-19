@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { appConfig } from 'deploy/211ride/appConfig-211ride';
+import { appConfig } from '../../../environments/appConfig';
 import { HelpersService } from 'src/app/services/helpers.service';
 
 @Component({
