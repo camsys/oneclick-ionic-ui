@@ -2,7 +2,7 @@
 export const appConfig = {
     INCLUDE_TRANSPORTATION_FINDER: true,
     INCLUDE_RESOURCES_FINDER: false,
-    HIPAA_PRIVACY_NOTICE_URL: "https://ieuw-bin.s3.us-east-2.amazonaws.com/211-Ride-HIPAA-Privacy-Notice.pdf",
+    HIPAA_PRIVACY_NOTICE_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
 
     DEFAULT_LOCATION: {
