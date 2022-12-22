@@ -1,0 +1,26 @@
+<ion-header>
+
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">{{ "oneclick.pages.service_details.service_header" | translate }}</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+
+  <ion-row>
+    <ion-col col-sm-10 offset-sm-1 col-md-8 offset-md-2>
+      <h3>{{ "oneclick.pages.service_details.details_header" | translate }}</h3>
+
+      <service-details [service]="service"></service-details>
+    </ion-col>
+  </ion-row>
+
+  <ion-toolbar id="language-selector-modal-buttons" class="ion-text-center">
+    <ion-button shape="round"
+            class="lynx-button-white"
+            type="button"
+            (click)="cancel()">{{ "oneclick.pages.feedback.cancel_button" | translate }}</ion-button>
+  </ion-toolbar>
+
+</ion-content>

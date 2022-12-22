@@ -5,12 +5,12 @@
 // EXAMPLE: <ion-input class="lynx-input"></ion-input>
 ion-input.lynx-input {
   
-  background-color: $lynxWhite;
+  background-color: var(--lynxWhite);
   margin: size(-5) 0;
   padding-left: size(1);
   
   ::placeholder {
-    color: $lynxDkGray;
+    color: var(--lynxDkGray);
   }
   
 }

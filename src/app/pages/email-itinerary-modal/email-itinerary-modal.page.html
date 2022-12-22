@@ -1,0 +1,40 @@
+<ion-header>
+
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">{{ "oneclick.pages.email.header" | translate}}</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-item>
+    {{ "oneclick.pages.email.description" | translate}}
+  </ion-item>
+
+
+  <form [formGroup]="emailForm" (ngSubmit)="send()">
+    <!-- Email input just a standard text input -->
+    <ion-item>
+      <ion-input type="email" formControlName="email" placeholder="{{'oneclick.pages.email.placeholder' | translate}}"></ion-input>
+    </ion-item>
+
+    <!-- Submit button creates a feedback, cancel discards data without leaving feedback-->
+    <ion-toolbar id="email-modal-buttons" class="ion-text-center">
+        <ion-button shape="round"
+                type="submit"
+                class="lynx-button-dark">{{ "oneclick.pages.email.submit_button" | translate }}</ion-button>
+     
+        <!-- Submit button creates a feedback, cancel discards data without leaving feedback-->
+        <ion-button shape="round"
+                class="lynx-button-white"
+                type="button"
+                (click)="cancel()">{{ "oneclick.pages.email.cancel_button" | translate }}
+        </ion-button>
+      </ion-toolbar>
+  </form>
+
+
+
+</ion-content>

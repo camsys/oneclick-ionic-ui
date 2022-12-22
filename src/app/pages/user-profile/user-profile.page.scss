@@ -1,0 +1,70 @@
+.has-focus {
+  border: solid 1px rgba(var(--lynxPinkRGB), 1);
+}
+
+.custom-checkbox {
+  margin-right: 10px;
+}
+
+ion-checkbox {
+  --size: 12px;
+}
+
+ion-list-header {
+  font-weight: bold;
+}
+
+
+#profile-header > div {
+    font-weight: 400;
+  }
+  
+  #profile-subheader {
+    height: size(7);
+    
+    h1 {
+      margin: size(1) 0;
+    }
+  }
+  
+  #user-profile-container {
+    
+  }
+  
+  #user-attributes-row {
+    // margin-top: size(3);
+  }
+  
+  #accommodations-list {
+    margin-top: size(2);
+  }
+  
+  ion-list-header.profile-list-header {
+    border-top: none;
+    color: var(--lynxPink);
+    font-weight: 500;
+    font-size: var(--font-size-md);
+    margin-bottom: 0;
+  }
+  
+  .scroll-content {
+    margin-bottom: 0 !important;
+    padding-bottom: size(5) !important;
+  }
+  
+  #submit-button-container {
+    height: size(7);
+    padding: size(2) 0;
+  }
+  
+  #county-item ion-label {
+    max-width: size(7);
+  }
+
+  #preferred-locale-item ion-label {
+    max-width: size(7);
+  }
+  
+  #show-password-button {
+    z-index: 100;
+  }

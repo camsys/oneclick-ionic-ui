@@ -1,0 +1,23 @@
+ion-item.select-wrapper {
+  --ion-background-color: var(--lynxWhite);
+}
+.content-ios,.content-md,.content-wp {
+    background-color: var(--lynxPink);
+  }
+
+  .invalid {
+    border: 1px solid #ea6153;
+  }
+
+  .toast-message {
+    white-space: pre;
+  }
+  ion-input {
+    --background: var(--lynxWhite);
+    //border: solid 5px rgba(var(--lynxPinkRGB), 1);
+    font-size: medium;
+  }
+
+  .has-focus {
+    border: solid 1px rgba(var(--lynxPinkRGB), 1);
+  }

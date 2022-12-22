@@ -1,43 +1,38 @@
-import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { Nav, Platform, Events, ModalController, ToastController } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { NavController, Platform, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-
-// PAGES
-import { HelpMeFindPage } from '../pages/help-me-find/help-me-find';
-import { ParatransitServicesPage } from '../pages/paratransit-services/paratransit-services';
-import { AboutUsPage } from '../pages/about-us/about-us';
-import { ContactUsPage } from '../pages/contact-us/contact-us';
-import { UserLocatorPage }  from '../pages/user-locator/user-locator';
-import { SignInPage }  from '../pages/sign-in/sign-in';
-import { SignUpPage } from '../pages/sign-up/sign-up'
-import { UserProfilePage } from '../pages/user-profile/user-profile';
-import { LanguageSelectorModalPage } from '../pages/language-selector-modal/language-selector-modal';
-import { FeedbackModalPage } from '../pages/feedback-modal/feedback-modal';
-import { FeedbackStatusPage } from '../pages/feedback-status/feedback-status';
-
-// MODELS
-import { User } from '../models/user';
-import { Eligibility } from '../models/eligibility';
-import { Accommodation } from '../models/accommodation';
-import { PageModel } from '../models/page';
-
-// PROVIDERS
-import { OneClickProvider } from '../providers/one-click/one-click';
-import { AuthProvider } from '../providers/auth/auth';
-import { I18nProvider } from '../providers/i18n/i18n';
-import { ExternalNavigationProvider } from '../providers/external-navigation/external-navigation';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+import { appConfig } from 'src/environments/appConfig';
+import { Accommodation } from './models/accommodation';
+import { Eligibility } from './models/eligibility';
+import { PageModel } from './models/page';
+import { User } from './models/user';
+import { AboutUsPage } from './pages/about-us/about-us.page';
+import { ContactUsPage } from './pages/contact-us/contact-us.page';
+import { HelpMeFindPage } from './pages/help-me-find/help-me-find.page';
+import { SignInPage } from './pages/sign-in/sign-in.page';
+import { SignUpPage } from './pages/sign-up/sign-up.page';
+import { UserLocatorPage } from './pages/user-locator/user-locator.page';
+import { UserProfilePage } from './pages/user-profile/user-profile.page';
+import { AuthService } from './services/auth.service';
+import { I18nService } from './services/i18n.service';
+import { LoaderService } from './services/loader.service';
+import { MenuService } from './services/menu.service';
+import { OneClickService } from './services/one-click.service';
 
 @Component({
-  templateUrl: 'app.html'
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss'],
 })
-export class MyApp {
-  @ViewChild(Nav) nav: Nav;
+export class AppComponent implements OnDestroy {
+  private unsubscribe:Subject<any> = new Subject<any>();
 
   rootPage: any = HelpMeFindPage;
   showSpinner: Boolean = false;
+  currentRoute: string;
 
   signedInPages: PageModel[];
   signedOutPages: PageModel[];
@@ -52,28 +47,35 @@ export class MyApp {
   user_name: any = { user: "" };
 
   constructor(public platform: Platform,
-              public statusBar: StatusBar,
-              public splashScreen: SplashScreen,
-              private auth: AuthProvider,
-              private oneClickProvider: OneClickProvider,
+              //public exNav: ExternalNavigationService,
+              public auth: AuthService,
+              private loader: LoaderService,
+              private oneClickProvider: OneClickService,
               private changeDetector: ChangeDetectorRef,
-              public events: Events,
-              private modalCtrl: ModalController,
+              private router: Router,
+              private nav: NavController,
+              //private modalCtrl: ModalController,
               private toastCtrl: ToastController,
               private translate: TranslateService,
-              private i18n: I18nProvider,
-              public exNav: ExternalNavigationProvider) {
+              private i18n: I18nService,
+              private menuService: MenuService) {
 
     this.initializeApp();
 
+    router.events.pipe(takeUntil(this.unsubscribe), filter(event => event instanceof NavigationEnd))
+          .subscribe((event : NavigationEnd) => 
+           {
+              this.currentRoute = event.url;  
+           });
+
     // When a server error occurs, show an error message and return to the home page.
-    this.events.subscribe("error:http", (error) => {
-      if(error.status == 500)
+    this.oneClickProvider.httpError.pipe(takeUntil(this.unsubscribe)).subscribe((error) => {
+      if (error && error.status == 500)
         this.handleError(error);
     });
 
     // When user is updated, update user info.
-    this.events.subscribe("user:updated", (user) => {
+    this.auth.userUpdated.pipe(takeUntil(this.unsubscribe)).subscribe((user) => {
       this.updateUserInfo(user);
     });
   }
@@ -85,7 +87,7 @@ export class MyApp {
       case 401: // Unauthorized--sign user out and send to sign in page
         console.error("USER TOKEN EXPIRED");
         this.signOut();
-        this.nav.push(SignInPage);
+        this.nav.navigateForward(SignInPage.routePath);
         this.showErrorToast('oneclick.global.error_message.auth_needed');
         break;
       default:
@@ -94,26 +96,26 @@ export class MyApp {
         break;
     }
 
-    this.events.publish('spinner:hide'); // stop the spinner once we're back on the home page
-
+    this.loader.hideLoader();// stop the spinner once we're back on the home page
   }
 
   // Shows an error toast at the top of the screen for 3 sec, with the given (translated) message
   showErrorToast(messageCode: string) {
-    let errorToast = this.toastCtrl.create({
+    this.toastCtrl.create({
       message: this.translate.instant(messageCode),
       position: 'top',
       duration: 3000
-    });
-    errorToast.present();
+    }).then(errorToast => errorToast.present());
+  }
 
-    return errorToast;
+  menuClosed() {
+    this.menuService.setMenuIsOpen(false);
   }
 
   initializeApp() {
 
-    this.statusBar.styleDefault();
-    this.splashScreen.hide();
+    //this.statusBar.styleDefault();
+    //this.splashScreen.hide();
 
     // Set up the page links for the sidebar menu
     this.setMenu();
@@ -149,9 +151,11 @@ export class MyApp {
   // Updates this component's user model based on the information stored in the session
   updateUserInfo(usr) {
     this.user = usr;
-    this.user_name = { user: usr.first_name || (usr.email || '').split('@')[0] };
-    this.eligibilities = this.user.eligibilities;
-    this.accommodations = this.user.accommodations;
+    if (usr) {
+      this.user_name = { user: usr.first_name || (usr.email || '').split('@')[0] };
+      this.eligibilities = this.user.eligibilities;
+      this.accommodations = this.user.accommodations;
+    }
   }
 
   // Set up the menu with pages for signed in and signed out scenarios
@@ -164,13 +168,17 @@ export class MyApp {
       { title: 'contact_us', component: ContactUsPage },
       // Disabling transportation options based on feedback.
       //{ title: 'transportation', component: ParatransitServicesPage },
-      { title: 'resources', component: UserLocatorPage, params: { viewType: 'services'}},
+      ///{ title: 'resources', component: UserLocatorPage, urlParams: 'services'},//only when included in config (see below)
       //{ title: 'language_selector', component: "language_selector" },
       //{ title: 'privacy_policy', component: "privacy_policy" },
       // Disabling chat based on feedback.
       //{ title: 'live_211_chat', component: "live_211_chat" },
       //{ title: 'feedback', component: "feedback" }
     ] as PageModel[];
+
+    if (appConfig.INCLUDE_RESOURCES_FINDER) {
+      this.universalPages.push({ title: 'resources', component: UserLocatorPage, urlParams: 'services'});
+    }
 
     // Pages to display if user is signed in
     this.signedInPages = this.universalPages.concat([
@@ -196,33 +204,40 @@ export class MyApp {
       case "sign_out":
         this.signOut();
         break;
-      case "privacy_policy":
-        this.exNav.goTo('http://www.golynx.com/privacy-policy.stml');
-        break;
-      case "language_selector":
-        this.openLanguageSelectorModal();
-        break;
-      case "live_211_chat":
-        this.exNav.goTo('https://server4.clickandchat.com/chat');
-        break;
-      case "feedback":
-        FeedbackModalPage.createModal(this.modalCtrl,
-                                      this.toastCtrl,
-                                      this.translate)
-                         .present();
-        break;
+      // case "privacy_policy":
+      //   this.exNav.goTo('http://www.golynx.com/privacy-policy.stml');
+      //   break;
+      // case "language_selector":
+      //   this.openLanguageSelectorModal();
+      //   break;
+      // case "live_211_chat":
+      //   this.exNav.goTo('https://server4.clickandchat.com/chat');
+      //   break;
+      // case "feedback":
+      //   FeedbackModalPage.createModal(this.modalCtrl,
+      //                                 this.toastCtrl,
+      //                                 this.translate)
+      //                    .present();
+      //   break;
       default:
-        // Reset the content nav to have just this page
-        // we wouldn't want the back button to show in this scenario
-        this.nav.push(page.component, page.params);
+        if (page.urlParams) {
+          this.router.navigate([page.component.routePath, page.urlParams],{
+            state: page.stateParams,
+          });
+        }
+        else {
+          this.router.navigate([page.component.routePath],{
+            state: page.stateParams,
+          });
+        }
     }
 
   }
 
   // Check if we're already at the home page; if not, go there.
   goHome() {
-    if((this.nav.getActive() && this.nav.getActive().name) !== "HelpMeFindPage") {
-      this.nav.setRoot(HelpMeFindPage);
+    if(this.currentRoute != this.rootPage.routePath) {
+      this.nav.navigateRoot(this.rootPage.routePath);
     }
   }
 
@@ -242,41 +257,43 @@ export class MyApp {
   onSignOut() {
     this.setMenu();
     //this.nav.push(this.rootPage);
-    this.nav.setRoot(this.rootPage);
+    this.nav.navigateRoot(this.rootPage.routePath);
     // This isn't an error, but there is no difference in the toast
     this.showErrorToast('oneclick.global.sign_out_successful');
   }
 
   // Creates and presents a modal for changing the locale.
-  openLanguageSelectorModal() {
-    let languageSelectorModal = this.modalCtrl.create(
-      LanguageSelectorModalPage,
-      { locale: this.i18n.currentLocale() }
-    );
-    languageSelectorModal.onDidDismiss(locale => {
-      if(locale) {
-        // If a new locale was selected, store it as the preferred locale in the session
-        this.user = this.auth.setPreferredLocale(locale);
+  // openLanguageSelectorModal() {
+  //   let languageSelectorModal = this.modalCtrl.create(
+  //     LanguageSelectorModalPage,
+  //     { locale: this.i18n.currentLocale() }
+  //   );
+  //   languageSelectorModal.onDidDismiss(locale => {
+  //     if(locale) {
+  //       // If a new locale was selected, store it as the preferred locale in the session
+  //       this.user = this.auth.setPreferredLocale(locale);
 
-        // If user is signed in, update their information with the new locale.
-        if(this.auth.isSignedIn()) {
-          this.oneClickProvider.updateProfile(this.user);
-        }
-      }
-    })
-    languageSelectorModal.present();
+  //       // If user is signed in, update their information with the new locale.
+  //       if(this.auth.isSignedIn()) {
+  //         this.oneClickProvider.updateProfile(this.user);
+  //       }
+  //     }
+  //   })
+  //   languageSelectorModal.present();
+  // }
+
+  // Subscribe to loaderstatus to hide/show spinner
+  setupSpinner() {
+    this.loader.loaderStatus.subscribe((loaderStatus:boolean) => {
+      this.showSpinner = loaderStatus;
+      //if (loaderStatus) this.changeDetector.markForCheck(); // Makes sure spinner doesn't lag
+      //else this.changeDetector.detectChanges(); // Makes sure spinner doesn't lag
+    });
   }
 
-  // Subscribe to spinner:show and spinner:hide events that can be published by child pages
-  setupSpinner() {
-    this.events.subscribe('spinner:show', () => {
-      this.showSpinner = true;
-      this.changeDetector.markForCheck(); // Makes sure spinner doesn't lag
-    });
-    this.events.subscribe('spinner:hide', () => {
-      this.showSpinner = false;
-      this.changeDetector.detectChanges(); // Makes sure spinner doesn't lag
-    });
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
 }

@@ -1,0 +1,18 @@
+ion-content {
+    --color: var(--lynxWhite);
+    --background: var(--lynxBlack);
+}
+
+ion-list {
+    --ion-background-color: var(--lynxBlack);
+}
+
+ion-item{
+    --background: var(--lynxBlack);
+    --border-color: var(--lynxWhite);
+    --ion-text-color: var(--lynxWhite);
+    
+    &:hover,&:focus {
+        --ion-text-color: var(--lynxOrange);
+    }
+}

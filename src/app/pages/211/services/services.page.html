@@ -1,0 +1,41 @@
+<ion-header>
+  <app-navbar headerTitle="{{subSubCategory && subSubCategory.name}}"skipId="skip-services"></app-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-tabs *ngIf="services.length > 0">
+        <ion-tab-bar slot="top" selectedTab="list-tab">
+          <ion-tab-button tab="list-tab">
+            <ion-icon mode="md" name="list"></ion-icon>
+            <ion-label>{{ 'oneclick.pages.services.list_tab.header' | translate }}</ion-label>
+          </ion-tab-button>
+          <ion-tab-button tab="map-tab">
+            <ion-icon mode="md" name="map"></ion-icon>
+            <ion-label>{{ 'oneclick.pages.services.map_tab.header' | translate }}</ion-label>
+          </ion-tab-button>
+        </ion-tab-bar>
+    
+      </ion-tabs>
+
+
+      <!-- <ion-tabs tabsPlacement="top" tabsHighlight="true" *ngIf="this.services.length > 0">
+
+        <ion-tab  [root]="listTab"
+                  tabTitle="{{ 'oneclick.pages.services.list_tab.header' | translate }}"
+                  tabIcon="list"
+                  [rootParams]="this.servicesParams">
+        </ion-tab>
+
+        <ion-tab  [root]="mapTab"
+                  tabTitle="{{ 'oneclick.pages.services.map_tab.header' | translate }}"
+                  tabIcon="map"
+                  [rootParams]="this.servicesParams">
+        </ion-tab>
+
+      </ion-tabs> -->
+    </ion-row>
+  </ion-grid>
+</ion-content>
