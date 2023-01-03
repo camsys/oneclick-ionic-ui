@@ -1,4 +1,7 @@
 
+# common build commands for non-local deployments (AWS deployments)
+
+# copy basic assets (background image, icon, counties) into expected folders
 cp ../../src/assets/img/main-logo.png ../../src/assets/img/main-logo.png.bak
 cp ./assets/$iconimagename ../../src/assets/img/main-logo.png
 cp ../../src/assets/img/home-background-image.png ../../src/assets/img/home-background-image.png.bak
@@ -10,7 +13,7 @@ cp ./assets/doc/* ../../src/assets/doc/
 cp ../../src/assets/data/counties.geojson ../../src/assets/data/counties.geojson.bak
 cp ./assets/$client-counties.geojson ../../src/assets/data/counties.geojson
 
-
+# copy appConfig for the client into the expected folders
 cp ../../src/environments/appConfig.ts ../../src/environments/appConfig.ts.bak
 cp ./appConfig-$client.ts ../../src/environments/appConfig.ts
 
@@ -24,9 +27,11 @@ cp ../../src/environments/environment.ts ../../src/environments/environment.ts.b
 cp ./environments/environment-$client.$environment.ts ../../src/environments/environment.ts
 fi
 
+# copy client styles into expected location
 cp ../../src/theme/variables.scss ../../src/theme/variables.scss.bak
 cp ./variables-$client.scss ../../src/theme/variables.scss
 
+# build code (with or without --prod flag) and upload to aws
 ionic build $prodflag
 aws s3 sync ../../www/ $s3bucket --acl public-read --profile $awsprofile
 
