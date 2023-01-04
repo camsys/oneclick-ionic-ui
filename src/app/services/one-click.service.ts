@@ -1,5 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ToastController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -31,6 +33,8 @@ export class OneClickService {
   private _httpError:BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
 
   constructor(public http: HttpClient,
+    private toastCtrl: ToastController,
+    private translate: TranslateService,
               private auth: AuthService,
               private i18n: I18nService) {}
 
@@ -472,6 +476,14 @@ export class OneClickService {
   }
 
   private unpackTripResponse(response: any): TripResponseModel {
+    let errors = response.errors;
+    if (errors && errors.length > 0) {
+      this.toastCtrl.create({
+        message: this.translate.instant('downstream_services_errors_message'),
+        position: 'bottom',
+        duration: 3000
+      }).then(toast => toast.present());
+    }
 
     let trip = (response.data.trip as TripResponseModel);
     let user = trip.user as User;
