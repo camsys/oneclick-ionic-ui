@@ -27,6 +27,9 @@ cp ../../src/environments/environment.ts ../../src/environments/environment.ts.b
 cp ./environments/environment-$client.$environment.ts ../../src/environments/environment.ts
 fi
 
+# copy version file
+cp ../version.ts ../../src/environments/version.ts
+
 # copy client styles into expected location
 cp ../../src/theme/variables.scss ../../src/theme/variables.scss.bak
 cp ./variables-$client.scss ../../src/theme/variables.scss

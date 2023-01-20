@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { OneClickService } from 'src/app/services/one-click.service';
 import { appConfig } from 'src/environments/appConfig';
 import { UserLocatorPage } from '../user-locator/user-locator.page';
+import { appVersion } from '../../../environments/version';
 
 @Component({
   selector: 'app-help-me-find',
@@ -29,6 +30,7 @@ export class HelpMeFindPage implements OnInit {
 
   showTransportationFinder: boolean;
   showResourcesFinder: boolean;
+  appVersion:string;
 
   constructor(public router: Router,
               private platform: Platform,
@@ -42,6 +44,7 @@ export class HelpMeFindPage implements OnInit {
     this.hipaa_privacy_url = appConfig.HIPAA_PRIVACY_NOTICE_URL;
     this.showTransportationFinder = appConfig.INCLUDE_TRANSPORTATION_FINDER;
     this.showResourcesFinder = appConfig.INCLUDE_RESOURCES_FINDER;
+    this.appVersion = appVersion.VERSION;
   }
   
   ngOnInit() {

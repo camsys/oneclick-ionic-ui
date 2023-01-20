@@ -18,6 +18,9 @@ cp ./appConfig-$client.ts ../../src/environments/appConfig.ts
 cp ../../src/environments/environment.ts ../../src/environments/environment.ts.bak
 cp ./environments/environment-$client.$environment.ts ../../src/environments/environment.ts
 
+# copy version file
+cp ../version.ts ../../src/environments/version.ts
+
 # copy client styles
 cp ../../src/theme/variables.scss ../../src/theme/variables.scss.bak
 cp ./variables-$client.scss ../../src/theme/variables.scss
