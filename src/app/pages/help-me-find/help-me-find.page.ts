@@ -83,6 +83,9 @@ export class HelpMeFindPage implements OnInit {
 
   openTransportationPage() {
     this.router.navigate([UserLocatorPage.routePath, 'transportation']);
+
+    // Unset history
+    this.auth.unsetFindServicesHistoryId();
   }
 
 
