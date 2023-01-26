@@ -12,4 +12,5 @@ export class Session {
 
   user_preferences_disabled: boolean;
 
+  find_services_history_id: number;
 }

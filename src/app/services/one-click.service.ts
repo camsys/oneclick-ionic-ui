@@ -10,6 +10,7 @@ import { Alert } from '../models/alert';
 import { CategoryFor211Model } from '../models/category-for-211';
 import { County } from '../models/county';
 import { FeedbackModel } from '../models/feedback';
+import { FindServicesHistoryModel } from '../models/find-services-history';
 import { GooglePlaceModel } from '../models/google-place';
 import { OneClickHttpResponse } from '../models/one-click-http-response';
 import { OneClickServiceModel } from '../models/one-click-service';
@@ -310,6 +311,35 @@ export class OneClickService {
       .catch(error => this.handleError(error).toPromise());
   }
 
+  // Create find services history records from Find Services workflow.
+  createFindServicesHistory(formatted_address: string, lat: number, lng: number, subSubCategoryName: string): Observable<FindServicesHistoryModel> {
+    let uri: string = encodeURI(
+      this.oneClickUrl +
+      'oneclick_refernet/create_find_services_history'
+    );
+
+    var request = { formatted_address: formatted_address, lat: lat, lng: lng, sub_sub_category_name: subSubCategoryName, locale: this.i18n.currentLocale()};
+
+    return this.http.post(uri, request, this.requestOptions()).pipe(
+               map(response => this.unpackFindServicesHistoryResponse(response)),
+               catchError(error => this.handleError(error)));
+  }
+
+  // Update find services history records from Find Services workflow.
+  // Modify history record to add associated trip id for trip planned through services.
+  updateFindServicesHistoryTripId(find_services_history_id: number, trip_id: number): Observable<FindServicesHistoryModel> {
+    let uri: string = encodeURI(
+      this.oneClickUrl +
+      'oneclick_refernet/update_find_services_history_trip_id'
+    );
+
+    var request = { find_services_history_id: find_services_history_id, trip_id: trip_id, locale: this.i18n.currentLocale()};
+
+    return this.http.post(uri, request, this.requestOptions()).pipe(
+               map(response => this.unpackFindServicesHistoryResponse(response)),
+               catchError(error => this.handleError(error)));
+  }
+
   // Plans a trip via OneClick, and returns the result
   planTrip(tripRequest: TripRequestModel): Observable<TripResponseModel> {
     let uri = encodeURI(this.oneClickUrl +
@@ -473,6 +503,26 @@ export class OneClickService {
   // Filters out any categories without associated services
   private filterEmptyCategories(categories: any[]): any[] {
     return categories.filter(cat => cat.service_count > 0);
+  }
+
+  private unpackFindServicesHistoryResponse(response: any): FindServicesHistoryModel {
+
+    let find_services_history = (response.data.find_services_history as FindServicesHistoryModel);
+    let user = find_services_history.user as User;
+
+    if (find_services_history) {
+      this.auth.setFindServicesHistoryId(find_services_history.id);
+    }
+
+    if (user) {
+      // If no user is signed in, OR the user is signed in as the user
+      // returned by the call, store returned user info in the session.
+      if (!this.auth.isSignedIn() || this.auth.isSignedIn(user)) {
+        this.auth.updateSessionUser(user);
+      }
+    }
+
+    return find_services_history;
   }
 
   private unpackTripResponse(response: any): TripResponseModel {

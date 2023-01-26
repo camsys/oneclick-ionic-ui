@@ -329,6 +329,11 @@ export class TripResponsePage implements OnInit, OnDestroy {
     this.orderBy = "trip_type";
     this.orderItinList();
 
+    // Update the trip id.
+    if (this.auth.findServicesHistoryId()) {
+      this.oneClick.updateFindServicesHistoryTripId(this.auth.findServicesHistoryId(), this.trip_id).subscribe();
+    }
+
     this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
     this.loader.hideLoader();
   }

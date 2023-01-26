@@ -255,4 +255,19 @@ export class AuthService {
     return this.updateSessionUser(user);
   }
 
+  // Pulls the find_services_history_id out of the session
+  findServicesHistoryId(): number {
+    return this.session().find_services_history_id as number;
+  }
+
+  setFindServicesHistoryId(find_services_history_id: number): void {
+    let session = this.session();
+    session.find_services_history_id = find_services_history_id;
+    this.setSession(session);
+  }
+
+  unsetFindServicesHistoryId(): void {
+    this.setFindServicesHistoryId(0);
+  }
+
 }
