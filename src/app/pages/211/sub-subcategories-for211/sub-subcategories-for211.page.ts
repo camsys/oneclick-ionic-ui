@@ -54,6 +54,9 @@ export class SubSubcategoriesFor211Page implements OnInit {
   }
 
   openToServices(subSubCategory: SubSubcategoryFor211Model) {
+    let userLocation = this.auth.userLocation();
+    this.oneClick.createFindServicesHistory(userLocation.formatted_address, userLocation.lat(), userLocation.lng(), subSubCategory.name).subscribe();
+
     this.router.navigate([ServicesPage.routePath, subSubCategory.code], { 
       state: {
         sub_sub_category: subSubCategory  
