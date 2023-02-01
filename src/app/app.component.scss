@@ -16,3 +16,18 @@ ion-item{
         --ion-text-color: var(--lynxOrange);
     }
 }
+
+#ion-spinner-container {
+    background-color: var(--lynxShadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    
+    ion-spinner {
+      height: size(5);
+      width: size(5);
+    }  
+  }
