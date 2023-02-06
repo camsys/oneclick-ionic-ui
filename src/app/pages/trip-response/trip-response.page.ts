@@ -123,6 +123,9 @@ export class TripResponsePage implements OnInit, OnDestroy {
     if (!this.trip_id && this.tripRequest) {
       
       this.departureDateTime = this.tripRequest.trip.trip_time;
+      this.departureDate = new Date(this.departureDateTime);
+      this.departureTime = new Date(this.departureDateTime);
+
       this.arriveBy = this.tripRequest.trip.arrive_by;
 
       if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
@@ -152,7 +155,11 @@ export class TripResponsePage implements OnInit, OnDestroy {
       // If an origin and destination are passed, make a trip request based on those
     } else if (this.origin && this.destination) {
 
-      if (this.departureDateTimeParam) this.departureDateTime = this.departureDateTimeParam;
+      if (this.departureDateTimeParam) {
+        this.departureDateTime = this.departureDateTimeParam;
+        this.departureDate = new Date(this.departureDateTime);
+        this.departureTime = new Date(this.departureDateTime);
+      }
 
       this.buildTripRequest(this.allModes);
 
@@ -296,11 +303,13 @@ export class TripResponsePage implements OnInit, OnDestroy {
   }
 
   updateDate(date: string) {
-    this.departureDate = new Date(date);
+    if (!date) this.departureDate = null;
+    else this.departureDate = new Date(date);
   }
 
   updateTime(time: string) {
-    this.departureTime = new Date(time);
+    if (!time) this.departureTime = null;
+    else this.departureTime = new Date(time);
   }
 
   updateTransportationOptionsButton() {
@@ -348,6 +357,20 @@ export class TripResponsePage implements OnInit, OnDestroy {
       this.alertController.create({
         header: this.translate.instant("oneclick.global.missing_fields"),
         message: this.translate.instant("oneclick.pages.user_locator.origin_destination_search.required"),
+        buttons: [this.translate.instant("oneclick.global.ok")],
+      }).then(alert => alert.present());
+    }
+    else if (!this.departureDate) {
+      this.alertController.create({
+        header: this.translate.instant("oneclick.global.invalid_date"),
+        message: this.translate.instant("oneclick.pages.user_locator.invalid_date_message"),
+        buttons: [this.translate.instant("oneclick.global.ok")],
+      }).then(alert => alert.present());
+    }
+    else if (!this.departureTime) {
+      this.alertController.create({
+        header: this.translate.instant("oneclick.global.invalid_time"),
+        message: this.translate.instant("oneclick.pages.user_locator.invalid_time_message"),
         buttons: [this.translate.instant("oneclick.global.ok")],
       }).then(alert => alert.present());
     }

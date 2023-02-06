@@ -34,8 +34,9 @@
     </div>
 
     <!-- Header row with editable trip date -->
+    <ion-grid>
     <ion-row class="trip-date-row" [hidden]="viewType === 'services'">
-      <ion-col col-sm-6 text-center>
+      <ion-col>
         <ion-item class="select-wrapper">
           <ion-select id="arriveBySelector" value="{{arriveBy}}" placeholder="{{ 'oneclick.global.directions.depart_at' | translate }}" (ionChange)="arriveBySelectChanged($event)">
             <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
@@ -44,25 +45,25 @@
         </ion-item>
       </ion-col>
 
-      <ion-col col-sm-3 text-center>
+      <ion-col>
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
         <responsive-datepicker #tripDatepicker [locale]="translate.currentLang"
                                [date]="departureDateTime"
-                               (change)="updateDate($event)">
+                               (changeDate)="updateDate($event)">
         </responsive-datepicker>
 
       </ion-col>
-      <ion-col col-sm-3 text-center>
+      <ion-col>
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
         <responsive-timepicker #tripTimepicker [locale]="translate.currentLang"
                                [time]="departureDateTime"
-                               (change)="updateTime($event)">
+                               (changeTime)="updateTime($event)">
         </responsive-timepicker>
       </ion-col>
 
     </ion-row>
-
+  </ion-grid>
   </ion-toolbar>
 
 
@@ -89,7 +90,7 @@
             id="find-services-button"
             (click)="searchForServices(originSearch.place)">
       {{ "oneclick.pages.user_locator.resources_button" | translate }}
-      <ion-icon pull-right name="arrow-forward"></ion-icon>
+      <ion-icon aria-hidden="true" pull-right name="arrow-forward"></ion-icon>
     </ion-button>
   </div>
 
@@ -100,7 +101,7 @@
             id="find-transportation-button"
             (click)="findTransportation(originSearch.place, destinationSearch.place)">
         {{ "oneclick.pages.user_locator.transportation_button" | translate }}
-      <ion-icon class="ion-padding-start" name="arrow-forward"></ion-icon>
+      <ion-icon aria-hidden="true" class="ion-padding-start" name="arrow-forward"></ion-icon>
     </ion-button>
   </div>
 

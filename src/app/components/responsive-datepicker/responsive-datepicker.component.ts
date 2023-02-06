@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { appConfig } from '../../../environments/appConfig';
 import { HelpersService } from 'src/app/services/helpers.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'responsive-datepicker',
@@ -9,6 +9,7 @@ import { HelpersService } from 'src/app/services/helpers.service';
   styleUrls: ['./responsive-datepicker.component.scss'],
 })
 export class ResponsiveDatepickerComponent implements OnInit {
+  private pattern = /^(0[1-9]|1[012]|[1-9])[- /.]([1-9]|0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$/;
 
   // Reference the ionic datepicker element (only used in browsers)
   //@ViewChild('browserDatepicker') browserDatepicker: any;
@@ -18,13 +19,38 @@ export class ResponsiveDatepickerComponent implements OnInit {
   @Input() locale: string = appConfig.DEFAULT_LOCALE;
 
   // Emits output events whenever the date changes.
-  @Output() change = new EventEmitter<string>();
+  @Output('changeDate') change = new EventEmitter<string>();
+
+  dateControl: FormControl = new FormControl();
 
   constructor(/*private nativeDatePicker: DatePicker,*/
               public helpers: HelpersService) {
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    //initialize the date entry input control
+    let tempDate = new Date(this.date);
+    this.dateControl.setValue(tempDate.toLocaleDateString("en-US"));
+
+    this.dateControl.valueChanges.subscribe(
+      (value: string) => {
+        //check entered user string to be sure it is a match
+        let isValid = value.match(this.pattern);
+
+        if (isValid) {
+          //let tempDate = new Date(value);
+
+          this.outputUpdatedDate(this.helpers.dateISOStringWithTimeZoneOffset(new Date(value)));
+        }
+        else this.outputUpdatedDate(null)
+      }
+    );
+  }
+
+  outputUpdatedDate(newDateString: string) {
+    this.change.emit(newDateString);
+  }
+
 
   // Shows the datepicker.
   //open() {
@@ -74,8 +100,11 @@ export class ResponsiveDatepickerComponent implements OnInit {
   // }
 
   // Whenever the date is changed, emit a change event with the new value.
-  dateChange(e) {
-    this.change.emit(e.detail.value);
+  datePickerChangeEvent(e) {
+    //update the input control for date to reflect the picker choice
+    let tempDate = new Date(e.detail.value);
+    //this.date = this.helpers.dateISOStringWithTimeZoneOffset(tempDate);
+    this.dateControl.setValue(tempDate.toLocaleDateString("en-US"));
   }
 
   // Gets a list of the next few years for populating the datepicker

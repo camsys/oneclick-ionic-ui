@@ -61,7 +61,10 @@ export class UserLocatorPage implements OnInit {
     this.userLocation = null; // The user's device location\
 
     this.arriveBy = false;
-    this.departureDateTime = this.helpers.dateISOStringWithTimeZoneOffset(new Date());
+    let today = new Date();
+    this.departureDateTime = this.helpers.dateISOStringWithTimeZoneOffset(today);
+    this.departureDate = today;
+    this.departureTime = today;
   }
 
   ngOnInit() {
@@ -246,11 +249,13 @@ export class UserLocatorPage implements OnInit {
   }
 
   updateDate(date: string) {
-    this.departureDate = new Date(date);
+    if (!date) this.departureDate = null;
+    else this.departureDate = new Date(date);
   }
 
   updateTime(time: string) {
-    this.departureTime = new Date(time);
+    if (!time) this.departureTime = null;
+    else this.departureTime = new Date(time);
   }
 
   // Plans a trip based on origin and destination
@@ -262,6 +267,20 @@ export class UserLocatorPage implements OnInit {
       this.alertController.create({
         header: this.translate.instant("oneclick.global.missing_fields"),
         message: this.translate.instant("oneclick.pages.user_locator.origin_destination_search.required"),
+        buttons: [this.translate.instant("oneclick.global.ok")],
+      }).then(alert => alert.present());
+    }
+    else if (!this.departureDate) {
+      this.alertController.create({
+        header: this.translate.instant("oneclick.global.invalid_date"),
+        message: this.translate.instant("oneclick.pages.user_locator.invalid_date_message"),
+        buttons: [this.translate.instant("oneclick.global.ok")],
+      }).then(alert => alert.present());
+    }
+    else if (!this.departureTime) {
+      this.alertController.create({
+        header: this.translate.instant("oneclick.global.invalid_time"),
+        message: this.translate.instant("oneclick.pages.user_locator.invalid_time_message"),
         buttons: [this.translate.instant("oneclick.global.ok")],
       }).then(alert => alert.present());
     }

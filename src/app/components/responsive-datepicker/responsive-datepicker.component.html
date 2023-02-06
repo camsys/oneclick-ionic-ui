@@ -1,4 +1,13 @@
-<ion-datetime-button aria-label="date" datetime="dt-date"></ion-datetime-button>
+
+<div class="date-container ion-justify-content-between">
+  <ion-input aria-label="date-entry" [value]="date | date:'M/d/yyyy'"
+  [formControl]="dateControl" placeholder="MM/DD/YYYY">
+
+  </ion-input>
+  <ion-datetime-button aria-label="date-picker" datetime="dt-date">
+    <ion-icon slot="date-target" name="calendar-outline"></ion-icon>
+  </ion-datetime-button>
+</div>
 
 <ion-modal keepContentsMounted="true">
   <ng-template>
@@ -9,7 +18,7 @@
               yearValues="{{ yearValues() }}"
               [value]="date"
               [locale]="locale"
-              (ionChange)="dateChange($event)">
-</ion-datetime>
-</ng-template>
+              (ionChange)="datePickerChangeEvent($event)">
+    </ion-datetime>
+  </ng-template>
 </ion-modal>

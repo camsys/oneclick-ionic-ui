@@ -32,8 +32,9 @@
     </div>
 
     <!-- Header row with editable trip date -->
+    <ion-grid>
     <ion-row class="trip-date-row">
-      <ion-col col-sm-6 text-center>
+      <ion-col>
         <ion-item class="select-wrapper">
           <ion-select id="arriveBySelector" value="{{arriveBy}}" placeholder="{{ 'oneclick.global.directions.depart_at' | translate }}" (ionChange)="arriveBySelectChanged($event); updateTransportationOptionsButton()">
             <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
@@ -41,27 +42,28 @@
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col col-sm-3 text-center>
+      <ion-col>
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
         <responsive-datepicker #tripDatepicker [locale]="translate.currentLang"
                                [date]="departureDateTime"
-                               (change)="updateDate($event); updateTransportationOptionsButton();">
+                               (changeDate)="updateDate($event); updateTransportationOptionsButton();">
         </responsive-datepicker>
 
       </ion-col>
-      <ion-col col-sm-3 text-center>
+      <ion-col>
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
         <responsive-timepicker #tripTimepicker [locale]="translate.currentLang"
                                [time]="departureDateTime"
-                               (change)="updateTime($event); updateTransportationOptionsButton();">
+                               (changeTime)="updateTime($event); updateTransportationOptionsButton();">
         </responsive-timepicker>
 
       </ion-col>
 
 
     </ion-row>
+  </ion-grid>
   </ion-toolbar>
 
 </ion-header>
