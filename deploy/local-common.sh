@@ -8,6 +8,7 @@ cp ./assets/$backgroundimagename ../../src/assets/img/home-background-image.png
 
 cp ./assets/img/* ../../src/assets/img/
 cp ./assets/doc/* ../../src/assets/doc/
+cp ./assets/i18n/* ../../src/assets/i18n/
 
 cp ../../src/assets/data/counties.geojson ../../src/assets/data/counties.geojson.bak
 cp ./assets/$client-counties.geojson ../../src/assets/data/counties.geojson

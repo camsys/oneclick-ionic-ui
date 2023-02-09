@@ -1,7 +1,7 @@
 
 # common build commands for non-local deployments (AWS deployments)
 
-# copy basic assets (background image, icon, counties) into expected folders
+# copy basic assets (background image, icon, counties, localization) into expected folders
 cp ../../src/assets/img/main-logo.png ../../src/assets/img/main-logo.png.bak
 cp ./assets/$iconimagename ../../src/assets/img/main-logo.png
 cp ../../src/assets/img/home-background-image.png ../../src/assets/img/home-background-image.png.bak
@@ -9,6 +9,7 @@ cp ./assets/$backgroundimagename ../../src/assets/img/home-background-image.png
 
 cp ./assets/img/* ../../src/assets/img/
 cp ./assets/doc/* ../../src/assets/doc/
+cp ./assets/i18n/* ../../src/assets/i18n/
 
 cp ../../src/assets/data/counties.geojson ../../src/assets/data/counties.geojson.bak
 cp ./assets/$client-counties.geojson ../../src/assets/data/counties.geojson

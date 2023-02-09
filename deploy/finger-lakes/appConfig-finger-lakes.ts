@@ -10,7 +10,7 @@ export const appConfig = {
         lng: -77.5484864
       },
       
-    AVAILABLE_LOCALES: [ 'en', 'es', 'pt', 'vi', 'ht', 'zh', 'fa'],
+    AVAILABLE_LOCALES: [ 'en' ],
     DEFAULT_LOCALE: 'en',
 
     PARTICIPATING_COUNTIES_BORDER_COLOR: '#0000ff',
