@@ -11,14 +11,14 @@ import { OneClickService } from 'src/app/services/one-click.service';
 export class AboutUsPage implements OnInit {
   static routePath:string = '/about_us';
 
-  agencies: AgencyModel[];
+  //agencies: AgencyModel[];
   
   constructor(private oneClickProvider: OneClickService,
     public helpers: HelpersService) {
   }
   
   ngOnInit() {
-    this.oneClickProvider.getPartnerAgencies()
-      .then(agencies => this.agencies = agencies);
+  //   this.oneClickProvider.getPartnerAgencies()
+  //     .then(agencies => this.agencies = agencies);
   }
 }
