@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { appConfig } from 'src/environments/appConfig';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AutocompleteResultsComponent } from 'src/app/components/autocomplete-results/autocomplete-results.component';
@@ -69,6 +70,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
   skipPreferences: boolean = false;
 
   can_plan_trips: boolean = false;
+  include_fare_cost: boolean = true;
 
   constructor(public navCtrl: NavController,
               private route: ActivatedRoute,
@@ -83,6 +85,8 @@ export class TripResponsePage implements OnInit, OnDestroy {
               private changeDetectorRef: ChangeDetectorRef,
               private title: Title) {
 
+               
+     this.include_fare_cost =  appConfig.INCLUDE_FARE_COST;
   }
 
   ngOnInit() {

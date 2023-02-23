@@ -6,7 +6,7 @@ client=hopelink
 iconimagename=hopelink_icon.png
 backgroundimagename=hopelink_background.png
 
-s3bucket=s3://ui-hopelink-test
+s3bucket=s3://ui-hopelink-dev
 awsprofile=hope
 prodflag=--prod
 

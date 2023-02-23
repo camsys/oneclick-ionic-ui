@@ -148,10 +148,10 @@
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h2 *ngIf="itin.cost"><b>
+                  <h2 *ngIf="itin.cost && include_fare_cost"><b>
                     {{ [itin.cost] | prettyFare }}
                   </b></h2>
-                  <h2 *ngIf="!itin.cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                  <h2 *ngIf="!itin.cost && include_fare_cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
                 </ion-col>
                 <ion-col col-sm-6>
                   <ion-button shape="round"
@@ -196,10 +196,10 @@
                 </ion-row>
                 <ion-row>
                   <ion-col col-sm-6>
-                    <h2 *ngIf="itin.cost"><b>
+                    <h2 *ngIf="itin.cost && include_fare_cost"><b>
                       {{ [itin.cost] | prettyFare }}
                     </b></h2>
-                    <h2 *ngIf="!itin.cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                    <h2 *ngIf="!itin.cost && include_fare_cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
                   </ion-col>
                   <ion-col col-sm-6>
                     <ion-button shape="round"
@@ -247,10 +247,10 @@
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h2 *ngIf="itin.cost"><b>
+                  <h2 *ngIf="itin.cost && include_fare_cost"><b>
                     {{ [itin.cost] | prettyFare }}
                   </b></h2>
-                  <h2 *ngIf="!itin.cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                  <h2 *ngIf="!itin.cost && include_fare_cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
                 </ion-col>
                 <ion-col col-sm-6>
                   <ion-button shape="round"
@@ -293,8 +293,8 @@
 
               <ion-row>
                 <ion-col col-sm-6>
-                  <h2 *ngIf="itin.cost"><b>{{ [itin.cost] | prettyFare }}</b></h2>
-                  <h2 *ngIf="!itin.cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                  <h2 *ngIf="itin.cost && include_fare_cost"><b>{{ [itin.cost] | prettyFare }}</b></h2>
+                  <h2 *ngIf="!itin.cost && include_fare_cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
                 </ion-col>
                 <ion-col col-sm-6>
                   <ion-button shape="round"
