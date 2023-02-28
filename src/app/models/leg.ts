@@ -45,7 +45,7 @@ export class LegModel {
 
   // Returns the proper Ionic mode icon name based on the OTP mode code
   public modeIconName():string {
-    if(this.isFlex()) return 'bus';
+    if(this.isFlex()) return 'call';
 
     switch(this.mode) {
       case 'WALK':
