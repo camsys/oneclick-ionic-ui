@@ -39,7 +39,7 @@ export class DirectionsMapTabPage implements OnInit, OnDestroy {
           this.trip = params.trip;
           this.itinerary = params.itinerary;
 
-          
+
           this.initializeMap();
         }
       }
@@ -47,16 +47,29 @@ export class DirectionsMapTabPage implements OnInit, OnDestroy {
 
   }
 
-  
-  //create or update the specified arc
-  updateArcMarker(start: google.maps.LatLng, end: google.maps.LatLng, arcIndex:number): Function {
+
+  updateArcMarkerForZoom(start: google.maps.LatLng, end: google.maps.LatLng, arcIndex:number): Function {
     return (): void  => {
+      if (!this.arcs) return;
+      this.updateArcMarker(start, end, arcIndex);
+    }
+  }
+
+  updateArcMarkerForProjection(start: google.maps.LatLng, end: google.maps.LatLng, arcIndex:number): Function {
+    return (): void  => {
+      if (!this.arcs) return;
+      this.updateArcMarker(start, end, arcIndex);
+      this.drawSelectedRoute();//need to make sure drawing happens on projection change
+    }
+  }
+
+  //create or update the specified arc
+  updateArcMarker(start: google.maps.LatLng, end: google.maps.LatLng, arcIndex:number) {
       this.arcs[arcIndex] = this.googleMapsHelpers.createUpdateArc(
         this.arcs[arcIndex],
-        this.map, 
+        this.map,
         start,
         end);
-    }
   }
 
   // Sets up the google map
@@ -75,12 +88,10 @@ export class DirectionsMapTabPage implements OnInit, OnDestroy {
       this.itinerary.legs.forEach(function(leg) {
 
         if (leg.isFlex()) {
-          let arc: google.maps.Marker;
-          me.arcs.push(arc);
           let start = new google.maps.LatLng(leg.from.lat, leg.from.lon);//for now this will be the start of the arc
           let end = new google.maps.LatLng(leg.to.lat, leg.to.lon);//for now this will be the end of the arc
-          google.maps.event.addListener(me.map, 'projection_changed', me.updateArcMarker(start, end, currentArcIndex).bind(me));
-          google.maps.event.addListener(me.map, 'zoom_changed', me.updateArcMarker(start, end, currentArcIndex).bind(me));
+          google.maps.event.addListener(me.map, 'projection_changed', me.updateArcMarkerForProjection(start, end, currentArcIndex).bind(me));
+          google.maps.event.addListener(me.map, 'zoom_changed', me.updateArcMarkerForZoom(start, end, currentArcIndex).bind(me));
           currentArcIndex++;
         }
         else {
@@ -92,17 +103,15 @@ export class DirectionsMapTabPage implements OnInit, OnDestroy {
         }
       })
     } else if (this.itinerary && this.itinerary.trip_type == 'paratransit') {//to cover cases with legless paratransit
-      let arc: google.maps.Marker;
-      this.arcs.push(arc);
       let start = new google.maps.LatLng(this.trip.origin.lat, this.trip.origin.lng);//for now this will be the start of the arc
       let end = new google.maps.LatLng(this.trip.destination.lat, this.trip.destination.lng);//for now this will be the end of the arc
-      google.maps.event.addListener(this.map, 'projection_changed', this.updateArcMarker(start, end, 0).bind(this));
-      google.maps.event.addListener(this.map, 'zoom_changed', this.updateArcMarker(start, end, 0).bind(this));
-    } 
+      google.maps.event.addListener(this.map, 'projection_changed', this.updateArcMarkerForProjection(start, end, 0).bind(this));
+      google.maps.event.addListener(this.map, 'zoom_changed', this.updateArcMarkerForZoom(start, end, 0).bind(this));
+    }
 
     // TODO: Get start and end icons to look good
     // Set the start and end markers
-    
+
 
     this.startMarker = new google.maps.Marker({
       // icon: startIcon,
