@@ -45,19 +45,19 @@
       <ion-col>
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
-        <responsive-datepicker #tripDatepicker [locale]="translate.currentLang"
+        <responsive-datepicker-minimal #tripDatepicker [locale]="translate.currentLang"
                                [date]="departureDateTime"
                                (changeDate)="updateDate($event); updateTransportationOptionsButton();">
-        </responsive-datepicker>
+        </responsive-datepicker-minimal>
 
       </ion-col>
       <ion-col>
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
-        <responsive-timepicker #tripTimepicker [locale]="translate.currentLang"
+        <responsive-timepicker-minimal #tripTimepicker [locale]="translate.currentLang"
                                [time]="departureDateTime"
                                (changeTime)="updateTime($event); updateTransportationOptionsButton();">
-        </responsive-timepicker>
+        </responsive-timepicker-minimal>
 
       </ion-col>
 

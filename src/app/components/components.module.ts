@@ -15,6 +15,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SearchComponent } from './search/search.component';
 import { ShowHidePasswordComponent } from './show-hide-password/show-hide-password.component';
 import { ParatransitServicesDetailComponent } from './paratransit-services-detail/paratransit-services-detail.component';
+import { ResponsiveDatepickerMinimalComponent } from './responsive-datepicker-minimal/responsive-datepicker-minimal.component';
+import { ResponsiveTimepickerMinimalComponent } from './responsive-timepicker-minimal/responsive-timepicker-minimal.component';
 
 @NgModule({
     imports: [
@@ -30,7 +32,9 @@ import { ParatransitServicesDetailComponent } from './paratransit-services-detai
         ExternalLinkComponent,
         PlaceSearchComponent,
         ResponsiveDatepickerComponent,
+        ResponsiveDatepickerMinimalComponent,
         ResponsiveTimepickerComponent,
+        ResponsiveTimepickerMinimalComponent,
         ServiceDetailsComponent,
         AutocompleteResultsComponent,
         SearchComponent,
@@ -42,7 +46,9 @@ import { ParatransitServicesDetailComponent } from './paratransit-services-detai
         ExternalLinkComponent,
         PlaceSearchComponent,
         ResponsiveDatepickerComponent,
+        ResponsiveDatepickerMinimalComponent,
         ResponsiveTimepickerComponent,
+        ResponsiveTimepickerMinimalComponent,
         ServiceDetailsComponent,
         AutocompleteResultsComponent,
         SearchComponent,
