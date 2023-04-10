@@ -116,7 +116,7 @@
 
           <!-- For each mode other than paratransit, build a button -->
           <ion-item class="itinerary-item" *ngFor="let itin of itineraries">
-            <ion-grid *ngIf="itin.trip_type == 'transit'">
+            <ion-grid *ngIf="itin.trip_type == 'transit' || itin.trip_type == 'car_park'">
               <ion-row>
                 <ion-col col-sm-6>
                   <ng-container *ngFor="let leg of itin.legs; index as i">
