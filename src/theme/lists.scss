@@ -5,8 +5,8 @@
   // LIST ITEM
   ion-item.item {
 
-    background-color: $lynxWhite;
-    color: $lynxBlack;
+    background-color: var(--lynxWhite);
+    color: var(--lynxBlack);
     // padding-left: 0;
 
     // Only show dividers between list items.
@@ -19,20 +19,20 @@
 
     // Header line should be pink
     .item-heading {
-      color: $lynxPink;
-      font-size: $font-size-md;
+      color: var(--lynxPink);
+      font-size: var(--font-size-md);
       font-weight: 500;
     }
     
     .item-subheading {
-      font-size: $font-size-md;
+      font-size: var(--font-size-md);
       font-weight: 500;
-      color: $lynxDkGray;
+      color: var(--lynxDkGray);
     }
     
     .item-body {
-      color: $lynxBlack;
-      font-size: $font-size-sm;
+      color: var(--lynxBlack);
+      font-size: var(--font-size-sm);
       font-weight: 300;
       
       b {
@@ -54,16 +54,16 @@
     &.lynx-list-inline-item {
       
       .item-heading {
-        color: $lynxBlack;
-        font-size: $font-size-sm;
+        color: var(--lynxBlack);
+        font-size: var(--font-size-sm);
       }
       
       .icon-wrapper {
         text-align: center;
-        font-size: $font-size-xs;
+        font-size: var(--font-size-xs);
         .icon {
           display: block;
-          font-size: $font-size-lg;
+          font-size: var(--font-size-lg);
         }
       }
 
@@ -71,7 +71,7 @@
     
     &.lynx-list-category-item {
       .item-heading {
-        font-size: $font-size-md;
+        font-size: var(--font-size-md);
         font-weight: 300;
       }
     }
@@ -82,17 +82,17 @@
   
   // LIST HEADER
   ion-list-header.item.list-header {
-    background-color: $lynxLtGray;
-    // color: $lynxDkGray;
-    // font-size: $font-size-sm;
+    background-color: var(--lynxLtGray);
+    // color: var(--lynxDkGray);
+    // font-size: var(--font-size-sm);
     font-weight: 500;
     margin-bottom: 0;
     padding-left: 0;
     text-align: center;
     
     // h2 {
-      color: $lynxPink;
-      font-size: $font-size-md;
+      color: var(--lynxPink);
+      font-size: var(--font-size-md);
       // font-weight: 500;
     // }
   }
@@ -101,8 +101,8 @@
   
   // List in contrasting colors
   &.lynx-list-contrast {
-    background-color: $lynxBlack;
-    color: $lynxWhite;
+    background-color: var(--lynxBlack);
+    color: var(--lynxWhite);
     
     ion-item,button,a,.ion-item {
       background-color: inherit;
@@ -115,7 +115,7 @@
     
     button,a {
       &:active, &:hover {
-        color: $lynxPink;
+        color: var(--lynxPink);
       }
     }
   }

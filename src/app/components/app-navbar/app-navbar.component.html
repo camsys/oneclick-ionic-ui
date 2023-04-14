@@ -1,0 +1,54 @@
+
+<a class="skip-link" [href]="skipLinkPath">Skip to main content</a>
+
+<ion-toolbar class="mobile-header">
+  <ion-buttons *ngIf="!isHomePage()" slot="start" >
+    <ion-back-button defaultHref="home"></ion-back-button>
+    <a class="lynx-button-link header-logo-title nav-icon-button" routerLink="/home" routerDirection="forward">
+      <img class="mobile-logo-sm"  src='assets/img/main-logo.png' alt="{{ 'oneclick.global.application_name' | translate}}" />
+  </a>
+  </ion-buttons>
+
+  <ion-buttons slot="end">
+    <ion-button mode="md" aria-label="language translation selection" class="bar-button-menutoggle" (click)="openLanguageSelectorModal()">
+      <ion-icon slot="start" aria-hidden="true" class="padded" name="globe"></ion-icon> 
+      {{ "oneclick.global.languages.native." + i18n.currentLocale() | translate }}
+    </ion-button>
+    <button class="menu-button" aria-label="main-menu" [attr.aria-expanded]="ariaExpanded" (click)="menuOpened()">
+        <ion-icon size="small" name="menu"></ion-icon>
+    </button>
+  </ion-buttons>   
+
+</ion-toolbar>
+<ion-toolbar *ngIf="showTitle" class="mobile-header">
+  <ion-title>
+    <h1>{{headerTitle}}</h1>
+  </ion-title>
+</ion-toolbar>
+
+<ion-toolbar class="header">
+   
+  <ion-buttons *ngIf="!isHomePage()" slot="start" >
+    <ion-back-button defaultHref="home"></ion-back-button>
+    <a class="lynx-button-link header-logo-title nav-icon-button" routerLink="/home" routerDirection="forward">
+      <img class="lynx-logo-sm"  src='assets/img/main-logo.png' alt="{{ 'oneclick.global.application_name' | translate}}" />
+  </a>
+  </ion-buttons>
+  <ion-title *ngIf="showTitle">
+    <h1>{{headerTitle}}</h1>
+  </ion-title>
+
+  <ion-buttons slot="end">
+    <ion-button mode="md" aria-label="language translation selection" class="bar-button-menutoggle" (click)="openLanguageSelectorModal()">
+      <ion-icon slot="start" aria-hidden="true" class="padded" name="globe"></ion-icon> 
+      {{ "oneclick.global.languages.native." + i18n.currentLocale() | translate }}
+    </ion-button>
+    <button class="menu-button" aria-label="main-menu" [attr.aria-expanded]="ariaExpanded" (click)="menuOpened()">
+        <ion-icon size="small" name="menu"></ion-icon>
+    </button>
+  </ion-buttons>   
+
+
+</ion-toolbar>
+<div id="{{skipId}}" tabIndex="-1"></div>
+

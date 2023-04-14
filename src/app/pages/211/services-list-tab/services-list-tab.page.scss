@@ -1,0 +1,19 @@
+.toolbar_light, .fixed-content{
+    margin-top: 0 !important;
+}
+
+.lynx-list-inline-item div:hover {
+    background-color: var(--lynxLtGray);
+}
+
+.sort-by-header div:hover {
+    background-color: var(--lynxLtGray);
+}
+
+.lynx-list-inline-item{
+  cursor: pointer;
+}
+
+ion-list-header {
+    font-weight: bold;
+  }

@@ -1,0 +1,33 @@
+<div class="time-container ion-justify-content-between">
+  <div class="time-input-container ion-justify-content-left">
+    <ion-input aria-label="time-hour-entry"
+    [formControl]="hourControl" placeholder="HH">
+    </ion-input>
+    <div class="time-colon ion-padding-top ion-padding-bottom">:</div>
+    <ion-input aria-hidden="true" aria-label="time-minute-entry"
+    [formControl]="minControl" placeholder="MM">
+
+    </ion-input>
+    <ion-item class="select-wrapper">
+      <ion-select id="time-ampm-entry" aria-label="time-ampm-entry" [formControl]="ampmControl">
+        <ion-select-option value="AM">AM</ion-select-option>
+        <ion-select-option value="PM">PM</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+  <ion-datetime-button aria-label="time-picker" datetime="dt-time">
+    <ion-icon aria-hidden="true" slot="time-target" name="time-outline"></ion-icon>
+  </ion-datetime-button>
+</div>
+
+<ion-modal keepContentsMounted="true">
+  <ng-template>
+    <ion-datetime id="dt-time" [locale]="locale"
+              showDefaultButtons="true"
+              presentation="time"
+              preferWheel="true"
+              [value]="time"
+              (ionChange)="timePickerChangeEvent($event)">
+</ion-datetime>
+</ng-template>
+</ion-modal>

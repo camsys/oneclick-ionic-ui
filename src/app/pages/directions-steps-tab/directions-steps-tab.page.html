@@ -1,0 +1,251 @@
+<ion-content>
+
+
+  <!-- TRIP OPTION SELECTORS -->
+  <!-- <ion-segment [(ngModel)]="selectedItinerary"
+               *ngIf="itineraries?.length > 1"
+               (ngModelChange)="selectItinerary($event)">
+    <ion-segment-button *ngFor="let itin of itineraries; let i = index"
+                        value="{{ i | toString }}">
+      {{ "oneclick.pages.directions.steps_tab.option" | translate }} {{i + 1}}
+    </ion-segment-button>
+  </ion-segment> -->
+
+  <!-- TRIP OPTION RESULTS no legs provided-->
+  <app-paratransit-services-detail *ngIf="!itinerary.legs || itinerary.legs.length == 0"
+    [transportationServices]="transportationServices"></app-paratransit-services-detail>
+
+  <!-- TRIP OPTION RESULTS when there are legs-->
+  <ion-grid *ngIf="itinerary.legs && itinerary.legs.length > 0">
+
+    <!-- Header row with editable trip date -->
+    <ion-row class="trip-date-row">
+      <ion-col class="trip-date-col ion-text-center">
+        <h3>
+          {{ "oneclick.pages.directions.steps_tab.trip_date_label" | translate }} {{tripDate | date}}
+        </h3>
+      </ion-col>
+
+    </ion-row>
+
+    <!-- <div [ngSwitch]="selectedItinerary"> -->
+
+      <!-- Itinerary Rows -->
+      <ion-row class="itinerary-row">
+        <!-- <ion-col class="itinerary-col" *ngSwitchCase="i.toString()"> -->
+        <ion-col class="itinerary-col">
+
+          <!-- Leg Rows -->
+          <ion-row class="leg-row" *ngFor="let leg of itinerary.legs; let j = index">
+
+            <!-- Leg Time Column -->
+            <ion-col no-padding size="3" class="leg-time-col">
+              <ion-row class="leg-header-container">
+                <ion-col col-12 no-padding class="leg-header-container ion-text-center">
+                  {{leg.startTime | date:'shortTime'}}
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <!-- Leg Icon Column -->
+            <ion-col no-padding size="1" class="leg-icon-col">
+              <div class="leg-header-container">
+                <div class="leg-header-content">
+                  <ion-icon class="icon-med" name="{{leg.modeIconName()}}"></ion-icon>
+                </div>
+              </div>
+
+              <!-- Leg Illustration: dotted or solid vertical line -->
+              <div class="leg-trail-illustration leg-trail-{{leg.modeIconName()}}"></div>
+            </ion-col>
+
+            <!-- Leg Details Column -->
+            <ion-col no-padding size="8" class="leg-details-col">
+
+              <!-- Leg Origin -->
+              <ion-row class="leg-header-row">
+                <ion-col no-padding>
+                  <div class="leg-header-container">
+                    <div class="leg-header-content">
+                      <!-- Display the trip origin if it's the first leg. -->
+                      <h3>
+                        {{ j === 0 ? (trip.origin.name || trip.origin.formatted_address)  : leg.from.name }}
+                        {{ leg.isFlex() ? leg.serviceName.toUpperCase() : leg.mode }}
+                        <ion-button shape="round" *ngIf="leg.mode != 'WALK' && leg.mode != 'CAR' && leg.mode != 'BICYCLE'"
+                          class="lynx-button-primary"
+                          (click)="selectService(leg.serviceId)">
+                          {{ "oneclick.pages.directions.steps_tab.service_info_button" | translate }}
+                        </ion-button>
+                      </h3>
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+
+
+              <!-- Step Rows (Walk, Bike, Drive) -->
+              <div *ngIf="!leg.isTransit() && !leg.isFlex()">
+                <ion-row class="step-row" *ngFor="let step of leg.steps; let k = index">
+                  <ion-col no-padding>
+
+                    <!-- for first step, give absolute direction -->
+                    <div class="step-details-container" *ngIf="k === 0">
+                      <!-- HEAD {{direction}} on {{street_name}} for {{distance}} -->
+                      {{
+                        "oneclick.pages.directions.steps_tab.first_nontransit_step" |
+                        translate:{
+                          direction: step.absoluteDirection,
+                          street_name: step.streetName,
+                          distance: (step.distance | prettyDistance)
+                        }
+                      }}
+                    </div>
+
+                    <!-- for subsequent steps, give relative directions -->
+                    <div class="step-details-container" *ngIf="k > 0">
+                      <!-- {{direction}} on {{street_name}} for {{distance}} -->
+                      {{
+                        "oneclick.pages.directions.steps_tab.other_nontransit_step" |
+                        translate:{
+                          direction: step.relativeDirection,
+                          street_name: step.streetName,
+                          distance: (step.distance | prettyDistance)
+                        }
+                      }}
+                    </div>
+
+                  </ion-col>
+                </ion-row>
+              </div>
+
+              <!-- Step Rows (Transit) -->
+              <div *ngIf="leg.isTransit()">
+                <ion-row class="step-row">
+                  <ion-col no-padding>
+                    <div class="step-details-container">
+                      <!-- BOARD {{service_name}} Route {{route}} and ride it {{stops}} stops. -->
+                      {{
+                        "oneclick.pages.directions.steps_tab.transit_step" |
+                        translate:{
+                          service_name: leg.serviceName,
+                          route: leg.route,
+                          stops: leg.intermediateStops?.length + 1
+                        }
+                      }}
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="step-row">
+                  <ion-col no-padding>
+                    <div class="step-details-container">
+                      <!-- GET OFF at stop: {{destination}} -->
+                      {{
+                        "oneclick.pages.directions.steps_tab.last_transit_step" |
+                        translate:{destination: leg.to.name}
+                      }}
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </div>
+
+              <div *ngIf="leg.isFlex()">
+                <ion-row class="step-row">
+                  <ion-col no-padding>
+                    <div class="step-details-container">
+                      <!-- BOARD {{service_name}} Route {{route}} and ride it {{stops}} stops. -->
+                      {{
+                        "oneclick.pages.directions.steps_tab.flex_step" |
+                        translate:{
+                          service_name: leg.route ? leg.route : leg.serviceName
+                        }
+                      }}
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="step-row">
+                  <ion-col no-padding>
+                    <div class="step-details-container">
+                      <!-- GET OFF at stop: {{destination}} -->
+                      {{
+                        "oneclick.pages.directions.steps_tab.last_flex_step" |
+                        translate:{destination: leg.to.name}
+                      }}
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </div>
+
+              <!-- END step rows -->
+
+            </ion-col>
+          </ion-row>
+
+          <!-- Destination Leg Row -->
+          <ion-row class="leg-row">
+
+            <!-- Leg Time Column -->
+            <ion-col no-padding size="3" class="leg-time-col">
+              <ion-row class="leg-header-container">
+
+                <ion-col col-12 no-padding class="leg-header-content ion-text-center">
+
+                  <div *ngIf="trip.arrive_by" class="leg-time-header-content-description">
+                    {{ "oneclick.global.directions.arrive_by" | translate }}
+                  </div>
+                  <div class="leg-time-header-content-time">
+                    {{ itinerary.legs[itinerary.legs?.length - 1].endTime | date:'shortTime' }}
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+            <!-- Leg Icon Column -->
+            <ion-col no-padding size="1" class="leg-icon-col">
+              <div class="leg-header-container">
+                <div class="leg-header-content">
+                  <ion-icon class="icon-med" name="radio-button-on"></ion-icon>
+                </div>
+              </div>
+            </ion-col>
+
+            <!-- Leg Details Column -->
+            <ion-col no-padding size="8" class="leg-details-col">
+              <ion-row class="leg-header-row">
+                <ion-col no-padding col-12>
+                  <div class="leg-header-container">
+                    <div class="leg-header-content">
+                      <h3>
+                        {{ trip.destination.name || trip.destination.formatted_address }}
+                      </h3>
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+
+          </ion-row>
+
+          <!-- END leg rows -->
+
+        </ion-col>
+      </ion-row>
+
+      <!-- END itinerary rows -->
+
+      <ion-row>
+        <!-- Email button -->
+        <ion-col class="ion-text-center">
+          <h3>{{ "email_your_ride_details" | translate }}</h3>
+          <ion-button shape="round"
+                  class="lynx-button-primary"
+                  (click)="openEmailModal()">
+            {{ "oneclick.pages.service_details.email_button" | translate }}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+    <!-- </div> -->
+
+  </ion-grid>
+
+</ion-content>

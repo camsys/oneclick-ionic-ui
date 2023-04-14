@@ -1,0 +1,19 @@
+<!-- Generated template for the PlaceSearchComponent component -->
+<search (clear)="clear()">
+    <input [formControl]="searchControl" 
+        type="search"
+        class="input-field"
+        [value]="query"
+        [placeholder]="placeholder"
+        (focus)="ionFocus()"
+        (blur)="ionBlur()"
+        aria-autocomplete="list"
+        [attr.aria-invalid]="isInvalid"
+        [attr.aria-controls]="resultsListId"
+        [attr.aria-expanded]="resultsExpanded"
+        aria-haspopup="listbox"
+        [attr.aria-label]="uniqueLabel"
+        [attr.aria-activedescendant]="activeResultId"
+        role="combobox"
+    />
+</search>

@@ -1,0 +1,33 @@
+ion-content {
+    --color: var(--lynxWhite);
+    --background: var(--lynxBlack);
+}
+
+ion-list {
+    --ion-background-color: var(--lynxBlack);
+}
+
+ion-item{
+    --background: var(--lynxBlack);
+    --border-color: var(--lynxWhite);
+    --ion-text-color: var(--lynxWhite);
+    
+    &:hover,&:focus {
+        --ion-text-color: var(--lynxOrange);
+    }
+}
+
+#ion-spinner-container {
+    background-color: var(--lynxShadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    
+    ion-spinner {
+      height: size(5);
+      width: size(5);
+    }  
+  }

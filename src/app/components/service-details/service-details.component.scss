@@ -1,0 +1,24 @@
+.service-details-section {
+    padding-top: 0.562rem;
+  }
+
+  ul.service-schedule {
+    
+    list-style: none;
+    margin-top: 0;
+    padding-left: 1.777rem;
+    margin-bottom: 0;
+    
+    li {
+      font-size: small;
+    }
+    
+  }
+  
+  ion-col.image-container {
+    max-width: 4.167rem;
+  }
+
+  h3 {
+    color: var(--lynxPink);
+  }
