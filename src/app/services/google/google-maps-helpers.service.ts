@@ -16,7 +16,7 @@ export class GoogleMapsHelpersService {
     let latLng = new google.maps.LatLng(appConfig.DEFAULT_LOCATION.lat, appConfig.DEFAULT_LOCATION.lng);
     let mapOptions = {
       center: latLng,
-      zoom: this.minZoom,
+      zoom: appConfig.INITIAL_ZOOM_LEVEL,
       mapTypeControl: false,
       scaleControl: true,
       streetViewControl: false,
