@@ -33,6 +33,7 @@ export class AppComponent implements OnDestroy {
   rootPage: any = HelpMeFindPage;
   showSpinner: Boolean = false;
   currentRoute: string;
+  help_url: any;
 
   signedInPages: PageModel[];
   signedOutPages: PageModel[];
@@ -60,6 +61,7 @@ export class AppComponent implements OnDestroy {
               private i18n: I18nService,
               private menuService: MenuService) {
 
+    this.help_url = appConfig.HELP_URL;
     this.initializeApp();
 
     router.events.pipe(takeUntil(this.unsubscribe), filter(event => event instanceof NavigationEnd))
@@ -160,12 +162,13 @@ export class AppComponent implements OnDestroy {
 
   // Set up the menu with pages for signed in and signed out scenarios
   setMenu(){
-
+    if (this.help_url) {
     // Pages to display regardless of whether or not user is signed in or not
     this.universalPages = [
       { title: 'home', component: "home" },
+      { title: 'help', component: "help" },
       { title: 'about_us', component: AboutUsPage },
-      { title: 'contact_us', component: ContactUsPage },
+      { title: 'contact_us', component: ContactUsPage }
       // Disabling transportation options based on feedback.
       //{ title: 'transportation', component: ParatransitServicesPage },
       ///{ title: 'resources', component: UserLocatorPage, urlParams: 'services'},//only when included in config (see below)
@@ -175,6 +178,15 @@ export class AppComponent implements OnDestroy {
       //{ title: 'live_211_chat', component: "live_211_chat" },
       //{ title: 'feedback', component: "feedback" }
     ] as PageModel[];
+  }
+  else {
+    // Pages to display regardless of whether or not user is signed in or not
+    this.universalPages = [
+      { title: 'home', component: "home" },
+      { title: 'about_us', component: AboutUsPage },
+      { title: 'contact_us', component: ContactUsPage }
+    ] as PageModel[];
+  }
 
     if (appConfig.INCLUDE_RESOURCES_FINDER) {
       this.universalPages.push({ title: 'resources', component: UserLocatorPage, urlParams: 'services'});
@@ -200,6 +212,9 @@ export class AppComponent implements OnDestroy {
     switch(page.component) {
       case "home":
         this.goHome();
+        break;
+      case "help":
+        this.goHelp();
         break;
       case "sign_out":
         this.signOut();
@@ -239,6 +254,11 @@ export class AppComponent implements OnDestroy {
     if(this.currentRoute != this.rootPage.routePath) {
       this.nav.navigateRoot(this.rootPage.routePath);
     }
+  }
+
+  //open help document or link
+  goHelp() {
+    window.open(this.help_url, "_blank");
   }
 
   signOut() {

@@ -5,12 +5,14 @@ export const appConfig = {
     INCLUDE_FARE_COST: false,
     HIPAA_PRIVACY_NOTICE_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
+    HELP_URL: false,
 
     DEFAULT_LOCATION: {
-        lat: 47.650626, 
+        lat: 47.650626,
         lng: -122.173341
       },
-      
+    INITIAL_ZOOM_LEVEL: 8,
+
     AVAILABLE_LOCALES: [ 'en', 'es', 'zh', 'ko', 'vi', 'tl', 'so', 'am', 'ti', 'ru', 'uk', 'fr', 'pa', 'hi', 'ja', 'km'],
     DEFAULT_LOCALE: 'en',
 
