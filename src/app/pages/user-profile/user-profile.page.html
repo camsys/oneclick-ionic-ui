@@ -91,7 +91,7 @@
           </ion-item>
 
           <!-- Paratransit Id -->
-          <ion-item>
+          <ion-item *ngIf="showParatransitId">
             <ion-label>{{"oneclick.pages.user_profile.paratransit_id" | translate}}</ion-label>
             <ion-input  class="lynx-input" 
                         type="string" 

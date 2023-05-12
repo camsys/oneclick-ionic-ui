@@ -27,6 +27,7 @@ export class SignUpPage implements OnInit {
   counties: string[];
 
   oneClickPrivacyPolicyURL: string;
+  showParatransitId: boolean = false;
 
   constructor(public navCtrl: NavController,
               public formBuilder: FormBuilder,
@@ -37,6 +38,7 @@ export class SignUpPage implements OnInit {
               public exNav: ExternalNavigationService) {
 
                 this.oneClickPrivacyPolicyURL = appConfig.ONE_CLICK_PRIVACY_POLICY_URL;
+                this.showParatransitId = appConfig.INCLUDE_PARATRANSIT_ID;
 
     this.signUpFormGroup = formBuilder.group({
       formControlEmail: ['', Validators.compose([Validators.required, EmailAddressValidator.isValid, Validators.maxLength(30),])],
