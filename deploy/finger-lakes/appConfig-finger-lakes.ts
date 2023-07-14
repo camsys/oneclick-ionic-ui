@@ -6,7 +6,7 @@ export const appConfig = {
     INCLUDE_PARATRANSIT_ID: false,
     HIPAA_PRIVACY_NOTICE_URL: "/assets/doc/Here2There_Privacy_Notice.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "/assets/doc/Here2There_Privacy_Notice.pdf",
-    HELP_URL: "http://www.example.com",
+    HELP_URL: "mailto:Here2There@lifespan-roch.org",
 
     DEFAULT_LOCATION: {
         lat: 42.9523,
