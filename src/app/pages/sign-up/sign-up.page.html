@@ -43,8 +43,8 @@
                       aria-label="confirm-password"
                       required>
           </ion-input>
-          <ion-label class="ion-text-wrap">{{ 'oneclick.pages.user_profile.paratransit_id' | translate }}</ion-label>
-          <ion-input  formControlName="formControlParatransitId"
+          <ion-label *ngIf="showParatransitId" class="ion-text-wrap">{{ 'oneclick.pages.user_profile.paratransit_id' | translate }}</ion-label>
+          <ion-input *ngIf="showParatransitId"  formControlName="formControlParatransitId"
                       class="lynx-input"
                       type="string"
                       name="paratransit_id"

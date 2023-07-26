@@ -3,6 +3,7 @@ export const appConfig = {
     INCLUDE_TRANSPORTATION_FINDER: true,
     INCLUDE_RESOURCES_FINDER: true,
     INCLUDE_FARE_COST: true,
+    INCLUDE_PARATRANSIT_ID: true,
     HIPAA_PRIVACY_NOTICE_URL: "https://ieuw-bin.s3.us-east-2.amazonaws.com/211-Ride-HIPAA-Privacy-Notice.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "https://ieuw-bin.s3.us-east-2.amazonaws.com/211-Ride-HIPAA-Privacy-Notice.pdf",
     HELP_URL: false,

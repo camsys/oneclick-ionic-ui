@@ -3,6 +3,7 @@ export const appConfig = {
     INCLUDE_TRANSPORTATION_FINDER: true,
     INCLUDE_RESOURCES_FINDER: false,
     INCLUDE_FARE_COST: false,
+    INCLUDE_PARATRANSIT_ID: false,
     HIPAA_PRIVACY_NOTICE_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
     HELP_URL: false,

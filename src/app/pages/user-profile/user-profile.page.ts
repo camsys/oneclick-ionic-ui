@@ -26,6 +26,8 @@ export class UserProfilePage implements OnInit {
   available_locales: string[];
   counties: string[];
 
+  showParatransitId: boolean = false;
+
   @ViewChild('updateProfileForm') updateProfileForm: NgForm = {} as NgForm;
   public passwordFieldType = "password";
   public showPassword = false;
@@ -36,6 +38,7 @@ export class UserProfilePage implements OnInit {
               public oneClickProvider: OneClickService,
               private translate: TranslateService) {
     this.available_locales = appConfig.AVAILABLE_LOCALES;
+    this.showParatransitId = appConfig.INCLUDE_PARATRANSIT_ID;
   }
 
   ngOnInit() {
