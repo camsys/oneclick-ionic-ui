@@ -1,0 +1,16 @@
+{
+    "downstream_services_errors_message":"Some trip planning services were not available.  Results may be limited.",
+    "oneclick.pages.directions.steps_tab.last_flex_step":"GET OFF at: {{destination}}",
+    "oneclick.pages.directions.steps_tab.flex_step":"BOARD {{service_name}}",
+    "oneclick.pages.directions.service_details_tab.header":"Details",
+    "oneclick.pages.transportation_eligibility.trip_types_info_header":"Transportation Types Info",
+    "oneclick.pages.transportation_eligibility.accommodations_info_header":"Accommodations Info",
+    "oneclick.pages.transportation_eligibility.age_info_header":"Age Info",
+    "oneclick.pages.transportation_eligibility.eligibilities_info_header":"Eligibilities Info",
+    "oneclick.pages.session_user_preference_disabled_info":"User Preferences Info",
+    "oneclick.global.application_name":"THIS APPLICATION",
+    "oneclick.pages.user_locator.origin_destination_search.required":"Origin and destination are required to plan a trip.",
+    "oneclick.global.ok":"OK",
+    "oneclick.pages.user_locator.origin_search.required":"Origin is required to plan a trip.",
+    "oneclick.global.missing_fields":"Missing Required Fields"
+}
