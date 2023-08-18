@@ -14,7 +14,7 @@ export const appConfig = {
       },
     INITIAL_ZOOM_LEVEL: 9,
 
-    AVAILABLE_LOCALES: [ 'en' ],
+    AVAILABLE_LOCALES: [ 'en', 'es' ],
     DEFAULT_LOCALE: 'en',
 
     PARTICIPATING_COUNTIES_BORDER_COLOR: '#0000ff',
