@@ -114,6 +114,8 @@
   
         <ion-list class="lynx-list">
 
+          <ion-item *ngIf="itineraries && itineraries.length == 0">{{ "oneclick.pages.categories.resources_search.empty_search_result" | translate}}</ion-item>
+
           <!-- For each mode other than paratransit, build a button -->
           <ion-item class="itinerary-item" *ngFor="let itin of itineraries">
             <ion-grid *ngIf="itin.trip_type == 'transit' || itin.trip_type == 'car_park'">

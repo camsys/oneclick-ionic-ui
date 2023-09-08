@@ -34,3 +34,13 @@ UserInterfaceState.xcuserstate
 /.angular/
 /e2e/
 *.bak
+/src/environments/*
+/src/assets/i18n/*
+/src/assets/data/*
+/src/assets/doc/*
+/src/assets/img/lifespan_logo.jpg
+/src/assets/img/livingston_logo.png
+/src/assets/img/main-logo.png
+/src/assets/img/monroe_logo.png
+/src/assets/img/ontario_logo.jpg
+/src/assets/img/home-background-image.png
