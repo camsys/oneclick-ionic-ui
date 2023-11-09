@@ -36,7 +36,7 @@ cp ./variables-$client.scss ../../src/theme/variables.scss
 
 # build code (with or without --prod flag) and upload to aws
 ionic build $prodflag
-aws s3 sync ../../www/ $s3bucket --acl public-read --profile $awsprofile
+aws s3 sync ../../www/ $s3bucket --acl public-read --cache-control no-cache --profile $awsprofile
 
 mv ../../src/environments/appConfig.ts.bak ../../src/environments/appConfig.ts
 
