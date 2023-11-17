@@ -20,7 +20,7 @@
   </ion-buttons>   
 
 </ion-toolbar>
-<ion-toolbar *ngIf="showTitle" class="mobile-header">
+<ion-toolbar mode="md" *ngIf="showTitle" class="mobile-header">
   <ion-title>
     <h1 style="white-space: normal">{{headerTitle}}</h1>
   </ion-title>
@@ -35,7 +35,7 @@
   </a>
   </ion-buttons>
   <ion-title *ngIf="showTitle">
-    <h1>{{headerTitle}}</h1>
+    <h1>{{headerTitle}} HEADER</h1>
   </ion-title>
 
   <ion-buttons slot="end">
