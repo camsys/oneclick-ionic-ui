@@ -32,6 +32,7 @@ export class DirectionsStepsTabPage implements OnInit, OnDestroy {
   departAtTime: string; // For storing user-defined depart at time (including date)
   arriveByTime: string; // For storing user-defined arrive by time (including date)
   tripDate: string; // For storing the user-defined trip date (including time)
+  itinStartDate; string; //For displaying the date the itinerary displayed actually begins
 
   transportationServices: OneClickServiceModel[];
 
@@ -180,6 +181,9 @@ export class DirectionsStepsTabPage implements OnInit, OnDestroy {
     let itinStartTime;
     let itinEndTime;
     if (this.itinerary && this.itinerary.legs) {
+      //set itinStartDate
+      this.itinStartDate = new Date(this.itinerary.legs[0].startTime).toString();
+
       itinStartTime = new Date(this.itinerary.legs[0].startTime).valueOf(); // Convert itinerary start time to milliseconds since epoch
       itinStartTime = h.roundDownToNearest(itinStartTime, 60000 * 15); // Round down to nearest 15 min.
       itinStartTime = h.dateISOStringWithTimeZoneOffset(new Date(itinStartTime)); // Format as ISO String with TZ offset
