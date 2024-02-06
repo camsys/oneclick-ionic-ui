@@ -42,13 +42,19 @@
       color:var(--lynxDkOrange);
     }
 
+    .lynx-welcome-message-1 {
+      color: var(--lynxWhite);
+      font-size: x-large;
+      padding-top: 20px;
+    }
+
     ion-card-content {
 
       color: var(--lynxWhite);
       //padding: size(2) size(4) size(1);
 
       .lynx-welcome-message-2 {
-        font-size: x-large;
+        font-size: large;
       }
 
       //.lynx-help-me-find-buttons {
