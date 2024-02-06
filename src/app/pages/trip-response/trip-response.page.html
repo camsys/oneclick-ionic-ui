@@ -1,7 +1,10 @@
 
 <ion-header>
   <app-navbar headerTitle="{{ 'oneclick.global.transportation.help' | translate }}" skipId="skip-trip-response"></app-navbar>
+</ion-header>
 
+
+<ion-content>
   <ion-toolbar class="lynx-toolbar" text-center>
 
     <div id="origin-search-container">
@@ -65,11 +68,6 @@
     </ion-row>
   </ion-grid>
   </ion-toolbar>
-
-</ion-header>
-
-
-<ion-content>
 
   <!-- ORIGIN AND DESTINATION AUTOCOMPLETE RESULTS LISTS -->
   <autocomplete-results #originResults
