@@ -115,7 +115,8 @@
           <ion-item *ngIf="itineraries && itineraries.length == 0">{{ "oneclick.pages.categories.resources_search.empty_search_result" | translate}}</ion-item>
 
           <!-- For each mode other than paratransit, build a button -->
-          <ion-item class="itinerary-item" *ngFor="let itin of itineraries">
+          <ion-item class="itinerary-item" *ngFor="let itin of itineraries; index as c">
+            <h2 class="sr-only">{{ 'oneclick.global.transportation.help' | translate }}</h2>
             <ion-grid *ngIf="itin.trip_type == 'transit' || itin.trip_type == 'car_park'">
               <ion-row>
                 <ion-col col-sm-6>
@@ -128,30 +129,31 @@
                   <div item-end>
                     <ng-container *ngFor="let leg of itin.legs; index as i">
                       <img *ngIf="leg.serviceFullLogoUrl" class="ride-mode-service-icon" src="{{ leg.serviceFullLogoUrl }}" alt="{{ leg.serviceName }}" height="50">
-                      <h6 *ngIf="!leg.serviceFullLogoUrl">{{ leg.serviceName }}</h6>
+                      <p *ngIf="!leg.serviceFullLogoUrl">{{ leg.serviceName }}</p>
                     </ng-container>
                   </div>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 item-start class="item-heading">
+                  <div item-start class="item-heading">
                     {{ itin.legs[0].startTime | date:'shortTime' }} {{ "oneclick.global.common.to" | translate }}
                     {{ itin.legs[itin.legs.length-1].endTime | date:'shortTime' }}
-                  </h3>
+                  </div>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h5 class="item-subheading">{{ itin.duration | prettyTime }} ({{'oneclick.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</h5>
+                  <div class="item-subheading">{{ itin.duration | prettyTime }} ({{'oneclick.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</div>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h2 *ngIf="itin.cost && include_fare_cost"><b>
+                  <div *ngIf="itin.cost && include_fare_cost" class="item-no-color"><b>
                     {{ [itin.cost] | prettyFare }}
-                  </b></h2>
-                  <h2 *ngIf="!itin.cost && include_fare_cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                  </b></div>
+                  <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>
+                    {{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>
                 </ion-col>
                 <ion-col col-sm-6>
                   <ion-button shape="round"
@@ -176,30 +178,30 @@
                     <div item-end>
                       <ng-container *ngFor="let leg of itin.legs; index as i">
                         <img *ngIf="leg.serviceFullLogoUrl" class="ride-mode-service-icon" src="{{ leg.serviceFullLogoUrl }}" alt="{{ leg.serviceName }}" height="50">
-                        <h6 *ngIf="!leg.serviceFullLogoUrl">{{ leg.serviceName }}</h6>
+                        <p *ngIf="!leg.serviceFullLogoUrl">{{ leg.serviceName }}</p>
                       </ng-container>
                     </div>
                   </ion-col>
                 </ion-row>
                 <ion-row>
                   <ion-col col-sm-6>
-                    <h3 item-start class="item-heading">
+                    <div item-start class="item-heading">
                       {{ itin.legs[0].startTime | date:'shortTime' }} {{ "oneclick.global.common.to" | translate }}
                       {{ itin.legs[itin.legs.length-1].endTime | date:'shortTime' }}
-                    </h3>
+                    </div>
                   </ion-col>
                 </ion-row>
                 <ion-row>
                   <ion-col col-sm-6>
-                    <h5 class="item-subheading">{{ itin.duration | prettyTime }} ({{'oneclick.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</h5>
+                    <div class="item-subheading">{{ itin.duration | prettyTime }} ({{'oneclick.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</div>
                   </ion-col>
                 </ion-row>
                 <ion-row>
                   <ion-col col-sm-6>
-                    <h2 *ngIf="itin.cost && include_fare_cost"><b>
+                    <div *ngIf="itin.cost && include_fare_cost" class="item-no-color"><b>
                       {{ [itin.cost] | prettyFare }}
-                    </b></h2>
-                    <h2 *ngIf="!itin.cost && include_fare_cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                    </b></div>
+                    <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>
                   </ion-col>
                   <ion-col col-sm-6>
                     <ion-button shape="round"
@@ -214,8 +216,9 @@
             <ion-grid *ngIf="itin.trip_type == 'paratransit'">
               <ion-row >
                 <ion-col col-sm-6>
-                  <h3 item-start class="item-heading "><div class="otp-legMode-icon otp-legMode-icon-paratransit"></div>
-                    <b>{{ itin.service.name }}</b></h3>
+                  <div item-start class="item-heading"><div class="otp-legMode-icon otp-legMode-icon-paratransit"></div>
+                    <b>{{ itin.service.name }}</b>
+                  </div>
                 </ion-col>
                 <ion-col col-sm-6 *ngIf="itin.service.full_logo">
                   <div>
@@ -225,12 +228,12 @@
               </ion-row>
               <ion-row *ngFor="let leg of itin.legs; index as i">
                 <ion-col *ngIf="leg.isFlex()">
-                  <h3 item-start class="item-heading ">{{ leg.route }}</h3>
+                  <div item-start class="item-subheading ">{{ leg.route }}</div>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 item-start class="item-heading">{{ "oneclick.pages.trip_response.call_to_schedule" | translate}}</h3>
+                  <div item-start class="item-heading">{{ "oneclick.pages.trip_response.call_to_schedule" | translate}}</div>
                 </ion-col>
                 <ion-col col-sm-6>
                   <p class="item-body service-details-section" *ngIf="itin.service.purposes.length > 0" >
@@ -242,15 +245,15 @@
               </ion-row>
               <ion-row>
                 <ion-col size="12">
-                  <h5 class="item-subheading">{{itin.duration | prettyTime}} {{'oneclick.global.modes.paratransit' | translate}} ({{'oneclick.global.modes.paratransit_estimated' | translate}})</h5>
+                  <div class="item-subheading">{{itin.duration | prettyTime}} {{'oneclick.global.modes.paratransit' | translate}} ({{'oneclick.global.modes.paratransit_estimated' | translate}})</div>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h2 *ngIf="itin.cost && include_fare_cost"><b>
+                  <div *ngIf="itin.cost && include_fare_cost" class="item-no-color"><b>
                     {{ [itin.cost] | prettyFare }}
-                  </b></h2>
-                  <h2 *ngIf="!itin.cost && include_fare_cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                  </b></div>
+                  <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>
                 </ion-col>
                 <ion-col col-sm-6>
                   <ion-button shape="round"
@@ -265,7 +268,7 @@
             <ion-grid *ngIf="(itin.trip_type == 'taxi' || itin.trip_type == 'uber' || itin.trip_type == 'lyft')">
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 item-start class="item-heading "><div class="otp-legMode-icon otp-legMode-icon-{{ itin.trip_type }}"></div><b>{{ itin.service.name }}</b></h3>
+                  <div item-start class="item-heading"><div class="otp-legMode-icon otp-legMode-icon-{{ itin.trip_type }}"></div><b>{{ itin.service.name }}</b></div>
                 </ion-col>
                 <ion-col col-sm-6>
                   <div item-end>
@@ -276,25 +279,22 @@
 
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 item-start class="item-heading" *ngIf="itin.trip_type == 'taxi'">
+                  <div item-start class="item-heading">
                     {{ "oneclick.pages.trip_response.call_to_schedule" | translate}}
-                  </h3>
-                  <h3 item-start class="item-heading " *ngIf="itin.trip_type != 'taxi'">
-                    {{ "oneclick.pages.trip_response.connect_to_app." + itin.trip_type | translate}}
-                  </h3>
+                  </div>
                 </ion-col>
               </ion-row>
 
               <ion-row>
                 <ion-col col-sm-6>
-                  <h5 class="item-subheading">{{"oneclick.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</h5>
+                  <div class="item-subheading">{{"oneclick.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</div>
                 </ion-col>
               </ion-row>
 
               <ion-row>
                 <ion-col col-sm-6>
-                  <h2 *ngIf="itin.cost && include_fare_cost"><b>{{ [itin.cost] | prettyFare }}</b></h2>
-                  <h2 *ngIf="!itin.cost && include_fare_cost"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></h2>
+                  <div *ngIf="itin.cost && include_fare_cost" class="item-no-color"><b>{{ [itin.cost] | prettyFare }}</b></div>
+                  <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>
                 </ion-col>
                 <ion-col col-sm-6>
                   <ion-button shape="round"
@@ -309,20 +309,20 @@
             <ion-grid *ngIf="(itin.trip_type == 'car' || itin.trip_type == 'walk' || itin.trip_type == 'bicycle')">
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 item-start class="item-heading "><div class="otp-legMode-icon otp-legMode-icon-{{ itin.legs[0].mode }}"></div><b>{{ "oneclick.pages.trip_response." + itin.trip_type + ".only_label" | translate}}</b></h3>
+                  <div item-start class="item-heading "><div class="otp-legMode-icon otp-legMode-icon-{{ itin.legs[0].mode }}"></div><b>{{ "oneclick.pages.trip_response." + itin.trip_type + ".only_label" | translate}}</b></div>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h3 item-start class="item-heading ">
+                  <div item-start class="item-heading ">
                     {{ itin.legs[0].startTime | date:'shortTime' }} {{ "oneclick.global.common.to" | translate }}
                     {{ itin.legs[itin.legs.length-1].endTime | date:'shortTime' }}
-                  </h3>
+                  </div>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <h5 class="item-subheading">{{"oneclick.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</h5>
+                  <div class="item-subheading">{{"oneclick.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</div>
                 </ion-col>
               </ion-row>
               <ion-row>

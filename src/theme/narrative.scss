@@ -49,20 +49,24 @@
 }
 .otp-legMode-icon-taxi {
   background-image: url('../assets/img/mode/taxi-icon.png');
-  width: 1.525em;
-  height: 1.525em;
+  width: 1em;
+  height: 1em;
+  margin-right: 8px;
   background-size: 100%;
+  
 }
 .otp-legMode-icon-lyft {
   background-image: url('../assets/img/mode/taxi-icon-lyft.png');
   width: 1.525em;
   height: 1.525em;
+  margin-right: 8px;
   background-size: 100%;
 }
 .otp-legMode-icon-uber {
   background-image: url('../assets/img/mode/taxi-icon-uber.png');
   width: 1.525em;
   height: 1.525em;
+  margin-right: 8px;
   background-size: 100%;
 }
 .otp-legMode-icon-WALK {
