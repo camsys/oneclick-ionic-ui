@@ -35,34 +35,6 @@ export class ResponsiveTimepickerComponent implements OnInit {
     //this.timeControl.setValue(tempDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
 
 
-    //TODO: validate and if valid emit new time
-
-    this.hourControl.valueChanges.subscribe(
-      value => {
-        let hours = parseInt(value)
-        if (hours <= 12 && hours >= 1) {
-          let tempDate = new Date(this.time);
-          let ampm = this.ampmControl.value;
-          tempDate.setHours(ampm == "AM" ? hours : hours + 12);
-          this.time = this.helpers.dateISOStringWithTimeZoneOffset(tempDate);
-          this.outputUpdatedDate(this.time);
-        }
-        else this.outputUpdatedDate(null);
-      }
-    );
-
-    this.minControl.valueChanges.subscribe(
-      value => {
-        let min = parseInt(value)
-        if (min <= 59 && min >= 0) {
-          let tempDate = new Date(this.time);
-          tempDate.setMinutes(min);
-          this.time = this.helpers.dateISOStringWithTimeZoneOffset(tempDate);
-          this.outputUpdatedDate(this.time);
-        }
-        else this.outputUpdatedDate(null);
-      }
-    );
 
     this.ampmControl.valueChanges.subscribe(
       value => {
@@ -75,6 +47,30 @@ export class ResponsiveTimepickerComponent implements OnInit {
         this.outputUpdatedDate(this.time);
       }
     );
+  }
+
+  //validate and emit new time when user is done with entering value
+  hourBlur(event) {
+    let hours = parseInt(this.hourControl.value)
+        if (hours <= 12 && hours >= 1) {
+          let tempDate = new Date(this.time);
+          let ampm = this.ampmControl.value;
+          tempDate.setHours(ampm == "AM" ? hours : hours + 12);
+          this.time = this.helpers.dateISOStringWithTimeZoneOffset(tempDate);
+          this.outputUpdatedDate(this.time);
+        }
+        else this.outputUpdatedDate(null);
+  }
+
+  minuteBlur(event) {
+    let min = parseInt(this.minControl.value)
+    if (min <= 59 && min >= 0) {
+      let tempDate = new Date(this.time);
+      tempDate.setMinutes(min);
+      this.time = this.helpers.dateISOStringWithTimeZoneOffset(tempDate);
+        this.outputUpdatedDate(this.time);
+      }
+    else this.outputUpdatedDate(null);
   }
 
   setTimeControls(tempDate:Date) {
