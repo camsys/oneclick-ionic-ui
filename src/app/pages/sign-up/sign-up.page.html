@@ -55,15 +55,15 @@
 
       <ion-row>
         <ion-col>
-          <ion-item class="select-wrapper" id="county-item">      
-              <ion-label>{{"oneclick.pages.user_profile.county" | translate}}</ion-label>
-              <ion-select formControlName="formControlCounty" slot="end" name="county">
-                <ion-select-option *ngFor="let county of counties"
-                            value="{{county}}">
-                  {{ county }}             
-                </ion-select-option>
-              </ion-select>
-            </ion-item>
+          <div style="padding: 2px">      
+            <ion-label>{{"oneclick.pages.user_profile.county" | translate}}</ion-label>
+            <ion-select formControlName="formControlCounty" slot="end" name="county">
+              <ion-select-option *ngFor="let county of counties"
+                          value="{{county}}">
+                {{ county }}             
+              </ion-select-option>
+            </ion-select>
+          </div>
         </ion-col>
       </ion-row>
 

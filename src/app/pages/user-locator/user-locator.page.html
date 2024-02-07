@@ -40,14 +40,12 @@
 
       <!-- Header row with editable trip date -->
       <ion-grid>
-        <ion-row class="trip-date-row" [hidden]="viewType === 'services'">
+        <ion-row [hidden]="viewType === 'services'">
           <ion-col>
-            <ion-item class="select-wrapper">
               <ion-select id="arriveBySelector" value="{{arriveBy}}" placeholder="{{ 'oneclick.global.directions.depart_at' | translate }}" (ionChange)="arriveBySelectChanged($event)">
                 <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
                 <ion-select-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-select-option>
               </ion-select>
-            </ion-item>
           </ion-col>
 
           <ion-col>

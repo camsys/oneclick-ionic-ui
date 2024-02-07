@@ -38,13 +38,11 @@
     <ion-grid>
     <ion-row class="trip-date-row">
       <ion-col>
-        <ion-item class="select-wrapper">
-          <ion-select id="arriveBySelector" value="{{arriveBy}}" placeholder="{{ 'oneclick.global.directions.depart_at' | translate }}" (ionChange)="arriveBySelectChanged($event); updateTransportationOptionsButton()">
-            <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
-            <ion-select-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-select-option>
-          </ion-select>
-        </ion-item>
-      </ion-col>
+        <ion-select id="arriveBySelector" value="{{arriveBy}}" placeholder="{{ 'oneclick.global.directions.depart_at' | translate }}" (ionChange)="arriveBySelectChanged($event); updateTransportationOptionsButton()">
+          <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
+          <ion-select-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-select-option>
+        </ion-select>
+    </ion-col>
       <ion-col>
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
@@ -97,8 +95,7 @@
       {{ "oneclick.global.modes.find_other_options" | translate }}
     </ion-button>
 
-    <ion-item lines="none">
-    <ion-select value="{{orderBy}}" (ionChange)="orderItinList($event)" placeholder="{{ 'paratransit_sorter' | translate }}">
+    <ion-select id="sortSelector" value="{{orderBy}}" (ionChange)="orderItinList($event)" placeholder="{{ 'paratransit_sorter' | translate }}">
       <ion-select-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-select-option>
       <ion-select-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-select-option>
       <ion-select-option value="duration">{{"sort_by" | translate}} {{"travel_time_sorter" | translate }}</ion-select-option>
@@ -106,7 +103,6 @@
       <ion-select-option value="wait_time">{{"sort_by" | translate}} {{"wait_time_sorter" | translate}}</ion-select-option>
       <ion-select-option value="walk_distance">{{"sort_by" | translate}} {{"walk_distance_sorter" | translate}}</ion-select-option>
     </ion-select>
-  </ion-item>
   </ion-row>
 
   

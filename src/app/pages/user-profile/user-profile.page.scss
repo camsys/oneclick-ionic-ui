@@ -14,6 +14,18 @@ ion-list-header {
   font-weight: bold;
 }
 
+ion-input {
+  --background: var(--lynxWhite);
+  font-size: medium;
+}
+
+ion-select {
+  background-color: var(--lynxWhite);
+  &:focus {
+    outline: solid;
+    outline-color: var(--lynxPink);
+  }
+}
 
 #profile-header > div {
     font-weight: 400;

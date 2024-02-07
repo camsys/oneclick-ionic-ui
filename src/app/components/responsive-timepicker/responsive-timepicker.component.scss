@@ -2,7 +2,7 @@
 
 /* Style the container */
 .time-container {
-  height: 100%;
+  //height: 100%;
   // //color: #555;
   display: flex;
   background: var(--lynxWhite);
@@ -15,6 +15,12 @@
   display: flex;
 }
 
+.time-colon {
+  display: flex;
+  align-items: center;
+  padding-right: 5px;
+}
+
 .has-focus {
   border: solid 2px rgba(var(--lynxPinkRGB), 1);
 }
@@ -24,15 +30,23 @@ ion-input {
 }
 
 ion-datetime-button {
-  height: 100%;
+  //height: 100%;
 }
 
-  ion-datetime-button::part(native) {
-    border-radius: 0px;
-    width:100%;
-    height:100%;
-  }
+ion-datetime-button::part(native) {
+  border-radius: 0px;
+  width:100%;
+  height:100%;
+}
 
-  ion-item.select-wrapper {
-    --ion-background-color: var(--lynxWhite);
+ion-select {
+  padding: 10px;
+  background-color: var(--lynxWhite);
+
+  &:focus {
+    outline: solid;
+    outline-color: var(--lynxPink);
+    outline-offset: -3px;
+    outline-width: 2px;
   }
+}

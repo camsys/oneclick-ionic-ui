@@ -1,5 +1,10 @@
-ion-item.select-wrapper {
-  --ion-background-color: var(--lynxWhite);
+ion-select {
+  background-color: var(--lynxWhite);
+  
+  &:focus {
+    outline: solid;
+    outline-color: var(--lynxPink);
+  }
 }
 .content-ios,.content-md,.content-wp {
     background-color: var(--lynxPink);
