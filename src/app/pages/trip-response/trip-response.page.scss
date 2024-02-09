@@ -80,14 +80,13 @@ ion-toolbar {
 //   }
 
 ion-select#arriveBySelector {
-  outline: solid;
-  outline-color: var(--lynxPink);
   max-width:100%;
   width: 100%;
   padding: 10px;
   background-color: var(--lynxWhite);
 
   &:focus {
+    outline: solid;
     outline-color: var(--lynxPink);
     outline-offset: -3px;
     outline-width: 2px;

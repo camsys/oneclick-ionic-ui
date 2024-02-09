@@ -1,7 +1,7 @@
 <div class="input-container">
-    <ion-icon aria-hidden="true" class="icon" name="search"></ion-icon>
+    <ion-icon [attr.aria-hidden]="true" class="icon" name="search"></ion-icon>
     <ng-content></ng-content>
-    <button aria-label="clear" class="icon" (click)="clear.emit()" (keydown)="processClear($event)" tabIndex="0">
+    <button [attr.aria-label]="ariaClearLabel" class="icon" (click)="clear.emit()" (keydown)="processClear($event)" tabIndex="0">
         <ion-icon name="close"></ion-icon>
     </button>
 </div>

@@ -6,6 +6,15 @@
   margin-right: 10px;
 }
 
+.label-stacked {
+  transform: none;//undo the ionic transform for stacked labels (made it tiny)
+}
+
+ion-item {
+  --background-hover: none;
+  --background-focused: none:
+}
+
 ion-checkbox {
   --size: 12px;
 }
@@ -20,10 +29,16 @@ ion-input {
 }
 
 ion-select {
+  max-width:100%;
+  width: 100%;
+  padding: 10px;
   background-color: var(--lynxWhite);
+
   &:focus {
     outline: solid;
     outline-color: var(--lynxPink);
+    outline-offset: -3px;
+    outline-width: 2px;
   }
 }
 

@@ -3,29 +3,35 @@
   <app-navbar headerTitle="{{ 'oneclick.global.transportation.help' | translate }}" skipId="skip-trip-response"></app-navbar>
 </ion-header>
 
-
 <ion-content>
-  <ion-toolbar class="lynx-toolbar" text-center>
 
+  <ion-toolbar hidden class="lynx-toolbar">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
     <div id="origin-search-container">
+      <ion-label color="secondary">{{ 'oneclick.pages.user_locator.origin_search.placeholder_found' | translate }}</ion-label>
       <place-search #originSearch
                     uniqueLabel="Origin"
                     resultsListId="origin-results"
                     [isInvalid]="originInvalid"
-                    placeholder="{{ origin.label() }}"(onArrowDown)="originResults.focus()"
+                    (onArrowDown)="originResults.focus()"
                     (onFocus)="originResults.show(); destinationResults.hide()"
                     (onBlur)="originResults.hide()"
                     (onSelect)="originInvalid = false"
                     (onChange)="placeSearchChanged()">
       </place-search>
     </div>
-
+  </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
     <div id="destination-search-container">
+      <ion-label color="secondary">{{ 'oneclick.pages.user_locator.destination_search.placeholder' | translate }}</ion-label>
       <place-search #destinationSearch
                     uniqueLabel="Destination"
                     resultsListId="destination-results"
                     [isInvalid]="destinationInvalid"
-                    placeholder="{{ destination.label() }}"
                     (onArrowDown)="destinationResults.focus()"
                     (onFocus)="destinationResults.show(); originResults.hide();"
                     (onBlur)="destinationResults.hide();"
@@ -33,11 +39,13 @@
                     (onChange)="placeSearchChanged()">
       </place-search>
     </div>
-
+  </ion-col>
+  </ion-row>
     <!-- Header row with editable trip date -->
-    <ion-grid>
+
     <ion-row class="trip-date-row">
       <ion-col>
+        <ion-label color="secondary">{{ 'oneclick.pages.user_locator.arrive_depart' | translate }}</ion-label>
         <ion-select id="arriveBySelector" value="{{arriveBy}}" placeholder="{{ 'oneclick.global.directions.depart_at' | translate }}" (ionChange)="arriveBySelectChanged($event); updateTransportationOptionsButton()">
           <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
           <ion-select-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-select-option>
@@ -46,6 +54,7 @@
       <ion-col>
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
+        <ion-label color="secondary">{{ 'oneclick.pages.user_locator.trip_date' | translate }}</ion-label>
         <responsive-datepicker-minimal #tripDatepicker [locale]="translate.currentLang"
                                [date]="departureDateTime"
                                (changeDate)="updateDate($event); updateTransportationOptionsButton();">
@@ -55,6 +64,7 @@
       <ion-col>
 
         <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
+        <ion-label color="secondary">{{ 'oneclick.pages.user_locator.trip_time' | translate }}</ion-label>
         <responsive-timepicker-minimal #tripTimepicker [locale]="translate.currentLang"
                                [time]="departureDateTime"
                                (changeTime)="updateTime($event); updateTransportationOptionsButton();">

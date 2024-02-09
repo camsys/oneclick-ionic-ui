@@ -18,7 +18,8 @@ import { appConfig } from 'src/environments/appConfig';
 export class PlaceSearchComponent implements OnInit {
 
   query: string;
-  @Input() uniqueLabel: string;
+  @Input() ariaClearLabel: string;
+  @Input() uniqueLabelId: string;
   @Input() placeholder: string;
   @Input() resultsListId: string;
   @Input() isInvalid: boolean;
@@ -61,7 +62,7 @@ export class PlaceSearchComponent implements OnInit {
               public changeDetector: ChangeDetectorRef,
               private loader: LoaderService) {
     this.query = '';
-    this.placeholder = this.placeholder || "Search";
+    this.placeholder = this.placeholder ? this.placeholder : "";
     this.googleAutocompleteItems = [];
     this.oneClickAutocompleteItems = [];
     this.autocompleteItems = [];

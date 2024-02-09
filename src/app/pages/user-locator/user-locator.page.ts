@@ -96,15 +96,6 @@ export class UserLocatorPage implements OnInit {
       this.setDestinationMarker(this.destinationMarker.getPosition());
       this.setMapCenter();
     }
-
-    // Check if we're on a mobile device (as opposed to browser) or a non-Windows browser.
-    // Geolocation features are only enabled for those platforms.
-    // (The Windows check doesn't actually work, but leaving in for now.)
-    //if (this.platform.is('cordova') || !this.platform.is('windows')) {
-    //  this.checkGeolocationSupportAndSetupFeatures();
-    //} else {
-      this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
-    //}
   }
 
   setOriginMarker(latLng: google.maps.LatLng) {
@@ -121,79 +112,7 @@ export class UserLocatorPage implements OnInit {
     this.changeDetector.markForCheck();
   }
 
-  checkGeolocationSupportAndSetupFeatures() {
-    // Check if the Permissions API is supported.
-    // (The Permissions API is not supported on IE11, so this check isn't that useful.)
-    //if (navigator['permissions']) {
-
-      // Check if device has permission to geolocate.
-      //navigator['permissions'].query({
-      //  name: 'geolocation'
-      //}).then(permission => {
-      //  if (permission.state === "granted") {
-
-            // Check if the Geolocation API is supported
-            Geolocation.checkPermissions()
-            .then(
-              () => this.setupGeolocationFeatures()
-            )
-            .catch(
-              () => {
-                console.error("The browser or device does not support geolocation.");
-                this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
-              }
-            );
-            
-      //  } else if (permission.state === "prompt") {
-      //    console.log("The browser or device needs to prompt the user for geolocation permission. Won't geolocate initially.");
-      //    this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
-      //  } else {
-      //    console.error("The browser or device does not have permission for geolocation.");
-      //    this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
-      //  }
-      //});
-    //} else {
-    //  console.error("The browser or device does not support checking permissions for geolocation.");
-    //  this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
-    //}
-  }
-
-  setupGeolocationFeatures() {
-    // Add a location geolocator button that centers the map and sets the from place
-    this.googleMapsHelpers
-    .addYourLocationButton(this.map, (latLng) => {
-      this.zoomToOriginLocation(latLng);
-
-      // Clear the search bar and search results
-      this.originSearch.query = "";
-
-      // Clear the origin search location so it acan be replaced by the user location
-      this.originSearch.place = null;
-
-    });
-
-    // Try to automatically geolocate, centering the map and setting the from place
-    // Timeout if the geolocation takes too long.
-    var options = {
-      timeout: 5000,
-    };
-
-    Geolocation.getCurrentPosition(options).then(
-      (position) => {
-        // Only zoom to location if another location isn't set yet
-        if(!this.userLocation) {
-          let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          this.zoomToOriginLocation(latLng);
-          this.setUserPlaceFromLatLng(latLng);
-        }
-      }
-    ).catch(
-      (err) => {
-        console.error("Could not geolocate device position");
-        this.originSearch.placeholder = this.translate.instant("oneclick.pages.user_locator.origin_search.placeholder_found");
-      }
-    );
-  }
+  
 
   // Updates the userLocation, and centers the map at the given latlng
   zoomToOriginLocation(latLng: google.maps.LatLng) {

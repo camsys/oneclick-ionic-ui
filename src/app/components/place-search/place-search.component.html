@@ -1,5 +1,5 @@
 <!-- Generated template for the PlaceSearchComponent component -->
-<search (clear)="clear()">
+<search-wrapper (clear)="clear()" [ariaClearLabel]="ariaClearLabel">
     <input [formControl]="searchControl" 
         type="search"
         class="input-field"
@@ -11,8 +11,8 @@
         [attr.aria-controls]="resultsListId"
         [attr.aria-expanded]="resultsExpanded"
         aria-haspopup="listbox"
-        [attr.aria-label]="uniqueLabel"
+        [attr.aria-labelledby]="uniqueLabelId"
         [attr.aria-activedescendant]="activeResultId"
         role="combobox"
     />
-</search>
+</search-wrapper>

@@ -1,38 +1,41 @@
-<ion-header no-border>
+<ion-header>
   <app-navbar headerTitle="{{ 'oneclick.pages.sign_in.header' | translate }}" skipId="skip-sign-in"></app-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 
   <ion-grid>
     <form (ngSubmit)="signIn(signInForm.form.valid)" #signInForm="ngForm">
 
       <ion-row>
         <ion-col class="ion-text-center">
-          <img class="lynx-logo-md" src="assets/img/main-logo.png" alt="logo"/>
+          <img aria-hidden="true" class="lynx-logo-md" src="assets/img/main-logo.png" alt="logo"/>
         </ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col no-padding col-sm-10 offset-sm-1 col-md-8 offset-md-2>
-          <ion-input  type="text"
-                      placeholder="{{ 'email' | translate }}"
-                      name="email"
-                      aria-label="email"
-                      [(ngModel)]="user.email"
-                      required>
-          </ion-input>
+        <ion-col>
+          <ion-item lines="none">
+            <ion-label position="stacked" class="ion-text-wrap">{{ 'email' | translate }}</ion-label>
+            <ion-input  type="text"
+                        name="email"
+                        [(ngModel)]="user.email"
+                        required>
+            </ion-input>
+        </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col no-padding col-sm-10 offset-sm-1 col-md-8 offset-md-2>
-          <ion-input  type="password"
-                      placeholder="{{'password' | translate}}"
-                      name="password"
-                      aria-label="password"
-                      [(ngModel)]="user.password"
-                      required>
-          </ion-input>
+        <ion-col>
+          <ion-item lines="none">
+            <ion-label position="stacked" class="ion-text-wrap">{{ 'password' | translate }}</ion-label>
+            <ion-input  type="password"
+                        name="password"
+                        [(ngModel)]="user.password"
+                        required>
+            </ion-input>
+          </ion-item>
+
         </ion-col>
       </ion-row>
 

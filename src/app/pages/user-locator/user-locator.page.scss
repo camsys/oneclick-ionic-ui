@@ -2,6 +2,13 @@ ion-toolbar {
   --background: var(--lynxPink);
 }
 
+#origin-search-container,
+#destination-search-container,
+responsive-datepicker,
+responsive-timepicker {
+  width: 100%;
+}
+
   #user-locator-map-canvas{
     width: 100%;
     height: 100%;
@@ -31,15 +38,22 @@ ion-toolbar {
     // }
   }
 
+  ion-item {
+    --ion-background-color: var(--lynxPink);
+  }
+
+  .label-stacked {
+    transform: none;//undo the ionic transform for stacked labels (made it tiny)
+  }
+
   ion-select#arriveBySelector {
-    outline: solid;
-    outline-color: var(--lynxPink);
-    max-width:100%;
-    width: 100%;
+    // max-width:100%;
+    // width: 100%;
     padding: 10px;
     background-color: var(--lynxWhite);
 
     &:focus {
+      outline: solid;
       outline-color: var(--lynxPink);
       outline-offset: -3px;
       outline-width: 2px;

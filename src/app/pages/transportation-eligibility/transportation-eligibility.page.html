@@ -52,7 +52,7 @@
   </ion-list>
 
   <!-- AGE -->
-  <ion-list text-wrap class="lynx-list">
+  <ion-list>
     <ion-list-header color="tertiary">
       <ion-label class="ion-text-center">{{ "oneclick.pages.transportation_eligibility.age_header" | translate }}
       <button class="transportation-eligibility-info-button" [attr.aria-label]="translate.instant('oneclick.pages.transportation_eligibility.age_info_header')"
@@ -62,15 +62,14 @@
     </ion-list-header>
 
     <ion-item>
-      <ion-label position="fixed" id="age-label">{{"oneclick.pages.user_profile.age" | translate}}</ion-label>
+      <ion-label position="fixed">{{"oneclick.pages.user_profile.age" | translate}}</ion-label>
       <ion-input  type="number"
-                  placeholder=""
                   name="age"
                   [(ngModel)]="age"
                   min="0">
       </ion-input>
     </ion-item>
-
+  </ion-list>
   <!-- ACCOMMODATIONS -->
   <ion-list text-wrap class="lynx-list" *ngIf="accommodations.length > 0">
     <ion-list-header color="tertiary">
@@ -107,7 +106,6 @@
     </ion-item>
   </ion-list>
 
-  </ion-list>
 
 
   <!-- PLAN TRIP -->

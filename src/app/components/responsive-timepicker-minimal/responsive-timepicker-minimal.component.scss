@@ -6,7 +6,7 @@
   // //color: #555;
   display: flex;
   background: var(--lynxWhite);
-  padding: 2px;
+  padding-left: 10px;
   // //border: 1px solid currentColor;
   // //border-radius: 5px;
 }
@@ -29,8 +29,9 @@ ion-input {
   width: 4ch;
 }
 
-ion-select {
+select {
   padding: 10px;
+  border: none;
   background-color: var(--lynxWhite);
 
   &:focus {

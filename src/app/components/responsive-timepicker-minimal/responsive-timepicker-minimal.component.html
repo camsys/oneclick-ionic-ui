@@ -1,18 +1,22 @@
 <div class="time-container ion-justify-content-between">
   <div class="time-input-container ion-justify-content-left">
-    <ion-input aria-label="time-hour-entry" maxlength="2"
+
+    <label id="hr-label" hidden>{{ 'trip_time_hr' | translate }}</label>
+    <ion-input aria-labelledby="hr-label" maxlength="2"
     [formControl]="hourControl" placeholder="HH" (ionBlur)="hourBlur($event)">
     </ion-input>
     <div class="time-colon">:</div>
-    <ion-input aria-label="time-minute-entry" maxlength="2"
+    <label id="min-label" hidden>{{ 'trip_time_min' | translate }}</label>
+    <ion-input aria-labelledby="min-label" maxlength="2"
     [formControl]="minControl" placeholder="MM" (ionBlur)="minuteBlur($event)">
 
     </ion-input>
     <!-- <div style="padding: 2px"> -->
-      <ion-select id="time-ampm-entry" aria-label="time-ampm-entry" [formControl]="ampmControl">
-        <ion-select-option value="AM">AM</ion-select-option>
-        <ion-select-option value="PM">PM</ion-select-option>
-      </ion-select>
+    <label id="ampm-label" hidden>{{ 'trip_time_ampm' | translate }}</label>
+      <select id="time-ampm-entry" aria-labelledby="ampm-label" [formControl]="ampmControl">
+        <option value="AM">AM</option>
+        <option value="PM">PM</option>
+      </select>
     <!-- </div> -->
   </div>
 </div>
