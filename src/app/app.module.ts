@@ -45,6 +45,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     }), 
     IonicModule.forRoot({
       swipeBackEnabled: false,
+      mode: 'md', //forces md theme always, even on iOS
       navAnimation: _ => new AnimationController().create()//turned off default page transition animation
     }), ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],

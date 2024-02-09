@@ -10,7 +10,7 @@
   </ion-buttons>
 
   <ion-buttons slot="end">
-    <ion-button mode="md" aria-label="language translation selection" class="bar-button-menutoggle" (click)="openLanguageSelectorModal()">
+    <ion-button aria-label="language translation selection" class="bar-button-menutoggle" (click)="openLanguageSelectorModal()">
       <ion-icon slot="start" aria-hidden="true" class="padded" name="globe"></ion-icon> 
       {{ "oneclick.global.languages.native." + i18n.currentLocale() | translate }}
     </ion-button>
@@ -20,7 +20,7 @@
   </ion-buttons>   
 
 </ion-toolbar>
-<ion-toolbar mode="md" *ngIf="showTitle" class="mobile-header">
+<ion-toolbar *ngIf="showTitle" class="mobile-header">
   <ion-title>
     <h1 style="white-space: normal">{{headerTitle}}</h1>
   </ion-title>
@@ -39,7 +39,7 @@
   </ion-title>
 
   <ion-buttons slot="end">
-    <ion-button mode="md" aria-label="language translation selection" class="bar-button-menutoggle" (click)="openLanguageSelectorModal()">
+    <ion-button aria-label="language translation selection" class="bar-button-menutoggle" (click)="openLanguageSelectorModal()">
       <ion-icon slot="start" aria-hidden="true" class="padded" name="globe"></ion-icon> 
       {{ "oneclick.global.languages.native." + i18n.currentLocale() | translate }}
     </ion-button>
