@@ -78,8 +78,8 @@
           <ion-col>
             <ion-item lines="none">
               <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
-              <ion-label id="becky2" aria-hidden="true" position="stacked" color="secondary">{{ 'oneclick.pages.user_locator.trip_date' | translate }}</ion-label>
-              <responsive-datepicker [locale]="translate.currentLang" aria-labelledby="becky2"
+              <ion-label id="date-picker-label" aria-hidden="true" position="stacked" color="secondary">{{ 'oneclick.pages.user_locator.trip_date' | translate }}</ion-label>
+              <responsive-datepicker [locale]="translate.currentLang" aria-labelledby="date-picker-label"
                                     [date]="departureDateTime"
                                     (changeDate)="updateDate($event)">
               </responsive-datepicker>
