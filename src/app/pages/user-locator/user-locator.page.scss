@@ -1,5 +1,9 @@
-ion-toolbar {
-  --background: var(--lynxPink);
+.hideShowToolbarBtn {
+  margin: 0px;  
+}
+
+.lynx-toolbar {
+  background: var(--lynxPink);
 }
 
 #origin-search-container,

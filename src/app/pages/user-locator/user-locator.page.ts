@@ -43,6 +43,8 @@ export class UserLocatorPage implements OnInit {
   originInvalid: boolean = true;
   destinationInvalid: boolean = true;
 
+  showToolbar:boolean = true;
+
   constructor(public router: Router,
               private route: ActivatedRoute,
               public platform: Platform,
@@ -74,6 +76,8 @@ export class UserLocatorPage implements OnInit {
   }
 
   ionViewDidEnter() {
+    this.showToolbar = true;//make sure this visible whenever user enters page
+    
     // Initialize the map once device is ready
     this.platform.ready()
     .then(() => this.initializeMap());
@@ -165,6 +169,10 @@ export class UserLocatorPage implements OnInit {
       this.storeArriveBy(this.arriveBy);
       this.router.navigate([CategoriesFor211Page.routePath]);
     }
+  }
+
+  hideShowToolbar() {
+    this.showToolbar = !this.showToolbar;
   }
 
   updateDate(date: string) {

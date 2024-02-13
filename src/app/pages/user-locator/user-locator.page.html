@@ -10,7 +10,15 @@
 <ion-content>
   <div style="height:100%; display: flex; flex-flow: column;">
 
-    <ion-toolbar class="lynx-toolbar">
+    <ion-button color="tertiary" expand="full"  class="hideShowToolbarBtn" (click)="hideShowToolbar()" 
+        [attr.aria-expanded]="showToolbar" aria-controls="trip-toolbar">
+      <span [hidden]="!showToolbar" style="padding:10px" aria-hidden="true">▼</span> 
+      <span [hidden]="showToolbar" style="padding:10px" aria-hidden="true">▶</span>
+      <span [hidden]="!showToolbar">{{ 'oneclick.pages.user_locator.hide_toggle' | translate }}</span> 
+      <span [hidden]="showToolbar">{{ 'oneclick.pages.user_locator.show_toggle' | translate }}</span>
+  </ion-button>
+
+    <div id="trip-toolbar" class="lynx-toolbar" [hidden]="!showToolbar">
       <ion-grid>
 
         <ion-row>
@@ -92,15 +100,10 @@
 
         </ion-row>
       </ion-grid>
-    </ion-toolbar>
+    </div>
 
     <!-- ORIGIN AND DESTINATION AUTOCOMPLETE RESULTS LISTS -->
-    <autocomplete-results #originResults
-      [items]="originSearch.autocompleteItems"
-      uniqueId="origin-results"
-      (onChangeFocus)="originSearch.changeAriaFocusItem($event)"
-      (onSelect)="originSearch.chooseItem($event, viewType)">
-    </autocomplete-results>
+    
     <autocomplete-results #destinationResults
       [items]="destinationSearch.autocompleteItems"
       uniqueId="destination-results"
