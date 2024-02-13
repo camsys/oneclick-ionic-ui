@@ -103,6 +103,12 @@
     </div>
 
     <!-- ORIGIN AND DESTINATION AUTOCOMPLETE RESULTS LISTS -->
+    <autocomplete-results #originResults
+      [items]="originSearch.autocompleteItems"
+      uniqueId="origin-results"
+      (onChangeFocus)="originSearch.changeAriaFocusItem($event)"
+      (onSelect)="originSearch.chooseItem($event, viewType)">
+    </autocomplete-results>
     
     <autocomplete-results #destinationResults
       [items]="destinationSearch.autocompleteItems"
