@@ -33,12 +33,17 @@
                               [isInvalid]="originInvalid"
                               (onArrowDown)="originResults.focus()"
                               (onFocus)="originResults.show(); destinationResults.hide()"
-                              (onBlur)="originResults.hide()"
                               (onSelect)="originInvalid = false; centerMapOnPlace($event, 'origin')"
                               (onChange)="placeSearchChanged()">
                 </place-search>
               </div>
             </ion-item>
+            <autocomplete-results #originResults
+              [items]="originSearch.autocompleteItems"
+              uniqueId="origin-results"
+              (onChangeFocus)="originSearch.changeAriaFocusItem($event)"
+              (onSelect)="originSearch.chooseItem($event, viewType)">
+            </autocomplete-results>
           </ion-col>
         </ion-row>
         <ion-row  [hidden]="viewType === 'services'">
@@ -55,18 +60,23 @@
                               [isInvalid]="destinationInvalid"
                               (onArrowDown)="destinationResults.focus()"
                               (onFocus)="destinationResults.show(); originResults.hide();"
-                              (onBlur)="destinationResults.hide();"
                               (onSelect)="destinationInvalid = false; centerMapOnPlace($event, 'destination')"
                               (onChange)="placeSearchChanged()">
                 </place-search>
               </div>
             </ion-item>
+            <autocomplete-results #destinationResults
+              [items]="destinationSearch.autocompleteItems"
+              uniqueId="destination-results"
+              (onChangeFocus)="destinationSearch.changeAriaFocusItem($event)"
+              (onSelect)="destinationSearch.chooseItem($event, viewType)">
+            </autocomplete-results>
           </ion-col>
         </ion-row>
           <!-- Header row with editable trip date -->
         <ion-row [hidden]="viewType === 'services'">
           <ion-col>
-            <ion-item lines="none">
+            <ion-item lines="none" (ionFocus)="destinationResults.hide(); originResults.hide();">
               <ion-label position="stacked" id="arriveByLabel" color="secondary">{{ 'oneclick.pages.user_locator.arrive_depart' | translate }}</ion-label>
                 <ion-select id="arriveBySelector" value="{{arriveBy}}" (ionChange)="arriveBySelectChanged($event)">
                   <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
@@ -76,7 +86,7 @@
           </ion-col>
 
           <ion-col>
-            <ion-item lines="none">
+            <ion-item lines="none" (ionFocus)="destinationResults.hide(); originResults.hide();">
               <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
               <ion-label id="date-picker-label" aria-hidden="true" position="stacked" color="secondary">{{ 'oneclick.pages.user_locator.trip_date' | translate }}</ion-label>
               <responsive-datepicker [locale]="translate.currentLang" aria-labelledby="date-picker-label"
@@ -88,7 +98,7 @@
           </ion-col>
           <ion-col>
 
-            <ion-item lines="none">
+            <ion-item lines="none" (ionFocus)="destinationResults.hide(); originResults.hide();">
               <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
               <ion-label aria-hidden="true" position="stacked" color="secondary">{{ 'oneclick.pages.user_locator.trip_time' | translate }}</ion-label>
               <responsive-timepicker [locale]="translate.currentLang"
@@ -101,21 +111,6 @@
         </ion-row>
       </ion-grid>
     </div>
-
-    <!-- ORIGIN AND DESTINATION AUTOCOMPLETE RESULTS LISTS -->
-    <autocomplete-results #originResults
-      [items]="originSearch.autocompleteItems"
-      uniqueId="origin-results"
-      (onChangeFocus)="originSearch.changeAriaFocusItem($event)"
-      (onSelect)="originSearch.chooseItem($event, viewType)">
-    </autocomplete-results>
-    
-    <autocomplete-results #destinationResults
-      [items]="destinationSearch.autocompleteItems"
-      uniqueId="destination-results"
-      (onChangeFocus)="destinationSearch.changeAriaFocusItem($event)"
-      (onSelect)="destinationSearch.chooseItem($event, viewType)">
-    </autocomplete-results>
 
     <div style="flex: 1 1 auto" >
       <!-- 211 SERVICE FINDER BUTTON -->

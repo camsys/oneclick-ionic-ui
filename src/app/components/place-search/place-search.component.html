@@ -1,11 +1,12 @@
 <!-- Generated template for the PlaceSearchComponent component -->
 <search-wrapper (clear)="clear()" [ariaClearLabel]="ariaClearLabel">
-    <input [formControl]="searchControl" 
+    <input [formControl]="searchControl"
         type="search"
         class="input-field"
         [value]="query"
         [placeholder]="placeholder"
         (focus)="ionFocus()"
+        (blur)="ionBlur()"
         aria-autocomplete="list"
         [attr.aria-invalid]="isInvalid"
         [attr.aria-controls]="resultsListId"

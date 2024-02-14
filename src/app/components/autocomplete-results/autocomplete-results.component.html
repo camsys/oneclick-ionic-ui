@@ -1,4 +1,4 @@
-<div class="lynx-autocomplete-results-container"
+<div class="lynx-autocomplete-results-container ion-padding-start ion-padding-end"
      [hidden]="hidden || items.length <= 0">
   <ion-list class="lynx-autocomplete-results"
       role="listbox"
@@ -6,6 +6,7 @@
     <ion-item *ngFor="let item of items; let i = index"
               tappable text-wrap button
               role="option"
+              tabindex="-1"
               [attr.aria-selected]="focusIndex === i"
               [id]="uniqueId +'-item' + i"
               [class.focus]="focusIndex === i"

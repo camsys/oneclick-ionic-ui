@@ -75,7 +75,9 @@ export class PlaceSearchComponent implements OnInit {
     this.searchControl.valueChanges.pipe(debounceTime(500)).subscribe(
       query => {
         this.updateAddressSearch(query);
-        this.resultsExpanded = true;
+        if (query && query.length > 0)
+          this.resultsExpanded = true;
+        else this.resultsExpanded = false;
       }
     );
   }
@@ -201,6 +203,9 @@ export class PlaceSearchComponent implements OnInit {
   // Pass through the focus and blur events
   ionFocus() {
     this.hasFocus = true;
+    if (this.searchControl.value && this.searchControl.value.length > 0)
+      this.resultsExpanded = true;
+    else this.resultsExpanded = false;
     this.onFocus.emit();
   }
 
