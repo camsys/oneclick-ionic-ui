@@ -22,6 +22,7 @@ import { DirectionsPage } from '../directions/directions.page';
 import { HelpMeFindPage } from '../help-me-find/help-me-find.page';
 import { ParatransitServicesPage } from '../paratransit-services/paratransit-services.page';
 import { TransportationEligibilityPage } from '../transportation-eligibility/transportation-eligibility.page';
+import { UserLocatorPage } from '../user-locator/user-locator.page';
 
 @Component({
   selector: 'app-trip-response',
@@ -50,6 +51,9 @@ export class TripResponsePage implements OnInit, OnDestroy {
   arriveBy: boolean =true;
   departureDateTime: string;
   departureDateTimeParam: string;
+
+  summaryArriveByToggle: boolean;
+  dateTimeSummary: Date;
 
   departureDate: Date;
   departureTime: Date;
@@ -105,6 +109,9 @@ export class TripResponsePage implements OnInit, OnDestroy {
         this.departureDateTimeParam = this.router.getCurrentNavigation().extras.state.departureDateTime;
 
         //to make sure select for depart/arrive updates correctly
+        this.summaryArriveByToggle = this.arriveBy;
+        this.dateTimeSummary = new Date(this.departureDateTimeParam);
+
         this.changeDetectorRef.detectChanges();
       }
     });
@@ -194,6 +201,8 @@ export class TripResponsePage implements OnInit, OnDestroy {
       this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
     }
     //to make sure select for arrive/depart updates correctly
+    this.summaryArriveByToggle = this.arriveBy;
+    this.dateTimeSummary = new Date(this.departureDateTime);
     this.changeDetectorRef.detectChanges();
   }
 
@@ -349,6 +358,11 @@ export class TripResponsePage implements OnInit, OnDestroy {
 
     this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
     this.loader.hideLoader();
+  }
+
+  //return to trip plan page
+  replan() {
+    this.router.navigate([UserLocatorPage.routePath, 'transportation']);
   }
 
   // Plans a trip based on origin and destination

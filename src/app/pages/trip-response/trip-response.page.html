@@ -4,6 +4,24 @@
 </ion-header>
 
 <ion-content>
+      <ion-grid class="summary-list">
+        <ion-row>
+          <ion-col>
+            <ion-label color="secondary" class="ion-text-wrap">{{ 'oneclick.pages.user_locator.origin_search.placeholder_found' | translate }} {{ originSearch.query }}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-label color="secondary" class="ion-text-wrap">{{ 'oneclick.pages.user_locator.destination_search.placeholder' | translate }} {{ destinationSearch.query }}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-label *ngIf="summaryArriveByToggle" color="secondary" class="ion-text-wrap">{{ "oneclick.global.directions.arrive_by" | translate }} {{ dateTimeSummary.toLocaleString() }}</ion-label>
+            <ion-label *ngIf="!summaryArriveByToggle" color="secondary" class="ion-text-wrap">{{ "oneclick.global.directions.depart_at" | translate }} {{ dateTimeSummary.toLocaleString() }}</ion-label>
+        </ion-col>
+        </ion-row>
+      </ion-grid>
 
   <ion-toolbar hidden class="lynx-toolbar">
     <ion-grid>
@@ -96,7 +114,7 @@
     <ion-button round shape="round"
       class="lynx-button-primary"
       id="transportation-options-button"
-      (click)="findTransportation(originSearch.place, destinationSearch.place)">
+      (click)="replan()">
     {{ "oneclick.pages.trip_response.transportation_button" | translate }}
     </ion-button>
     <ion-button shape="round"
