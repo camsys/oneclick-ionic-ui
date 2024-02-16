@@ -67,9 +67,9 @@ export class AppComponent implements OnDestroy {
     this.initializeApp();
 
     router.events.pipe(takeUntil(this.unsubscribe), filter(event => event instanceof NavigationEnd))
-          .subscribe((event : NavigationEnd) => 
+          .subscribe((event : NavigationEnd) =>
            {
-              this.currentRoute = event.url;  
+              this.currentRoute = event.url;
            });
 
     // When a server error occurs, show an error message and return to the home page.
@@ -95,7 +95,7 @@ export class AppComponent implements OnDestroy {
         this.showErrorToast('oneclick.global.error_message.auth_needed');
         break;
       default:
-        this.goHome();
+        this.nav.navigateRoot('/');
         this.showErrorToast('oneclick.global.error_messages.default');
         break;
     }
@@ -258,6 +258,10 @@ export class AppComponent implements OnDestroy {
     else if(this.currentRoute != this.rootPage.routePath) {//if not already on page, re-route to home page
       this.nav.navigateRoot(this.rootPage.routePath);
     }
+  }
+
+  goDefaultPage() {
+    this.nav.navigateRoot('/');
   }
 
   //open help document or link
