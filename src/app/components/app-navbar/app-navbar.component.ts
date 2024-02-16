@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { I18nService } from 'src/app/services/i18n.service';
 import { MenuService } from 'src/app/services/menu.service';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { appConfig } from 'src/environments/appConfig';
 
 @Component({
   selector: 'app-navbar',
@@ -47,11 +48,11 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.router.events.pipe(takeUntil(this.unsubscribe), filter(event => event instanceof NavigationEnd))
-          .subscribe((event : NavigationEnd) => 
+          .subscribe((event : NavigationEnd) =>
            {
               this.currentRoute = event.url;
               let routePieces = this.router.url.split('#');
-              this.skipLinkPath = routePieces[0] + '#' + this.skipId;  
+              this.skipLinkPath = routePieces[0] + '#' + this.skipId;
            });
 
     this.menuService.menuIsOpen.pipe(takeUntil(this.unsubscribe)).subscribe(
@@ -66,8 +67,8 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
   openLanguageSelectorModal() {
     this.modalCtrl.create({
       component: LanguageSelectorModalPage,
-      componentProps: { 
-        locale: this.i18n.currentLocale() 
+      componentProps: {
+        locale: this.i18n.currentLocale()
       }
     }).then(modal => {
       modal.onDidDismiss().then(resp => {
@@ -91,16 +92,19 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
   }
   // Check if we're already at the home page; if not, go there.
 
-  goHome() {
-    if(!this.isHomePage()) {
-      this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
-    }
-  }
-
   isHomePage(): boolean {
     if (!this.currentRoute) return true;
-    let routePieces = this.currentRoute.split('#');
-    return routePieces[0] === HelpMeFindPage.routePath || routePieces[0] === "/";
+
+    if (this.currentRoute === "/") return true;
+
+    if (this.currentRoute.length > 1) {
+      let remainder = this.currentRoute.substring(1);//remove the leading '/'
+      let routePieces = remainder.split('#');//handle the skip link if active
+      return routePieces[0]  === appConfig.DEFAULT_ROUTE;
+    }
+
+    //don't know what this could be
+    return false;//shouldn't happen but just in case
   }
 
   ngOnDestroy() {
