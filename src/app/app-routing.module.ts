@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { NoPreloading, RouterModule, Routes } from '@angular/router';
+import { appConfig } from '../environments/appConfig';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: appConfig.DEFAULT_ROUTE,
     pathMatch: 'full'
   },
   {
