@@ -7,7 +7,7 @@ export const appConfig = {
     DEFAULT_ROUTE: 'home',
     HIPAA_PRIVACY_NOTICE_URL: "/assets/doc/Here2There_Privacy_Notice.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "/assets/doc/Here2There_Privacy_Notice.pdf",
-    HELP_EXT_URL: "mailto:Here2There@lifespan-roch.org",
+    HELP_EXT_URL: "/assets/doc/H2T_Instructions.pdf",
     HOME_EXT_URL: false,
 
     DEFAULT_LOCATION: {
