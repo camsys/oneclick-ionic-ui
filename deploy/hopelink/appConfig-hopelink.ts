@@ -7,7 +7,8 @@ export const appConfig = {
     DEFAULT_ROUTE: 'locator/transporation',
     HIPAA_PRIVACY_NOTICE_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
-    HELP_URL: false,
+    HELP_EXT_URL: false,
+    HOME_EXT_URL: "https://www.FindARide.org/TripPlanner",
 
     DEFAULT_LOCATION: {
         lat: 47.650626,

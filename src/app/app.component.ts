@@ -34,6 +34,7 @@ export class AppComponent implements OnDestroy {
   showSpinner: Boolean = false;
   currentRoute: string;
   help_url: any;
+  home_url: any;
 
   signedInPages: PageModel[];
   signedOutPages: PageModel[];
@@ -61,7 +62,8 @@ export class AppComponent implements OnDestroy {
               private i18n: I18nService,
               private menuService: MenuService) {
 
-    this.help_url = appConfig.HELP_URL;
+    this.help_url = appConfig.HELP_EXT_URL;
+    this.home_url = appConfig.HOME_EXT_URL;
     this.initializeApp();
 
     router.events.pipe(takeUntil(this.unsubscribe), filter(event => event instanceof NavigationEnd))
@@ -249,9 +251,11 @@ export class AppComponent implements OnDestroy {
 
   }
 
-  // Check if we're already at the home page; if not, go there.
   goHome() {
-    if(this.currentRoute != this.rootPage.routePath) {
+    if (this.home_url) {//if an external home link is provided, redirect there
+      window.open(this.home_url, '_self');
+    }
+    else if(this.currentRoute != this.rootPage.routePath) {//if not already on page, re-route to home page
       this.nav.navigateRoot(this.rootPage.routePath);
     }
   }
