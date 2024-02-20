@@ -36,6 +36,8 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
   trip_types: TripType[] = [];
   tripResponse: TripResponseModel=null;
   tripRequest: TripRequestModel;
+  selectedTripPurposeId: string;
+
 
   trip_id: number;
 
@@ -73,33 +75,34 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
     this.loader.showLoader();
 
     this.route.paramMap.subscribe((params: ParamMap) => {
-      this.trip_id = +params.get('trip_id'); 
+        this.trip_id = +params.get('trip_id');
 
-      if (this.router.getCurrentNavigation().extras.state) {
-        let state = this.router.getCurrentNavigation().extras.state;
+        if (this.router.getCurrentNavigation().extras.state) {
+            let state = this.router.getCurrentNavigation().extras.state;
 
-        this.origin = state.origin;
-        this.destination = state.destination;
-        this.tripRequest = state.trip_request;
-      }
+            this.origin = state.origin;
+            this.destination = state.destination;
+            this.tripRequest = state.trip_request;
+            // Extract the selectedTripPurposeId if passed along with the state
+            if (state.selectedTripPurposeId) {
+                this.selectedTripPurposeId = state.selectedTripPurposeId;
+            }
+        }
     });
 
-
-    if(this.tripRequest) {
-
-      this.loadTripResponse();
-      this.loadTripRequest(this.tripRequest);
+    if (this.tripRequest) {
+        this.loadTripResponse();
+        this.loadTripRequest(this.tripRequest);
     } else {
-      // If necessary params are not present, go to home page
-      this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
+        // If necessary params are not present, go to home page
+        this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
     }
 
     // reset hiding this page since user opened it
     let session = this.auth.session();
     session.user_preferences_disabled = false;
     this.auth.setSession(session);
-
-  }
+  }  
 
   // Loads trip response data onto the page
   loadTripResponse() {
@@ -184,6 +187,7 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
         tripRequest: this.tripRequest,
         origin: this.origin,
         destination: this.destination,
+        selectedTripPurposeId: this.selectedTripPurposeId,
         skipPreferences: true
       }
     });

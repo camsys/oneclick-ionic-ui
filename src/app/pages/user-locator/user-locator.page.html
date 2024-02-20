@@ -77,6 +77,14 @@
         <ion-row [hidden]="viewType === 'services'">
           <ion-col>
             <ion-item lines="none" (ionFocus)="destinationResults.hide(); originResults.hide();">
+              <ion-label position="stacked" color="secondary">{{ 'oneclick.pages.user_locator.trip_purpose' | translate }}</ion-label>
+              <ion-select id="purposeSelector" [(ngModel)]="selectedTripPurposeId" (ionChange)="tripPurposeChanged()">
+                <ion-select-option value="none">{{ 'None' | translate }}</ion-select-option>
+                <ion-select-option *ngFor="let purpose of tripPurposes" [value]="purpose.id">{{ purpose.name }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            
+            <ion-item lines="none" (ionFocus)="destinationResults.hide(); originResults.hide();">
               <ion-label position="stacked" id="arriveByLabel" color="secondary">{{ 'oneclick.pages.user_locator.arrive_depart' | translate }}</ion-label>
                 <ion-select id="arriveBySelector" value="{{arriveBy}}" (ionChange)="arriveBySelectChanged($event)">
                   <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>

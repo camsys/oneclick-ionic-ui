@@ -10,5 +10,5 @@ export class TripModel {
   destination_attributes: OneClickPlaceModel;
   arrive_by: boolean;
   trip_time: string; //iso8601 time string
-  purpose: string;
+  purpose_id: string;
 }

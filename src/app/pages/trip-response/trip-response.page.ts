@@ -51,6 +51,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
   arriveBy: boolean =true;
   departureDateTime: string;
   departureDateTimeParam: string;
+  selectedTripPurposeId: string;
 
   summaryArriveByToggle: boolean;
   dateTimeSummary: Date;
@@ -107,6 +108,9 @@ export class TripResponsePage implements OnInit, OnDestroy {
         this.origin = this.router.getCurrentNavigation().extras.state.origin;
         this.destination = this.router.getCurrentNavigation().extras.state.destination;
         this.departureDateTimeParam = this.router.getCurrentNavigation().extras.state.departureDateTime;
+        this.selectedTripPurposeId = this.router.getCurrentNavigation().extras.state.selectedTripPurposeId;
+        // log the selected trip purpose id
+        console.log('selectedTripPurposeId: ', this.selectedTripPurposeId);
 
         //to make sure select for depart/arrive updates correctly
         this.summaryArriveByToggle = this.arriveBy;
@@ -121,7 +125,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
       this.oneClick.getTrip(this.trip_id)
         .subscribe((tripResponse) => this.loadTripResponse(tripResponse));
     });
-  }
+  }  
 
   ionViewDidEnter() {
     //need to reset this here because sometimes the title gets lost when the customize transportation options is used
@@ -136,7 +140,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
       this.departureDateTime = this.tripRequest.trip.trip_time;
       this.departureDate = new Date(this.departureDateTime);
       this.departureTime = new Date(this.departureDateTime);
-
+      this.tripRequest.trip.purpose_id = this.selectedTripPurposeId;
       this.arriveBy = this.tripRequest.trip.arrive_by;
 
       if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
@@ -145,7 +149,8 @@ export class TripResponsePage implements OnInit, OnDestroy {
           state: {
             trip_request: this.tripRequest,
             origin: this.origin,
-            destination: this.destination
+            destination: this.destination,
+            selectedTripPurposeId: this.selectedTripPurposeId
           }
         });
       } else {
@@ -181,7 +186,8 @@ export class TripResponsePage implements OnInit, OnDestroy {
             state: {
               trip_request: this.tripRequest,
               origin: this.origin,
-              destination: this.destination
+              destination: this.destination,
+              selectedTripPurposeId: this.selectedTripPurposeId
             }
           });
       } else {
@@ -467,7 +473,8 @@ export class TripResponsePage implements OnInit, OnDestroy {
       state: {
         trip_request: this.tripRequest,
         origin: this.origin,
-        destination: this.destination
+        destination: this.destination,
+        selectedTripPurposeId: this.selectedTripPurposeId
       }
     });
 
@@ -495,6 +502,9 @@ export class TripResponsePage implements OnInit, OnDestroy {
 
     // Set trip types to the mode passed to this method
     tripRequest.trip_types = modes;
+
+    // Set trip purpose
+    tripRequest.trip.purpose_id = this.selectedTripPurposeId;
 
     // Don't filter by schedule, because we aren't letting the user pick a time for paratransit or taxi
     // Also don't filter by eligibility, as doing so may exclude relevant results from the fare preview

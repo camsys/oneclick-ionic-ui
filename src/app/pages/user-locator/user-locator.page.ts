@@ -12,6 +12,7 @@ import { GoogleMapsHelpersService } from 'src/app/services/google/google-maps-he
 import { HelpersService } from 'src/app/services/helpers.service';
 import { CategoriesFor211Page } from '../211/categories-for211/categories-for211.page';
 import { TripResponsePage } from '../trip-response/trip-response.page';
+import { OneClickService } from 'src/app/services/one-click.service';
 
 @Component({
   selector: 'app-user-locator',
@@ -39,6 +40,8 @@ export class UserLocatorPage implements OnInit {
   departureDateTime: string;
   departureDate: Date;
   departureTime: Date;
+  tripPurposes: any[] = [];
+  selectedTripPurposeId: string = "none";
 
   originInvalid: boolean = true;
   destinationInvalid: boolean = true;
@@ -55,7 +58,8 @@ export class UserLocatorPage implements OnInit {
               private auth: AuthService,
               public translate: TranslateService,
               public toastCtrl: ToastController,
-              public alertController: AlertController
+              public alertController: AlertController,
+              private oneClickService: OneClickService
             ) {
 
     this.map = null;
@@ -73,7 +77,28 @@ export class UserLocatorPage implements OnInit {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.viewType = params.get('viewType');// Find services vs. transportation view
     })
+    this.loadTripPurposes();
   }
+
+  loadTripPurposes() {
+    this.oneClickService.getTripPurposes().subscribe(
+      purposes => {
+        this.tripPurposes = purposes;
+        this.selectedTripPurposeId = null;
+      },
+      error => console.error('Error fetching trip purposes:', error)
+    );
+  }
+  
+  tripPurposeChanged() {
+    if (this.selectedTripPurposeId === "none") {
+      this.selectedTripPurposeId = null; 
+        console.log('Trip purpose is none');
+    } else { 
+      console.log('Trip purpose is:', this.selectedTripPurposeId);
+    }
+  }
+  
 
   ionViewDidEnter() {
     this.showToolbar = true;//make sure this visible whenever user enters page
@@ -228,7 +253,8 @@ export class UserLocatorPage implements OnInit {
           origin: origin,
           destination: destination,
           departureDateTime: this.helpers.dateISOStringWithTimeZoneOffset(combinedDateTime),
-          arriveBy: this.arriveBy 
+          arriveBy: this.arriveBy,
+          selectedTripPurposeId: this.selectedTripPurposeId
         }
       });
     }

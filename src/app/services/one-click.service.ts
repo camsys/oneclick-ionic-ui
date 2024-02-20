@@ -423,6 +423,22 @@ export class OneClickService {
                catchError(error => this.handleError(error)));
   }
 
+  getTripPurposes(): Observable<any[]> {
+    const uri: string = `${this.oneClickUrl}trip_purposes?locale=${this.i18n.currentLocale()}`;
+    return this.http.get<any>(uri, this.requestOptions())
+      .pipe(
+        map(response => {
+          console.log('Received trip purposes:', response.data.purposes);
+          return response.data.purposes;
+        }),
+        catchError(error => {
+          console.error('An error occurred', error);
+          return this.handleError(error);
+        })
+      );
+  }  
+  
+
   // Makes a refernet keyword search call, returning the results array
   refernetKeywordSearch(term: string, typeFilter: string = ""): Observable<SearchResultModel[]> {
     var uri: string = encodeURI(
