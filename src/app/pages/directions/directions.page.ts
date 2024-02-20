@@ -59,7 +59,7 @@ export class DirectionsPage implements OnInit {
 
 
     } else {
-      this.navCtrl.navigateRoot(HelpMeFindPage.routePath); // If necessary params aren't present, go back to the home page
+      this.navCtrl.navigateRoot('/'); // If necessary params aren't present, go back to the home page
     }
   }
 

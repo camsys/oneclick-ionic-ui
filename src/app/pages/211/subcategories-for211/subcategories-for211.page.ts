@@ -42,7 +42,7 @@ export class SubcategoriesFor211Page implements OnInit {
         this.oneClick.getCategoryByCode(this.code)
             .subscribe(cat => this.category = cat);
       } else { // Or, if necessary nav params not passed, go home.
-        this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
+        this.navCtrl.navigateRoot('/');
       }
     });
   }

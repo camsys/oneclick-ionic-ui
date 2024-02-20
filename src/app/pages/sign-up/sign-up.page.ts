@@ -82,7 +82,7 @@ export class SignUpPage implements OnInit {
           this.signUpFormGroup.controls.formControlCounty.value)
         .subscribe(
           () => {
-            this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
+            this.navCtrl.navigateRoot('/');
           },
           httpErr => {
             let errors: string[] = [];

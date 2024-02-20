@@ -45,7 +45,7 @@ export class SignInPage implements OnInit {
             this.oneClickProvider.getProfile()
                 // Then, redirect the user to the home page
                 .then(() => {
-                  this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
+                  this.navCtrl.navigateRoot('/');
                 });
           },
           (httpErr) => {
