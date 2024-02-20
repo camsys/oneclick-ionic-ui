@@ -50,7 +50,7 @@ export class TaxiServicesPage implements OnInit {
       this.oneClick.getTrip(this.trip_id)
       .subscribe((tripResp) => this.loadTrip(tripResp));
     } else {
-      this.navCtrl.navigateRoot(HelpMeFindPage.routePath); // If necessary navParams aren't present, go back to the home page
+      this.navCtrl.navigateRoot('/'); // If necessary navParams aren't present, go back to the home page
     }
   }
 

@@ -91,7 +91,7 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
       this.loadTripRequest(this.tripRequest);
     } else {
       // If necessary params are not present, go to home page
-      this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
+      this.navCtrl.navigateRoot('/');
     }
 
     // reset hiding this page since user opened it

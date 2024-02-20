@@ -152,7 +152,7 @@ export class ServiceFor211DetailPage implements OnInit {
 
       // Otherwise, go to home page
     } else {
-      this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
+      this.navCtrl.navigateRoot('/');
     }
 
   }

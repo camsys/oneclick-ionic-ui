@@ -198,7 +198,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
 
       // Otherwise, go to home page
     } else {
-      this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
+      this.navCtrl.navigateRoot('/');
     }
     //to make sure select for arrive/depart updates correctly
     this.summaryArriveByToggle = this.arriveBy;

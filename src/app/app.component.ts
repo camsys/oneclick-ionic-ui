@@ -285,7 +285,7 @@ export class AppComponent implements OnDestroy {
   onSignOut() {
     this.setMenu();
     //this.nav.push(this.rootPage);
-    this.nav.navigateRoot(this.rootPage.routePath);
+    this.nav.navigateRoot('/');
     // This isn't an error, but there is no difference in the toast
     this.showErrorToast('oneclick.global.sign_out_successful');
   }

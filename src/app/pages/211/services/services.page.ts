@@ -49,7 +49,7 @@ export class ServicesPage implements OnInit {
 
       } else { // Or, if necessary nav params not passed, go home.
         
-        this.navCtrl.navigateRoot(HelpMeFindPage.routePath);
+        this.navCtrl.navigateRoot('/');
       }
 
       this.loader.showLoader();// Show spinner while results are loading
