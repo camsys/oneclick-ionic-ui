@@ -13,13 +13,16 @@ import { HelpersService } from 'src/app/services/helpers.service';
 import { CategoriesFor211Page } from '../211/categories-for211/categories-for211.page';
 import { TripResponsePage } from '../trip-response/trip-response.page';
 import { OneClickService } from 'src/app/services/one-click.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { OnDestroy, } from '@angular/core';
 
 @Component({
   selector: 'app-user-locator',
   templateUrl: './user-locator.page.html',
   styleUrls: ['./user-locator.page.scss'],
 })
-export class UserLocatorPage implements OnInit {
+export class UserLocatorPage implements OnInit, OnDestroy {
   static routePath:string = '/locator';
 
   @ViewChild('originSearch') originSearch: PlaceSearchComponent;
@@ -47,6 +50,8 @@ export class UserLocatorPage implements OnInit {
   destinationInvalid: boolean = true;
 
   showToolbar:boolean = true;
+
+  private unsubscribe: Subject<void> = new Subject(); 
 
   constructor(public router: Router,
               private route: ActivatedRoute,
@@ -78,7 +83,20 @@ export class UserLocatorPage implements OnInit {
       this.viewType = params.get('viewType');// Find services vs. transportation view
     })
     this.loadTripPurposes();
+
+    // Properly handle language changes
+    this.translate.onLangChange.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
+      // Reload trip purposes when language changes
+      this.loadTripPurposes();
+    });
   }
+
+  ngOnDestroy() {
+    // Call next and complete on unsubscribe to clean up subscriptions
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
+  
 
   loadTripPurposes() {
     this.oneClickService.getTripPurposes().subscribe(
