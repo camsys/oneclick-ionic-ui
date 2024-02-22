@@ -37,8 +37,6 @@ export class TripResponsePage implements OnInit, OnDestroy {
   @ViewChild('originSearch') originSearch: PlaceSearchComponent;
   @ViewChild('destinationSearch') destinationSearch: PlaceSearchComponent;
 
-  @ViewChild('originResults') originResults: AutocompleteResultsComponent;
-  @ViewChild('destinationResults') destinationResults: AutocompleteResultsComponent;
 
   origin: GooglePlaceModel = new GooglePlaceModel({});
   destination: GooglePlaceModel = new GooglePlaceModel({});
@@ -52,7 +50,6 @@ export class TripResponsePage implements OnInit, OnDestroy {
   departureDateTime: string;
   departureDateTimeParam: string;
 
-  summaryArriveByToggle: boolean;
   dateTimeSummary: Date;
 
   departureDate: Date;
@@ -86,7 +83,6 @@ export class TripResponsePage implements OnInit, OnDestroy {
               private loader: LoaderService,
               public alertController: AlertController,
               public translate: TranslateService,
-              private changeDetectorRef: ChangeDetectorRef,
               private title: Title) {
 
                
@@ -101,18 +97,15 @@ export class TripResponsePage implements OnInit, OnDestroy {
 
       if (this.router.getCurrentNavigation().extras.state) {
 
-        this.arriveBy = this.router.getCurrentNavigation().extras.state.arriveBy;
+        if (this.router.getCurrentNavigation().extras.state.arriveBy !== undefined)
+          this.arriveBy = this.router.getCurrentNavigation().extras.state.arriveBy;
         this.skipPreferences = this.router.getCurrentNavigation().extras.state.skipPreferences;
         this.tripRequest = this.router.getCurrentNavigation().extras.state.tripRequest;
         this.origin = this.router.getCurrentNavigation().extras.state.origin;
         this.destination = this.router.getCurrentNavigation().extras.state.destination;
         this.departureDateTimeParam = this.router.getCurrentNavigation().extras.state.departureDateTime;
 
-        //to make sure select for depart/arrive updates correctly
-        this.summaryArriveByToggle = this.arriveBy;
         this.dateTimeSummary = new Date(this.departureDateTimeParam);
-
-        this.changeDetectorRef.detectChanges();
       }
     });
 
@@ -138,6 +131,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
       this.departureTime = new Date(this.departureDateTime);
 
       this.arriveBy = this.tripRequest.trip.arrive_by;
+      this.dateTimeSummary = new Date(this.departureDateTime);
 
       if (!this.auth.session().user_preferences_disabled && !this.skipPreferences) {
         this.router.navigate([TransportationEligibilityPage.routePath, this.trip_id], {
@@ -200,10 +194,6 @@ export class TripResponsePage implements OnInit, OnDestroy {
     } else {
       this.navCtrl.navigateRoot('/');
     }
-    //to make sure select for arrive/depart updates correctly
-    this.summaryArriveByToggle = this.arriveBy;
-    this.dateTimeSummary = new Date(this.departureDateTime);
-    this.changeDetectorRef.detectChanges();
   }
 
   // On page leave, unsubscribe from the trip plan call so it doesn't trigger errors when it resolves
