@@ -57,7 +57,7 @@ ion-content::part(scroll) {
 
 //need this here since the contact and about us pages use it dynamically with [innerHTML] so it has to be defined high enough for it to apply
 .sm-agency-logo {
-    height: 75px; 
+    height: 75px;
   }
 
   //used in multiple places
@@ -69,3 +69,8 @@ ion-content::part(scroll) {
     padding: 0;
     width: auto;
   }
+
+  //keeps the ion-select modal width enough for longer text
+  .alert-wrapper{
+    width: 100% !important;
+}

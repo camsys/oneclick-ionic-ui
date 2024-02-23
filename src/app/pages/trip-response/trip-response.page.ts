@@ -74,6 +74,9 @@ export class TripResponsePage implements OnInit, OnDestroy {
   can_plan_trips: boolean = false;
   include_fare_cost: boolean = true;
 
+  selectedTripPurposeName: string;
+  tripPurposes:any;
+
   constructor(public navCtrl: NavController,
               private route: ActivatedRoute,
               private router: Router,
@@ -113,11 +116,11 @@ export class TripResponsePage implements OnInit, OnDestroy {
       }
     });
 
-    this.translate.onLangChange.pipe(takeUntil(this.unsubscribe)).subscribe(event => {
-      //refresh even if not currently in view so if back button is hit, it will be correct
-      this.oneClick.getTrip(this.trip_id)
-        .subscribe((tripResponse) => this.loadTripResponse(tripResponse));
-    });
+    this.oneClick.tripPurposes.pipe(takeUntil(this.unsubscribe)).subscribe(purposes => {
+      this.tripPurposes = purposes;
+      if (this.selectedTripPurposeId) 
+        this.selectedTripPurposeName = this.tripPurposes.find(x => x.id == this.selectedTripPurposeId).name;
+    })
   }  
 
   ionViewDidEnter() {

@@ -4,6 +4,7 @@ export const appConfig = {
     INCLUDE_RESOURCES_FINDER: false,
     INCLUDE_FARE_COST: false,
     INCLUDE_PARATRANSIT_ID: false,
+    INCLUDE_TRIP_PURPOSE_FILTER: true,
     DEFAULT_ROUTE: 'home',
     HIPAA_PRIVACY_NOTICE_URL: "/assets/doc/Here2There_Privacy_Notice.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "/assets/doc/Here2There_Privacy_Notice.pdf",

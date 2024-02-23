@@ -16,6 +16,7 @@ import { OneClickService } from 'src/app/services/one-click.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { OnDestroy, } from '@angular/core';
+import { appConfig } from 'src/environments/appConfig';
 
 @Component({
   selector: 'app-user-locator',
@@ -31,6 +32,8 @@ export class UserLocatorPage implements OnInit, OnDestroy {
   @ViewChild('originResults') originResults: AutocompleteResultsComponent;
   @ViewChild('destinationResults') destinationResults: AutocompleteResultsComponent;
 
+  tripPurposeFilterOn: boolean = false;
+
   map: google.maps.Map;
   userLocation: GooglePlaceModel;
   viewType: string; // Flag for showing the find svcs view vs. the direct transportation finder view. Can be set to 'services' or 'transportation'
@@ -44,7 +47,7 @@ export class UserLocatorPage implements OnInit, OnDestroy {
   departureDate: Date;
   departureTime: Date;
   tripPurposes: any[] = [];
-  selectedTripPurposeId: string = "none";
+  selectedTripPurposeId: string;
 
   originInvalid: boolean = true;
   destinationInvalid: boolean = true;
@@ -67,6 +70,7 @@ export class UserLocatorPage implements OnInit, OnDestroy {
               private oneClickService: OneClickService
             ) {
 
+    this.tripPurposeFilterOn = appConfig.INCLUDE_TRIP_PURPOSE_FILTER;
     this.map = null;
     this.lastClicked = null;
     this.userLocation = null; // The user's device location\
@@ -99,22 +103,19 @@ export class UserLocatorPage implements OnInit, OnDestroy {
   
 
   loadTripPurposes() {
-    this.oneClickService.getTripPurposes().subscribe(
-      purposes => {
-        this.tripPurposes = purposes;
-        this.selectedTripPurposeId = null;
-      },
-      error => console.error('Error fetching trip purposes:', error)
-    );
+    if (this.tripPurposeFilterOn) {
+      this.oneClickService.getTripPurposes().subscribe(
+        purposes => {
+          this.tripPurposes = purposes;
+        },
+        error => console.error('Error fetching trip purposes:', error)
+      );
+    }
   }
   
-  tripPurposeChanged() {
-    if (this.selectedTripPurposeId === "none") {
-      this.selectedTripPurposeId = null; 
-        console.log('Trip purpose is none');
-    } else { 
-      console.log('Trip purpose is:', this.selectedTripPurposeId);
-    }
+  tripPurposeChanged(e) {
+    this.selectedTripPurposeId = e.detail.value;
+    console.log('Trip purpose is:', this.selectedTripPurposeId);
   }
   
 

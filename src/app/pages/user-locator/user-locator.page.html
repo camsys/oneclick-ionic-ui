@@ -76,12 +76,12 @@
           <!-- Header row with editable trip date -->
         <ion-row [hidden]="viewType === 'services'">
           <!-- Trip Purpose Selector Column -->
-          <ion-col>
+          <ion-col [hidden]="!tripPurposeFilterOn">
             <ion-item lines="none" (ionFocus)="destinationResults.hide(); originResults.hide();">
               <ion-label position="stacked" color="secondary">{{ 'oneclick.pages.user_locator.trip_purpose' | translate }}</ion-label>
-              <ion-select id="purposeSelector" [(ngModel)]="selectedTripPurposeId" (ionChange)="tripPurposeChanged()">
-                <ion-select-option value="none">{{ 'None' | translate }}</ion-select-option>
-                <ion-select-option *ngFor="let purpose of tripPurposes" [value]="purpose.id">{{ purpose.name }}</ion-select-option>
+              <ion-select id="purposeSelector" value="{{selectedTripPurposeId}}" (ionChange)="tripPurposeChanged($event)">
+                <ion-select-option value="{{null}}">{{ "oneclick.pages.user_locator.trip_purpose_none" | translate }}</ion-select-option>
+                <ion-select-option *ngFor="let purpose of tripPurposes" value="{{purpose.id}}">{{ purpose.name }}</ion-select-option>
               </ion-select>
             </ion-item>
           </ion-col>

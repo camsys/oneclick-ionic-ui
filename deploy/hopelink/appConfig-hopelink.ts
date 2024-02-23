@@ -4,6 +4,7 @@ export const appConfig = {
     INCLUDE_RESOURCES_FINDER: false,
     INCLUDE_FARE_COST: false,
     INCLUDE_PARATRANSIT_ID: false,
+    INCLUDE_TRIP_PURPOSE_FILTER: false,
     DEFAULT_ROUTE: 'locator/transportation',
     HIPAA_PRIVACY_NOTICE_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",

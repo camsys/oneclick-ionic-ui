@@ -32,6 +32,11 @@ export class OneClickService {
   public oneClickUrl = environment.BASE_ONECLICK_URL;
 
   private _httpError:BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
+  private _tripPurposes:BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
+
+  get tripPurposes():Observable<any> {
+    return this._tripPurposes.asObservable();
+  }
 
   constructor(public http: HttpClient,
     private toastCtrl: ToastController,
@@ -429,6 +434,7 @@ export class OneClickService {
       .pipe(
         map(response => {
           console.log('Received trip purposes:', response.data.purposes);
+          this._tripPurposes.next(response.data.purposes);
           return response.data.purposes;
         }),
         catchError(error => {
