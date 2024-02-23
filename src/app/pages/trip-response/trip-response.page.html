@@ -38,9 +38,6 @@
                     uniqueLabel="Origin"
                     resultsListId="origin-results"
                     [isInvalid]="originInvalid"
-                    (onArrowDown)="originResults.focus()"
-                    (onFocus)="originResults.show(); destinationResults.hide()"
-                    (onBlur)="originResults.hide()"
                     (onSelect)="originInvalid = false"
                     (onChange)="placeSearchChanged()">
       </place-search>
@@ -55,9 +52,6 @@
                     uniqueLabel="Destination"
                     resultsListId="destination-results"
                     [isInvalid]="destinationInvalid"
-                    (onArrowDown)="destinationResults.focus()"
-                    (onFocus)="destinationResults.show(); originResults.hide();"
-                    (onBlur)="destinationResults.hide();"
                     (onSelect)="destinationInvalid = false"
                     (onChange)="placeSearchChanged()">
       </place-search>
