@@ -17,8 +17,8 @@
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-label *ngIf="summaryArriveByToggle" color="secondary" class="ion-text-wrap">{{ "oneclick.global.directions.arrive_by" | translate }} {{ dateTimeSummary.toLocaleString() }}</ion-label>
-            <ion-label *ngIf="!summaryArriveByToggle" color="secondary" class="ion-text-wrap">{{ "oneclick.global.directions.depart_at" | translate }} {{ dateTimeSummary.toLocaleString() }}</ion-label>
+            <ion-label *ngIf="arriveBy.toLocaleString() == 'true'" color="secondary" class="ion-text-wrap">{{ "oneclick.global.directions.arrive_by" | translate }} {{ dateTimeSummary.toLocaleString() }}</ion-label>
+            <ion-label *ngIf="arriveBy.toLocaleString() == 'false'" color="secondary" class="ion-text-wrap">{{ "oneclick.global.directions.depart_at" | translate }} {{ dateTimeSummary.toLocaleString() }}</ion-label>
         </ion-col>
         </ion-row>
       </ion-grid>
@@ -61,53 +61,11 @@
   </ion-row>
     <!-- Header row with editable trip date -->
 
-    <ion-row class="trip-date-row">
-      <ion-col>
-        <ion-label color="secondary">{{ 'oneclick.pages.user_locator.arrive_depart' | translate }}</ion-label>
-        <ion-select id="arriveBySelector" value="{{arriveBy}}" placeholder="{{ 'oneclick.global.directions.depart_at' | translate }}" (ionChange)="arriveBySelectChanged($event); updateTransportationOptionsButton()">
-          <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
-          <ion-select-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-select-option>
-        </ion-select>
-    </ion-col>
-      <ion-col>
-
-        <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
-        <ion-label color="secondary">{{ 'oneclick.pages.user_locator.trip_date' | translate }}</ion-label>
-        <responsive-datepicker-minimal #tripDatepicker [locale]="translate.currentLang"
-                               [date]="departureDateTime"
-                               (changeDate)="updateDate($event); updateTransportationOptionsButton();">
-        </responsive-datepicker-minimal>
-
-      </ion-col>
-      <ion-col>
-
-        <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
-        <ion-label color="secondary">{{ 'oneclick.pages.user_locator.trip_time' | translate }}</ion-label>
-        <responsive-timepicker-minimal #tripTimepicker [locale]="translate.currentLang"
-                               [time]="departureDateTime"
-                               (changeTime)="updateTime($event); updateTransportationOptionsButton();">
-        </responsive-timepicker-minimal>
-
-      </ion-col>
-
-
-    </ion-row>
+    
   </ion-grid>
   </ion-toolbar>
 
-  <!-- ORIGIN AND DESTINATION AUTOCOMPLETE RESULTS LISTS -->
-  <autocomplete-results #originResults
-    [items]="originSearch.autocompleteItems"
-    uniqueId="origin-results"
-    (onChangeFocus)="originSearch.changeAriaFocusItem($event)"
-    (onSelect)="originSearch.chooseItem($event, null); updateTransportationOptionsButton();">
-  </autocomplete-results>
-  <autocomplete-results #destinationResults
-    [items]="destinationSearch.autocompleteItems"
-    uniqueId="destination-results"
-    (onChangeFocus)="destinationSearch.changeAriaFocusItem($event)"
-    (onSelect)="destinationSearch.chooseItem($event, null); updateTransportationOptionsButton();">
-  </autocomplete-results>
+  
 
   <ion-row class="ion-justify-content-center" id="find-transportation-button-container">
 
@@ -133,7 +91,7 @@
     </ion-select>
   </ion-row>
 
-  
+
         <ion-list class="lynx-list">
 
           <ion-item *ngIf="itineraries && itineraries.length == 0">{{ "oneclick.pages.categories.resources_search.empty_search_result" | translate}}</ion-item>
