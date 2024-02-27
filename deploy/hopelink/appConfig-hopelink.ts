@@ -8,7 +8,7 @@ export const appConfig = {
     DEFAULT_ROUTE: 'locator/transportation',
     HIPAA_PRIVACY_NOTICE_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
-    HELP_EXT_URL: false,
+    HELP_EXT_URL: "https://forms.office.com/Pages/ResponsePage.aspx?id=vswqIaIIB0yYetOGuOxVvfBmEQEW1xJCpEApaBJRONNUMTBTNUVQWktYWVVVMVdJWDRGQUFMT0hNTC4u",
     HOME_EXT_URL: "https://www.FindARide.org/TripPlanner",
 
     DEFAULT_LOCATION: {
