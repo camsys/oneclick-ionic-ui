@@ -78,13 +78,23 @@
               {{ "oneclick.pages.home.disclaimer_subtitle" | translate }}
             </div>
 
-            <div class="ieuw-hipaa-privacy-doc">
+            <div class="lynx-help-me-find-buttons-subtitle">
               <a
                 class="ieuw-hipaa-notice-link"
                 target="_blank"
                 rel="noopener noreferrer"
-                [href]="hipaa_privacy_url">
-                  HIPAA Privacy Notice
+                [href]="url_1">
+                {{ "oneclick.pages.home.url1.text" | translate }}
+              </a>
+            </div>
+
+            <div *ngIf="url_2" class="lynx-help-me-find-buttons-subtitle">
+              <a
+                class="ieuw-hipaa-notice-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                [href]="url_2">
+                {{ "oneclick.pages.home.url2.text" | translate }}
               </a>
             </div>
 

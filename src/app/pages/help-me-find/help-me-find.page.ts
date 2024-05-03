@@ -26,7 +26,8 @@ export class HelpMeFindPage implements OnInit {
   alerts: Alert[];
   user: User;
 
-  hipaa_privacy_url: string;
+  url_1: any;
+  url_2: any;
 
   showTransportationFinder: boolean;
   showResourcesFinder: boolean;
@@ -41,7 +42,8 @@ export class HelpMeFindPage implements OnInit {
               public auth: AuthService,
               private title: Title) {
                              
-    this.hipaa_privacy_url = appConfig.HIPAA_PRIVACY_NOTICE_URL;
+    this.url_1 = appConfig.HOME_URL_1;
+    this.url_2 = appConfig.HOME_URL_2;
     this.showTransportationFinder = appConfig.INCLUDE_TRANSPORTATION_FINDER;
     this.showResourcesFinder = appConfig.INCLUDE_RESOURCES_FINDER;
     this.appVersion = appVersion.VERSION;
