@@ -6,6 +6,7 @@ export const appConfig = {
     INCLUDE_PARATRANSIT_ID: false,
     INCLUDE_TRIP_PURPOSE_FILTER: false,
     DEFAULT_ROUTE: 'locator/transportation',
+    TEXT_MENU_ON: false,
     HIPAA_PRIVACY_NOTICE_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "/assets/doc/Hopelink_Privacy_Policy.pdf",
     HELP_EXT_URL: "https://forms.office.com/Pages/ResponsePage.aspx?id=vswqIaIIB0yYetOGuOxVvfBmEQEW1xJCpEApaBJRONNUMTBTNUVQWktYWVVVMVdJWDRGQUFMT0hNTC4u",

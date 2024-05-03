@@ -6,6 +6,7 @@ export const appConfig = {
     INCLUDE_PARATRANSIT_ID: false,
     INCLUDE_TRIP_PURPOSE_FILTER: true,
     DEFAULT_ROUTE: 'home',
+    TEXT_MENU_ON: true,
     HIPAA_PRIVACY_NOTICE_URL: "/assets/doc/Here2There_Privacy_Notice.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "/assets/doc/Here2There_Privacy_Notice.pdf",
     HELP_EXT_URL: "/assets/doc/H2T_Instructions.pdf",

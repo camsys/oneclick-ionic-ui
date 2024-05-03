@@ -6,6 +6,7 @@ export const appConfig = {
     INCLUDE_PARATRANSIT_ID: true,
     INCLUDE_TRIP_PURPOSE_FILTER: false,
     DEFAULT_ROUTE: 'home',
+    TEXT_MENU_ON: false,
     HIPAA_PRIVACY_NOTICE_URL: "https://ieuw-bin.s3.us-east-2.amazonaws.com/211-Ride-HIPAA-Privacy-Notice.pdf",
     ONE_CLICK_PRIVACY_POLICY_URL: "https://ieuw-bin.s3.us-east-2.amazonaws.com/211-Ride-HIPAA-Privacy-Notice.pdf",
     HELP_EXT_URL: false,
