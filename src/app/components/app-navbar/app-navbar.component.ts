@@ -22,6 +22,8 @@ import { appConfig } from 'src/environments/appConfig';
 export class AppNavbarComponent implements OnInit, OnDestroy {
   private unsubscribe:Subject<any> = new Subject<any>();
 
+  textMenuOn: boolean;
+
   currentRoute:string;
   user: User;
   skipLinkPath: string;
@@ -44,6 +46,7 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
           private menuCtrl: MenuController) {
 
             this.title.setTitle(this.translate.instant("oneclick.global.application_name"));
+            this.textMenuOn = appConfig.TEXT_MENU_ON;
   }
 
   ngOnInit(): void {

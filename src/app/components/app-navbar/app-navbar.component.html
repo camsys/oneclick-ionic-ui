@@ -14,9 +14,12 @@
       <ion-icon slot="start" aria-hidden="true" class="padded" name="globe"></ion-icon> 
       {{ "oneclick.global.languages.native." + i18n.currentLocale() | translate }}
     </ion-button>
-    <button class="menu-button" aria-label="main-menu" [attr.aria-expanded]="ariaExpanded" (click)="menuOpened()">
+    <button *ngIf="!textMenuOn" class="menu-button" aria-label="main-menu" [attr.aria-expanded]="ariaExpanded" (click)="menuOpened()">
         <ion-icon size="small" name="menu"></ion-icon>
     </button>
+    <ion-button *ngIf="textMenuOn" class="menu-button" aria-label="main-menu" [attr.aria-expanded]="ariaExpanded" (click)="menuOpened()">
+      {{ "oneclick.pages.menu.title" | translate }}
+    </ion-button>
   </ion-buttons>   
 
 </ion-toolbar>
@@ -43,9 +46,12 @@
       <ion-icon slot="start" aria-hidden="true" class="padded" name="globe"></ion-icon> 
       {{ "oneclick.global.languages.native." + i18n.currentLocale() | translate }}
     </ion-button>
-    <button class="menu-button" aria-label="main-menu" [attr.aria-expanded]="ariaExpanded" (click)="menuOpened()">
+    <button *ngIf="!textMenuOn" class="menu-button" aria-label="main-menu" [attr.aria-expanded]="ariaExpanded" (click)="menuOpened()">
         <ion-icon size="small" name="menu"></ion-icon>
     </button>
+    <ion-button *ngIf="textMenuOn" class="menu-button" aria-label="main-menu" [attr.aria-expanded]="ariaExpanded" (click)="menuOpened()">
+      {{ "oneclick.pages.menu.title" | translate }}
+    </ion-button>
   </ion-buttons>   
 
 
