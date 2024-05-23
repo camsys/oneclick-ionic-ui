@@ -10,7 +10,7 @@ export const appConfig = {
     HOME_URL_1: "/assets/doc/H2T_Instructions.pdf",
     HOME_URL_2: "https://forms.office.com/r/AJjq2pvQpn",
     ONE_CLICK_PRIVACY_POLICY_URL: "/assets/doc/Here2There_Privacy_Notice.pdf",
-    HELP_EXT_URL: "/assets/doc/H2T_Instructions.pdf",
+    HELP_EXT_URL: "/assets/doc/Here2There_Privacy_Notice.pdf",
     HOME_EXT_URL: false,
 
     DEFAULT_LOCATION: {
