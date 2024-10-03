@@ -229,6 +229,16 @@ export class UserLocatorPage implements OnInit, OnDestroy {
     else this.departureTime = new Date(time);
   }
 
+  swapOriginDestination() {
+    //for now, require values for origin and destination
+    let originPlace = this.originSearch.place;
+    let destinationPlace = this.destinationSearch.place;
+    if (originPlace && destinationPlace) {
+      this.originSearch.setPlace(destinationPlace);
+      this.destinationSearch.setPlace(originPlace);
+    }
+  }
+
   // Plans a trip based on origin and destination
   findTransportation(origin: GooglePlaceModel,
                      destination: GooglePlaceModel) {

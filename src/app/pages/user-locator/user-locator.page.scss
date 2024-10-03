@@ -44,6 +44,17 @@ responsive-timepicker {
     transform: none;//undo the ionic transform for stacked labels (made it tiny)
   }
 
+  //make sure the Destination label has text pushed to bottom
+  #Destination {
+    display: flex; 
+    align-items: flex-end;
+  }
+
+  div.swap-button {
+    display: flex; 
+    justify-content: space-between;
+  }
+
   ion-select {
     padding: 10px;
     background-color: var(--lynxWhite);
