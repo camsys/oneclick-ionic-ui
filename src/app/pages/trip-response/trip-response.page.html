@@ -197,8 +197,9 @@
             <ion-grid *ngIf="itin.trip_type == 'paratransit'">
               <ion-row >
                 <ion-col col-sm-6>
-                  <div item-start class="item-heading"><div class="otp-legMode-icon otp-legMode-icon-paratransit"></div>
-                    <b>{{ itin.service.name }}</b>
+                  <div item-start class="item-heading">
+                    <div class="otp-legMode-icon otp-legMode-icon-paratransit"></div>
+                    <button class="item-heading" style="background-color: transparent;" (click)="openServiceModalForItinerary(itin)" [ariaLabel]="getAriaLabelClickMessage(itin.service.name)"><b>{{ itin.service.name }}</b></button>
                   </div>
                 </ion-col>
                 <ion-col col-sm-6 *ngIf="itin.service.full_logo">
@@ -249,7 +250,10 @@
             <ion-grid *ngIf="(itin.trip_type == 'taxi' || itin.trip_type == 'uber' || itin.trip_type == 'lyft')">
               <ion-row>
                 <ion-col col-sm-6>
-                  <div item-start class="item-heading"><div class="otp-legMode-icon otp-legMode-icon-{{ itin.trip_type }}"></div><b>{{ itin.service.name }}</b></div>
+                  <div item-start class="item-heading">
+                    <div class="otp-legMode-icon otp-legMode-icon-{{ itin.trip_type }}"></div>
+                    <button class="item-heading" style="background-color: transparent;" (click)="openServiceModalForItinerary(itin)" [ariaLabel]="getAriaLabelClickMessage(itin.service.name)"><b>{{ itin.service.name }}</b></button>
+                  </div>
                 </ion-col>
                 <ion-col col-sm-6>
                   <div item-end>
