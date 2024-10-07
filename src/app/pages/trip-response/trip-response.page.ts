@@ -448,10 +448,6 @@ export class TripResponsePage implements OnInit, OnDestroy {
   //   });
   // }
 
-  getAriaLabelClickMessage(name:any) {
-    return name + " (click for service details)";
-  }
-
   openServiceModalForItinerary(itin: any) {
     let id = itin.service.id;
     if (id) {
