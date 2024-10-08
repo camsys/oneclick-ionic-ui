@@ -36,8 +36,27 @@ responsive-timepicker {
     // }
   }
 
-  ion-item {
+  ion-col {
     --ion-background-color: var(--lynxPink);
+  }
+
+  ion-item.radio-wrapper {
+    width: 100%;
+    --ion-background-color: var(--lynxWhite);
+  }
+
+  ion-item.radio-wrapper.ion-focused ion-radio {
+    --color-checked: var(--lynxDkOrange);
+  }
+
+  ion-item.radio-wrapper.ion-focused ion-label {
+    font-size: large;
+    font-weight: bolder;
+  }
+
+  ion-list.radio-wrapper {
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
 
   .label-stacked {

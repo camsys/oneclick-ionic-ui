@@ -95,18 +95,35 @@
             
           <!-- Arrive By / Depart At Selector Column -->
           <ion-col>
-            <ion-item lines="none" (ionFocus)="destinationResults.hide(); originResults.hide();">
-              <ion-label position="stacked" id="arriveByLabel" color="secondary">{{ 'oneclick.pages.user_locator.arrive_depart' | translate }}</ion-label>
-                <ion-select id="arriveBySelector" value="{{arriveBy}}" (ionChange)="arriveBySelectChanged($event)">
+            
+            <ion-label class="ion-padding-start" id="arriveByLabel" color="secondary">{{ 'oneclick.pages.user_locator.arrive_depart' | translate }}</ion-label>
+
+            <ion-list class="radio-wrapper ion-padding-start ion-padding-end" lines="none">
+              <ion-radio-group value="{{arriveBy}}" (ionChange)="arriveBySelectChanged($event)">
+                <ion-item class="radio-wrapper" (ionFocus)="destinationResults.hide(); originResults.hide();">
+                  <ion-radio slot="start" value="false"></ion-radio>
+                  <ion-label>{{ "oneclick.global.directions.depart_at" | translate }}</ion-label>
+                </ion-item>
+    
+                <ion-item class="radio-wrapper" (ionFocus)="destinationResults.hide(); originResults.hide();">
+                  <ion-radio slot="start" value="true"></ion-radio>
+                  <ion-label>{{ "oneclick.global.directions.arrive_by" | translate }}</ion-label>
+                </ion-item>
+              </ion-radio-group>
+            </ion-list>
+            <!--The old code that had the arrive/depart selection as a dropdown-->
+            <!-- <ion-item lines="none" (ionFocus)="destinationResults.hide(); originResults.hide();"> -->
+              <!-- <ion-label position="stacked" id="arriveByLabel" color="secondary">{{ 'oneclick.pages.user_locator.arrive_depart' | translate }}</ion-label> -->
+                <!-- <ion-select id="arriveBySelector" value="{{arriveBy}}" (ionChange)="arriveBySelectChanged($event)">
                   <ion-select-option value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-select-option>
                   <ion-select-option value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-select-option>
-                </ion-select>
-            </ion-item>
+                </ion-select> -->
+            <!-- </ion-item> -->
           </ion-col>
 
           <!-- Trip Date Selector Column -->
           <ion-col>
-            <ion-item lines="none" (ionFocus)="destinationResults.hide(); originResults.hide();">
+            <ion-item class="datepicker-item" lines="none" (ionFocus)="destinationResults.hide(); originResults.hide();">
               <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
               <ion-label id="date-picker-label" aria-hidden="true" position="stacked" color="secondary">{{ 'oneclick.pages.user_locator.trip_date' | translate }}</ion-label>
               <responsive-datepicker [locale]="translate.currentLang" aria-labelledby="date-picker-label"
