@@ -38,8 +38,7 @@ import { SharedModule } from '../shared/shared.module';
         ScheduleDayPipe,
         ScheduleTimePipe,
         ToStringPipe
-    ],
-    entryComponents: []
+    ]
 })
 export class PipesModule {
 }
