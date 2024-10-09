@@ -43,11 +43,10 @@
     </ion-list-header>
 
     <ion-item *ngFor="let elig of eligibilities">
-      <ion-checkbox slot="start" 
+      <ion-checkbox label-placement="end" justify="start" 
                     [(ngModel)]="elig.value"
-                    (ionChange)="updateCharacteristic()">
+                    (ionChange)="updateCharacteristic()">{{elig.note}}
       </ion-checkbox>
-      <ion-label class="ion-text-wrap">{{elig.note}}</ion-label>
     </ion-item>
   </ion-list>
 
@@ -81,10 +80,9 @@
     </ion-list-header>
 
     <ion-item *ngFor="let acc of accommodations">
-      <ion-checkbox [(ngModel)]="acc.value" slot="start"
-                    (ionChange)="updateCharacteristic()">
+      <ion-checkbox [(ngModel)]="acc.value" label-placement="end" justify="start"
+                    (ionChange)="updateCharacteristic()">{{acc.note}}
       </ion-checkbox>
-      <ion-label class="ion-text-wrap">{{acc.note}}</ion-label>
     </ion-item>
   </ion-list>
 
@@ -99,10 +97,9 @@
     </ion-list-header>
 
     <ion-item *ngFor="let trip_type of trip_types">
-      <ion-checkbox [(ngModel)]=trip_type.value slot="start"
-                    (ionChange)="updateCharacteristic()">
+      <ion-checkbox [(ngModel)]=trip_type.value label-placement="end" justify="start"
+                    (ionChange)="updateCharacteristic()">{{trip_type.name}}
       </ion-checkbox>
-      <ion-label class="ion-text-wrap">{{trip_type.name}}</ion-label>
     </ion-item>
   </ion-list>
 

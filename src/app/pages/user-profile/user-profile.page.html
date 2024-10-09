@@ -156,8 +156,7 @@
           </ion-list-header>
           
           <ion-item *ngFor="let accommodation of accommodations">
-            <ion-label class="ion-text-wrap">{{accommodation.note}}</ion-label>
-            <ion-checkbox slot="start" [(ngModel)]=accommodation.value [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            <ion-checkbox label-placement="end" justify="start" [(ngModel)]=accommodation.value [ngModelOptions]="{standalone: true}">{{accommodation.note}}</ion-checkbox>
           </ion-item>
         </ion-list>
 
@@ -174,8 +173,7 @@
           </ion-list-header>
           
           <ion-item *ngFor="let eligibility of eligibilities">
-              <ion-label class="ion-text-wrap">{{eligibility.note}}</ion-label>
-              <ion-checkbox slot="start" [(ngModel)]=eligibility.value [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              <ion-checkbox label-placement="end" justify="start" [(ngModel)]=eligibility.value [ngModelOptions]="{standalone: true}">{{eligibility.note}}</ion-checkbox>
           </ion-item>
         </ion-list>
 
@@ -191,8 +189,7 @@
             </ion-list-header>
             
             <ion-item *ngFor="let trip_type of trip_types">
-              <ion-label class="ion-text-wrap">{{trip_type.name}}</ion-label>
-              <ion-checkbox slot="start" [(ngModel)]=trip_type.value [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              <ion-checkbox label-placement="end" justify="start" [(ngModel)]=trip_type.value [ngModelOptions]="{standalone: true}">{{trip_type.name}}</ion-checkbox>
             </ion-item>
           </ion-list>
       </ion-col>
