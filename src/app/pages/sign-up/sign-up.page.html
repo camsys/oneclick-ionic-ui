@@ -48,9 +48,9 @@
             </ion-input>
           </ion-item>
 
-          <ion-item lines="none">
-            <ion-label *ngIf="showParatransitId" position="stacked" class="ion-text-wrap">{{ 'oneclick.pages.user_profile.paratransit_id' | translate }}</ion-label>
-            <ion-input *ngIf="showParatransitId"  formControlName="formControlParatransitId"
+          <ion-item *ngIf="showParatransitId" lines="none">
+            <ion-label position="stacked" class="ion-text-wrap">{{ 'oneclick.pages.user_profile.paratransit_id' | translate }}</ion-label>
+            <ion-input formControlName="formControlParatransitId"
                         class="lynx-input"
                         type="string"
                         name="paratransit_id">
@@ -63,7 +63,7 @@
         <ion-col>
           <ion-item lines="none">    
             <ion-label position="stacked">{{"oneclick.pages.user_profile.county" | translate}}</ion-label>
-            <ion-select formControlName="formControlCounty" name="county">
+            <ion-select [attr.aria-label]="'oneclick.pages.user_profile.county' | translate" formControlName="formControlCounty" name="county">
               <ion-select-option *ngFor="let county of counties"
                           value="{{county}}">
                 {{ county }}             
