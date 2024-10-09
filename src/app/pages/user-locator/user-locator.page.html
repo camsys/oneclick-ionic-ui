@@ -12,8 +12,8 @@
 
     <ion-button color="tertiary" expand="full"  class="hideShowToolbarBtn" (click)="hideShowToolbar()" 
         [attr.aria-expanded]="showToolbar" aria-controls="trip-toolbar">
-      <span [hidden]="!showToolbar" style="padding:10px" aria-hidden="true"><ion-icon name="caret-down-outline" size="large"></ion-icon></span> 
-      <span [hidden]="showToolbar" style="padding:10px" aria-hidden="true"><ion-icon name="caret-forward-outline" size="large"></ion-icon></span>
+      <span [hidden]="!showToolbar" style="padding-right:10px" aria-hidden="true"><ion-icon name="caret-down-outline" size="large"></ion-icon></span> 
+      <span [hidden]="showToolbar" style="padding-right:10px" aria-hidden="true"><ion-icon name="caret-forward-outline" size="large"></ion-icon></span>
       <span [hidden]="!showToolbar">{{ 'oneclick.pages.user_locator.hide_toggle' | translate }}</span> 
       <span [hidden]="showToolbar">{{ 'oneclick.pages.user_locator.show_toggle' | translate }}</span>
   </ion-button>

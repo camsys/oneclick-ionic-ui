@@ -2,6 +2,11 @@
   margin: 0px;  
 }
 
+ion-button.hideShowToolbarBtn::part(native) {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
 .lynx-toolbar {
   background: var(--lynxPink);
 }
