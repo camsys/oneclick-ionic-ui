@@ -4,17 +4,17 @@
   <app-navbar *ngIf="viewType === 'services'" headerTitle="{{ 'oneclick.pages.user_locator.services_help' | translate }}" skipId="skip-user-locator"></app-navbar>
   <app-navbar *ngIf="viewType != 'services'" headerTitle="{{ 'oneclick.pages.user_locator.plan_a_trip_header' | translate }}" skipId="skip-user-locator"></app-navbar>
 </ion-header>
-  
+
 
 
 <ion-content>
   <div style="height:100%; display: flex; flex-flow: column;">
 
-    <ion-button color="tertiary" expand="full"  class="hideShowToolbarBtn" (click)="hideShowToolbar()" 
+    <ion-button color="tertiary" expand="full"  class="hideShowToolbarBtn" (click)="hideShowToolbar()"
         [attr.aria-expanded]="showToolbar" aria-controls="trip-toolbar">
-      <span [hidden]="!showToolbar" style="padding-right:10px" aria-hidden="true"><ion-icon name="caret-down-outline" size="large"></ion-icon></span> 
+      <span [hidden]="!showToolbar" style="padding-right:10px" aria-hidden="true"><ion-icon name="caret-down-outline" size="large"></ion-icon></span>
       <span [hidden]="showToolbar" style="padding-right:10px" aria-hidden="true"><ion-icon name="caret-forward-outline" size="large"></ion-icon></span>
-      <span [hidden]="!showToolbar">{{ 'oneclick.pages.user_locator.hide_toggle' | translate }}</span> 
+      <span [hidden]="!showToolbar">{{ 'oneclick.pages.user_locator.hide_toggle' | translate }}</span>
       <span [hidden]="showToolbar">{{ 'oneclick.pages.user_locator.show_toggle' | translate }}</span>
   </ion-button>
 
@@ -57,7 +57,7 @@
                     <ion-icon aria-hidden="true" name="swap-vertical-outline"></ion-icon>
                   </ion-button>
                 </div>
-                
+
                 <place-search #destinationSearch
                               uniqueLabelId="Destination"
                               [ariaClearLabel]="translate.instant('oneclick.pages.user_locator.destination_search.clear')"
@@ -83,7 +83,7 @@
           <!-- Header row with editable trip date -->
         <ion-row *ngIf="viewType !== 'services'">
           <!-- Trip Purpose Selector Column -->
-          <ion-col [hidden]="!tripPurposeFilterOn">
+          <ion-col *ngIf="tripPurposeFilterOn">
             <ion-item lines="none" (ionFocus)="destinationResults.hide(); originResults.hide();">
               <ion-label position="stacked" color="secondary">{{ 'oneclick.pages.user_locator.trip_purpose' | translate }}</ion-label>
               <ion-select id="purposeSelector" value="{{selectedTripPurposeId}}" (ionChange)="tripPurposeChanged($event)"
@@ -93,18 +93,18 @@
               </ion-select>
             </ion-item>
           </ion-col>
-            
+
           <!-- Arrive By / Depart At Selector Column -->
           <ion-col>
-            
-            <ion-label class="ion-padding-start" id="arriveByLabel" color="secondary">{{ 'oneclick.pages.user_locator.arrive_depart' | translate }}</ion-label>
 
-            <ion-list class="radio-wrapper ion-padding-start ion-padding-end" lines="none">
+            <ion-label aria-hidden="true" class="ion-padding-start" id="arriveByLabel" color="secondary">{{ 'oneclick.pages.user_locator.arrive_depart' | translate }}</ion-label>
+
+            <ion-list class="radio-wrapper ion-padding-start ion-padding-end" lines="none" aria-labelledby="arriveByLabel">
               <ion-radio-group value="{{arriveBy}}" (ionChange)="arriveBySelectChanged($event)">
                 <ion-item class="radio-wrapper" (ionFocus)="destinationResults.hide(); originResults.hide();">
                   <ion-radio labelPlacement="end" justify="start" value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-radio>
                 </ion-item>
-    
+
                 <ion-item class="radio-wrapper" (ionFocus)="destinationResults.hide(); originResults.hide();">
                   <ion-radio labelPlacement="end" justify="start" value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-radio>
                 </ion-item>
@@ -132,18 +132,18 @@
 
             </ion-item>
           </ion-col>
-          
+
           <!-- Trip Time Selector Column -->
           <ion-col>
 
-            <ion-item lines="none" (ionFocus)="destinationResults.hide(); originResults.hide();">
+            <div class="ion-padding-end" (ionFocus)="destinationResults.hide(); originResults.hide();">
               <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
               <ion-label aria-hidden="true" position="stacked" color="secondary">{{ 'oneclick.pages.user_locator.trip_time' | translate }}</ion-label>
               <responsive-timepicker [locale]="translate.currentLang"
                                     [time]="departureDateTime"
                                     (changeTime)="updateTime($event)">
               </responsive-timepicker>
-            </ion-item>
+            </div>
           </ion-col>
 
         </ion-row>
