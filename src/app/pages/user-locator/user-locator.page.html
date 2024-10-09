@@ -84,7 +84,7 @@
         <ion-row *ngIf="viewType !== 'services'">
           <!-- Trip Purpose Selector Column -->
           <ion-col *ngIf="tripPurposeFilterOn">
-            <div class="ion-padding-start" (ionFocus)="destinationResults.hide(); originResults.hide();">
+            <div class="ion-padding-start ion-padding-end" (ionFocus)="destinationResults.hide(); originResults.hide();">
               <ion-label position="stacked" color="secondary">{{ 'oneclick.pages.user_locator.trip_purpose' | translate }}</ion-label>
               <ion-select id="purposeSelector" value="{{selectedTripPurposeId}}" (ionChange)="tripPurposeChanged($event)"
                             [attr.aria-label]="'oneclick.pages.user_locator.trip_purpose' | translate">
@@ -136,7 +136,7 @@
           <!-- Trip Time Selector Column -->
           <ion-col>
 
-            <div class="ion-padding-end" (ionFocus)="destinationResults.hide(); originResults.hide();">
+            <div class="ion-padding-start ion-padding-end" (ionFocus)="destinationResults.hide(); originResults.hide();">
               <!-- opens native datepicker on mobile, or ionic datepicker in browser -->
               <ion-label aria-hidden="true" position="stacked" color="secondary">{{ 'oneclick.pages.user_locator.trip_time' | translate }}</ion-label>
               <responsive-timepicker [locale]="translate.currentLang"
