@@ -118,7 +118,7 @@
 
         <ion-item lines="none">
           <ion-label position="stacked">{{"oneclick.pages.user_profile.county" | translate}}</ion-label>
-          <ion-select name="county" 
+          <ion-select name="county" [attr.aria-label]="'oneclick.pages.user_profile.county' | translate"
            [(ngModel)]="user.county">
             <ion-select-option *ngFor="let county of counties"
                         value="{{county}}">
@@ -135,7 +135,7 @@
 
         <ion-item lines="none">
           <ion-label position="stacked">{{"oneclick.pages.user_profile.language" | translate}}</ion-label>
-          <ion-select name="preferred_locale"
+          <ion-select name="preferred_locale" [attr.aria-label]="'oneclick.pages.user_profile.language' | translate"
           [(ngModel)]="user.preferred_locale">
             <ion-select-option *ngFor="let locale of available_locales"
                         value="{{locale}}">
