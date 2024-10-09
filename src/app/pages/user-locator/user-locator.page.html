@@ -101,13 +101,11 @@
             <ion-list class="radio-wrapper ion-padding-start ion-padding-end" lines="none">
               <ion-radio-group value="{{arriveBy}}" (ionChange)="arriveBySelectChanged($event)">
                 <ion-item class="radio-wrapper" (ionFocus)="destinationResults.hide(); originResults.hide();">
-                  <ion-radio slot="start" value="false"></ion-radio>
-                  <ion-label>{{ "oneclick.global.directions.depart_at" | translate }}</ion-label>
+                  <ion-radio labelPlacement="end" justify="start" value="false">{{ "oneclick.global.directions.depart_at" | translate }}</ion-radio>
                 </ion-item>
     
                 <ion-item class="radio-wrapper" (ionFocus)="destinationResults.hide(); originResults.hide();">
-                  <ion-radio slot="start" value="true"></ion-radio>
-                  <ion-label>{{ "oneclick.global.directions.arrive_by" | translate }}</ion-label>
+                  <ion-radio labelPlacement="end" justify="start" value="true">{{ "oneclick.global.directions.arrive_by" | translate }}</ion-radio>
                 </ion-item>
               </ion-radio-group>
             </ion-list>
