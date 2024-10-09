@@ -168,7 +168,7 @@ export class AuthService {
       };
 
       localStorage.removeItem('session');
-      this._userSignedOut.next();
+      this._userSignedOut.next(new Subject<any>());
 
       return this.http
           .delete(uri, options).pipe(
