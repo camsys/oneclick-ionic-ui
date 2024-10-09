@@ -116,7 +116,7 @@
     <ion-row>
       <ion-col>
 
-        <ion-item lines="none">
+        <div class="ion-padding">
           <ion-label position="stacked">{{"oneclick.pages.user_profile.county" | translate}}</ion-label>
           <ion-select name="county" [attr.aria-label]="'oneclick.pages.user_profile.county' | translate"
            [(ngModel)]="user.county">
@@ -125,7 +125,7 @@
               {{ county }}             
             </ion-select-option>
           </ion-select>
-        </ion-item>
+        </div>
       </ion-col>
     </ion-row>
 
@@ -133,7 +133,7 @@
     <ion-row>
       <ion-col>
 
-        <ion-item lines="none">
+        <div class="ion-padding">
           <ion-label position="stacked">{{"oneclick.pages.user_profile.language" | translate}}</ion-label>
           <ion-select name="preferred_locale" [attr.aria-label]="'oneclick.pages.user_profile.language' | translate"
           [(ngModel)]="user.preferred_locale">
@@ -142,7 +142,7 @@
               {{ "oneclick.global.languages.native." + locale | translate }}
             </ion-select-option>
           </ion-select>
-        </ion-item>
+        </div>
       </ion-col>
     </ion-row>
     

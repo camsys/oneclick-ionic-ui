@@ -61,7 +61,7 @@
 
       <ion-row>
         <ion-col>
-          <ion-item lines="none">    
+          <div class="ion-padding">    
             <ion-label position="stacked">{{"oneclick.pages.user_profile.county" | translate}}</ion-label>
             <ion-select [attr.aria-label]="'oneclick.pages.user_profile.county' | translate" formControlName="formControlCounty" name="county">
               <ion-select-option *ngFor="let county of counties"
@@ -69,7 +69,7 @@
                 {{ county }}             
               </ion-select-option>
             </ion-select>
-          </ion-item>
+          </div>
         </ion-col>
       </ion-row>
 
