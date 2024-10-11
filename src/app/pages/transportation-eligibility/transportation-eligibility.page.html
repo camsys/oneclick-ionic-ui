@@ -13,6 +13,12 @@
             (click)="viewParatransitOptions()">
       {{ "oneclick.pages.transportation_eligibility.plan_trip_button" | translate }}
     </ion-button>
+    <ion-button *ngIf="!isRegisteredUser" shape="round" color="primary"
+            class="lynx-button-primary"
+            id="create-profile-button-top"
+            (click)="initializeUserProfile()">
+      {{ "oneclick.pages.transportation_eligibility.create_profile_button" | translate }}
+    </ion-button>
   </ion-row>
 
   <ion-item lines="none" (ionFocus)="prefSaveTopInFocus = true" (ionBlur)="prefSaveTopInFocus = false"
@@ -60,7 +66,7 @@
       </ion-label>
     </ion-list-header>
 
-    <ion-item>
+    <ion-item lines="none">
       <ion-label position="fixed">{{"oneclick.pages.user_profile.age" | translate}}</ion-label>
       <ion-input  type="number"
                   name="age"
@@ -113,6 +119,12 @@
             id="view-trip-options-button-bottom"
             (click)="viewParatransitOptions()">
       {{ "oneclick.pages.transportation_eligibility.plan_trip_button" | translate }}
+    </ion-button>
+    <ion-button *ngIf="!isRegisteredUser" shape="round" color="primary"
+            class="lynx-button-primary"
+            id="create-profile-button-bottom"
+            (click)="initializeUserProfile()">
+      {{ "oneclick.pages.transportation_eligibility.create_profile_button" | translate }}
     </ion-button>
   </ion-row>
 
