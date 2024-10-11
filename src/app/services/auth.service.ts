@@ -8,6 +8,7 @@ import { User } from '../models/user';
 import { GooglePlaceModel } from '../models/google-place';
 import { Session } from '../models/session';
 import { appConfig } from 'src/environments/appConfig';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class AuthService {
   public recentPlacesLength: number = 10; // Max # of places in a recent places list
   public guestUserEmailDomain: string = "example.com"; // Guest users will be identified by their email addresses belonging to this domain
 
-  constructor(public http: HttpClient) { }
+  constructor(public http: HttpClient, private translate: TranslateService) { }
 
   get userUpdated(): Observable<User> {
     return this._userUpdated.asObservable();
@@ -268,6 +269,39 @@ export class AuthService {
 
   unsetFindServicesHistoryId(): void {
     this.setFindServicesHistoryId(0);
+  }
+
+  handleSignUpErrors(httpErr): string[] {
+    let errors: string[] = [];
+    errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.default"));
+
+    if (httpErr.error.data) {
+      if(httpErr.error.data.errors.email == 'is invalid')
+      {
+        errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.email_bad"));
+      }
+      if(httpErr.error.data.errors.email == 'has already been taken')
+      {
+        errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.email_used"));
+      }
+      if(httpErr.error.data.errors.email == 'is too short (minimum is 6 characters)')
+      {
+        errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.password_bad"));
+      }
+      if(httpErr.error.data.errors.password == "must include at least one letter and one digit")
+      {
+        errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.password_not_complex"));
+      }
+      if(httpErr.error.data.errors.email == "can't be blank")
+      {
+        errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.email_cant_be_blank"));
+      }
+      if(httpErr.error.data.errors.password == "can't be blank")
+      {
+        errors.push(this.translate.instant("oneclick.pages.sign_up.error_messages.password_cant_be_blank"));
+      }
+    }
+    return errors;
   }
 
 }
