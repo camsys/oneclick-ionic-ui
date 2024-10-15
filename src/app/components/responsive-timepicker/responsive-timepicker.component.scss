@@ -27,6 +27,9 @@
 
 ion-input {
   width: 4ch;
+  --highlight-color-focused: transparent;
+  --highlight-color-invalid: transparent;
+  --highlight-color-valid: transparent;
 }
 
 ion-datetime-button {

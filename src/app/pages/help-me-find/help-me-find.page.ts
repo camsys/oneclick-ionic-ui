@@ -76,7 +76,7 @@ export class HelpMeFindPage implements OnInit {
 
   ionViewWillLeave() {
     // Unsubscribe from sign out event when page is no longer active
-    this.unsubscribe.next();
+    this.unsubscribe.next(null);
     this.unsubscribe.complete();
   }
 

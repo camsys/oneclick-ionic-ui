@@ -116,16 +116,16 @@
     <ion-row>
       <ion-col>
 
-        <ion-item lines="none">
+        <div class="ion-padding">
           <ion-label position="stacked">{{"oneclick.pages.user_profile.county" | translate}}</ion-label>
-          <ion-select name="county" 
+          <ion-select name="county" [attr.aria-label]="'oneclick.pages.user_profile.county' | translate"
            [(ngModel)]="user.county">
             <ion-select-option *ngFor="let county of counties"
                         value="{{county}}">
               {{ county }}             
             </ion-select-option>
           </ion-select>
-        </ion-item>
+        </div>
       </ion-col>
     </ion-row>
 
@@ -133,16 +133,16 @@
     <ion-row>
       <ion-col>
 
-        <ion-item lines="none">
+        <div class="ion-padding">
           <ion-label position="stacked">{{"oneclick.pages.user_profile.language" | translate}}</ion-label>
-          <ion-select name="preferred_locale"
+          <ion-select name="preferred_locale" [attr.aria-label]="'oneclick.pages.user_profile.language' | translate"
           [(ngModel)]="user.preferred_locale">
             <ion-select-option *ngFor="let locale of available_locales"
                         value="{{locale}}">
               {{ "oneclick.global.languages.native." + locale | translate }}
             </ion-select-option>
           </ion-select>
-        </ion-item>
+        </div>
       </ion-col>
     </ion-row>
     
@@ -156,8 +156,7 @@
           </ion-list-header>
           
           <ion-item *ngFor="let accommodation of accommodations">
-            <ion-label class="ion-text-wrap">{{accommodation.note}}</ion-label>
-            <ion-checkbox slot="start" [(ngModel)]=accommodation.value [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            <ion-checkbox label-placement="end" justify="start" [(ngModel)]=accommodation.value [ngModelOptions]="{standalone: true}">{{accommodation.note}}</ion-checkbox>
           </ion-item>
         </ion-list>
 
@@ -174,8 +173,7 @@
           </ion-list-header>
           
           <ion-item *ngFor="let eligibility of eligibilities">
-              <ion-label class="ion-text-wrap">{{eligibility.note}}</ion-label>
-              <ion-checkbox slot="start" [(ngModel)]=eligibility.value [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              <ion-checkbox label-placement="end" justify="start" [(ngModel)]=eligibility.value [ngModelOptions]="{standalone: true}">{{eligibility.note}}</ion-checkbox>
           </ion-item>
         </ion-list>
 
@@ -191,14 +189,21 @@
             </ion-list-header>
             
             <ion-item *ngFor="let trip_type of trip_types">
-              <ion-label class="ion-text-wrap">{{trip_type.name}}</ion-label>
-              <ion-checkbox slot="start" [(ngModel)]=trip_type.value [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              <ion-checkbox label-placement="end" justify="start" [(ngModel)]=trip_type.value [ngModelOptions]="{standalone: true}">{{trip_type.name}}</ion-checkbox>
             </ion-item>
           </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>
-  <div style="padding:10px">
+  <div *ngIf="!isRegisteredUser" style="padding:10px">
+    <ion-button shape="round" expand="full" 
+        class="lynx-button-dark center" 
+        form="ngForm"
+        (click)="createNewUser(updateProfileForm.valid)">
+      {{ "oneclick.pages.user_profile.create_button" | translate }}
+    </ion-button>
+  </div>
+  <div *ngIf="isRegisteredUser" style="padding:10px">
     <ion-button shape="round" expand="full" 
         class="lynx-button-dark center" 
         form="ngForm"

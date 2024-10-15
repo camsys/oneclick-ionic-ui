@@ -33,6 +33,9 @@ ion-select {
   width: 100%;
   padding: 10px;
   background-color: var(--lynxWhite);
+  --highlight-color-focused: var(--lynxPink);
+  --highlight-color-invalid: var(--lynxPink);
+  --highlight-color-valid: var(--lynxPink);
 
   &:focus {
     outline: solid;

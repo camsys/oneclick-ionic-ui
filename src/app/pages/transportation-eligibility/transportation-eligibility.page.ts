@@ -16,6 +16,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { OneClickService } from 'src/app/services/one-click.service';
 import { HelpMeFindPage } from '../help-me-find/help-me-find.page';
 import { TripResponsePage } from '../trip-response/trip-response.page';
+import { UserProfilePage } from '../user-profile/user-profile.page';
 
 @Component({
   selector: 'app-transportation-eligibility',
@@ -48,6 +49,8 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
 
   currentRoute: string;
 
+  isRegisteredUser: Boolean;
+
   constructor(public navCtrl: NavController,
               private route: ActivatedRoute,
               private router: Router,
@@ -60,9 +63,9 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
               private loader: LoaderService) {
 
               this.router.events.pipe(takeUntil(this.unsubscribe), filter(event => event instanceof NavigationEnd))
-                .subscribe((event : NavigationEnd) =>  
+                .subscribe((event : NavigationEnd) =>
                 {
-                  this.currentRoute = event.url; 
+                  this.currentRoute = event.url;
                 });
 
               this.translate.onLangChange.pipe(takeUntil(this.unsubscribe)).subscribe((event: LangChangeEvent) => {
@@ -73,6 +76,9 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loader.showLoader();
+
+    //make note of user status
+    this.isRegisteredUser = this.auth.isRegisteredUser();
 
     this.route.paramMap.subscribe((params: ParamMap) => {
         this.trip_id = +params.get('trip_id');
@@ -102,7 +108,7 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
     let session = this.auth.session();
     session.user_preferences_disabled = false;
     this.auth.setSession(session);
-  }  
+  }
 
   // Loads trip response data onto the page
   loadTripResponse() {
@@ -193,6 +199,18 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
     });
   }
 
+  //initializes a new user profile from selections on this page
+  initializeUserProfile() {
+    this.router.navigate([UserProfilePage.routePath], {
+      state: {
+        age: this.age,
+        eligibilities: this.eligibilities,
+        accommodations: this.accommodations,
+        trip_types: this.trip_types
+      }
+    });
+  }
+
   storeUserPreferencesDisabledInSession() {
     let session = this.auth.session();
     session.user_preferences_disabled = this.user_preferences_disabled;
@@ -278,7 +296,7 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe.next();
+    this.unsubscribe.next(null);
     this.unsubscribe.complete();
   }
 
