@@ -27,7 +27,7 @@
   </ion-row>
 
   <!-- LOCALE SELECTOR RADIO BUTTONS -->
-  <ion-list id="language-selector-container">
+  <ion-list id="language-selector-container-top">
     <ion-radio-group [formControl]="radioLocaleControl">
 
         <ion-item *ngFor="let locale of available_locales">
@@ -40,7 +40,7 @@
   </ion-list>
 
   <!-- CANCEL BUTTON -->
-  <ion-row id="language-selector-modal-buttons" class="ion-justify-content-center">
+  <ion-row id="language-selector-modal-buttons-bottom" class="ion-justify-content-center">
    
     <ion-button shape="round" color="primary"
             class="lynx-button-white"
