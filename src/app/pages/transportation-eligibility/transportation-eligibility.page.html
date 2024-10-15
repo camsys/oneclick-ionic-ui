@@ -6,7 +6,7 @@
 <ion-content>
   <!-- PLAN TRIP -->
   <ion-row class="ion-justify-content-center" id="view-trip-options-button-container-top" >
-    
+
       <ion-button shape="round" color="primary"
             class="lynx-button-primary"
             id="view-trip-options-button-top"
@@ -38,6 +38,10 @@
     </ion-label>
   </ion-item>
 
+  <div class="ion-padding">
+    {{'oneclick.pages.transportation_eligibility.instructions' | translate}}
+  </div>
+
   <!-- ELIGIBILITIES -->
   <ion-list text-wrap class="lynx-list" *ngIf="eligibilities.length > 0">
     <ion-list-header color="tertiary">
@@ -49,7 +53,7 @@
     </ion-list-header>
 
     <ion-item *ngFor="let elig of eligibilities">
-      <ion-checkbox label-placement="end" justify="start" 
+      <ion-checkbox label-placement="end" justify="start"
                     [(ngModel)]="elig.value"
                     (ionChange)="updateCharacteristic()">{{elig.note}}
       </ion-checkbox>
@@ -113,7 +117,7 @@
 
   <!-- PLAN TRIP -->
   <ion-row class="ion-justify-content-center" id="view-trip-options-button-container-bottom" >
-    
+
       <ion-button shape="round" color="primary"
             class="lynx-button-primary"
             id="view-trip-options-button-bottom"
