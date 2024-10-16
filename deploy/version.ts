@@ -1,3 +1,3 @@
 export const appVersion = {
-    VERSION: '1.3.1-rc2'
+    VERSION: '1.3.1'
 };
