@@ -211,8 +211,16 @@ export class GoogleMapsHelpersService {
   // Zooms the passed map to the minimum box encompassing all of the passed latlngs
   zoomToPoints(map: google.maps.Map, points: google.maps.LatLng[]) {
     var bounds = new google.maps.LatLngBounds();
-    points.forEach((p) => bounds.extend(p));
-    map.fitBounds(bounds); // fit the map to the bounds
+
+    //need to fit the map for each point otherwise the zoom gets screwed up
+    //needs the timeout for some reason in-between the fitBounds or the zoom gets screwed up
+    points.forEach((p) => {
+      setTimeout(() => {
+        bounds.extend(p);
+        map.fitBounds(bounds);
+      }, 1);
+    });
+
     setTimeout(() => {
       map.setZoom(Math.min(map.getZoom(), this.maxZoom)); // reduce zoom to the max zoom if necessary
     }, 150 );
