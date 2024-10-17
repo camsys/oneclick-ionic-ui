@@ -34,6 +34,8 @@
 
   .small-label {
     font-size: small;
+    color: var(--ion-color-primary);
+    padding-right: 5px;
   }
 
   // ion-item.button-look::part(native) {
