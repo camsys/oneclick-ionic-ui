@@ -81,6 +81,11 @@ ion-toolbar {
 //     width: 100%;
 //   }
 
+ion-item {
+  --background-hover: none;
+  --background-focused: none;
+}
+
 ion-select#arriveBySelector {
   max-width:100%;
   width: 100%;
@@ -96,7 +101,6 @@ ion-select#arriveBySelector {
 }
 
 ion-select#sortSelector {
-  padding: 10px;
 
   &:focus {
     outline: solid;

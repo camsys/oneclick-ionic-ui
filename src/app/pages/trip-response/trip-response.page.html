@@ -28,7 +28,7 @@
         </ion-row>
       </ion-grid>
 
-  <ion-toolbar hidden class="lynx-toolbar">
+  <div hidden class="lynx-toolbar">
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -62,7 +62,7 @@
 
     
   </ion-grid>
-  </ion-toolbar>
+</div>
 
   
 
@@ -80,14 +80,16 @@
       {{ "oneclick.global.modes.find_other_options" | translate }}
     </ion-button>
 
-    <ion-select id="sortSelector" value="{{orderBy}}" (ionChange)="orderItinList($event)" placeholder="{{ 'paratransit_sorter' | translate }}">
-      <ion-select-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-select-option>
-      <ion-select-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-select-option>
-      <ion-select-option value="duration">{{"sort_by" | translate}} {{"travel_time_sorter" | translate }}</ion-select-option>
-      <ion-select-option value="endTime">{{"sort_by" | translate}} {{ "arrival_time_sorter" | translate }}</ion-select-option>
-      <ion-select-option value="wait_time">{{"sort_by" | translate}} {{"wait_time_sorter" | translate}}</ion-select-option>
-      <ion-select-option value="walk_distance">{{"sort_by" | translate}} {{"walk_distance_sorter" | translate}}</ion-select-option>
-    </ion-select>
+    <ion-item lines="none">
+      <ion-select id="sortSelector" value="{{orderBy}}" (ionChange)="orderItinList($event)" placeholder="{{ 'paratransit_sorter' | translate }}" aria-label="trip results sort options">
+        <ion-select-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-select-option>
+        <ion-select-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-select-option>
+        <ion-select-option value="duration">{{"sort_by" | translate}} {{"travel_time_sorter" | translate }}</ion-select-option>
+        <ion-select-option value="endTime">{{"sort_by" | translate}} {{ "arrival_time_sorter" | translate }}</ion-select-option>
+        <ion-select-option value="wait_time">{{"sort_by" | translate}} {{"wait_time_sorter" | translate}}</ion-select-option>
+        <ion-select-option value="walk_distance">{{"sort_by" | translate}} {{"walk_distance_sorter" | translate}}</ion-select-option>
+      </ion-select>
+    </ion-item>
   </ion-row>
 
 
@@ -197,8 +199,9 @@
             <ion-grid *ngIf="itin.trip_type == 'paratransit'">
               <ion-row >
                 <ion-col col-sm-6>
-                  <div item-start class="item-heading"><div class="otp-legMode-icon otp-legMode-icon-paratransit"></div>
-                    <b>{{ itin.service.name }}</b>
+                  <div item-start class="item-heading">
+                    <div class="otp-legMode-icon otp-legMode-icon-paratransit"></div>
+                    <button class="item-heading" style="background-color: transparent;" (click)="openServiceModalForItinerary(itin)"><b>{{ itin.service.name }}</b></button>
                   </div>
                 </ion-col>
                 <ion-col col-sm-6 *ngIf="itin.service.full_logo">
@@ -249,7 +252,10 @@
             <ion-grid *ngIf="(itin.trip_type == 'taxi' || itin.trip_type == 'uber' || itin.trip_type == 'lyft')">
               <ion-row>
                 <ion-col col-sm-6>
-                  <div item-start class="item-heading"><div class="otp-legMode-icon otp-legMode-icon-{{ itin.trip_type }}"></div><b>{{ itin.service.name }}</b></div>
+                  <div item-start class="item-heading">
+                    <div class="otp-legMode-icon otp-legMode-icon-{{ itin.trip_type }}"></div>
+                    <button class="item-heading" style="background-color: transparent;" (click)="openServiceModalForItinerary(itin)"><b>{{ itin.service.name }}</b></button>
+                  </div>
                 </ion-col>
                 <ion-col col-sm-6>
                   <div item-end>

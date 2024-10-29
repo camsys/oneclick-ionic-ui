@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { appConfig } from 'src/environments/appConfig';
 import { Subject } from 'rxjs';
@@ -23,6 +23,7 @@ import { HelpMeFindPage } from '../help-me-find/help-me-find.page';
 import { ParatransitServicesPage } from '../paratransit-services/paratransit-services.page';
 import { TransportationEligibilityPage } from '../transportation-eligibility/transportation-eligibility.page';
 import { UserLocatorPage } from '../user-locator/user-locator.page';
+import { ServiceFor211ModalPage } from '../211/service-for211-modal/service-for211-modal.page';
 
 @Component({
   selector: 'app-trip-response',
@@ -86,6 +87,8 @@ export class TripResponsePage implements OnInit, OnDestroy {
               private auth: AuthService,
               private loader: LoaderService,
               public alertController: AlertController,
+              public toastCtrl: ToastController,
+              public modalCtrl: ModalController,
               public translate: TranslateService,
               private title: Title) {
 
@@ -445,6 +448,33 @@ export class TripResponsePage implements OnInit, OnDestroy {
   //   });
   // }
 
+  openServiceModalForItinerary(itin: any) {
+    let id = itin.service.id;
+    if (id) {
+      this.oneClick.getServiceDetails(id)
+        .subscribe((svc) => {
+          this.modalCtrl.create({
+            component: ServiceFor211ModalPage,
+            componentProps: { 
+              service: svc 
+            }
+          }).then(modal => {
+            modal.onDidDismiss().then(resp => {
+              if (resp && resp.data) {
+                this.toastCtrl.create({
+                  message: (resp.data.status === 200 ? this.translate.instant("oneclick.pages.feedback.success_message") :
+                                                  this.translate.instant("oneclick.pages.feedback.error_message")),
+                  position: 'bottom',
+                  duration: 3000
+                }).then(toast => toast.present());
+              }
+            });
+            return modal;
+          }).then(serviceModal => serviceModal.present());    
+        });
+    }
+  }
+
   openDirectionsPageForItinerary(itinerary: ItineraryModel) {
     let tripResponse = this.tripResponse;
 
@@ -609,7 +639,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe.next();
+    this.unsubscribe.next(null);
     this.unsubscribe.complete();
   }
 }

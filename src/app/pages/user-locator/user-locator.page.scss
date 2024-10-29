@@ -2,6 +2,11 @@
   margin: 0px;  
 }
 
+ion-button.hideShowToolbarBtn::part(native) {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
 .lynx-toolbar {
   background: var(--lynxPink);
 }
@@ -36,17 +41,47 @@ responsive-timepicker {
     // }
   }
 
-  ion-item {
+  ion-col {
     --ion-background-color: var(--lynxPink);
+  }
+
+  ion-item.radio-wrapper {
+    width: 100%;
+    --ion-background-color: var(--lynxWhite);
+  }
+
+  ion-item.radio-wrapper.ion-focused ion-radio {
+    --color-checked: var(--lynxDkOrange);
+    font-size: large;
+    font-weight: bolder;
+  }
+
+  ion-list.radio-wrapper {
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
 
   .label-stacked {
     transform: none;//undo the ionic transform for stacked labels (made it tiny)
   }
 
+  //make sure the Destination label has text pushed to bottom
+  #Destination {
+    display: flex; 
+    align-items: flex-end;
+  }
+
+  div.swap-button {
+    display: flex; 
+    justify-content: space-between;
+  }
+
   ion-select {
-    padding: 10px;
+    padding-left: 10px;
     background-color: var(--lynxWhite);
+    --highlight-color-focused: var(--lynxPink);
+    --highlight-color-invalid: var(--lynxPink);
+    --highlight-color-valid: var(--lynxPink);
 
     &:focus {
       outline: solid;
@@ -55,7 +90,7 @@ responsive-timepicker {
       outline-width: 2px;
     }
   }
-  
+
 
   // ion-select#arriveBySelector .select-text {
   //   width: -webkit-fill-available;

@@ -41,7 +41,7 @@
     <h1>{{headerTitle}}</h1>
   </ion-title>
 
-  <ion-buttons slot="end">
+  <ion-buttons slot="end" style="margin-inline-end:15px">
     <ion-button aria-label="language translation selection" class="bar-button-menutoggle" (click)="openLanguageSelectorModal()">
       <ion-icon slot="start" aria-hidden="true" class="padded" name="globe"></ion-icon> 
       {{ "oneclick.global.languages.native." + i18n.currentLocale() | translate }}
