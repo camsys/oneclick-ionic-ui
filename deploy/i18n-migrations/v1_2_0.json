@@ -1,0 +1,12 @@
+{
+    "oneclick.pages.user_locator.arrive_depart":"Depart at / Arrive by",
+    "oneclick.pages.user_locator.origin_search.clear":"Clear Starting Location",
+    "oneclick.pages.user_locator.destination_search.clear":"Clear Destination",
+    "oneclick.pages.user_locator.trip_date":"Date of Trip",
+    "oneclick.pages.user_locator.trip_time":"Time of Trip",
+    "oneclick.pages.user_locator.show_toggle":"Show Trip Details",
+    "oneclick.pages.user_locator.hide_toggle":"Hide Trip Details",
+    "trip_time_hr":"Time of Trip - Hour",
+    "trip_time_min":"Time of Trip - Minute",
+    "trip_time_ampm":"Time of Trip - AM/PM"
+}

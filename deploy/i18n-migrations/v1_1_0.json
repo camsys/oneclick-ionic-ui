@@ -1,0 +1,6 @@
+{
+    "oneclick.global.invalid_date":"Invalid Date",
+    "oneclick.pages.user_locator.invalid_date_message":"Date needs to be in the format MM/DD/YYYY",
+    "oneclick.global.invalid_time":"Invalid Time",
+    "oneclick.pages.user_locator.invalid_time_message":"Time needs to be in the format HH:MM"
+}
