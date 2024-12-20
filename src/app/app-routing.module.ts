@@ -9,6 +9,11 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'callback',
+    loadChildren: () =>
+      import('./pages/callback/callback.module').then((m) => m.CallbackModule),
+  },
+  {
     path: 'categories',
     loadChildren: () => import('./pages/211/categories-for211/categories-for211.module').then( m => m.CategoriesFor211PageModule)
   },

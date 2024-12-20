@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 import { asyncScheduler, BehaviorSubject, Observable, scheduled, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
@@ -16,6 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class AuthService {
   private _userUpdated:BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
   private _userSignedOut:Subject<any> = new Subject<any>();
+  private _authState$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   public baseUrl = environment.BASE_ONECLICK_URL;
   public defaultHeaders: HttpHeaders = new HttpHeaders({
@@ -24,7 +27,11 @@ export class AuthService {
   public recentPlacesLength: number = 10; // Max # of places in a recent places list
   public guestUserEmailDomain: string = "example.com"; // Guest users will be identified by their email addresses belonging to this domain
 
-  constructor(public http: HttpClient, private translate: TranslateService) { }
+  constructor(private auth0: Auth0Service, public http: HttpClient, private translate: TranslateService, private router: Router) {
+    this.auth0.isAuthenticated$.subscribe((isAuthenticated) => {
+      this._authState$.next(isAuthenticated);
+    });
+  }
 
   get userUpdated(): Observable<User> {
     return this._userUpdated.asObservable();
@@ -32,6 +39,62 @@ export class AuthService {
 
   get userSignedOut(): Observable<any> {
     return this._userSignedOut.asObservable();
+  }
+
+  // Uses Auth0 to log in a user, then sends the ID token to the OneClick API to create a session
+  login() {
+    this.auth0.loginWithPopup({
+      authorizationParams: {
+        audience: environment.auth0.authorizationParams.audience,
+        scope: 'openid profile email'
+      },
+    }).subscribe(() => {
+      this.auth0.idTokenClaims$.subscribe((claims) => {
+        const idToken = claims.__raw;  
+        const url = `${environment.BASE_ONECLICK_URL}sign_in`;
+        const body = { id_token: idToken };
+        this.http.post(url, body).subscribe(
+          (response: any) => {
+            const session = response.data?.session || {};
+            this.setSession(session);
+          },
+          (error) => {
+            console.error('Sign-in error:', error);
+          }
+        );
+      });
+    });
+  }
+
+  isAuthenticated$(): Observable<boolean> {
+    return this.auth0.isAuthenticated$; 
+  }
+
+  // Signs up a user via Auth0, then sends the ID token to the OneClick API to create a session
+  signup(): void {
+    this.auth0.loginWithPopup({
+      authorizationParams: {
+        screen_hint: 'signup',
+        audience: environment.auth0.authorizationParams.audience,
+        scope: 'openid profile email'
+      },
+    }).subscribe(() => {
+      this.auth0.idTokenClaims$.subscribe((claims) => {
+        const idToken = claims.__raw;  
+        const url = `${this.baseUrl}sign_in`;
+        const body = { id_token: idToken };
+        this.http.post(url, body).subscribe(
+          (response: any) => {  
+            const session = response.data?.session || {};
+            this.setSession(session);  
+            this.router.navigate(['/profile']);
+          },
+          (error) => {
+            console.error('Sign-in error during sign-up:', error);
+          }
+        );
+      });
+    });
   }
 
   // Pulls the current session from local storage
@@ -72,7 +135,13 @@ export class AuthService {
 
   // Returns true/false if user is signed in and is a registered user
   isRegisteredUser(): Boolean {
-    return this.isSignedIn() && !this.isGuestEmail(this.session().email);
+    let isAuth0Authenticated: boolean;
+  
+    this.isAuthenticated$().subscribe((isAuthenticated) => {
+      isAuth0Authenticated = isAuthenticated;
+    });
+  
+    return isAuth0Authenticated;
   }
 
   // Returns true/false if user is signed in and is a guest user
@@ -86,6 +155,26 @@ export class AuthService {
       return this.session().email;
     else
       return '';
+  }
+
+  // Logs out of Auth0 and clears the local session
+  logout(): void {
+    console.log('Attempting to log out of Auth0...');
+    this.auth0.isAuthenticated$.subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        console.log('User is authenticated. Proceeding with Auth0 logout.');
+        this.auth0.logout({
+          logoutParams: {
+            returnTo: window.location.origin,
+          },
+        });
+        localStorage.removeItem('session');
+        this._userSignedOut.next(null);
+        console.log('Local session cleared. Auth0 logout completed.');
+      } else {
+        console.warn('User is not authenticated in Auth0. Skipping logout.');
+      }
+    });
   }
 
   // Constructs a hash of necessary Auth Headers for communicating with OneClick

@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { OnDestroy, } from '@angular/core';
 import { appConfig } from 'src/environments/appConfig';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-user-locator',
@@ -48,6 +49,7 @@ export class UserLocatorPage implements OnInit, OnDestroy {
   departureTime: Date;
   tripPurposes: any[] = [];
   selectedTripPurposeId: string;
+  user: User;
 
   originInvalid: boolean = true;
   destinationInvalid: boolean = true;
@@ -83,6 +85,13 @@ export class UserLocatorPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.oneClickService.getProfile()
+    .then((user: User) => {
+      this.user = user;
+    })
+    .catch((error) => {
+      console.error('Error fetching user profile:', error);
+    });
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.viewType = params.get('viewType');// Find services vs. transportation view
     })

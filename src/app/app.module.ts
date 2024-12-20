@@ -17,6 +17,8 @@ import { CommonModule } from '@angular/common';
 import { ServiceFor211ModalPageModule } from './pages/211/service-for211-modal/service-for211-modal.module';
 import { EmailModalPageModule } from './pages/email-modal/email-modal.module';
 import { EmailItineraryModalPageModule } from './pages/email-itinerary-modal/email-itinerary-modal.module';
+import { AuthModule, AuthHttpInterceptor, authHttpInterceptorFn } from '@auth0/auth0-angular';
+import { environment } from 'src/environments/environment';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "/assets/i18n/", ".json");
@@ -43,6 +45,14 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }), 
+    AuthModule.forRoot({
+      domain: environment.auth0.domain,
+      clientId: environment.auth0.clientId,
+      authorizationParams: {
+        audience: environment.auth0.authorizationParams.audience,
+        redirect_uri: environment.auth0.authorizationParams.redirect_uri,
+      },
+    }),        
     IonicModule.forRoot({
       swipeBackEnabled: false,
       mode: 'md', //forces md theme always, even on iOS

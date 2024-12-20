@@ -1,80 +1,56 @@
 <ion-app>
+  <!-- SIDEBAR MENU -->
+  <ion-menu class="lynx-menu" side="end" contentId="main-content" (ionDidClose)="menuClosed()">
+    <ion-content>
+      <!-- Build menu buttons based on whether or not user is signed in or not -->
+      <ion-list class="lynx-list lynx-list-contrast">
+        <nav>
+          <ion-menu-toggle auto-hide="true">
+            <!-- If signed in... -->
+            <div *ngIf="auth.isRegisteredUser(); else notRegistered">
+              <ion-item button="true"
+                        class="item-heading"
+                        id="menu-welcome-button"
+                        (click)="goDefaultPage()">
+                {{ "oneclick.pages.menu.welcome_user" | translate:user_name }}
+              </ion-item>
 
-<!-- SIDEBAR MENU -->
-<ion-menu class="lynx-menu" side="end" contentId="main-content" (ionDidClose)="menuClosed()">
+              <ion-item button="true"
+                        class="item-heading"
+                        id="menu-profile-button"
+                        (click)="openPage(profilePage)">
+                {{ "oneclick.pages.menu.profile" | translate }}
+              </ion-item>
 
-  <ion-content>
+              <!-- Build a button for each page listed in the signedInPages attribute -->
+              <ion-item button="true"
+                        class="item-heading"
+                        *ngFor="let p of signedInPages"
+                        (click)="openPage(p)">
+                {{ "oneclick.pages.menu." + p.title | translate }}
+              </ion-item>
+            </div>
+          </ion-menu-toggle>
 
-    <!-- Build menu buttons based on whether or not user is signed in or not -->
+          <!-- If not signed in... -->
+          <ng-template #notRegistered>
+            <ion-menu-toggle auto-hide="true">
+              <ion-item button="true" class="item-heading" (click)="login()">
+                {{ "oneclick.pages.menu.sign_in" | translate }}
+              </ion-item>
+              <ion-item button="true" class="item-heading" (click)="signup()">
+                {{ "oneclick.pages.menu.sign_up" | translate }}
+              </ion-item>
+            </ion-menu-toggle>
+          </ng-template>
+        </nav>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
 
+  <ion-router-outlet id="main-content"></ion-router-outlet>
 
-    <ion-list class="lynx-list lynx-list-contrast">
-      <nav>
-      <ion-menu-toggle auto-hide="true" >
-      <!-- If signed in... -->
-      <div *ngIf="auth.isRegisteredUser(); else notRegistered">
-
-        <ion-item button="true"
-                class="item-heading"
-                id="menu-welcome-button"
-                (click)="goDefaultPage()">
-          {{ "oneclick.pages.menu.welcome_user" | translate:user_name }}
-      </ion-item>
-
-        <ion-item button="true"
-                class="item-heading"
-                id="menu-profile-button"
-                (click)="openPage(profilePage)">
-          {{ "oneclick.pages.menu.profile" | translate }}
-    </ion-item>
-
-        <!-- Build a button for each page listed in the signedInPages attribute -->
-        <ion-item  button="true"
-                class="item-heading"
-                *ngFor="let p of signedInPages"
-                (click)="openPage(p)">
-          {{ "oneclick.pages.menu." + p.title | translate }}
-  </ion-item>
-
-
-      </div>
-
-
-
-      <!-- If not signed in... -->
-      <ng-template #notRegistered>
-
-        <ion-list>
-          <ion-item button="true"
-          class="item-heading" (click)="openPage(signInPage)">{{ "oneclick.pages.menu.sign_in" | translate }}
-        </ion-item>
-          <ion-item  button="true"(click)="openPage(signUpPage)">{{ "oneclick.pages.menu.sign_up" | translate }}
-            
-          </ion-item>
-        </ion-list>
-
-        <!-- Build a button for each page listed in the signedOutPages attribute -->
-        <ion-item button="true"
-        class="item-heading"
-                *ngFor="let p of signedOutPages"
-                (click)="openPage(p)">
-          {{ "oneclick.pages.menu." + p.title | translate }}
-        </ion-item>
-
-      </ng-template>
-    </ion-menu-toggle>
-    </nav>
-    </ion-list>
-
-  </ion-content>
-
-</ion-menu>
-
-<ion-router-outlet id="main-content"></ion-router-outlet>
-
-<div #spinnerContainer id="ion-spinner-container" class="ion-text-center" *ngIf="showSpinner">
-  <ion-spinner name="crescent"></ion-spinner>
-</div>
-
+  <div #spinnerContainer id="ion-spinner-container" class="ion-text-center" *ngIf="showSpinner">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
 </ion-app>
-

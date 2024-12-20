@@ -90,7 +90,7 @@ export class AppComponent implements OnDestroy {
     switch(error.status) {
       case 401: // Unauthorized--sign user out and send to sign in page
         console.error("USER TOKEN EXPIRED");
-        this.signOut();
+        this.logout();
         this.nav.navigateForward(SignInPage.routePath);
         this.showErrorToast('oneclick.global.error_message.auth_needed');
         break;
@@ -219,7 +219,7 @@ export class AppComponent implements OnDestroy {
         this.goHelp();
         break;
       case "sign_out":
-        this.signOut();
+        this.logout(); 
         break;
       // case "privacy_policy":
       //   this.exNav.goTo('http://www.golynx.com/privacy-policy.stml');
@@ -251,6 +251,18 @@ export class AppComponent implements OnDestroy {
 
   }
 
+  login(): void {
+    this.auth.login();
+  }
+
+  logout(): void {
+    this.auth.logout();
+  }
+
+  signup(): void {
+    this.auth.signup();
+  }  
+
   goHome() {
     if (this.home_url) {//if an external home link is provided, redirect there
       window.open(this.home_url, '_self');
@@ -267,19 +279,6 @@ export class AppComponent implements OnDestroy {
   //open help document or link
   goHelp() {
     window.open(this.help_url, "_blank");
-  }
-
-  signOut() {
-    this.auth.signOut()
-    .subscribe(
-      data => {
-        this.onSignOut();
-      },
-      error => {
-        console.error('Error Signing Out');
-        this.onSignOut();
-      }
-    );
   }
 
   onSignOut() {
