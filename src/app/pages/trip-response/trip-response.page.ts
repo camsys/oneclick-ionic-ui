@@ -263,10 +263,14 @@ export class TripResponsePage implements OnInit, OnDestroy {
   orderByParatransit()
   {
     return this.itineraries.sort(function (a : ItineraryModel, b : ItineraryModel) {
-      //sorts by paratransit first
+      //sorts by paratransit first, then paratransit_mixed, then other
       if ((a.trip_type == 'paratransit') && (b.trip_type != 'paratransit')) {
         return -1;
       } else if  ((b.trip_type == 'paratransit') && (a.trip_type != 'paratransit')) {
+        return 1;
+      } else if  ((a.trip_type == 'paratransit_mixed') && (b.trip_type != 'paratransit_mixed')) {
+        return -1;
+      } else if  ((b.trip_type == 'paratransit_mixed') && (a.trip_type != 'paratransit_mixed')) {
         return 1;
       } else {
         return 0;
