@@ -35,10 +35,10 @@
           <!-- If not signed in... -->
           <ng-template #notRegistered>
             <ion-menu-toggle auto-hide="true">
-              <ion-item button="true" class="item-heading" (click)="login()">
+              <ion-item button="true" class="item-heading" (click)="auth.authenticate('login')">
                 {{ "oneclick.pages.menu.sign_in" | translate }}
               </ion-item>
-              <ion-item button="true" class="item-heading" (click)="signup()">
+              <ion-item button="true" class="item-heading" (click)="auth.authenticate('signup')">
                 {{ "oneclick.pages.menu.sign_up" | translate }}
               </ion-item>
             </ion-menu-toggle>

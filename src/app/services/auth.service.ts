@@ -41,6 +41,35 @@ export class AuthService {
     return this._userSignedOut.asObservable();
   }
 
+  authenticate(action: 'login' | 'signup' | 'logout'): void {
+    if (appConfig.auth_mode === 'legacy') {
+      switch (action) {
+        case 'login':
+          this.router.navigate(['/sign_in']); 
+          break;
+        case 'signup':
+          this.router.navigate(['/sign_up']); 
+          break;
+        case 'logout':
+          this.signOut().subscribe();
+          break;
+      }
+    } else {
+      switch (action) {
+        case 'login':
+          this.login(); 
+          break;
+        case 'signup':
+          this.signup(); 
+          break;
+        case 'logout':
+          this.logout(); 
+          break;
+      }
+    }
+  }
+  
+  
   // Uses Auth0 to log in a user, then sends the ID token to the OneClick API to create a session
   login() {
     this.auth0.loginWithPopup({
