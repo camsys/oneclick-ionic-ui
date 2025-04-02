@@ -85,7 +85,9 @@ export class AuthService {
         this.http.post(url, body).subscribe(
           (response: any) => {
             const session = response.data?.session || {};
-            this.setSession(session, true);
+            if (session.email && session.authentication_token) {
+              this.setSession(session, true);
+            }
           },
           (error) => {
             console.error('Sign-in error:', error);
@@ -145,7 +147,9 @@ export class AuthService {
 
   // Sets the local storage session variable to the passed object
   setSession(session: Session, isAuth0: boolean = false): void {
-    session.isAuth0 = isAuth0;
+    if (isAuth0) {
+      session.isAuth0 = true;
+    }
     localStorage.setItem('session', JSON.stringify(session));
   }
 
@@ -166,20 +170,12 @@ export class AuthService {
       console.log('No valid session, skipping legacy session check.');
       return;
     }
-    console.log('Checking legacy session...');
-    console.log('Stored session:', session);
-  
-    const isLegacyUser = session && (session.isAuth0 === false || session.isAuth0 === undefined);
-  
-    console.log('Is legacy user?', isLegacyUser);
-    console.log('App config auth mode:', appConfig.auth_mode);
-  
-    if (appConfig.auth_mode === 'auth0' && isLegacyUser) {
+    console.log('Checking legacy session...', session);
+    
+    if (appConfig.auth_mode === 'auth0' && session.isAuth0 !== true) {
       console.log('Detected legacy user while app is in Auth0 mode. Logging out...');
-  
       localStorage.removeItem('session');
       this._userSignedOut.next(null);
-  
       this.signOut().subscribe(() => {
         console.log('Legacy user successfully logged out.');
         this.router.navigate(['/home']);
@@ -199,13 +195,8 @@ export class AuthService {
 
   // Returns true/false if user is signed in and is a registered user
   isRegisteredUser(): Boolean {
-    let isAuth0Authenticated: boolean;
-  
-    this.isAuthenticated$().subscribe((isAuthenticated) => {
-      isAuth0Authenticated = isAuthenticated;
-    });
-  
-    return isAuth0Authenticated;
+    const session = this.session();
+    return !!(session && session.email && session.authentication_token);
   }
 
   // Returns true/false if user is signed in and is a guest user
