@@ -85,7 +85,7 @@ export class AuthService {
         this.http.post(url, body).subscribe(
           (response: any) => {
             const session = response.data?.session || {};
-            this.setSession(session);
+            this.setSession(session, true);
           },
           (error) => {
             console.error('Sign-in error:', error);
@@ -115,7 +115,7 @@ export class AuthService {
         this.http.post(url, body).subscribe(
           (response: any) => {  
             const session = response.data?.session || {};
-            this.setSession(session);  
+            this.setSession(session, true);  
             this.router.navigate(['/profile']);
           },
           (error) => {
@@ -133,16 +133,19 @@ export class AuthService {
 
   // Pulls the user object out of the session
   user(): User {
-    return this.session().user as User;
+    const s = this.session();
+    return s && s.user ? s.user : null;
   }
 
   // Gets the user's preferred locale
   preferredLocale(): string {
-    return (this.user() || {})["preferred_locale"]
+    const usr = this.user();
+    return usr && usr.preferred_locale ? usr.preferred_locale : '';
   }
 
   // Sets the local storage session variable to the passed object
-  setSession(session: Session): void {
+  setSession(session: Session, isAuth0: boolean = false): void {
+    session.isAuth0 = isAuth0;
     localStorage.setItem('session', JSON.stringify(session));
   }
 
@@ -156,6 +159,38 @@ export class AuthService {
       return !!(session && session.email);
     }
   }
+
+  checkLegacySession(): void {
+    const session = this.session();
+    if (!session || !session.email) {
+      console.log('No valid session, skipping legacy session check.');
+      return;
+    }
+    console.log('Checking legacy session...');
+    console.log('Stored session:', session);
+  
+    const isLegacyUser = session && (session.isAuth0 === false || session.isAuth0 === undefined);
+  
+    console.log('Is legacy user?', isLegacyUser);
+    console.log('App config auth mode:', appConfig.auth_mode);
+  
+    if (appConfig.auth_mode === 'auth0' && isLegacyUser) {
+      console.log('Detected legacy user while app is in Auth0 mode. Logging out...');
+  
+      localStorage.removeItem('session');
+      this._userSignedOut.next(null);
+  
+      this.signOut().subscribe(() => {
+        console.log('Legacy user successfully logged out.');
+        this.router.navigate(['/home']);
+      }, error => {
+        console.error('Error logging out legacy user:', error);
+      });
+    } else {
+      console.log('No action taken - either user is Auth0 or app is still in legacy mode.');
+    }
+  }  
+  
 
   // Returns true/false if email address matches guest email addresses
   isGuestEmail(email: string): Boolean {
@@ -242,7 +277,7 @@ export class AuthService {
 
         // Store session info in local storage to keep user logged in
         if(session.email && session.authentication_token) {
-          this.setSession(session);
+          this.setSession(session, false);
         }
 
         return response;
@@ -269,7 +304,7 @@ export class AuthService {
 
           // Store session info in local storage to keep user logged in
           if(session.email && session.authentication_token) {
-            this.setSession(session);
+            this.setSession(session, false);
           }
 
           return response;

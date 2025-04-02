@@ -50,6 +50,8 @@ export class UserProfilePage implements OnInit {
 
   ngOnInit() {
 
+    this.authService.checkLegacySession();
+
     this.route.paramMap.subscribe((params: ParamMap) => {
     
       if (this.router.getCurrentNavigation().extras.state) {
