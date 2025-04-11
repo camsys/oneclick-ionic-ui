@@ -34,6 +34,7 @@ export class UserProfilePage implements OnInit {
   @ViewChild('updateProfileForm') updateProfileForm: NgForm = {} as NgForm;
   public passwordFieldType = "password";
   public showPassword = false;
+  public isAuth0User: boolean = false;
   private initialUserParams: any;
 
   constructor(public navCtrl: NavController,

@@ -63,7 +63,7 @@
         </ion-item>
       </ion-col>
     </ion-row>  
-    <ion-row>
+    <ion-row *ngIf="!isAuth0User">
       <ion-col>
         <div style="padding-left:16px; padding-right:16px">
           <!-- PASSWORD -->

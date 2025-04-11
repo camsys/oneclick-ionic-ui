@@ -27,6 +27,11 @@ export class AuthService {
   public recentPlacesLength: number = 10; // Max # of places in a recent places list
   public guestUserEmailDomain: string = "example.com"; // Guest users will be identified by their email addresses belonging to this domain
 
+  public isAuth0User(): boolean {
+    const session = this.session();
+    return !!(session && session.isAuth0 === true);
+  }  
+
   constructor(private auth0: Auth0Service, public http: HttpClient, private translate: TranslateService, private router: Router) {
     this.auth0.isAuthenticated$.subscribe((isAuthenticated) => {
       this._authState$.next(isAuthenticated);
