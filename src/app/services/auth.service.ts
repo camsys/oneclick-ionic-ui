@@ -219,10 +219,30 @@ export class AuthService {
 
   // Logs out of Auth0 and clears the local session
   logout(): void {
-    console.log('Attempting to log out of Auth0...');
-    this.auth0.isAuthenticated$.subscribe((isAuthenticated) => {
-      if (isAuthenticated) {
-        console.log('User is authenticated. Proceeding with Auth0 logout.');
+    console.log('Attempting full logout...');
+  
+    this.signOut().subscribe({
+      next: () => {
+        console.log('OCC API logout complete.');
+  
+        this.auth0.isAuthenticated$.subscribe((isAuthenticated) => {
+          if (isAuthenticated) {
+            console.log('User is authenticated with Auth0. Logging out...');
+            this.auth0.logout({
+              logoutParams: {
+                returnTo: window.location.origin,
+              },
+            });
+          }
+  
+          localStorage.removeItem('session');
+          this._userSignedOut.next(null);
+          console.log('Local session cleared.');
+        });
+      },
+      error: (err) => {
+        console.error('Error during OCC signOut:', err);
+  
         this.auth0.logout({
           logoutParams: {
             returnTo: window.location.origin,
@@ -230,12 +250,9 @@ export class AuthService {
         });
         localStorage.removeItem('session');
         this._userSignedOut.next(null);
-        console.log('Local session cleared. Auth0 logout completed.');
-      } else {
-        console.warn('User is not authenticated in Auth0. Skipping logout.');
       }
     });
-  }
+  }  
 
   // Constructs a hash of necessary Auth Headers for communicating with OneClick
   authHeaders(): HttpHeaders {

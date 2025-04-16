@@ -52,6 +52,7 @@ export class UserProfilePage implements OnInit {
   ngOnInit() {
 
     this.authService.checkLegacySession();
+    this.isAuth0User = this.authService.isAuth0User();
 
     this.route.paramMap.subscribe((params: ParamMap) => {
     

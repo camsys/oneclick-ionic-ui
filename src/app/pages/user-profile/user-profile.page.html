@@ -53,11 +53,12 @@
         <ion-item lines="none">
           <!-- EMAIL -->
           <ion-label position="stacked">{{"oneclick.pages.user_profile.email" | translate}}</ion-label>
-          <ion-input  class="lynx-input" 
+          <ion-input class="lynx-input" 
                       type="email" 
                       placeholder=""
                       name="email" 
                       [(ngModel)]="user.email" 
+                      [readonly]="isAuth0User"
                       required>
           </ion-input>
         </ion-item>

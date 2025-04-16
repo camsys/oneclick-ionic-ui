@@ -7,7 +7,7 @@ iconimagename=finger-lakes_icon.png
 backgroundimagename=finger-lakes_background.png
 
 s3bucket=s3://ui-livingston-qa
-awsprofile=fingerlakes
+awsprofile=liv
 prodflag=--prod
 
 #copy index.html.tmpl to replace google api key
