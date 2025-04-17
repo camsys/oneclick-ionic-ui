@@ -17,6 +17,7 @@ import { OneClickService } from 'src/app/services/one-click.service';
 import { HelpMeFindPage } from '../help-me-find/help-me-find.page';
 import { TripResponsePage } from '../trip-response/trip-response.page';
 import { UserProfilePage } from '../user-profile/user-profile.page';
+import { appConfig } from 'src/environments/appConfig';
 
 @Component({
   selector: 'app-transportation-eligibility',
@@ -39,6 +40,9 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
   tripRequest: TripRequestModel;
   selectedTripPurposeId: string;
 
+  get showCreateProfileButton(): boolean {
+    return appConfig.auth_mode === 'auth0' && !this.auth.isRegisteredUser();
+  }  
 
   trip_id: number;
 
