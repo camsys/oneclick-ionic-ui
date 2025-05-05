@@ -74,3 +74,12 @@ ion-content::part(scroll) {
   .alert-wrapper{
     width: 100% !important;
 }
+
+responsive-datepicker,
+responsive-timepicker {
+  --color: black;
+}
+responsive-datepicker input,
+responsive-timepicker input {
+  caret-color: black !important;
+}
