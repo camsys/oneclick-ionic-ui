@@ -41,6 +41,14 @@
               <ion-item button="true" class="item-heading" (click)="auth.authenticate('signup')">
                 {{ "oneclick.pages.menu.sign_up" | translate }}
               </ion-item>
+
+              <!-- Build a button for each page listed in the signedOutPages attribute -->
+              <ion-item button="true"
+                        class="item-heading"
+                        *ngFor="let p of signedOutPages"
+                        (click)="openPage(p)">
+                {{ "oneclick.pages.menu." + p.title | translate }}
+              </ion-item>
             </ion-menu-toggle>
           </ng-template>
         </nav>
