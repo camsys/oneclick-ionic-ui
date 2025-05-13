@@ -1,27 +1,28 @@
 # local deployment script
 
 # copy assets for client into expected directories
-cp ./assets/$iconimagename ../../src/assets/img/main-logo.png
-cp ./assets/$backgroundimagename ../../src/assets/img/home-background-image.png
+cp ./assets/$iconimagename $src_deploy_dir/../src/assets/img/main-logo.png
+cp ./assets/$backgroundimagename $src_deploy_dir/../src/assets/img/home-background-image.png
 
-cp ./assets/img/* ../../src/assets/img/
-cp ./assets/doc/* ../../src/assets/doc/
+cp ./assets/img/* $src_deploy_dir/../src/assets/img/
+cp ./assets/doc/* $src_deploy_dir/../src/assets/doc/
 
-rm ../../src/assets/i18n/*
-cp ./assets/i18n/* ../../src/assets/i18n/
+rm $src_deploy_dir/../src/assets/i18n/*
+cp ./assets/i18n/* $src_deploy_dir/../src/assets/i18n/
 
-cp ./assets/$client-counties.geojson ../../src/assets/data/counties.geojson
+cp ./assets/$client-counties.geojson $src_deploy_dir/../src/assets/data/counties.geojson
 
 # create environment file in expected location
-cp ./appConfig-$client.ts ../../src/environments/appConfig.ts
-cp ./environments/environment-$client.$environment.ts ../../src/environments/environment.ts
+cp ./appConfig-$client.ts $src_deploy_dir/../src/environments/appConfig.ts
+cp ./environments/environment-$client.$environment.ts $src_deploy_dir/../src/environments/environment.ts
 
 # copy version file
-cp ../version.ts ../../src/environments/version.ts
+cp $src_deploy_dir/version.ts $src_deploy_dir/../src/environments/version.ts
 
 # copy client styles
-cp ./variables-$client.scss ../../src/theme/variables.scss
+cp ./variables-$client.scss $src_deploy_dir/../src/theme/variables.scss
 
 # run locally
+cd $src_deploy_dir/..
 ionic serve
 
