@@ -82,25 +82,31 @@ export class AuthService {
         audience: environment.auth0.authorizationParams.audience,
         scope: 'openid profile email'
       },
-    }).subscribe(() => {
-      this.auth0.idTokenClaims$.subscribe((claims) => {
-        const idToken = claims.__raw;  
-        const url = `${environment.BASE_ONECLICK_URL}sign_in`;
-        const body = { id_token: idToken };
-        this.http.post(url, body).subscribe(
-          (response: any) => {
-            const session = response.data?.session || {};
-            if (session.email && session.authentication_token) {
-              this.setSession(session, true);
+    }).subscribe({
+      next: () => {
+        this.auth0.idTokenClaims$.subscribe((claims) => {
+          const idToken = claims.__raw;
+          const url = `${environment.BASE_ONECLICK_URL}sign_in`;
+          const body = { id_token: idToken };
+          this.http.post(url, body).subscribe(
+            (response: any) => {
+              const session = response.data?.session || {};
+              if (session.email && session.authentication_token) {
+                this.setSession(session, true);
+              }
+            },
+            (error) => {
+              console.error('Sign-in error:', error);
             }
-          },
-          (error) => {
-            console.error('Sign-in error:', error);
-          }
-        );
-      });
+          );
+        });
+      },
+      error: err => {
+        console.warn('Auth0 popup closed by user', err);
+      }
     });
   }
+  
 
   isAuthenticated$(): Observable<boolean> {
     return this.auth0.isAuthenticated$; 

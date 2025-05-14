@@ -41,8 +41,8 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
   selectedTripPurposeId: string;
 
   get showCreateProfileButton(): boolean {
-    return appConfig.auth_mode === 'auth0' && !this.auth.isRegisteredUser();
-  }  
+    return appConfig.auth_mode !== 'auth0' && !this.auth.isRegisteredUser();
+  }
 
   trip_id: number;
 
