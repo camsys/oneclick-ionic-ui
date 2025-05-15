@@ -125,6 +125,9 @@ export class OneClickService {
 
   // Gets a User from 1-Click
   getProfile(): Promise<User>{
+    if (!this.auth.isSignedIn()) {
+      return Promise.resolve(null);
+    }
      var uri: string = encodeURI(this.oneClickUrl + 'users');
      return this.http.get(uri, this.requestOptions())
       .toPromise()
