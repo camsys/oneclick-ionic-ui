@@ -103,6 +103,7 @@ export class AuthService {
       },
       error: err => {
         console.warn('Auth0 popup closed by user', err);
+        this.auth0.logout({ logoutParams:{ returnTo: window.location.origin } });
       }
     });
   }
@@ -133,6 +134,7 @@ export class AuthService {
           },
           (error) => {
             console.error('Sign-in error during sign-up:', error);
+            this.auth0.logout({ logoutParams:{ returnTo: window.location.origin } });
           }
         );
       });
