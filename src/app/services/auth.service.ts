@@ -4,6 +4,7 @@ import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 import { asyncScheduler, BehaviorSubject, Observable, scheduled, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
@@ -32,11 +33,54 @@ export class AuthService {
     return !!(session && session.isAuth0 === true);
   }  
 
-  constructor(private auth0: Auth0Service, public http: HttpClient, private translate: TranslateService, private router: Router) {
-    this.auth0.isAuthenticated$.subscribe((isAuthenticated) => {
-      this._authState$.next(isAuthenticated);
-    });
+  private fetchProfile(): void {
+    this.http.get(`${this.baseUrl}users`, { headers: this.authHeaders() })
+      .subscribe((r: any) => {
+        if (r?.data?.user) {
+          const session = this.session();     
+          session.user = r.data.user;         
+          this.setSession(session);  
+        }
+      });
+  }  
+  
+  constructor(
+    private auth0: Auth0Service,
+    public  http: HttpClient,
+    private translate: TranslateService,
+    private router: Router
+  ) {
+  
+    this.auth0.isAuthenticated$.subscribe(isAuth => this._authState$.next(isAuth));
+  
+    this.auth0.isAuthenticated$
+      .pipe(take(1))
+      .subscribe(isAuth => {
+        if (isAuth && !this.isRegisteredUser()) {
+          this.auth0.idTokenClaims$.pipe(take(1)).subscribe(c => {
+            const idToken = (c as any).__raw;
+            this.http.post(`${this.baseUrl}sign_in`, { id_token: idToken })
+              .subscribe((r: any) => {
+                const s = r.data?.session || {};
+                if (s.email && s.authentication_token) {
+                  this.setSession(s, true);
+                  this.fetchProfile();
+                }
+              });
+          });
+        }
+      });
+  
+    this.auth0.error$.pipe(take(1)).subscribe(err => {
+      const errorMessage = (err as any)?.error;
+      if (errorMessage === 'access_denied') {
+        localStorage.removeItem('session');
+        this._userSignedOut.next(null);
+        this.auth0.logout({ logoutParams: { returnTo: window.location.origin } });
+      }
+    });    
   }
+  
 
   get userUpdated(): Observable<User> {
     return this._userUpdated.asObservable();
@@ -76,38 +120,14 @@ export class AuthService {
   
   
   // Uses Auth0 to log in a user, then sends the ID token to the OneClick API to create a session
-  login() {
-    this.auth0.loginWithPopup({
+  login(): void {
+    this.auth0.loginWithRedirect({
       authorizationParams: {
         audience: environment.auth0.authorizationParams.audience,
         scope: 'openid profile email'
-      },
-    }).subscribe({
-      next: () => {
-        this.auth0.idTokenClaims$.subscribe((claims) => {
-          const idToken = claims.__raw;
-          const url = `${environment.BASE_ONECLICK_URL}sign_in`;
-          const body = { id_token: idToken };
-          this.http.post(url, body).subscribe(
-            (response: any) => {
-              const session = response.data?.session || {};
-              if (session.email && session.authentication_token) {
-                this.setSession(session, true);
-              }
-            },
-            (error) => {
-              console.error('Sign-in error:', error);
-            }
-          );
-        });
-      },
-      error: err => {
-        console.warn('Auth0 popup closed by user', err);
-        this.auth0.logout({ logoutParams:{ returnTo: window.location.origin } });
       }
     });
-  }
-  
+  }  
 
   isAuthenticated$(): Observable<boolean> {
     return this.auth0.isAuthenticated$; 
@@ -115,31 +135,30 @@ export class AuthService {
 
   // Signs up a user via Auth0, then sends the ID token to the OneClick API to create a session
   signup(): void {
-    this.auth0.loginWithPopup({
+    this.auth0.loginWithRedirect({
       authorizationParams: {
         screen_hint: 'signup',
         audience: environment.auth0.authorizationParams.audience,
         scope: 'openid profile email'
+      }
+    }).subscribe({
+      next: () => {
+        this.auth0.idTokenClaims$.subscribe(c => {
+          const idToken = (c as any).__raw;
+          this.http.post(`${this.baseUrl}sign_in`, { id_token: idToken })
+            .subscribe((resp: any) => {
+              const s = resp.data?.session || {};
+              if (s.email && s.authentication_token) {
+                this.setSession(s, true);
+                this.fetchProfile();
+                this.router.navigate(['/profile']);
+              }
+            });
+        });
       },
-    }).subscribe(() => {
-      this.auth0.idTokenClaims$.subscribe((claims) => {
-        const idToken = claims.__raw;  
-        const url = `${this.baseUrl}sign_in`;
-        const body = { id_token: idToken };
-        this.http.post(url, body).subscribe(
-          (response: any) => {  
-            const session = response.data?.session || {};
-            this.setSession(session, true);  
-            this.router.navigate(['/profile']);
-          },
-          (error) => {
-            console.error('Sign-in error during sign-up:', error);
-            this.auth0.logout({ logoutParams:{ returnTo: window.location.origin } });
-          }
-        );
-      });
+      error: () => this.auth0.logout({ logoutParams: { returnTo: window.location.origin } })
     });
-  }
+  }  
 
   // Pulls the current session from local storage
   session(): Session {
@@ -164,6 +183,7 @@ export class AuthService {
       session.isAuth0 = true;
     }
     localStorage.setItem('session', JSON.stringify(session));
+    this._userUpdated.next(session.user || null);
   }
 
   // Returns true/false if user is signed in (guest or registered)
