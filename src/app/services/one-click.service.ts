@@ -160,7 +160,8 @@ export class OneClickService {
       "age": user.age,
       "preferred_locale": user.preferred_locale,
       "county": user.county,
-      "paratransit_id": user.paratransit_id
+      "paratransit_id": user.paratransit_id,
+      "create_rts_account": user.create_rts_account 
     }
 
     if(user.password && user.password_confirmation) {
@@ -169,6 +170,7 @@ export class OneClickService {
     }
 
     let body = {
+      "id_token": this.auth.getIdToken(),
       "attributes": attributes,
       "accommodations": formatted_accs,
       "eligibilities": formatted_eligs,

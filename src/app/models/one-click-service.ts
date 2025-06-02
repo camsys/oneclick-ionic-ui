@@ -21,6 +21,7 @@ export class OneClickServiceModel {
   purposes?: Purpose[];
   accommodations?: Accommodation[];
   eligibilities?: Eligibility[];
+  rts_purchase_url?: string;
   
   constructor(attrs: any) {
     this.id = attrs.id;

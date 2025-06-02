@@ -15,4 +15,5 @@ export class Session {
   find_services_history_id: number;
 
   isAuth0?: boolean;
+  id_token?: string;
 }

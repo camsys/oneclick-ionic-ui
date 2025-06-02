@@ -146,6 +146,16 @@
                   </ion-button>
                 </ion-col>
               </ion-row>
+              <ion-row *ngIf="itin.service.rts_purchase_url">
+                <ion-col col-sm-6>
+                  <a [href]="itin.service.rts_purchase_url"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     class="lynx-link">
+                    Purchase RTS Go Fare
+                  </a>
+                </ion-col>
+              </ion-row>
             </ion-grid>
 
               <ion-grid *ngIf="itin.trip_type == 'paratransit_mixed'">
@@ -192,6 +202,16 @@
                             (click)="openDirectionsPageForItinerary(itin)">
                       {{ "oneclick.pages.trip_response.go_button" | translate }}
                     </ion-button>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngIf="itin.service.rts_purchase_url">
+                  <ion-col col-sm-6>
+                    <a [href]="itin.service.rts_purchase_url"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="lynx-link">
+                      Purchase RTS Go Fare
+                    </a>
                   </ion-col>
                 </ion-row>
               </ion-grid>
@@ -245,6 +265,16 @@
                           (click)="openDirectionsPageForItinerary(itin)">
                     {{ "oneclick.pages.trip_response.go_button" | translate }}
                   </ion-button>
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="itin.service.rts_purchase_url">
+                <ion-col col-sm-6>
+                  <a [href]="itin.service.rts_purchase_url"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     class="lynx-link">
+                    Purchase RTS Go Fare
+                  </a>
                 </ion-col>
               </ion-row>
             </ion-grid>

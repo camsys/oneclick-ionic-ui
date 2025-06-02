@@ -20,4 +20,6 @@ export class User {
   paratransit_id: string;
   county: string;
   counties: County[];
+  create_rts_account: boolean;
+  justride_account_id?: string;
 }

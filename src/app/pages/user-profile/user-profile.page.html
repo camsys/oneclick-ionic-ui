@@ -94,6 +94,22 @@
                       [(ngModel)]="user.age">
           </ion-input>
         </ion-item>
+
+
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+
+        <ion-item>
+          <ion-checkbox
+              slot="start"
+              [(ngModel)]="createRTSAccount"
+              [checked]="externalAccountCreated || createRTSAccount"
+              [disabled]="externalAccountCreated">
+          </ion-checkbox>
+          <ion-label>{{ 'oneclick.pages.user_profile.create_rts_account' | translate }}</ion-label>
+        </ion-item>        
       </ion-col>
     </ion-row>
     <ion-row *ngIf="showParatransitId">

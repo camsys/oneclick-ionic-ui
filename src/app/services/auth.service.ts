@@ -63,7 +63,7 @@ export class AuthService {
               .subscribe((r: any) => {
                 const s = r.data?.session || {};
                 if (s.email && s.authentication_token) {
-                  this.setSession(s, true);
+                  this.setSession(s, true, idToken);
                   this.fetchProfile();
                 }
               });
@@ -133,6 +133,10 @@ export class AuthService {
     return this.auth0.isAuthenticated$; 
   }
 
+  getIdToken(): string {
+    return this.session()?.id_token || '';
+  }
+
   // Signs up a user via Auth0, then sends the ID token to the OneClick API to create a session
   signup(): void {
     this.auth0.loginWithRedirect({
@@ -149,7 +153,7 @@ export class AuthService {
             .subscribe((resp: any) => {
               const s = resp.data?.session || {};
               if (s.email && s.authentication_token) {
-                this.setSession(s, true);
+                this.setSession(s, true, idToken)
                 this.fetchProfile();
                 this.router.navigate(['/profile']);
               }
@@ -158,7 +162,7 @@ export class AuthService {
       },
       error: () => this.auth0.logout({ logoutParams: { returnTo: window.location.origin } })
     });
-  }  
+  }
 
   // Pulls the current session from local storage
   session(): Session {
@@ -178,10 +182,9 @@ export class AuthService {
   }
 
   // Sets the local storage session variable to the passed object
-  setSession(session: Session, isAuth0: boolean = false): void {
-    if (isAuth0) {
-      session.isAuth0 = true;
-    }
+  setSession(session: Session, isAuth0 = false, idToken?: string): void {
+    if (isAuth0) session.isAuth0 = true;
+    if (idToken)  session.id_token = idToken;
     localStorage.setItem('session', JSON.stringify(session));
     this._userUpdated.next(session.user || null);
   }

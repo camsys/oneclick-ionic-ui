@@ -19,6 +19,7 @@ export class ServiceModel {
   url: string;
   email: string;
   display_url: string;
+  rts_purchase_url: string;
   details: {
     service_description: string;
     eligibility: string;

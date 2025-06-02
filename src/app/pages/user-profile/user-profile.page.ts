@@ -30,6 +30,8 @@ export class UserProfilePage implements OnInit {
   isRegisteredUser: Boolean;
 
   showParatransitId: boolean = false;
+  createRTSAccount: boolean = false;
+  externalAccountCreated = false;
 
   @ViewChild('updateProfileForm') updateProfileForm: NgForm = {} as NgForm;
   public passwordFieldType = "password";
@@ -89,6 +91,7 @@ export class UserProfilePage implements OnInit {
       this.user.eligibilities = this.eligibilities;
       this.user.accommodations = this.accommodations;
       this.user.trip_types = this.trip_types;
+      this.user.create_rts_account = this.createRTSAccount;
       if(this.user.password && this.user.password.length > 0) {
         this.user.password_confirmation = this.user.password;
       }
@@ -171,6 +174,8 @@ export class UserProfilePage implements OnInit {
     this.accommodations = this.user.accommodations;
     this.trip_types = this.user.trip_types;
     this.counties = this.user.counties.map(county => county.name).sort();
+    this.externalAccountCreated = !!user.justride_account_id;
+    this.createRTSAccount       = !this.externalAccountCreated && this.createRTSAccount;
     // Don't filter trip types here so that it matches travel profile page.
     //this.filterTripTypes();
   }
