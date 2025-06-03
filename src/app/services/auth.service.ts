@@ -65,6 +65,7 @@ export class AuthService {
                 if (s.email && s.authentication_token) {
                   this.setSession(s, true, idToken);
                   this.fetchProfile();
+                  this.router.navigate(['/profile']); 
                 }
               });
           });
