@@ -52,7 +52,7 @@ export class AuthService {
   ) {
   
     this.auth0.isAuthenticated$.subscribe(isAuth => this._authState$.next(isAuth));
-  
+
     this.auth0.isAuthenticated$
       .pipe(take(1))
       .subscribe(isAuth => {
@@ -65,7 +65,7 @@ export class AuthService {
                 if (s.email && s.authentication_token) {
                   this.setSession(s, true, idToken);
                   this.fetchProfile();
-                  this.router.navigate(['/profile']); 
+                  window.location.href = '/profile';
                 }
               });
           });
@@ -79,7 +79,7 @@ export class AuthService {
         this._userSignedOut.next(null);
         this.auth0.logout({ logoutParams: { returnTo: window.location.origin } });
       }
-    });    
+    });
   }
   
 
@@ -148,15 +148,15 @@ export class AuthService {
       }
     }).subscribe({
       next: () => {
-        this.auth0.idTokenClaims$.subscribe(c => {
+        this.auth0.idTokenClaims$.pipe(take(1)).subscribe(c => {
           const idToken = (c as any).__raw;
           this.http.post(`${this.baseUrl}sign_in`, { id_token: idToken })
             .subscribe((resp: any) => {
               const s = resp.data?.session || {};
               if (s.email && s.authentication_token) {
-                this.setSession(s, true, idToken)
+                this.setSession(s, true, idToken);
                 this.fetchProfile();
-                this.router.navigate(['/profile']);
+                window.location.href = '/profile';
               }
             });
         });

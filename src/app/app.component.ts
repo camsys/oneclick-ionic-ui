@@ -21,6 +21,7 @@ import { I18nService } from './services/i18n.service';
 import { LoaderService } from './services/loader.service';
 import { MenuService } from './services/menu.service';
 import { OneClickService } from './services/one-click.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -145,15 +146,21 @@ export class AppComponent implements OnDestroy {
 
   // Make a call to OneClick to get the user's details
   getUserInfo() {
-
-    this.auth.checkLegacySession();
-
-    // If User email and token are stored in session, make a call to 1click to get up-to-date user profile
-    if(this.auth.isRegisteredUser()){
-      this.oneClickProvider.getProfile()
+    if (this.auth.isRegisteredUser()) {
+      this.oneClickProvider.getProfile();
+      return;
     }
-
+  
+    // let the Auth0 redirect finish and the session land in localStorage
+    setTimeout(() => {
+      if (!this.auth.isRegisteredUser()) {
+        this.auth.checkLegacySession();
+      } else {
+        this.oneClickProvider.getProfile();
+      }
+    }, 1200);   // small delay = enough for the demo
   }
+  
 
   // Updates this component's user model based on the information stored in the session
   updateUserInfo(usr) {

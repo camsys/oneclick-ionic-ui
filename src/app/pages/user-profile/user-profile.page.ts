@@ -56,6 +56,14 @@ export class UserProfilePage implements OnInit {
     this.authService.checkLegacySession();
     this.isAuth0User = this.authService.isAuth0User();
 
+    this.authService.userUpdated.subscribe(() => {
+      this.isAuth0User     = this.authService.isAuth0User();
+      this.isRegisteredUser = this.authService.isRegisteredUser();
+    });
+
+    this.isAuth0User     = this.authService.isAuth0User();
+    this.isRegisteredUser = this.authService.isRegisteredUser();  
+
     this.route.paramMap.subscribe((params: ParamMap) => {
     
       if (this.router.getCurrentNavigation().extras.state) {
