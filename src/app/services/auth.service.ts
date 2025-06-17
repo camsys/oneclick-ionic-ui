@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
-import { asyncScheduler, BehaviorSubject, Observable, scheduled, Subject } from 'rxjs';
+import {asyncScheduler, BehaviorSubject, firstValueFrom, Observable, scheduled, Subject} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
@@ -20,6 +20,7 @@ export class AuthService {
   private _userUpdated:BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
   private _userSignedOut:Subject<any> = new Subject<any>();
   private _authState$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private _auth0SessionValid: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   public baseUrl = environment.BASE_ONECLICK_URL;
   public defaultHeaders: HttpHeaders = new HttpHeaders({
@@ -31,26 +32,36 @@ export class AuthService {
   public isAuth0User(): boolean {
     const session = this.session();
     return !!(session && session.isAuth0 === true);
-  }  
+  }
 
   private fetchProfile(): void {
     this.http.get(`${this.baseUrl}users`, { headers: this.authHeaders() })
       .subscribe((r: any) => {
         if (r?.data?.user) {
-          const session = this.session();     
-          session.user = r.data.user;         
-          this.setSession(session);  
+          const session = this.session();
+          session.user = r.data.user;
+          this.setSession(session);
         }
       });
-  }  
-  
+  }
+
   constructor(
     private auth0: Auth0Service,
     public  http: HttpClient,
     private translate: TranslateService,
     private router: Router
   ) {
-  
+
+    this._auth0SessionValid.subscribe(isValid => {
+      //confirm that the app is in auth0 mode, the auth0 session was found to be invalid,
+      //and the user is currently authenticated in OCC
+      if (appConfig.auth_mode == 'auth0' && !isValid &&
+        !!this.session() && !!this.session().authentication_token) {
+        console.log("logging out of OCC because Auth0 expired")
+        this.logout();
+      }
+    })
+
     this.auth0.isAuthenticated$.subscribe(isAuth => this._authState$.next(isAuth));
 
     this.auth0.isAuthenticated$
@@ -65,13 +76,12 @@ export class AuthService {
                 if (s.email && s.authentication_token) {
                   this.setSession(s, true, idToken);
                   this.fetchProfile();
-                  window.location.href = '/profile';
                 }
               });
           });
         }
       });
-  
+
     this.auth0.error$.pipe(take(1)).subscribe(err => {
       const errorMessage = (err as any)?.error;
       if (errorMessage === 'access_denied') {
@@ -81,7 +91,7 @@ export class AuthService {
       }
     });
   }
-  
+
 
   get userUpdated(): Observable<User> {
     return this._userUpdated.asObservable();
@@ -95,10 +105,10 @@ export class AuthService {
     if (appConfig.auth_mode === 'legacy') {
       switch (action) {
         case 'login':
-          this.router.navigate(['/sign_in']); 
+          this.router.navigate(['/sign_in']);
           break;
         case 'signup':
-          this.router.navigate(['/sign_up']); 
+          this.router.navigate(['/sign_up']);
           break;
         case 'logout':
           this.signOut().subscribe();
@@ -107,19 +117,19 @@ export class AuthService {
     } else {
       switch (action) {
         case 'login':
-          this.login(); 
+          this.login();
           break;
         case 'signup':
-          this.signup(); 
+          this.signup();
           break;
         case 'logout':
-          this.logout(); 
+          this.logout();
           break;
       }
     }
   }
-  
-  
+
+
   // Uses Auth0 to log in a user, then sends the ID token to the OneClick API to create a session
   login(): void {
     this.auth0.loginWithRedirect({
@@ -128,10 +138,10 @@ export class AuthService {
         scope: 'openid profile email'
       }
     });
-  }  
+  }
 
   isAuthenticated$(): Observable<boolean> {
-    return this.auth0.isAuthenticated$; 
+    return this.auth0.isAuthenticated$;
   }
 
   getIdToken(): string {
@@ -208,7 +218,7 @@ export class AuthService {
       return;
     }
     console.log('Checking legacy session...', session);
-    
+
     if (appConfig.auth_mode === 'auth0' && session.isAuth0 !== true) {
       console.log('Detected legacy user while app is in Auth0 mode. Logging out...');
       localStorage.removeItem('session');
@@ -222,8 +232,8 @@ export class AuthService {
     } else {
       console.log('No action taken - either user is Auth0 or app is still in legacy mode.');
     }
-  }  
-  
+  }
+
 
   // Returns true/false if email address matches guest email addresses
   isGuestEmail(email: string): Boolean {
@@ -252,11 +262,11 @@ export class AuthService {
   // Logs out of Auth0 and clears the local session
   logout(): void {
     console.log('Attempting full logout...');
-  
+
     this.signOut().subscribe({
       next: () => {
         console.log('OCC API logout complete.');
-  
+
         this.auth0.isAuthenticated$.subscribe((isAuthenticated) => {
           if (isAuthenticated) {
             console.log('User is authenticated with Auth0. Logging out...');
@@ -266,7 +276,7 @@ export class AuthService {
               },
             });
           }
-  
+
           localStorage.removeItem('session');
           this._userSignedOut.next(null);
           console.log('Local session cleared.');
@@ -274,7 +284,7 @@ export class AuthService {
       },
       error: (err) => {
         console.error('Error during OCC signOut:', err);
-  
+
         this.auth0.logout({
           logoutParams: {
             returnTo: window.location.origin,
@@ -284,7 +294,20 @@ export class AuthService {
         this._userSignedOut.next(null);
       }
     });
-  }  
+  }
+
+  //runs an auth0 access token refresh that will fail if the user session has hit the maximum time
+  checkAuth0SessionValid() {
+    return firstValueFrom(this.auth0.getAccessTokenSilently())
+      .then(c => {//valid auth0 session so proceed
+        console.log("valid auth0Session");
+        this._auth0SessionValid.next(true);
+      })
+      .catch(() => {
+        console.log("no valid auth0Session token");
+        this._auth0SessionValid.next(false);
+      });
+  }
 
   // Constructs a hash of necessary Auth Headers for communicating with OneClick
   authHeaders(): HttpHeaders {

@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { NavController, Platform, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
+import { Subject, interval, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { appConfig } from 'src/environments/appConfig';
 import { Accommodation } from './models/accommodation';
@@ -21,15 +21,15 @@ import { I18nService } from './services/i18n.service';
 import { LoaderService } from './services/loader.service';
 import { MenuService } from './services/menu.service';
 import { OneClickService } from './services/one-click.service';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   private unsubscribe:Subject<any> = new Subject<any>();
+  private subscription: Subscription | undefined;
 
   rootPage: any = HelpMeFindPage;
   showSpinner: Boolean = false;
@@ -83,6 +83,15 @@ export class AppComponent implements OnDestroy {
     this.auth.userUpdated.pipe(takeUntil(this.unsubscribe)).subscribe((user) => {
       this.updateUserInfo(user);
     });
+  }
+
+  ngOnInit() {
+    if (appConfig.auth_mode == 'auth0') {//only set this up if configured to use auth0
+      this.subscription = interval(10000).subscribe(() => {
+        //if app thinks an auth0 user is logged in
+        if (this.auth.isRegisteredUser()) this.auth.checkAuth0SessionValid();
+      });
+    }
   }
 
   // Handles errors based on their status code
@@ -150,7 +159,7 @@ export class AppComponent implements OnDestroy {
       this.oneClickProvider.getProfile();
       return;
     }
-  
+
     // let the Auth0 redirect finish and the session land in localStorage
     setTimeout(() => {
       if (!this.auth.isRegisteredUser()) {
@@ -158,9 +167,9 @@ export class AppComponent implements OnDestroy {
       } else {
         this.oneClickProvider.getProfile();
       }
-    }, 1200);   // small delay = enough for the demo
+    }, 1200);   // TODO: FIX THIS small delay = enough for the demo
   }
-  
+
 
   // Updates this component's user model based on the information stored in the session
   updateUserInfo(usr) {
@@ -229,7 +238,7 @@ export class AppComponent implements OnDestroy {
         this.goHelp();
         break;
       case "sign_out":
-        this.logout(); 
+        this.logout();
         break;
       // case "privacy_policy":
       //   this.exNav.goTo('http://www.golynx.com/privacy-policy.stml');
@@ -271,7 +280,7 @@ export class AppComponent implements OnDestroy {
 
   signup(): void {
     this.auth.signup();
-  }  
+  }
 
   goHome() {
     if (this.home_url) {//if an external home link is provided, redirect there
@@ -331,6 +340,7 @@ export class AppComponent implements OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next(null);
     this.unsubscribe.complete();
+    if (this.subscription) this.subscription.unsubscribe();
   }
 
 }
