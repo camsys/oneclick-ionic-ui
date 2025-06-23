@@ -86,14 +86,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   //removed since not ideal to be polling like this
-  // ngOnInit() {
+  ngOnInit() {
   //   if (appConfig.auth_mode == 'auth0') {//only set this up if configured to use auth0
   //     this.subscription = interval(10000).subscribe(() => {
   //       //if app thinks an auth0 user is logged in
   //       if (this.auth.isRegisteredUser()) this.auth.checkAuth0SessionValid();
   //     });
   //   }
-  // }
+  }
 
   // Handles errors based on their status code
   handleError(error) {
