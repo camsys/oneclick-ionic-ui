@@ -60,11 +60,11 @@
   </ion-row>
     <!-- Header row with editable trip date -->
 
-    
+
   </ion-grid>
 </div>
 
-  
+
 
   <ion-row class="ion-justify-content-center" id="find-transportation-button-container">
 
@@ -146,13 +146,13 @@
                   </ion-button>
                 </ion-col>
               </ion-row>
-              <ion-row *ngIf="itin.service.rts_purchase_url">
+              <ion-row *ngIf="itin.service.rts_purchase_url"><!--this is the fare purchase url-->
                 <ion-col col-sm-6>
                   <a [href]="itin.service.rts_purchase_url"
                      target="_blank"
                      rel="noopener noreferrer"
                      class="lynx-link">
-                    Purchase RTS Go Fare
+                    {{ "oneclick.pages.trip_response.purchase_fare_link_label" | translate }}
                   </a>
                 </ion-col>
               </ion-row>
