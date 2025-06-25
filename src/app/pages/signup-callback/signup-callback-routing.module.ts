@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CallbackComponent } from './callback.component';
+import { SignupCallbackComponent } from './signup-callback.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: CallbackComponent,
+    component: SignupCallbackComponent,
   },
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CallbackRoutingModule {}
+export class SignupCallbackRoutingModule {}

@@ -28,9 +28,9 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [AppComponent],
   imports: [
     CommonModule,
-    BrowserModule, 
-    IonicModule.forRoot(), 
-    AppRoutingModule, 
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
     HttpClientModule,
     LanguageSelectorModalPageModule,
     ServiceFor211ModalPageModule,
@@ -44,15 +44,15 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    }), 
+    }),
     AuthModule.forRoot({
       domain: environment.auth0.domain,
       clientId: environment.auth0.clientId,
       authorizationParams: {
         audience: environment.auth0.authorizationParams.audience,
-        redirect_uri: environment.auth0.authorizationParams.redirect_uri,
+        //redirect_uri: environment.auth0.authorizationParams.redirect_uri,
       },
-    }),        
+    }),
     IonicModule.forRoot({
       swipeBackEnabled: false,
       mode: 'md', //forces md theme always, even on iOS

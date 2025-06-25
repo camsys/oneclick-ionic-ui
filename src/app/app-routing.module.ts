@@ -9,9 +9,14 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'callback',
+    path: 'login_callback',
     loadChildren: () =>
-      import('./pages/callback/callback.module').then((m) => m.CallbackModule),
+      import('./pages/login-callback/login-callback.module').then((m) => m.LoginCallbackModule),
+  },
+  {
+    path: 'signup_callback',
+    loadChildren: () =>
+      import('./pages/signup-callback/signup-callback.module').then((m) => m.SignupCallbackModule),
   },
   {
     path: 'categories',

@@ -64,23 +64,6 @@ export class AuthService {
 
     this.auth0.isAuthenticated$.subscribe(isAuth => this._authState$.next(isAuth));
 
-    this.auth0.isAuthenticated$
-      .pipe(take(1))
-      .subscribe(isAuth => {
-        if (isAuth && !this.isRegisteredUser()) {
-          this.auth0.idTokenClaims$.pipe(take(1)).subscribe(c => {
-            const idToken = (c as any).__raw;
-            this.http.post(`${this.baseUrl}sign_in`, { id_token: idToken })
-              .subscribe((r: any) => {
-                const s = r.data?.session || {};
-                if (s.email && s.authentication_token) {
-                  this.setSession(s, true, idToken);
-                  this.fetchProfile();
-                }
-              });
-          });
-        }
-      });
 
     this.auth0.error$.pipe(take(1)).subscribe(err => {
       const errorMessage = (err as any)?.error;
@@ -99,6 +82,25 @@ export class AuthService {
 
   get userSignedOut(): Observable<any> {
     return this._userSignedOut.asObservable();
+  }
+
+  finishAuth0Login(redirectPath)
+  {
+    if (!this.isRegisteredUser()) {
+      //not a lingering subscription - just trying to get the id token that was created by Auth0 upon authentication
+      this.auth0.idTokenClaims$.pipe(take(1)).subscribe(c => {
+        const idToken = (c as any).__raw;
+        this.http.post(`${this.baseUrl}sign_in`, {id_token: idToken})
+          .subscribe((r: any) => {
+            const s = r.data?.session || {};
+            if (s.email && s.authentication_token) {
+              this.setSession(s, true, idToken);
+              this.fetchProfile();
+              this.router.navigate([redirectPath])
+            }
+          });
+      });
+    }
   }
 
   authenticate(action: 'login' | 'signup' | 'logout'): void {
@@ -135,7 +137,8 @@ export class AuthService {
     this.auth0.loginWithRedirect({
       authorizationParams: {
         audience: environment.auth0.authorizationParams.audience,
-        scope: 'openid profile email'
+        scope: 'openid profile email',
+        redirect_uri: environment.auth0.authorizationParams.redirect_uri + '/login_callback'
       }
     });
   }
@@ -154,7 +157,8 @@ export class AuthService {
       authorizationParams: {
         screen_hint: 'signup',
         audience: environment.auth0.authorizationParams.audience,
-        scope: 'openid profile email'
+        scope: 'openid profile email',
+        redirect_uri: environment.auth0.authorizationParams.redirect_uri + '/signup_callback'
       }
     });
   }
@@ -195,26 +199,30 @@ export class AuthService {
     }
   }
 
-  checkLegacySession(): void {
+  // Returns true is there is a valid registered user to work with
+  // Returns false if their is no user or if it is a guest user or if their is an old legacy session lingering
+  checkLegacySession(): boolean {
     const session = this.session();
     if (!session || !session.email) {
       console.log('No valid session, skipping legacy session check.');
-      return;
+      return false;
     }
     console.log('Checking legacy session...', session);
+
+    if(!this.isRegisteredUser()) {//session exists but not a registered user (ie, a guest user)
+      console.log('No action taken, guest user logged in.');
+      return false;
+    }
 
     if (appConfig.auth_mode === 'auth0' && session.isAuth0 !== true) {
       console.log('Detected legacy user while app is in Auth0 mode. Logging out...');
       localStorage.removeItem('session');
       this._userSignedOut.next(null);
-      this.signOut().subscribe(() => {
-        console.log('Legacy user successfully logged out.');
-        this.router.navigate(['/home']);
-      }, error => {
-        console.error('Error logging out legacy user:', error);
-      });
+      this.logout();
+      return false;
     } else {
       console.log('No action taken - either user is Auth0 or app is still in legacy mode.');
+      return true;
     }
   }
 

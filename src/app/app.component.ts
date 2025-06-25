@@ -138,8 +138,8 @@ export class AppComponent implements OnInit, OnDestroy {
     // Set up the spinner div
     this.setupSpinner();
 
-    // Get info about signed-in user
-    this.getUserInfo();
+    // Get info about signed-in user if no auth0/legacy issue
+    if (this.auth.checkLegacySession()) this.getUserInfo();
 
     // Okay, so the platform is ready and our plugins are available.
     // Here you can do any higher level native things you might need.
@@ -156,19 +156,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // Make a call to OneClick to get the user's details
   getUserInfo() {
-    if (this.auth.isRegisteredUser()) {
-      this.oneClickProvider.getProfile();
-      return;
-    }
-
-    // let the Auth0 redirect finish and the session land in localStorage
-    setTimeout(() => {
-      if (!this.auth.isRegisteredUser()) {
-        this.auth.checkLegacySession();
-      } else {
-        this.oneClickProvider.getProfile();
-      }
-    }, 1200);   // TODO: FIX THIS small delay = enough for the demo
+    this.oneClickProvider.getProfile();
   }
 
 
