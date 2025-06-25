@@ -20,7 +20,7 @@ export class AuthService {
   private _userUpdated:BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
   private _userSignedOut:Subject<any> = new Subject<any>();
   private _authState$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private _auth0SessionValid: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  //private _auth0SessionValid: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   public baseUrl = environment.BASE_ONECLICK_URL;
   public defaultHeaders: HttpHeaders = new HttpHeaders({
@@ -52,15 +52,15 @@ export class AuthService {
     private router: Router
   ) {
 
-    this._auth0SessionValid.subscribe(isValid => {
-      //confirm that the app is in auth0 mode, the auth0 session was found to be invalid,
-      //and the user is currently authenticated in OCC
-      if (appConfig.auth_mode == 'auth0' && !isValid &&
-        !!this.session() && !!this.session().authentication_token) {
-        console.log("logging out of OCC because Auth0 expired")
-        this.logout();
-      }
-    })
+    // this._auth0SessionValid.subscribe(isValid => {
+    //   //confirm that the app is in auth0 mode, the auth0 session was found to be invalid,
+    //   //and the user is currently authenticated in OCC
+    //   if (appConfig.auth_mode == 'auth0' && !isValid &&
+    //     !!this.session() && !!this.session().authentication_token) {
+    //     console.log("logging out of OCC because Auth0 expired")
+    //     this.logout();
+    //   }
+    // })
 
     this.auth0.isAuthenticated$.subscribe(isAuth => this._authState$.next(isAuth));
 
@@ -156,22 +156,6 @@ export class AuthService {
         audience: environment.auth0.authorizationParams.audience,
         scope: 'openid profile email'
       }
-    }).subscribe({
-      next: () => {
-        this.auth0.idTokenClaims$.pipe(take(1)).subscribe(c => {
-          const idToken = (c as any).__raw;
-          this.http.post(`${this.baseUrl}sign_in`, { id_token: idToken })
-            .subscribe((resp: any) => {
-              const s = resp.data?.session || {};
-              if (s.email && s.authentication_token) {
-                this.setSession(s, true, idToken);
-                this.fetchProfile();
-                window.location.href = '/profile';
-              }
-            });
-        });
-      },
-      error: () => this.auth0.logout({ logoutParams: { returnTo: window.location.origin } })
     });
   }
 
@@ -297,17 +281,17 @@ export class AuthService {
   }
 
   //runs an auth0 access token refresh that will fail if the user session has hit the maximum time
-  checkAuth0SessionValid() {
-    return firstValueFrom(this.auth0.getAccessTokenSilently())
-      .then(c => {//valid auth0 session so proceed
-        console.log("valid auth0Session");
-        this._auth0SessionValid.next(true);
-      })
-      .catch(() => {
-        console.log("no valid auth0Session token");
-        this._auth0SessionValid.next(false);
-      });
-  }
+  // checkAuth0SessionValid() {
+  //   return firstValueFrom(this.auth0.getAccessTokenSilently())
+  //     .then(c => {//valid auth0 session so proceed
+  //       console.log("valid auth0Session");
+  //       this._auth0SessionValid.next(true);
+  //     })
+  //     .catch(() => {
+  //       console.log("no valid auth0Session token");
+  //       this._auth0SessionValid.next(false);
+  //     });
+  // }
 
   // Constructs a hash of necessary Auth Headers for communicating with OneClick
   authHeaders(): HttpHeaders {
