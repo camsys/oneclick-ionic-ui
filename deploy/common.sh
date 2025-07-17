@@ -1,6 +1,18 @@
 
 # common build commands for non-local deployments (AWS deployments)
 
+# Define NVM_DIR (adjust if NVM is installed elsewhere)
+export NVM_DIR="$HOME/.nvm"
+
+# Source nvm.sh to load NVM functions
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Optional: Source nvm bash_completion if needed
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# Now you can use NVM commands
+nvm use 16  # Example: Use Node.js version 16
+
 # copy basic assets (background image, icon, counties, localization) into expected folders
 cp ./assets/$iconimagename $src_deploy_dir/../src/assets/img/main-logo.png
 cp ./assets/$backgroundimagename $src_deploy_dir/../src/assets/img/home-background-image.png

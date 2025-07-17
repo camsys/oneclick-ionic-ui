@@ -1,4 +1,15 @@
 # local deployment script
+# Define NVM_DIR (adjust if NVM is installed elsewhere)
+export NVM_DIR="$HOME/.nvm"
+
+# Source nvm.sh to load NVM functions
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Optional: Source nvm bash_completion if needed
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# Now you can use NVM commands
+nvm use 16  # Example: Use Node.js version 16
 
 # copy assets for client into expected directories
 cp ./assets/$iconimagename $src_deploy_dir/../src/assets/img/main-logo.png
