@@ -2,7 +2,7 @@
 <h3 class="item-heading">{{service?.name}}</h3>
 
 <!-- FARE -->
-<p class="item-body service-details-section" *ngIf="service?.fare">
+<p class="item-body service-details-section" *ngIf="include_fare_cost && service?.fare">
   <b>{{ "oneclick.pages.transportation_service_details.fare" | translate }}: </b>
   {{ service?.fare | currency:'USD':'symbol':'1.2-2' }}
 </p>
