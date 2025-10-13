@@ -41,7 +41,7 @@
             <!-- Leg Time Column -->
             <ion-col no-padding size="3" class="leg-time-col">
               <ion-row class="leg-header-container">
-                <ion-col col-12 no-padding class="leg-header-container ion-text-center">
+                <ion-col col-12 no-padding class="leg-header-container">
                   {{leg.startTime | date:'shortTime'}}
                 </ion-col>
               </ion-row>
@@ -70,13 +70,19 @@
                       <!-- Display the trip origin if it's the first leg. -->
                       <h3>
                         {{ j === 0 ? (trip.origin.name || trip.origin.formatted_address)  : leg.from.name }}
-                        {{ leg.isFlex() ? leg.serviceName.toUpperCase() : leg.mode }}
-                        <ion-button shape="round" *ngIf="leg.mode != 'WALK' && leg.mode != 'CAR' && leg.mode != 'BICYCLE'"
-                          class="lynx-button-primary"
+                        </h3>
+                      <h4>{{ leg.isFlex() ? '' : leg.mode }}
+                        <button [attr.aria-label]="
+                        'oneclick.pages.directions.steps_tab.service_info_button' |
+                        translate:{
+                        service_name: leg.serviceName
+                        }
+                        "
+                          class="link-button" *ngIf="leg.mode != 'WALK' && leg.mode != 'CAR' && leg.mode != 'BICYCLE'"
                           (click)="selectService(leg.serviceId)">
-                          {{ "oneclick.pages.directions.steps_tab.service_info_button" | translate }}
-                        </ion-button>
-                      </h3>
+                          {{ leg.serviceName }}
+                        </button>
+                      </h4>
                     </div>
                   </div>
                 </ion-col>
@@ -187,7 +193,7 @@
             <ion-col no-padding size="3" class="leg-time-col">
               <ion-row class="leg-header-container">
 
-                <ion-col col-12 no-padding class="leg-header-content ion-text-center">
+                <ion-col col-12 no-padding class="leg-header-container">
 
                   <div *ngIf="trip.arrive_by" class="leg-time-header-content-description">
                     {{ "oneclick.global.directions.arrive_by" | translate }}

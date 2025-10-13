@@ -6,48 +6,48 @@
     .leg-header-container {
       display: flex;
       align-items: center;
-      
+
       min-height: size(5);
-      
+
       .leg-header-content {
-        
-        h3 {
+
+        h3, h4 {
           padding: 0;
           margin: 0;
         }
-        
+
       }
 
     }
-    
+
     // LEG TIME COLUMN
     &.leg-time-col {
       font-weight: 600;
       color: var(--lynxBlack);
-      
+
       .leg-header-container {
-        justify-content: center;
+        justify-content: right;
       }
-      
+
       // // Special styling for editable depart_at and arrive_by times
       // .leg-header-clickable {
-      //   color: var(--lynxDarkPink);        
+      //   color: var(--lynxDarkPink);
       // }
-      
+
     }
-    
+
     // LEG ICON COLUMN
     &.leg-icon-col {
       display: flex;
       flex-flow: column;
       align-items: center;
-      
+
       .leg-header-container {
         flex: 0 1 auto;
-        
-        justify-content: center;    
-      }  
-      
+
+        justify-content: center;
+      }
+
       .leg-trail-illustration {
         flex: 1 1 auto;
         width: 0;
@@ -55,33 +55,50 @@
         border-style: solid;
         border-width: 0;
         border-left-width: 0.562rem;//1rem * pow(1.333, -2);
-        
+
         &.leg-trail-walk {
           border-color: var(--lynxMdGray);
           border-radius: 0;
           border-style: dotted;
         }
-        
+
         &.leg-trail-bus {
           border-color: var(--lynxPink);
         }
-        
+
         &.leg-trail-train {
           border-color: var(--lynxPink);
         }
-        
+
         &.leg-trail-car {
           border-color: var(--lynxDarkPink);
         }
-        
+
       }
-      
+
     }
-    
+
   }
-  
-  
+
+
   // STEP STYLING
   ion-row.step-row {
     margin: size(0) 0;
+  }
+
+  .link-button {
+    display: inline; /* Makes it behave like inline text for layout */
+    padding: 0; /* Removes default button padding */
+    border: 0; /* Removes default button border */
+    font: inherit; /* Inherits font styles from its parent */
+    text-decoration: underline; /* Adds the classic link underline */
+    cursor: pointer; /* Changes cursor to a pointer on hover, like a link */
+    background: transparent; /* Removes default button background */
+    color: var(--lynxPink);
+    -webkit-appearance: none; /* Resets default browser button styles for consistency */
+  }
+
+  /* Optional: Add hover styles for a more interactive link-like experience */
+  .link-button:hover {
+    color: blue; /* Example: Change color on hover */
   }
