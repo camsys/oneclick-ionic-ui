@@ -27,6 +27,13 @@ ion-toolbar {
   font-size: large;
 }
 
+.item-subheading-no-color {
+  font-weight: 500;
+  margin-top: 15px;
+  line-height: 1.2;
+  font-size: large;
+}
+
 .item-no-color {
   font-weight: 500;
   margin-top: 15px;
@@ -36,7 +43,7 @@ ion-toolbar {
 
 .item-body {
   //color: var(--lynxBlack);
-  
+
   b {
     font-weight: 500;
   }
