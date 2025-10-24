@@ -17,6 +17,7 @@ import { ShowHidePasswordComponent } from './show-hide-password/show-hide-passwo
 import { ParatransitServicesDetailComponent } from './paratransit-services-detail/paratransit-services-detail.component';
 import { ResponsiveDatepickerMinimalComponent } from './responsive-datepicker-minimal/responsive-datepicker-minimal.component';
 import { ResponsiveTimepickerMinimalComponent } from './responsive-timepicker-minimal/responsive-timepicker-minimal.component';
+import {AlertComponent} from "./app-alert/app-alert.component";
 
 @NgModule({
     imports: [
@@ -29,6 +30,7 @@ import { ResponsiveTimepickerMinimalComponent } from './responsive-timepicker-mi
     ],
     declarations: [
         AppNavbarComponent,
+        AlertComponent,
         ExternalLinkComponent,
         PlaceSearchComponent,
         ResponsiveDatepickerComponent,
@@ -43,6 +45,7 @@ import { ResponsiveTimepickerMinimalComponent } from './responsive-timepicker-mi
     ],
     exports: [
         AppNavbarComponent,
+        AlertComponent,
         ExternalLinkComponent,
         PlaceSearchComponent,
         ResponsiveDatepickerComponent,

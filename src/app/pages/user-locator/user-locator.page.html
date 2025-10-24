@@ -4,8 +4,7 @@
   <app-navbar *ngIf="viewType === 'services'" headerTitle="{{ 'oneclick.pages.user_locator.services_help' | translate }}" skipId="skip-user-locator"></app-navbar>
   <app-navbar *ngIf="viewType != 'services'" headerTitle="{{ 'oneclick.pages.user_locator.plan_a_trip_header' | translate }}" skipId="skip-user-locator"></app-navbar>
 </ion-header>
-
-
+<app-alert></app-alert>
 
 <ion-content>
   <div style="height:100%; display: flex; flex-flow: column;">
