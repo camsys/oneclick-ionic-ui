@@ -1,7 +1,7 @@
 
 
 <!-- <ion-header> -->
-  <app-navbar headerTitle="{{ 'oneclick.pages.user_profile.header' | translate }}" skipId="skip-user-profile"></app-navbar>  
+  <app-navbar headerTitle="{{ 'oneclick.pages.user_profile.header' | translate }}" skipId="skip-user-profile"></app-navbar>
   <ion-toolbar color="primary" id="profile-subheader" class="lynx-toolbar ion-text-center">
     <h2 *ngIf="user.first_name && user.last_name">{{user.first_name}} {{user.last_name}}</h2>
     <h2 *ngIf="!user.first_name || !user.last_name">{{user.email}}</h2>
@@ -13,9 +13,9 @@
 
 <div id="user-profile-container" *ngIf="user">
 <form id="ngForm"
-      (ngSubmit)="updateProfile(updateProfileForm.valid)" 
+      (ngSubmit)="updateProfile(updateProfileForm.valid)"
       #updateProfileForm="ngForm">
-      
+
       <!-- Basic Attributes -->
   <ion-grid>
     <ion-row>
@@ -23,12 +23,12 @@
         <ion-item lines="none">
           <!-- FIRST NAME -->
           <ion-label position="stacked">{{"oneclick.pages.user_profile.first_name" | translate}}</ion-label>
-          <ion-input  class="lynx-input" 
-                      type="text" 
+          <ion-input  class="lynx-input"
+                      type="text"
                       placeholder=""
-                      name="first_name" 
+                      name="first_name"
                       [(ngModel)]="user.first_name">
-          </ion-input> 
+          </ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -38,10 +38,10 @@
         <ion-item lines="none">
           <!-- LAST NAME -->
           <ion-label position="stacked">{{"oneclick.pages.user_profile.last_name" | translate}}</ion-label>
-          <ion-input  class="lynx-input" 
-                      type="text" 
+          <ion-input  class="lynx-input"
+                      type="text"
                       placeholder=""
-                      name="last_name" 
+                      name="last_name"
                       [(ngModel)]="user.last_name">
           </ion-input>
         </ion-item>
@@ -53,27 +53,27 @@
         <ion-item lines="none">
           <!-- EMAIL -->
           <ion-label position="stacked">{{"oneclick.pages.user_profile.email" | translate}}</ion-label>
-          <ion-input  class="lynx-input" 
-                      type="email" 
+          <ion-input  class="lynx-input"
+                      type="email"
                       placeholder=""
-                      name="email" 
-                      [(ngModel)]="user.email" 
+                      name="email"
+                      [(ngModel)]="user.email"
                       required>
           </ion-input>
         </ion-item>
       </ion-col>
-    </ion-row>  
+    </ion-row>
     <ion-row>
       <ion-col>
         <div style="padding-left:16px; padding-right:16px">
           <!-- PASSWORD -->
             <ion-label id="passwordLabel" position="fixed">{{"oneclick.pages.user_profile.password" | translate}}</ion-label>
             <app-show-hide-password>
-              <ion-input class="lynx-input" 
-                        [type]="passwordFieldType" 
+              <ion-input class="lynx-input"
+                        [type]="passwordFieldType"
                         placeholder=""
                         aria-labelledby="passwordLabel"
-                        name="password" 
+                        name="password"
                         [(ngModel)]="user.password">
               </ion-input>
             </app-show-hide-password>
@@ -86,10 +86,10 @@
         <ion-item lines="none">
           <!-- Age -->
           <ion-label position="stacked">{{"oneclick.pages.user_profile.age" | translate}}</ion-label>
-          <ion-input  class="lynx-input" 
-                      type="number" 
+          <ion-input  class="lynx-input"
+                      type="number"
                       placeholder=""
-                      name="age" 
+                      name="age"
                       [(ngModel)]="user.age">
           </ion-input>
         </ion-item>
@@ -101,16 +101,16 @@
         <ion-item lines="none">
           <!-- Paratransit Id -->
           <ion-label position="stacked">{{"oneclick.pages.user_profile.paratransit_id" | translate}}</ion-label>
-          <ion-input class="lynx-input" 
-                      type="string" 
+          <ion-input class="lynx-input"
+                      type="string"
                       placeholder=""
-                      name="paratransit_id" 
+                      name="paratransit_id"
                       [(ngModel)]="user.paratransit_id">
           </ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
-      
+
 
     <!-- County -->
     <ion-row>
@@ -122,7 +122,7 @@
            [(ngModel)]="user.county">
             <ion-select-option *ngFor="let county of counties"
                         value="{{county}}">
-              {{ county }}             
+              {{ county }}
             </ion-select-option>
           </ion-select>
         </div>
@@ -145,7 +145,7 @@
         </div>
       </ion-col>
     </ion-row>
-    
+
     <!-- ACCOMMODATIONS -->
     <ion-row>
       <ion-col>
@@ -154,7 +154,7 @@
           <ion-list-header color="tertiary" >
             {{"oneclick.pages.user_profile.accommodations" | translate}}
           </ion-list-header>
-          
+
           <ion-item *ngFor="let accommodation of accommodations">
             <ion-checkbox label-placement="end" justify="start" [(ngModel)]=accommodation.value [ngModelOptions]="{standalone: true}">{{accommodation.note}}</ion-checkbox>
           </ion-item>
@@ -162,7 +162,7 @@
 
       </ion-col>
     </ion-row>
-    
+
     <!-- ELIGIBILITIES -->
     <ion-row>
       <ion-col>
@@ -171,7 +171,7 @@
           <ion-list-header color="tertiary">
             {{"oneclick.pages.user_profile.eligibilities" | translate}}
           </ion-list-header>
-          
+
           <ion-item *ngFor="let eligibility of eligibilities">
               <ion-checkbox label-placement="end" justify="start" [(ngModel)]=eligibility.value [ngModelOptions]="{standalone: true}">{{eligibility.note}}</ion-checkbox>
           </ion-item>
@@ -187,7 +187,7 @@
             <ion-list-header color="tertiary">
               {{"oneclick.pages.user_profile.trip_types" | translate}}
             </ion-list-header>
-            
+
             <ion-item *ngFor="let trip_type of trip_types">
               <ion-checkbox label-placement="end" justify="start" [(ngModel)]=trip_type.value [ngModelOptions]="{standalone: true}">{{trip_type.name}}</ion-checkbox>
             </ion-item>
@@ -196,23 +196,24 @@
     </ion-row>
   </ion-grid>
   <div *ngIf="!isRegisteredUser" style="padding:10px">
-    <ion-button shape="round" expand="full" 
-        class="lynx-button-dark center" 
+    <ion-button shape="round" expand="full"
+        class="lynx-button-dark center"
         form="ngForm"
         (click)="createNewUser(updateProfileForm.valid)">
       {{ "oneclick.pages.user_profile.create_button" | translate }}
     </ion-button>
   </div>
   <div *ngIf="isRegisteredUser" style="padding:10px">
-    <ion-button shape="round" expand="full" 
-        class="lynx-button-dark center" 
+    <ion-button shape="round" expand="full"
+        class="lynx-button-dark center"
         form="ngForm"
         (click)="updateProfile(updateProfileForm.valid)">
       {{ "oneclick.pages.user_profile.update_button" | translate }}
     </ion-button>
   </div>
 </form>
-    
+
 </div>
 </ion-content>
 
+<app-footer></app-footer>

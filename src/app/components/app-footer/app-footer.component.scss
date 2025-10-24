@@ -1,0 +1,21 @@
+.footer {
+  display: flex;
+  flex-direction: row;
+  background-color: black;
+  color: var(--lynxWhite);
+  padding: 5px 5px 5px 5px;
+}
+
+.footer-menu {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: space-evenly;
+
+  a {
+    color: var(--lynxWhite);
+  }
+  a:hover {
+    color: var(--lynxOrange);
+  }
+}

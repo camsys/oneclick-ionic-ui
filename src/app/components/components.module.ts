@@ -18,6 +18,7 @@ import { ParatransitServicesDetailComponent } from './paratransit-services-detai
 import { ResponsiveDatepickerMinimalComponent } from './responsive-datepicker-minimal/responsive-datepicker-minimal.component';
 import { ResponsiveTimepickerMinimalComponent } from './responsive-timepicker-minimal/responsive-timepicker-minimal.component';
 import {AlertComponent} from "./app-alert/app-alert.component";
+import {FooterComponent} from "./app-footer/app-footer.component";
 
 @NgModule({
     imports: [
@@ -31,6 +32,7 @@ import {AlertComponent} from "./app-alert/app-alert.component";
     declarations: [
         AppNavbarComponent,
         AlertComponent,
+        FooterComponent,
         ExternalLinkComponent,
         PlaceSearchComponent,
         ResponsiveDatepickerComponent,
@@ -46,6 +48,7 @@ import {AlertComponent} from "./app-alert/app-alert.component";
     exports: [
         AppNavbarComponent,
         AlertComponent,
+        FooterComponent,
         ExternalLinkComponent,
         PlaceSearchComponent,
         ResponsiveDatepickerComponent,

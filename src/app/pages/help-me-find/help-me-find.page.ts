@@ -11,7 +11,6 @@ import { AuthService } from 'src/app/services/auth.service';
 import { OneClickService } from 'src/app/services/one-click.service';
 import { appConfig } from 'src/environments/appConfig';
 import { UserLocatorPage } from '../user-locator/user-locator.page';
-import { appVersion } from '../../../environments/version';
 
 @Component({
   selector: 'app-help-me-find',
@@ -31,7 +30,6 @@ export class HelpMeFindPage implements OnInit {
 
   showTransportationFinder: boolean;
   showResourcesFinder: boolean;
-  appVersion:string;
 
   constructor(public router: Router,
               private platform: Platform,
@@ -41,14 +39,13 @@ export class HelpMeFindPage implements OnInit {
               public translate: TranslateService,
               public auth: AuthService,
               private title: Title) {
-                             
+
     this.url_1 = appConfig.HOME_URL_1;
     this.url_2 = appConfig.HOME_URL_2;
     this.showTransportationFinder = appConfig.INCLUDE_TRANSPORTATION_FINDER;
     this.showResourcesFinder = appConfig.INCLUDE_RESOURCES_FINDER;
-    this.appVersion = appVersion.VERSION;
   }
-  
+
   ngOnInit() {
   }
 
@@ -57,7 +54,7 @@ export class HelpMeFindPage implements OnInit {
   }
 
   ionViewDidLoad() {
-    
+
     // Wait until after platform is ready, so we have the user's preferred locale
     this.platform.ready().then(() => {
       this.oneClickProvider.getAlerts()
