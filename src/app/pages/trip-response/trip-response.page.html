@@ -84,7 +84,7 @@
     <ion-item lines="none">
       <ion-select id="sortSelector" value="{{orderBy}}" (ionChange)="orderItinList($event)" placeholder="{{ 'paratransit_sorter' | translate }}" aria-label="trip results sort options">
         <ion-select-option value="trip_type">{{ "paratransit_sorter" | translate }}</ion-select-option>
-        <ion-select-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-select-option>
+<!--        <ion-select-option value="cost">{{"sort_by" | translate}} {{"cost_sorter" | translate}}</ion-select-option>-->
         <ion-select-option value="duration">{{"sort_by" | translate}} {{"travel_time_sorter" | translate }}</ion-select-option>
         <ion-select-option value="endTime">{{"sort_by" | translate}} {{ "arrival_time_sorter" | translate }}</ion-select-option>
         <ion-select-option value="wait_time">{{"sort_by" | translate}} {{"wait_time_sorter" | translate}}</ion-select-option>
@@ -141,7 +141,7 @@
 <!--                    {{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>-->
                   <div *ngIf="include_fare_cost && !!itin.service && !hasOneService(itin)" class="item-subheading-no-color">{{ "oneclick.pages.trip_response.multi-service-fare-text" | translate }}</div>
                   <div *ngIf="include_fare_cost && !!itin.service && hasOneService(itin)" class="item-subheading-no-color">
-                    <span [innerHTML]="getFareTextHtml(itin.service)"></span>
+                    <span class="sr-only">{{ itin.service.name }}</span><span [innerHTML]="getFareTextHtml(itin.service)"></span>
                   </div>
                 </ion-col>
                 <ion-col col-sm-6>
@@ -193,7 +193,7 @@
 <!--                    <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>-->
                     <div *ngIf="include_fare_cost && !hasOneService(itin)" class="item-subheading-no-color">{{ "oneclick.pages.trip_response.multi-service-fare-text" | translate }}</div>
                     <div *ngIf="include_fare_cost && hasOneService(itin)" class="item-subheading-no-color">
-                      <span [innerHTML]="getFareTextHtml(itin.service)"></span>
+                      <span class="sr-only">{{ itin.service.name }}</span><span [innerHTML]="getFareTextHtml(itin.service)"></span>
                     </div>
                   </ion-col>
                   <ion-col col-sm-6>
@@ -250,7 +250,7 @@
 <!--                  <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>-->
                   <div *ngIf="include_fare_cost && !hasOneService(itin)" class="item-subheading-no-color">{{ "oneclick.pages.trip_response.multi-service-fare-text" | translate }}</div>
                   <div *ngIf="include_fare_cost && hasOneService(itin)" class="item-subheading-no-color">
-                    <span [innerHTML]="getFareTextHtml(itin.service)"></span>
+                    <span class="sr-only">{{ itin.service.name }}</span><span [innerHTML]="getFareTextHtml(itin.service)"></span>
                   </div>
                 </ion-col>
                 <ion-col col-sm-6>
@@ -298,7 +298,7 @@
 <!--                  <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>-->
                   <div *ngIf="include_fare_cost && !hasOneService(itin)" class="item-subheading-no-color">{{ "oneclick.pages.trip_response.multi-service-fare-text" | translate }}</div>
                   <div *ngIf="include_fare_cost && hasOneService(itin)" class="item-subheading-no-color">
-                    <span [innerHTML]="getFareTextHtml(itin.service)"></span>
+                    <span class="sr-only">{{ itin.service.name }}</span><span [innerHTML]="getFareTextHtml(itin.service)"></span>
                   </div>
                 </ion-col>
                 <ion-col col-sm-6>
