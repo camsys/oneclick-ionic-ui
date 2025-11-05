@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@ang
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 import { appConfig } from 'src/environments/appConfig';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -24,6 +24,7 @@ import { ParatransitServicesPage } from '../paratransit-services/paratransit-ser
 import { TransportationEligibilityPage } from '../transportation-eligibility/transportation-eligibility.page';
 import { UserLocatorPage } from '../user-locator/user-locator.page';
 import { ServiceFor211ModalPage } from '../211/service-for211-modal/service-for211-modal.page';
+import {OneClickServiceModel} from "../../models/one-click-service";
 
 @Component({
   selector: 'app-trip-response',
@@ -92,13 +93,13 @@ export class TripResponsePage implements OnInit, OnDestroy {
               public translate: TranslateService,
               private title: Title) {
 
-               
+
      this.include_fare_cost =  appConfig.INCLUDE_FARE_COST;
   }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
-      
+
       this.trip_id = +params.get('trip_id');
       this.location_id = params.get('location_id');
 
@@ -119,12 +120,16 @@ export class TripResponsePage implements OnInit, OnDestroy {
       }
     });
 
+    this.translate.onLangChange.pipe(takeUntil(this.unsubscribe)).subscribe((event: LangChangeEvent) => {
+      //TODO: may need to do something here eventually
+    });
+
     this.oneClick.tripPurposes.pipe(takeUntil(this.unsubscribe)).subscribe(purposes => {
       this.tripPurposes = purposes;
-      if (this.selectedTripPurposeId) 
+      if (this.selectedTripPurposeId)
         this.selectedTripPurposeName = this.tripPurposes.find(x => x.id == this.selectedTripPurposeId).name;
     })
-  }  
+  }
 
   ionViewDidEnter() {
     //need to reset this here because sometimes the title gets lost when the customize transportation options is used
@@ -135,7 +140,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
 
     // If a Trip ID is present, use that to fetch the already-planned trip
     if (!this.trip_id && this.tripRequest) {
-      
+
       this.departureDateTime = this.tripRequest.trip.trip_time;
       this.departureDate = new Date(this.departureDateTime);
       this.departureTime = new Date(this.departureDateTime);
@@ -226,7 +231,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
   // Orders the match list based on the passed string
   orderItinList(event?:any) {
     if (event) this.orderBy = event.detail.value;//from UI
-    
+
     if(this.orderBy == "duration") {
       this.orderByDuration();
     } else if(this.orderBy == "walk_distance") {
@@ -459,8 +464,8 @@ export class TripResponsePage implements OnInit, OnDestroy {
         .subscribe((svc) => {
           this.modalCtrl.create({
             component: ServiceFor211ModalPage,
-            componentProps: { 
-              service: svc 
+            componentProps: {
+              service: svc
             }
           }).then(modal => {
             modal.onDidDismiss().then(resp => {
@@ -474,7 +479,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
               }
             });
             return modal;
-          }).then(serviceModal => serviceModal.present());    
+          }).then(serviceModal => serviceModal.present());
         });
     }
   }
@@ -640,6 +645,32 @@ export class TripResponsePage implements OnInit, OnDestroy {
     }
 
     return tripArriveByTime;
+  }
+
+  getFareTextHtml(service: OneClickServiceModel): string {
+    if (!service || !service.fare_text || service.fare_text.includes("missing key")) {
+      return this.translate.instant('oneclick.pages.trip_response.default-fare-text');
+    }
+    return service.fare_text;
+  }
+
+
+  hasOneService(itin: ItineraryModel): boolean {
+    //basic checks
+    if (!itin.service) return false;//no service at all for itinerary - walking, driving, bicycle etc.
+    if (!itin.legs || itin.legs.length == 0) return true;//no legs for this itinerary so just one service here (paratransit)
+
+    //create array of all service ids in all the legs (leaving out undefined)
+    const serviceIdArray =
+      itin.legs
+        .map(l => l.serviceId)
+        .filter((id : number) => id !== undefined);
+
+    //create a set to remove duplicates
+    const serviceIdSet = new Set(serviceIdArray);
+
+    //if only one service, then the size will be 1
+    return serviceIdSet.size <= 1;
   }
 
   ngOnDestroy() {

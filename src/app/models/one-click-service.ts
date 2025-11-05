@@ -12,6 +12,7 @@ export class OneClickServiceModel {
   url?: string;
   email?: string;
   phone?: string;
+  fare_text?: string;
   formatted_phone?: string;
   description?: string;
   logo?: string;
@@ -21,7 +22,7 @@ export class OneClickServiceModel {
   purposes?: Purpose[];
   accommodations?: Accommodation[];
   eligibilities?: Eligibility[];
-  
+
   constructor(attrs: any) {
     this.id = attrs.id;
     this.name = attrs.name;
@@ -37,7 +38,7 @@ export class OneClickServiceModel {
     this.accommodations = attrs.accommodations || [];
     this.eligibilities = attrs.eligibilities || [];
   }
-  
+
   search(query: string): Boolean {
     query = query.toLowerCase();
     return (
@@ -45,13 +46,13 @@ export class OneClickServiceModel {
       this.description.toLowerCase().search(query) >= 0
     );
   }
-  
+
   toSearchResult(): SearchResultModel {
     return {
       id: this.id,
       type: "Service",
       label: this.name,
-      result: this 
+      result: this
     };
-  } 
+  }
 }

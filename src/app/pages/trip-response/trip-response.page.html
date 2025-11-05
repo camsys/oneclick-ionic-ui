@@ -134,11 +134,15 @@
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <div *ngIf="itin.cost && include_fare_cost" class="item-no-color"><b>
-                    {{ [itin.cost] | prettyFare }}
-                  </b></div>
-                  <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>
-                    {{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>
+<!--                  <div *ngIf="itin.cost && include_fare_cost" class="item-no-color"><b>-->
+<!--                    {{ [itin.cost] | prettyFare }}-->
+<!--                  </b></div>-->
+<!--                  <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>-->
+<!--                    {{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>-->
+                  <div *ngIf="include_fare_cost && !!itin.service && !hasOneService(itin)" class="item-subheading-no-color">{{ "oneclick.pages.trip_response.multi-service-fare-text" | translate }}</div>
+                  <div *ngIf="include_fare_cost && !!itin.service && hasOneService(itin)" class="item-subheading-no-color">
+                    <span [innerHTML]="getFareTextHtml(itin.service)"></span>
+                  </div>
                 </ion-col>
                 <ion-col col-sm-6>
                   <ion-button shape="round"
@@ -183,10 +187,14 @@
                 </ion-row>
                 <ion-row>
                   <ion-col col-sm-6>
-                    <div *ngIf="itin.cost && include_fare_cost" class="item-no-color"><b>
-                      {{ [itin.cost] | prettyFare }}
-                    </b></div>
-                    <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>
+<!--                    <div *ngIf="itin.cost && include_fare_cost" class="item-no-color"><b>-->
+<!--                      {{ [itin.cost] | prettyFare }}-->
+<!--                    </b></div>-->
+<!--                    <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>-->
+                    <div *ngIf="include_fare_cost && !hasOneService(itin)" class="item-subheading-no-color">{{ "oneclick.pages.trip_response.multi-service-fare-text" | translate }}</div>
+                    <div *ngIf="include_fare_cost && hasOneService(itin)" class="item-subheading-no-color">
+                      <span [innerHTML]="getFareTextHtml(itin.service)"></span>
+                    </div>
                   </ion-col>
                   <ion-col col-sm-6>
                     <ion-button shape="round"
@@ -236,10 +244,14 @@
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <div *ngIf="itin.cost && include_fare_cost" class="item-no-color"><b>
-                    {{ [itin.cost] | prettyFare }}
-                  </b></div>
-                  <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>
+<!--                  <div *ngIf="itin.cost && include_fare_cost" class="item-no-color"><b>-->
+<!--                    {{ [itin.cost] | prettyFare }}-->
+<!--                  </b></div>-->
+<!--                  <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>-->
+                  <div *ngIf="include_fare_cost && !hasOneService(itin)" class="item-subheading-no-color">{{ "oneclick.pages.trip_response.multi-service-fare-text" | translate }}</div>
+                  <div *ngIf="include_fare_cost && hasOneService(itin)" class="item-subheading-no-color">
+                    <span [innerHTML]="getFareTextHtml(itin.service)"></span>
+                  </div>
                 </ion-col>
                 <ion-col col-sm-6>
                   <ion-button shape="round"
@@ -282,8 +294,12 @@
 
               <ion-row>
                 <ion-col col-sm-6>
-                  <div *ngIf="itin.cost && include_fare_cost" class="item-no-color"><b>{{ [itin.cost] | prettyFare }}</b></div>
-                  <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>
+<!--                  <div *ngIf="itin.cost && include_fare_cost" class="item-no-color"><b>{{ [itin.cost] | prettyFare }}</b></div>-->
+<!--                  <div *ngIf="!itin.cost && include_fare_cost" class="item-no-color"><b>{{ "oneclick.pages.trip_response.cost_na_header" | translate }}</b></div>-->
+                  <div *ngIf="include_fare_cost && !hasOneService(itin)" class="item-subheading-no-color">{{ "oneclick.pages.trip_response.multi-service-fare-text" | translate }}</div>
+                  <div *ngIf="include_fare_cost && hasOneService(itin)" class="item-subheading-no-color">
+                    <span [innerHTML]="getFareTextHtml(itin.service)"></span>
+                  </div>
                 </ion-col>
                 <ion-col col-sm-6>
                   <ion-button shape="round"
