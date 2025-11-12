@@ -217,6 +217,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
   ionViewWillLeave() {
     if(this.tripPlanSubscription) {
       this.tripPlanSubscription.unsubscribe();
+      this.loader.hideLoader();//just in case
     }
   }
 
