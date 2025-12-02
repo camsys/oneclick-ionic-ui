@@ -129,7 +129,7 @@
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <div class="item-subheading">{{ itin.duration | prettyTime }} ({{'oneclick.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</div>
+                  <div class="item-subheading">{{ "global.duration" | translate }}: {{ itin.duration | prettyTime }} ({{'oneclick.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</div>
                 </ion-col>
               </ion-row>
               <ion-row>
@@ -182,7 +182,7 @@
                 </ion-row>
                 <ion-row>
                   <ion-col col-sm-6>
-                    <div class="item-subheading">{{ itin.duration | prettyTime }} ({{'oneclick.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</div>
+                    <div class="item-subheading">{{ "global.duration" | translate }}: {{ itin.duration | prettyTime }} ({{'oneclick.global.modes.transit' | translate}}: {{itin.transit_time | prettyTime}}, {{'global.otp.misc.Walk' | translate}}: {{itin.walk_time | prettyTime}}, {{'global.otp.misc.wait' | translate}}: {{(itin.wait_time || 0) | prettyTime}})</div>
                   </ion-col>
                 </ion-row>
                 <ion-row>
@@ -239,7 +239,7 @@
               </ion-row>
               <ion-row>
                 <ion-col size="12">
-                  <div class="item-subheading">{{itin.duration | prettyTime}} {{'oneclick.global.modes.paratransit' | translate}} ({{'oneclick.global.modes.paratransit_estimated' | translate}})</div>
+                  <div class="item-subheading">{{ "global.duration" | translate }}: {{itin.duration | prettyTime}} {{'oneclick.global.modes.paratransit' | translate}} ({{'oneclick.global.modes.paratransit_estimated' | translate}})</div>
                 </ion-col>
               </ion-row>
               <ion-row>
@@ -288,7 +288,7 @@
 
               <ion-row>
                 <ion-col col-sm-6>
-                  <div class="item-subheading">{{"oneclick.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</div>
+                  <div class="item-subheading">{{ "global.duration" | translate }}: {{"oneclick.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</div>
                 </ion-col>
               </ion-row>
 
@@ -327,7 +327,7 @@
               </ion-row>
               <ion-row>
                 <ion-col col-sm-6>
-                  <div class="item-subheading">{{"oneclick.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</div>
+                  <div class="item-subheading">{{ "global.duration" | translate }}: {{"oneclick.global.modes." + itin.trip_type | translate}}: {{itin.duration | prettyTime}}</div>
                 </ion-col>
               </ion-row>
               <ion-row>
