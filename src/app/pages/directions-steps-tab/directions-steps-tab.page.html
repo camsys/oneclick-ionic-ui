@@ -241,7 +241,7 @@
       <ion-row>
         <!-- Email button -->
         <ion-col class="ion-text-center">
-          <h3>{{ "email_your_ride_details" | translate }}</h3>
+          <h3 [innerHTML]="'email_your_ride_details' | translate"></h3>
           <ion-button shape="round"
                   class="lynx-button-primary"
                   (click)="openEmailModal()">
