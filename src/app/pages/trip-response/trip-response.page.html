@@ -105,7 +105,7 @@
               <ion-row>
                 <ion-col col-sm-6>
                   <ng-container *ngFor="let leg of itin.legs; index as i">
-                    <div class="otp-legMode-icon otp-legMode-icon-{{ leg.mode }}"></div>
+                    <div role="img" [attr.aria-label]="leg.mode" class="otp-legMode-icon otp-legMode-icon-{{ leg.mode }}"></div>
                     <div *ngIf="!!leg.route" class="item-subheading-no-color">{{ leg.route }}</div>
                     <div *ngIf="i != itin.legs.length-1" class="otp-legMode-icon otp-legMode-icon-arrow-right" style="margin-left: 4px;"></div>
                   </ng-container>
@@ -158,8 +158,8 @@
                 <ion-row>
                   <ion-col col-sm-6>
                     <ng-container *ngFor="let leg of itin.legs; index as i">
-                      <div *ngIf="!leg.isFlex()" class="otp-legMode-icon otp-legMode-icon-{{ leg.mode }}"></div>
-                      <div *ngIf="leg.isFlex()" class="otp-legMode-icon otp-legMode-icon-paratransit"></div>
+                      <div *ngIf="!leg.isFlex()" role="img" [attr.aria-label]="leg.mode" class="otp-legMode-icon otp-legMode-icon-{{ leg.mode }}"></div>
+                      <div *ngIf="leg.isFlex()" role="img" aria-label="flex" class="otp-legMode-icon otp-legMode-icon-paratransit"></div>
                       <div *ngIf="i != itin.legs.length-1" class="otp-legMode-icon otp-legMode-icon-arrow-right" style="margin-left: 4px;"></div>
                     </ng-container>
                   </ion-col>
