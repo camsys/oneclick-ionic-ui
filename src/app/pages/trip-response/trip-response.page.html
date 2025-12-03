@@ -160,7 +160,7 @@
                     <ng-container *ngFor="let leg of itin.legs; index as i">
                       <div *ngIf="!leg.isFlex()" role="img" [attr.aria-label]="leg.mode" class="otp-legMode-icon otp-legMode-icon-{{ leg.mode }}"></div>
                       <div *ngIf="!leg.isFlex() &&!!leg.route" class="item-subheading-no-color">{{ leg.route }}</div>
-                      <div *ngIf="leg.isFlex()" role="img" aria-label="flex" class="otp-legMode-icon otp-legMode-icon-paratransit"></div>
+                      <div *ngIf="leg.isFlex()" role="img" [attr.aria-label]="!!leg.serviceName ? leg.serviceName : 'flex'" class="otp-legMode-icon otp-legMode-icon-paratransit"></div>
                       <div *ngIf="i != itin.legs.length-1" class="otp-legMode-icon otp-legMode-icon-arrow-right" style="margin-left: 4px;"></div>
                     </ng-container>
                   </ion-col>
