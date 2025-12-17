@@ -16,4 +16,7 @@
         [attr.aria-activedescendant]="activeResultId"
         role="combobox"
     />
+  <div aria-live="polite" role="region" aria-atomic="true" class="sr-only">
+    <p>{{ liveRegionMessage }}</p>
+  </div>
 </search-wrapper>

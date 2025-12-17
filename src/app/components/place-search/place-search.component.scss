@@ -14,6 +14,15 @@ input {
     //border-radius: inherit;
   }
 
+.sr-only {
+  position:absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
+
 /* Style the input fields */
 // .input-field {
 //     width: 100%;

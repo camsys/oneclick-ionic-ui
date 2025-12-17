@@ -31,6 +31,7 @@ export class PlaceSearchComponent implements OnInit {
   activeResultId: string = "";
   resultsExpanded: boolean = false;
   ignoreBlur: boolean = false;
+  liveRegionMessage = '';
 
   searchControl:FormControl = new FormControl();
 
@@ -125,6 +126,14 @@ export class PlaceSearchComponent implements OnInit {
   private refresh() {
     // Set autocomplete results to the combination of the google and oneclick place searches
     this.autocompleteItems = this.oneClickAutocompleteItems.concat(this.googleAutocompleteItems);
+
+    //update live region message with number of results
+    if (this.autocompleteItems && this.autocompleteItems.length > 0) {
+      this.liveRegionMessage = this.autocompleteItems.length + " " + this.translate.instant("oneclick.pages.user_locator.search_instructions");
+    }
+    else {
+      this.liveRegionMessage = this.translate.instant("oneclick.pages.categories.resources_search.empty_search_result");
+    }
     this.onChange.emit();
   }
 
