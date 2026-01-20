@@ -15,7 +15,7 @@ export class ResponsiveTimepickerMinimalComponent implements OnInit {
   // Component accepts a date input to initialize it. Defaults to the current date and time.
   private _time:string = this.helpers.dateISOStringWithTimeZoneOffset(new Date());
 
-  @Input() 
+  @Input()
   set time(timeString:string) {
     if (timeString) {
       this._time = timeString;
@@ -66,7 +66,11 @@ export class ResponsiveTimepickerMinimalComponent implements OnInit {
     if (hours <= 12 && hours >= 1) {
       let tempDate = new Date(this._time);
       let ampm = this.ampmControl.value;
-      tempDate.setHours(ampm == "AM" ? hours : hours + 12);
+
+      if (hours == 12 && ampm == "AM") tempDate.setHours(0);
+      else if (hours == 12 && ampm == "PM") tempDate.setHours(hours)
+      else tempDate.setHours(ampm == "AM" ? hours : hours + 12);
+
       this._time = this.helpers.dateISOStringWithTimeZoneOffset(tempDate);
       this.outputUpdatedDate(this.helpers.dateISOStringWithTimeZoneOffset(tempDate));
     }

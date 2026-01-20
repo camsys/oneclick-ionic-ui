@@ -55,7 +55,11 @@ export class ResponsiveTimepickerComponent implements OnInit {
         if (hours <= 12 && hours >= 1) {
           let tempDate = new Date(this.time);
           let ampm = this.ampmControl.value;
-          tempDate.setHours(ampm == "AM" ? hours : hours + 12);
+
+          if (hours == 12 && ampm == "AM") tempDate.setHours(0);
+          else if (hours == 12 && ampm == "PM") tempDate.setHours(hours)
+          else tempDate.setHours(ampm == "AM" ? hours : hours + 12);
+
           this.time = this.helpers.dateISOStringWithTimeZoneOffset(tempDate);
           this.outputUpdatedDate(this.time);
         }
