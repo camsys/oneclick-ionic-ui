@@ -83,3 +83,8 @@ responsive-datepicker input,
 responsive-timepicker input {
   caret-color: black !important;
 }
+
+//need this here to set background color of input part of ion-input (see transportation-eligibility.page.html age input)
+ion-input.input-background .native-input.sc-ion-input-md {
+  background-color: var(--lynxWhite);
+}

@@ -73,8 +73,9 @@
     </ion-list-header>
 
     <ion-item lines="none">
-      <ion-label position="fixed">{{"oneclick.pages.user_profile.age" | translate}}</ion-label>
-      <ion-input  type="number"
+      <ion-input  type="number" class="input-background"
+                  label="{{'oneclick.pages.user_profile.age' | translate}}"
+                  labelPlacement="fixed"
                   name="age"
                   [(ngModel)]="age"
                   min="0">

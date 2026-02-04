@@ -44,11 +44,11 @@
   //   // text-transform: uppercase;
   //   // font-weight: 500;
   //   // font-size: 14px;
-  
+
   //   border-color: var(--lynxDkGray);
   //   //border-style: dashed;
   //   border-width: 1px;
-  
+
   //   --border-radius: 64px;
   // }
 
@@ -59,9 +59,10 @@
     --highlight-background: unset;
   }
 
-  ion-input {
-    --background: var(--lynxWhite);
-  }
+  //need to set this in the global.scss instead
+  //ion-input {
+  //  --background: var(--lynxWhite);
+  //}
 
   .has-focus {
     border: solid 1px rgba(var(--lynxPinkRGB), 1);
