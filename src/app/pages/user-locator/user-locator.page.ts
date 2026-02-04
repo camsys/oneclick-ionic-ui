@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { OnDestroy, } from '@angular/core';
 import { appConfig } from 'src/environments/appConfig';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-user-locator',
@@ -54,7 +55,7 @@ export class UserLocatorPage implements OnInit, OnDestroy {
 
   showToolbar:boolean = true;
 
-  private unsubscribe: Subject<void> = new Subject(); 
+  private unsubscribe: Subject<void> = new Subject();
 
   constructor(public router: Router,
               private route: ActivatedRoute,
@@ -67,7 +68,8 @@ export class UserLocatorPage implements OnInit, OnDestroy {
               public translate: TranslateService,
               public toastCtrl: ToastController,
               public alertController: AlertController,
-              private oneClickService: OneClickService
+              private oneClickService: OneClickService,
+              private title: Title
             ) {
 
     this.tripPurposeFilterOn = appConfig.INCLUDE_TRIP_PURPOSE_FILTER;
@@ -100,7 +102,7 @@ export class UserLocatorPage implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-  
+
 
   loadTripPurposes() {
     if (this.tripPurposeFilterOn) {
@@ -112,16 +114,22 @@ export class UserLocatorPage implements OnInit, OnDestroy {
       );
     }
   }
-  
+
   tripPurposeChanged(e) {
     this.selectedTripPurposeId = e.detail.value;
     console.log('Trip purpose is:', this.selectedTripPurposeId);
   }
-  
+
 
   ionViewDidEnter() {
+    //force html page title update here since it doesn't always interact with nav component correctly
+    if (this.viewType == 'services') {
+      this.title.setTitle(this.translate.instant('oneclick.pages.user_locator.services_help'))
+    }
+    else this.title.setTitle(this.translate.instant('oneclick.pages.user_locator.plan_a_trip_header'))
+
     this.showToolbar = true;//make sure this visible whenever user enters page
-    
+
     // Initialize the map once device is ready
     this.platform.ready()
     .then(() => this.initializeMap());
@@ -160,7 +168,7 @@ export class UserLocatorPage implements OnInit, OnDestroy {
     this.changeDetector.markForCheck();
   }
 
-  
+
 
   // Updates the userLocation, and centers the map at the given latlng
   zoomToOriginLocation(latLng: google.maps.LatLng) {
