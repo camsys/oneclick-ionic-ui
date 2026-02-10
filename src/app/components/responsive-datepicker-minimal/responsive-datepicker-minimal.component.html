@@ -1,6 +1,8 @@
 
 <div class="date-container ion-justify-content-between">
-  <ion-input aria-label="date-entry" [value]="date | date:'M/d/yyyy'"
+  <label id="date-picker-label" hidden>{{ 'oneclick.pages.user_locator.trip_date' | translate }}</label>
+
+  <ion-input aria-label="date-entry" [value]="date | date:'M/d/yyyy'" aria-labelledby="date-picker-label"
   [formControl]="dateControl" placeholder="MM/DD/YYYY">
 
   </ion-input>
