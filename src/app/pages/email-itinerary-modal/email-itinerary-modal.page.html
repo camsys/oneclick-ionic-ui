@@ -9,7 +9,7 @@
 
 <ion-content>
 
-    
+
   <form [formGroup]="emailForm" (ngSubmit)="send()">
 
     <ion-grid>
@@ -21,8 +21,8 @@
         <ion-col>
           <ion-item lines="none">
             <!-- Email input just a standard text input -->
-            <ion-label slot="start">{{'email' | translate}}</ion-label>
-            <ion-input type="email" required formControlName="email">
+            <ion-input type="email" required formControlName="email" class="input-background"
+                       labelPlacement="fixed" label="{{'email' | translate}}">
           </ion-input>
         </ion-item>
         </ion-col>
@@ -34,7 +34,7 @@
         <ion-button shape="round" color="primary"
                 type="submit">{{ "oneclick.pages.email.submit_button" | translate }}
         </ion-button>
-     
+
         <!-- Submit button creates a feedback, cancel discards data without leaving feedback-->
         <ion-button shape="round" color="primary"
                 type="button"
