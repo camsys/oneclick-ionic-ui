@@ -145,7 +145,7 @@
                   </div>
                 </ion-col>
                 <ion-col col-sm-6>
-                  <ion-button shape="round"
+                  <ion-button shape="round" [attr.aria-label]="getSelectButtonAriaLabel(itin)"
                           class="lynx-button-primary mode-trip-plan-button"
                           (click)="openDirectionsPageForItinerary(itin)">
                     {{ "oneclick.pages.trip_response.go_button" | translate }}
@@ -198,7 +198,7 @@
                     </div>
                   </ion-col>
                   <ion-col col-sm-6>
-                    <ion-button shape="round"
+                    <ion-button shape="round" [attr.aria-label]="getSelectButtonAriaLabel(itin)"
                             class="lynx-button-primary mode-trip-plan-button"
                             (click)="openDirectionsPageForItinerary(itin)">
                       {{ "oneclick.pages.trip_response.go_button" | translate }}
@@ -255,7 +255,7 @@
                   </div>
                 </ion-col>
                 <ion-col col-sm-6>
-                  <ion-button shape="round"
+                  <ion-button shape="round" [attr.aria-label]="getSelectButtonAriaLabel(itin)"
                           class="lynx-button-primary mode-trip-plan-button"
                           (click)="openDirectionsPageForItinerary(itin)">
                     {{ "oneclick.pages.trip_response.go_button" | translate }}
@@ -303,7 +303,7 @@
                   </div>
                 </ion-col>
                 <ion-col col-sm-6>
-                  <ion-button shape="round"
+                  <ion-button shape="round" [attr.aria-label]="getSelectButtonAriaLabel(itin)"
                           class="lynx-button-primary mode-trip-plan-button"
                           (click)="openDirectionsPageForItinerary(itin)">
                     {{ "oneclick.pages.trip_response.go_button" | translate }}
@@ -335,7 +335,7 @@
                 <ion-col col-sm-6>
                 </ion-col>
                 <ion-col col-sm-6>
-                  <ion-button shape="round"
+                  <ion-button shape="round" [attr.aria-label]="getSelectButtonAriaLabel(itin)"
                           class="lynx-button-primary mode-trip-plan-button"
                           (click)="openDirectionsPageForItinerary(itin)">
                     {{ "oneclick.pages.trip_response.go_button" | translate }}

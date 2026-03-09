@@ -674,6 +674,36 @@ export class TripResponsePage implements OnInit, OnDestroy {
     return serviceIdSet.size <= 1;
   }
 
+  getSelectButtonAriaLabel(itin: ItineraryModel): string {
+    return this.translate.instant("oneclick.pages.trip_response.go_button") + "-" + this.getItineraryDescription(itin);
+  }
+
+  getItineraryDescription(itin: ItineraryModel) : string {
+    let description = "";
+
+    if (itin.trip_type == 'paratransit') {
+      description = itin.service.name;//just use service name
+    }
+    else if (itin.trip_type == 'transit' || itin.trip_type == 'paratransit_mixed') {
+      if (!itin.legs || itin.legs.length <= 1) {
+        description = itin.service.name;
+      }
+      else {
+        const serviceNameArray =
+          itin.legs
+            .map(l => l.serviceName)
+            .filter((name : string) => name !== undefined);
+
+        //create set to remove duplicates   
+        const serviceNameSet = new Set(serviceNameArray);
+        description = Array.from(serviceNameSet).join(' ');
+      }
+    }
+    else description = itin.trip_type;//default option
+
+    return description;
+  }
+
   ngOnDestroy() {
     this.unsubscribe.next(null);
     this.unsubscribe.complete();
