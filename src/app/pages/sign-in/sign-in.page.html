@@ -16,7 +16,15 @@
       <ion-row>
         <ion-col>
           <ion-item lines="none">
-            <ion-label position="stacked" class="ion-text-wrap">{{ 'email' | translate }}</ion-label>
+            <ion-label>{{ 'oneclick.asterick-instructions' | translate }}</ion-label>
+        </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item lines="none">
+            <ion-label position="stacked" class="ion-text-wrap">{{ 'email' | translate }} *</ion-label>
             <ion-input  type="text"
                         name="email"
                         [(ngModel)]="user.email"
@@ -28,7 +36,7 @@
       <ion-row>
         <ion-col>
           <ion-item lines="none">
-            <ion-label position="stacked" class="ion-text-wrap">{{ 'password' | translate }}</ion-label>
+            <ion-label position="stacked" class="ion-text-wrap">{{ 'password' | translate }} *</ion-label>
             <ion-input  type="password"
                         name="password"
                         [(ngModel)]="user.password"

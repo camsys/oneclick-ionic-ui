@@ -19,7 +19,10 @@
       <ion-row>
         <ion-col>
           <ion-item lines="none">
-            <ion-label position="stacked" class="ion-text-wrap">{{ 'oneclick.pages.sign_up.email_placeholder' | translate }}</ion-label>
+            <ion-label>{{ 'oneclick.asterick-instructions' | translate }}</ion-label>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label position="stacked" class="ion-text-wrap">{{ 'oneclick.pages.sign_up.email_placeholder' | translate }} *</ion-label>
             <ion-input  formControlName="formControlEmail"
                         class="lynx-input"
                         type="text"
@@ -29,7 +32,7 @@
           </ion-item>
 
           <ion-item lines="none">
-            <ion-label position="stacked" class="ion-text-wrap">{{ 'oneclick.pages.sign_up.password_placeholder' | translate }}</ion-label>
+            <ion-label position="stacked" class="ion-text-wrap">{{ 'oneclick.pages.sign_up.password_placeholder' | translate }} *</ion-label>
             <ion-input  formControlName="formControlPassword"
                         class="lynx-input"
                         type="password"
@@ -39,7 +42,7 @@
           </ion-item>
 
           <ion-item lines="none">
-            <ion-label position="stacked" id="passwordConfirmLabel" class="ion-text-wrap">{{ 'oneclick.pages.sign_up.confirm_password_placeholder' | translate }}</ion-label>
+            <ion-label position="stacked" id="passwordConfirmLabel" class="ion-text-wrap">{{ 'oneclick.pages.sign_up.confirm_password_placeholder' | translate }} *</ion-label>
             <ion-input  formControlName="formControlPasswordConfirm"
                         class="lynx-input"
                         type="password"

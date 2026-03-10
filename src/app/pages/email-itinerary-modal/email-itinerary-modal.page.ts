@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ModalController, NavParams, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, NavParams, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { ItineraryModel } from 'src/app/models/itinerary';
 import { AuthService } from 'src/app/services/auth.service';
@@ -22,7 +22,8 @@ export class EmailItineraryModalPage implements OnInit {
               private formBuilder: FormBuilder,
               private toastCtrl: ToastController,
               private translate: TranslateService,
-              private auth: AuthService) {
+              private auth: AuthService,
+              private alert: AlertController) {
 
     this.itinerary = navParams.get('itinerary');
     this.emailForm = this.formBuilder.group({
@@ -36,15 +37,22 @@ export class EmailItineraryModalPage implements OnInit {
   }
 
   async send(){
-
-    this.oneClick.emailItinerary(this.emailForm.value['email'],this.itinerary.id);
-    await this.modalCtrl.dismiss(null);
-    this.toastCtrl.create({
-      message: this.translate.instant('oneclick.pages.email.email_sent'),
-      position: 'bottom',
-      duration: 3000
-    }).then(toast => toast.present());
-
+    let email = this.emailForm.value['email'];
+    if (!email) {this.alert.create({
+        header: this.translate.instant("oneclick.global.missing_fields"),
+        message: this.translate.instant("global.enter_valid_emails"),
+        buttons: [this.translate.instant("oneclick.global.ok")],
+      }).then(alert => alert.present());
+    }
+    else {
+      this.oneClick.emailItinerary(this.emailForm.value['email'],this.itinerary.id);
+      await this.modalCtrl.dismiss(null);
+      this.toastCtrl.create({
+        message: this.translate.instant('oneclick.pages.email.email_sent'),
+        position: 'bottom',
+        duration: 3000
+      }).then(toast => toast.present());
+    }
   }
 
   ngOnInit() {
