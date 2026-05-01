@@ -51,7 +51,10 @@
             <ion-col no-padding size="1" class="leg-icon-col">
               <div class="leg-header-container">
                 <div class="leg-header-content">
-                  <ion-icon class="icon-med" name="{{leg.modeIconName()}}"></ion-icon>
+                  <ion-icon class="icon-med" name="{{leg.modeIconName()}}"
+                            [attr.aria-label]="leg.modeIconName()">
+
+                  </ion-icon>
                 </div>
               </div>
 

@@ -155,13 +155,11 @@ export class PlaceSearchComponent implements OnInit {
     this.place = place;
     this.query = this.place.name || this.place.formatted_address;
     this.clearAutocomplete(); // Clear the autocomplete results
-    this.loader.hideLoader();// Hide spinner once places are returned
     this.onSelect.emit(this.place); // Emit the onSelect output event
   }
 
   // Select an item from the search results list
   chooseItem(item: any, viewType: string) {
-    this.loader.showLoader(); // Show spinner until geocoding call returns
 
     // If the item already has a lat/lng, save it as the selected place.
     if(item && item.result && new GooglePlaceModel(item.result).isGeocoded()) {
