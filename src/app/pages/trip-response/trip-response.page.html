@@ -94,13 +94,28 @@
   </ion-row>
 
 
+  <!-- Visually hidden live region for status updates -->
+  <div class="sr-only" role="status">
+    {{ screenReaderStatus }}
+  </div>
+
+  <div [attr.aria-busy]="showSpinner">
+
+    <!-- Loaded Content -->
+    <div *ngIf="!showSpinner">
+      <!-- We will move focus to this heading when loading ends -->
+      <h2 #resultsHeading tabindex="-1" class="sr-only">
+        {{ 'oneclick.global.transportation.help' | translate }}
+      </h2>
+      
+
         <ion-list class="lynx-list">
 
           <ion-item *ngIf="itineraries && itineraries.length == 0">{{ "oneclick.pages.categories.resources_search.empty_search_result" | translate}}</ion-item>
 
           <!-- For each mode other than paratransit, build a button -->
           <ion-item class="itinerary-item" *ngFor="let itin of itineraries; index as c">
-            <h2 class="sr-only">{{ 'oneclick.global.transportation.help' | translate }}</h2>
+            <h3 class="sr-only">{{ 'oneclick.global.transportation.help' | translate }}</h3>
             <ion-grid *ngIf="itin.trip_type == 'transit' || itin.trip_type == 'car_park'">
               <ion-row>
                 <ion-col col-sm-6>
@@ -348,6 +363,9 @@
 
         </ion-list>
 
+
+    </div>
+  </div>
 
 </ion-content>
 <app-footer></app-footer>

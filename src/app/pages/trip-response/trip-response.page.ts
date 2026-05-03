@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
@@ -38,6 +38,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
 
   @ViewChild('originSearch') originSearch: PlaceSearchComponent;
   @ViewChild('destinationSearch') destinationSearch: PlaceSearchComponent;
+  @ViewChild('resultsHeading') resultsHeading: ElementRef;
 
 
   origin: GooglePlaceModel = new GooglePlaceModel({});
@@ -79,6 +80,10 @@ export class TripResponsePage implements OnInit, OnDestroy {
   selectedTripPurposeName: string;
   tripPurposes:any;
 
+  showSpinner: Boolean = false;
+  screenReaderStatus = '';
+  loadingInterval: any;
+
   constructor(public navCtrl: NavController,
               private route: ActivatedRoute,
               private router: Router,
@@ -95,6 +100,10 @@ export class TripResponsePage implements OnInit, OnDestroy {
 
 
      this.include_fare_cost =  appConfig.INCLUDE_FARE_COST;
+
+     this.loader.loaderStatus.subscribe((loaderStatus:boolean) => {
+      this.showSpinner = loaderStatus;
+    });
   }
 
   ngOnInit() {
@@ -136,6 +145,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
     this.title.setTitle(this.translate.instant('oneclick.global.transportation.help'));
 
     // Show the spinner until a trip is present
+    this.startProgressAnnouncements(5000);
     this.loader.showLoader();
 
     // If a Trip ID is present, use that to fetch the already-planned trip
@@ -218,6 +228,8 @@ export class TripResponsePage implements OnInit, OnDestroy {
     if(this.tripPlanSubscription) {
       this.tripPlanSubscription.unsubscribe();
       this.loader.hideLoader();//just in case
+      this.stopProgressAnnouncements();
+      this.screenReaderStatus = '';
     }
   }
 
@@ -369,7 +381,16 @@ export class TripResponsePage implements OnInit, OnDestroy {
     }
 
     this.changeDetector.markForCheck(); // using markForCheck instead of detectChanges fixes view destroyed error
+    this.stopProgressAnnouncements();
     this.loader.hideLoader();
+
+    // Focus Management:
+      // A small timeout ensures the *ngIf has rendered the element
+      setTimeout(() => {
+        if (this.resultsHeading) {
+          this.resultsHeading.nativeElement.focus();
+        }
+      }, 100);
   }
 
   //return to trip plan page
@@ -439,6 +460,7 @@ export class TripResponsePage implements OnInit, OnDestroy {
       // Once response comes in, update the UI with travel times and allow
       // user to select a mode to view directions.
       // Show the spinner until a trip is present
+      this.startProgressAnnouncements(5000);
       this.loader.showLoader();
       this.tripPlanSubscription = this.oneClick // Store the subscription in a property so it can be unsubscribed from if necessary
         .planTrip(this.tripRequest)
@@ -704,8 +726,44 @@ export class TripResponsePage implements OnInit, OnDestroy {
     return description;
   }
 
+  /**
+ * Updates the live region by briefly clearing it to ensure 
+ * the screen reader perceives a change and announces it.
+ * @param message The text you want announced.
+ */
+  announce(message: string) {
+    // 1. Clear the message
+    this.screenReaderStatus = '';
+
+    // 2. Use a tiny delay to ensure the DOM updates to empty
+    setTimeout(() => {
+      this.screenReaderStatus = message;
+    }, 100); // 100ms is usually enough for all screen readers
+  }
+
+  startProgressAnnouncements(milliseconds: number) {
+    // Clear any existing intervals first
+    this.stopProgressAnnouncements();
+
+    // Announce immediately
+    this.announce(this.translate.instant('oneclick.loading.alt-text'));
+
+    // Repeat every specified milliseconds
+    this.loadingInterval = setInterval(() => {
+      this.announce(this.translate.instant('oneclick.loading.alt-text'));
+    }, milliseconds);
+  }
+
+  stopProgressAnnouncements() {
+    if (this.loadingInterval) {
+      clearInterval(this.loadingInterval);
+    }
+    this.announce(this.translate.instant('oneclick.loading_complete'));
+  }
+
   ngOnDestroy() {
     this.unsubscribe.next(null);
     this.unsubscribe.complete();
   }
+
 }

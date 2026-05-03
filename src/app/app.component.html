@@ -76,8 +76,8 @@
 
 <ion-router-outlet id="main-content"></ion-router-outlet>
 
-<div #spinnerContainer role="alert" id="ion-spinner-container" class="ion-text-center" *ngIf="showSpinner">
-  <ion-img style="width:60%; height: 60%" src="assets/img/loading.gif" alt="{{ 'oneclick.loading.alt-text' | translate }}" tabindex="0"></ion-img>
+<div #spinnerContainer aria-hidden="true" id="ion-spinner-container" class="ion-text-center" *ngIf="showSpinner">
+  <ion-img aria-hidden="true" style="width:60%; height: 60%" src="assets/img/loading.gif" alt="{{ 'oneclick.loading.alt-text' | translate }}"></ion-img>
 </div>
 
 </ion-app>
