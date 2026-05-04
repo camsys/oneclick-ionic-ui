@@ -88,3 +88,30 @@ responsive-timepicker input {
 ion-input.input-background .native-input.sc-ion-input-md {
   background-color: var(--lynxWhite);
 }
+//need this addition to handle stacked labels like on sign up page
+ion-input.input-background .native-wrapper.sc-ion-input-md {
+  background-color: var(--lynxWhite);
+}
+
+ion-select[label-placement="stacked"] {
+  height: 100%; 
+  min-height: 56px; /* Ionic's standard height */
+}
+ion-select[label-placement="stacked"]::part(container) {
+  background-color: var(--lynxWhite);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: stretch; 
+}
+
+/* Stop the internal label container from scaling down */
+ion-input[label-placement="stacked"] .label-text-wrapper,
+ion-textarea[label-placement="stacked"] .label-text-wrapper {
+  transform: scale(1) !important; /* Forces it to stay 100% size */
+}
+
+ion-select[label-placement="stacked"]::part(label) {
+  transform: scale(1) !important; /* Forces it to stay 100% size */
+}
+

@@ -24,24 +24,22 @@
       <ion-row>
         <ion-col>
           <ion-item lines="none">
-            <ion-label position="stacked" class="ion-text-wrap">{{ 'email' | translate }} *</ion-label>
-            <ion-input  type="text"
+            <ion-input type="email" required class="input-background"
+                       labelPlacement="fixed" label="{{'email' | translate}} *"
                         name="email"
-                        [(ngModel)]="user.email"
-                        required>
-            </ion-input>
+                        [(ngModel)]="user.email">
+          </ion-input>
         </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
           <ion-item lines="none">
-            <ion-label position="stacked" class="ion-text-wrap">{{ 'password' | translate }} *</ion-label>
-            <ion-input  type="password"
+            <ion-input type="email" required class="input-background"
+                       labelPlacement="fixed" label="{{'password' | translate}} *"
                         name="password"
-                        [(ngModel)]="user.password"
-                        required>
-            </ion-input>
+                        [(ngModel)]="user.password">
+          </ion-input>
           </ion-item>
 
         </ion-col>

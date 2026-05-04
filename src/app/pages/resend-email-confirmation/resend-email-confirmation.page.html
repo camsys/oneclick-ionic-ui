@@ -14,13 +14,13 @@
       </ion-col>
     </ion-row>
 
-    <ion-input  class="lynx-input"
-                type="text"
-                placeholder="Email"
-                name="email"
-                [(ngModel)]="email"
-                required>
-    </ion-input>
+    <ion-item line="none">
+      <ion-input type="email" required class="input-background"
+                       label-placement="fixed" label="{{'email' | translate}} *"
+                        name="email"
+                        [(ngModel)]="email">
+          </ion-input>
+    </ion-item>
 
     <ion-row>
       <ion-col>

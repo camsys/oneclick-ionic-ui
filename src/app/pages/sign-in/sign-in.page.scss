@@ -6,12 +6,12 @@
   border: solid 1px rgba(var(--lynxPinkRGB), 1);
 }
 
-.label-stacked {
-  transform: none;//undo the ionic transform for stacked labels (made it tiny)
-}
+// .label-stacked {
+//   transform: none;//undo the ionic transform for stacked labels (made it tiny)
+// }
 
-ion-label, ion-input {
-  --background: var(--lynxWhite);
-  //border: solid 5px rgba(var(--lynxPinkRGB), 1);
-  font-size: medium;
-}
+// ion-label, ion-input {
+//   --background: var(--lynxWhite);
+//   //border: solid 5px rgba(var(--lynxPinkRGB), 1);
+//   font-size: medium;
+// }

@@ -1,8 +1,7 @@
 ion-select {
   max-width:100%;
   width: 100%;
-  padding: 10px;
-  background-color: var(--lynxWhite);
+  // background-color: var(--lynxWhite);
   --highlight-color-focused: var(--lynxPink);
   --highlight-color-invalid: var(--lynxPink);
   --highlight-color-valid: var(--lynxPink);
@@ -16,7 +15,7 @@ ion-select {
 }
 
 ion-input {
-  --background: var(--lynxWhite);
+  // --background: var(--lynxWhite);
   //border: solid 5px rgba(var(--lynxPinkRGB), 1);
   font-size: medium;
 }
@@ -26,10 +25,6 @@ ion-item {
   --background-focused: none;
 }
 
-
-.label-stacked {
-  transform: none;//undo the ionic transform for stacked labels (made it tiny)
-}
 .content-ios,.content-md,.content-wp {
     background-color: var(--lynxPink);
 }
