@@ -115,3 +115,9 @@ ion-select[label-placement="stacked"]::part(label) {
   transform: scale(1) !important; /* Forces it to stay 100% size */
 }
 
+/*remove all caps from button text*/
+.md ion-button {
+  --text-transform: none !important;
+  text-transform: none !important;
+}
+
