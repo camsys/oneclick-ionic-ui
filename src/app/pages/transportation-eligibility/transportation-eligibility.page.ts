@@ -186,29 +186,47 @@ export class TransportationEligibilityPage implements OnInit, OnDestroy {
 
   // Shows all available paratransit options based on selected accommodations and eligibilities
   viewParatransitOptions() {
-    this.loader.showLoader();
-    this.buildUserProfileParams();
-    this.router.navigate([TripResponsePage.routePath], {
-      state: {
-        tripRequest: this.tripRequest,
-        origin: this.origin,
-        destination: this.destination,
-        selectedTripPurposeId: this.selectedTripPurposeId,
-        skipPreferences: true
-      }
-    });
+    if (this.age < 0 || this.age > 150) {
+      this.alertCtrl.create({
+        header: this.translate.instant("oneclick.global.missing_fields"),
+        message: this.translate.instant("oneclick.pages.sign_up.error_messages.age_invalid"),
+        buttons: [this.translate.instant("oneclick.global.ok")],
+      }).then(alert => alert.present());
+    }
+    else {
+      this.loader.showLoader();
+      this.buildUserProfileParams();
+      this.router.navigate([TripResponsePage.routePath], {
+        state: {
+          tripRequest: this.tripRequest,
+          origin: this.origin,
+          destination: this.destination,
+          selectedTripPurposeId: this.selectedTripPurposeId,
+          skipPreferences: true
+        }
+      });
+    }
   }
 
   //initializes a new user profile from selections on this page
   initializeUserProfile() {
-    this.router.navigate([UserProfilePage.routePath], {
-      state: {
-        age: this.age,
-        eligibilities: this.eligibilities,
-        accommodations: this.accommodations,
-        trip_types: this.trip_types
-      }
-    });
+    if (this.age < 0 || this.age > 150) {
+      this.alertCtrl.create({
+        header: this.translate.instant("oneclick.global.missing_fields"),
+        message: this.translate.instant("oneclick.pages.sign_up.error_messages.age_invalid"),
+        buttons: [this.translate.instant("oneclick.global.ok")],
+      }).then(alert => alert.present());
+    }
+    else {
+      this.router.navigate([UserProfilePage.routePath], {
+        state: {
+          age: this.age,
+          eligibilities: this.eligibilities,
+          accommodations: this.accommodations,
+          trip_types: this.trip_types
+        }
+      });
+    }
   }
 
   storeUserPreferencesDisabledInSession() {

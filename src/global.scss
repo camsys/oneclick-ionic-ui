@@ -121,3 +121,7 @@ ion-select[label-placement="stacked"]::part(label) {
   text-transform: none !important;
 }
 
+ion-item.ion-invalid .label-text-wrapper {
+  color: #eb445a !important; /* Ionic's danger color */
+}
+

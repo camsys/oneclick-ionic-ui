@@ -85,6 +85,8 @@
           <!-- Age -->
           <ion-input type="number" class="input-background"
                         name="age" label-placement="stacked"
+                        min="0" 
+                        max="100"
                           [(ngModel)]="user.age">
                 <div slot="label" >
                   {{'oneclick.pages.user_profile.age' | translate}}

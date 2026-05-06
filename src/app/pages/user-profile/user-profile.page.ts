@@ -95,7 +95,7 @@ export class UserProfilePage implements OnInit {
     else {
       this.alertCtrl.create({
         header: this.translate.instant("oneclick.global.missing_fields"),
-        message: this.translate.instant("oneclick.pages.sign_up.error_messages.email_cant_be_blank"),
+        message: this.createValidationMessage(),
         buttons: [this.translate.instant("oneclick.global.ok")],
       }).then(alert => alert.present());
     }
@@ -142,10 +142,22 @@ export class UserProfilePage implements OnInit {
     else {
       this.alertCtrl.create({
         header: this.translate.instant("oneclick.global.missing_fields"),
-        message: this.translate.instant("oneclick.pages.sign_up.error_messages.email_cant_be_blank"),
+        message: this.createValidationMessage(),
         buttons: [this.translate.instant("oneclick.global.ok")],
       }).then(alert => alert.present());
     }
+  }
+
+  createValidationMessage(): string {
+    var message = "";
+    if (!this.user.email || this.user.email.length == 0) {
+      message = message + this.translate.instant("oneclick.pages.sign_up.error_messages.email_cant_be_blank") 
+    }
+    if (this.user.age && (this.user.age < 0 || this.user.age > 150)) {
+      if (message.length > 0) message = message + "\n";
+      message = message + this.translate.instant("oneclick.pages.sign_up.error_messages.age_invalid") 
+    }
+    return message;
   }
 
   showSuccess() {
