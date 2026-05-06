@@ -22,13 +22,13 @@
       <ion-col>
         <ion-item lines="none">
           <!-- FIRST NAME -->
-          <ion-label position="stacked">{{"oneclick.pages.user_profile.first_name" | translate}}</ion-label>
-          <ion-input  class="lynx-input"
-                      type="text"
-                      placeholder=""
-                      name="first_name"
-                      [(ngModel)]="user.first_name">
-          </ion-input>
+          <ion-input type="text" class="input-background"
+                        name="first_name" label-placement="stacked"
+                          [(ngModel)]="user.first_name">
+                <div slot="label" >
+                  {{'oneclick.pages.user_profile.first_name' | translate}}
+                </div>
+            </ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -37,13 +37,13 @@
 
         <ion-item lines="none">
           <!-- LAST NAME -->
-          <ion-label position="stacked">{{"oneclick.pages.user_profile.last_name" | translate}}</ion-label>
-          <ion-input  class="lynx-input"
-                      type="text"
-                      placeholder=""
-                      name="last_name"
-                      [(ngModel)]="user.last_name">
-          </ion-input>
+          <ion-input type="text" class="input-background"
+                        name="last_name" label-placement="stacked"
+                          [(ngModel)]="user.last_name">
+                <div slot="label" >
+                  {{'oneclick.pages.user_profile.last_name' | translate}}
+                </div>
+            </ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -52,14 +52,13 @@
 
         <ion-item lines="none">
           <!-- EMAIL -->
-          <ion-label position="stacked">{{"oneclick.pages.user_profile.email" | translate}}</ion-label>
-          <ion-input  class="lynx-input"
-                      type="email"
-                      placeholder=""
-                      name="email"
-                      [(ngModel)]="user.email"
-                      required>
-          </ion-input>
+          <ion-input type="email" required class="input-background"
+                        name="email" label-placement="stacked"
+                          [(ngModel)]="user.email">
+                <div slot="label" >
+                  {{'oneclick.pages.user_profile.email' | translate}} *
+                </div>
+            </ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -67,15 +66,14 @@
       <ion-col>
         <div style="padding-left:16px; padding-right:16px">
           <!-- PASSWORD -->
-            <ion-label id="passwordLabel" position="fixed">{{"oneclick.pages.user_profile.password" | translate}}</ion-label>
             <app-show-hide-password>
-              <ion-input class="lynx-input"
-                        [type]="passwordFieldType"
-                        placeholder=""
-                        aria-labelledby="passwordLabel"
-                        name="password"
-                        [(ngModel)]="user.password">
-              </ion-input>
+              <ion-input type="password" class="input-background"
+                        name="password" label-placement="stacked"
+                          [(ngModel)]="user.password" minlength="4">
+                <div slot="label" >
+                  {{'oneclick.pages.user_profile.password' | translate}}
+                </div>
+            </ion-input>
             </app-show-hide-password>
         </div>
       </ion-col>
@@ -85,28 +83,13 @@
 
         <ion-item lines="none">
           <!-- Age -->
-          <ion-label position="stacked">{{"oneclick.pages.user_profile.age" | translate}}</ion-label>
-          <ion-input  class="lynx-input"
-                      type="number"
-                      placeholder=""
-                      name="age"
-                      [(ngModel)]="user.age">
-          </ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="showParatransitId">
-      <ion-col>
-
-        <ion-item lines="none">
-          <!-- Paratransit Id -->
-          <ion-label position="stacked">{{"oneclick.pages.user_profile.paratransit_id" | translate}}</ion-label>
-          <ion-input class="lynx-input"
-                      type="string"
-                      placeholder=""
-                      name="paratransit_id"
-                      [(ngModel)]="user.paratransit_id">
-          </ion-input>
+          <ion-input type="number" class="input-background"
+                        name="age" label-placement="stacked"
+                          [(ngModel)]="user.age">
+                <div slot="label" >
+                  {{'oneclick.pages.user_profile.age' | translate}}
+                </div>
+            </ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -116,33 +99,36 @@
     <ion-row>
       <ion-col>
 
-        <div class="ion-padding">
-          <ion-label position="stacked">{{"oneclick.pages.user_profile.county" | translate}}</ion-label>
-          <ion-select name="county" [attr.aria-label]="'oneclick.pages.user_profile.county' | translate"
-           [(ngModel)]="user.county">
-            <ion-select-option *ngFor="let county of counties"
-                        value="{{county}}">
-              {{ county }}
-            </ion-select-option>
-          </ion-select>
-        </div>
+        <ion-item lines="none">
+            <ion-select label-placement="stacked" 
+              [(ngModel)]="user.county" name="county">
+                <div slot="label">
+                    {{ 'oneclick.pages.user_profile.county' | translate }}
+                  </div>
+                <ion-select-option *ngFor="let county of counties"
+                            value="{{county}}">
+                  {{ county }}
+                </ion-select-option>
+            </ion-select>
+      </ion-item>
       </ion-col>
     </ion-row>
 
     <!-- Preferred Locale -->
     <ion-row>
       <ion-col>
-
-        <div class="ion-padding">
-          <ion-label position="stacked">{{"oneclick.pages.user_profile.language" | translate}}</ion-label>
-          <ion-select name="preferred_locale" [attr.aria-label]="'oneclick.pages.user_profile.language' | translate"
-          [(ngModel)]="user.preferred_locale">
-            <ion-select-option *ngFor="let locale of available_locales"
+        <ion-item lines="none">
+            <ion-select label-placement="stacked" 
+              [(ngModel)]="user.preferred_locale" name="preferred_locale">
+                <div slot="label">
+                    {{ 'oneclick.pages.user_profile.language' | translate }}
+                  </div>
+                <ion-select-option *ngFor="let locale of available_locales"
                         value="{{locale}}">
               {{ "oneclick.global.languages.native." + locale | translate }}
-            </ion-select-option>
+                </ion-select-option>
           </ion-select>
-        </div>
+      </ion-item>
       </ion-col>
     </ion-row>
 
