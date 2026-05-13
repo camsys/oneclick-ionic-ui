@@ -59,13 +59,21 @@
     --highlight-background: unset;
   }
 
+  ion-item.ion-focused {
+    --background-hover: none;
+    --background-focused: none;
+    --border-color: var(--lynxPink);
+    --border-width: 2px;
+    --border-style: solid;
+  }
+
   //need to set this in the global.scss instead
   //ion-input {
   //  --background: var(--lynxWhite);
   //}
 
   .has-focus {
-    border: solid 1px rgba(var(--lynxPinkRGB), 1);
+    border: solid 2px rgba(var(--lynxPinkRGB), 1);
   }
 
 

@@ -84,6 +84,49 @@ responsive-timepicker input {
   caret-color: black !important;
 }
 
+ion-checkbox {
+  /* 1. Remove Ionic's default focus ring property */
+  --outline: none;
+  
+  /* 2. Target the internal parts to kill the 1px Chrome ring */
+  &.ion-focused::part(container),
+  &.ion-focused::part(label) {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* 3. Global browser override for any nested elements */
+  &:focus, 
+  &:focus-visible,
+  &::part(container):focus {
+    outline: none !important;
+  }
+}
+
+ion-button {
+  --border-style: solid;
+  --border-width: 2px;
+  --border-color: transparent; 
+}
+
+ion-button:focus {
+  /* Inner white border + Outer black border ensures visibility on ANY color */
+  box-shadow: 0 0 0 2px white, 0 0 0 4px black;
+  outline: none;
+}
+
+ion-back-button {
+  --border-style: solid;
+  --border-width: 2px;
+  --border-color: transparent; 
+}
+
+ion-back-button:focus {
+  /* Inner white border + Outer black border ensures visibility on ANY color */
+  box-shadow: 0 0 0 2px white, 0 0 0 4px black;
+  outline: none;
+}
+
 //need this here to set background color of input part of ion-input (see transportation-eligibility.page.html age input)
 ion-input.input-background .native-input.sc-ion-input-md {
   background-color: var(--lynxWhite);

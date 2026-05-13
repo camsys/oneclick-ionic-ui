@@ -11,9 +11,14 @@ ion-item{
     --background: var(--lynxBlack);
     --border-color: var(--lynxWhite);
     --ion-text-color: var(--lynxWhite);
+    --background-hover: none;
+    --background-focused: none;
     
     &:hover,&:focus {
         --ion-text-color: var(--lynxOrange);
+        --border-width: 2px;
+        --border-style: solid;
+        --border-color: var(--lynxOrange);
     }
 }
 

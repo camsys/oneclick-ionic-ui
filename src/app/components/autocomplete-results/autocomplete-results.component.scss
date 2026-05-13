@@ -16,7 +16,8 @@
       &:active,
       &.focus {
         --background: var(--lynxLtGray);
-        //--background: gray;
+        --border-width: 2px;
+        --border-color:var(--lynxPink);
       }
 
     }
